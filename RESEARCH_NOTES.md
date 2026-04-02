@@ -77,3 +77,21 @@ Preprint: ChemRxiv first
 - [ ] Draft Section 1 (Introduction)
 - [ ] Draft Section 3 (Related Work) — notes above are complete
 - [ ] Draft Section 6 (Desiderata) — this is the novel conceptual contribution
+
+## Clinical outcomes analysis (completed)
+- FDA label extraction: 33/35 drugs with discontinuation rates
+- FAERS: 46 drugs, all outcome correlations null (r<0.05, all p>0.14)
+- RCT discontinuation rates: also null (r=-0.047 to +0.002, all p>0.14)
+- Grade 3/4 rates: only 5 drugs with data — insufficient for analysis
+- Conclusion: confounded by indication severity, prescription volume, in vitro/in vivo gap
+- Framing: null result reported honestly, identifies rigorous future validation approach
+- Files: faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv
+
+## TODO (updated)
+- [x] Extract Klaeger analysis to standalone script (partial — inline scripts exist)
+- [x] Get RCT grade 3/4 adverse event rates
+- [x] Correlate RCT data with selectivity scores
+- [ ] Draft Section 3 (Related Work)
+- [ ] Draft Section 6 (Desiderata)
+- [ ] Draft Section 2 (Introduction)
+- [ ] Draft remaining sections

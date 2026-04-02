@@ -1,0 +1,36 @@
+drug,grade34_rate,discontinuation_rate,top_grade34_event,top_grade34_event_rate
+Abemaciclib,,19,neutropenia,
+Afatinib,29,14,diarrhea,6.6
+Alectinib,,5,hepatotoxicity,4.7
+Axitinib,,22,hepatotoxicity,6
+Binimetinib,,5,left ventricular dysfunction,3
+Bosutinib,22,,hepatic toxicity,
+Cabozantinib,,16,hypocalcemia,
+Ceritinib,,45,diarrhea,
+Cobimetinib,,15,increased AST,2.4
+Crizotinib,,8,elevated transaminases,
+Dabrafenib,,3,neutropenia,20
+Dasatinib,,19,myelosuppression,
+Encorafenib,,5,hemorrhage,2
+Erlotinib,,14.3,rash,14
+Gefitinib,,5,,
+Gilteritinib,21,7,transaminase increased,21
+Ibrutinib,,10,thrombocytopenia,12
+Imatinib,,2.4,fluid retention,6.8
+Lapatinib,,13,diarrhea,13
+Lenvatinib,,18,hypertension,13
+Nilotinib,,10,myelosuppression,
+Nintedanib,,21,diarrhea,11
+Osimertinib,,11,ILD,2
+Palbociclib,,10,neutropenia,
+Pazopanib,,36,hypertension,4
+Ponatinib,20,13,myelosuppression,20
+Regorafenib,,8.2,HFSR,17
+Ribociclib,,20,ALT increased,8
+Ruxolitinib,,,,
+Sorafenib,,32,diarrhea,10
+Sunitinib,56,7,any adverse reaction,56
+Trametinib,,9,neutropenia,20
+Vandetanib,,12,diarrhea,11
+Vemurafenib,,7,cuSCC,5
+Tofacitinib,,4,serious infections,
