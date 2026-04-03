@@ -1,4 +1,115 @@
 \section{Desiderata for a Well-Formed Selectivity Measure}
 \label{sec:desiderata}
 
-% TODO
+The empirical findings of Section~\ref{sec:results} motivate four properties
+that any well-formed kinase inhibitor selectivity measure should satisfy.
+We present these as desiderata rather than axioms: they are necessary
+conditions motivated by observed failure modes of existing definitions, but
+they are not yet proven to be jointly sufficient to characterize a unique
+measure, nor is it known whether they are jointly satisfiable.
+Establishing these properties formally is the subject of future work.
+
+Let $\mathbf{x} = (x_1, \ldots, x_N) \in \mathbb{R}^N$ denote a compound's
+binding profile across $N$ kinases, where $x_i = \mathrm{p}K_{d,i}$.
+A selectivity measure is a function $f : \mathbb{R}^N \to \mathbb{R}$, where
+higher values indicate greater selectivity.
+A selectivity ranking over a set of compounds is induced by ordering their
+$f$-scores.
+
+\paragraph{D1 --- Reliability threshold.}
+There exists a threshold $\tau^* > 0$ such that $f(\mathbf{x})$ is undefined,
+or explicitly flagged as unreliable, when $\max_i x_i \leq \tau^*$.
+
+\textit{Motivation.}
+Compounds with no detected binding above the assay detection floor receive
+arbitrary selectivity scores under all four definitions studied here, producing
+rank instability with mean $\sigma \approx 74$ compared with $\sigma \approx
+32$ for active compounds (Section~\ref{sec:results:taxonomy}, Type~1).
+Selectivity is a property of binding; a compound that does not bind cannot be
+meaningfully ranked relative to compounds that do.
+No existing definition incorporates an explicit reliability condition: both
+the S-score and selectivity entropy assign scores to compounds with no
+sub-micromolar binding, treating detection floor values as informative.
+
+\paragraph{D2 --- Bounded gap sensitivity.}
+For any compound profile $\mathbf{x}$ satisfying D1, a small perturbation to
+the identity of the reference off-target should produce a bounded change in
+$f(\mathbf{x})$.
+Formally, if $f$ depends on the $k$-th ranked affinity $x_{(k)}$, then
+$|f(\mathbf{x}; k) - f(\mathbf{x}; k+1)|$ should be bounded by a function of
+$x_{(k)} - x_{(k+1)}$.
+
+\textit{Motivation.}
+Ratio-based definitions violate this property when $x_{(1)} \approx x_{(2)}$:
+a compound with near-identical affinities for its top two kinases receives a
+large ratio score when $k=1$ (the gap to the next off-target may be large) but
+a near-zero score when $k=2$ (the gap between the tied targets is negligible).
+This produces the Type~2 instability identified in
+Section~\ref{sec:results:taxonomy}, where top$_1$--top$_2$ gap is the
+strongest predictor of ratio instability ($r = -0.293$, $p < 0.001$).
+Distribution-based definitions (entropy, Gini) satisfy a weaker version of
+this property because they do not privilege any single pairwise comparison.
+
+\paragraph{D3 --- Distributional consistency.}
+The ranking induced by $f$ should be stable under small perturbations to the
+activity baseline $\beta$ used to define the active binding distribution.
+Formally, for any two compounds $\mathbf{x}, \mathbf{y}$ and any
+$\epsilon > 0$, there exists $\delta > 0$ such that if $|\beta_1 - \beta_2|
+< \delta$ then the ranking of $\mathbf{x}$ relative to $\mathbf{y}$ under
+$f(\cdot; \beta_1)$ agrees with that under $f(\cdot; \beta_2)$.
+
+\textit{Motivation.}
+The entropy and Gini definitions are parameterized by a baseline $\beta$ that
+determines which affinities contribute to the binding distribution.
+Compounds with few active kinases are sensitive to this choice because small
+changes in $\beta$ can move individual kinases in or out of the active set,
+substantially altering the distribution.
+The negative correlation between $n_\mathrm{active}$ and entropy/Gini
+instability ($r = -0.47$ on Klaeger, $p < 0.001$) reflects this sensitivity.
+D3 requires that the ranking be robust to the choice of $\beta$ within a
+reasonable neighborhood, which existing implementations do not guarantee.
+
+\paragraph{D4 --- Monotonicity under weak off-target addition.}
+If compound $\mathbf{x}$ has a weak additional binding interaction added ---
+formally, if $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ where $x_{N+1} \leq
+\tau^*$ --- then $f(\mathbf{x}') \leq f(\mathbf{x})$.
+Adding a sub-threshold binding interaction should not increase a compound's
+selectivity score.
+
+\textit{Motivation.}
+Ratio-based definitions can violate this property: if the new weak interaction
+becomes the reference off-target ($k=1$), the ratio to the primary target may
+increase, artifactually improving the apparent selectivity score.
+This failure mode is practically relevant when profiling panels differ in size
+or composition across experiments, as is common when comparing selectivity
+across different assay platforms or across datasets such as Davis and Klaeger.
+Distribution-based definitions satisfy D4 naturally, since adding a
+sub-threshold term to the probability distribution decreases or preserves
+entropy and Gini.
+
+\bigskip
+Table~\ref{tab:desiderata} summarizes which existing definitions satisfy each
+desideratum.
+No existing definition satisfies all four simultaneously.
+Whether a definition satisfying all four exists, and whether the four desiderata
+are jointly consistent, are open questions that we identify as the primary
+targets of a formal axiomatization.
+
+\begin{table}[h]
+  \centering
+  \caption{Satisfaction of desiderata by existing selectivity definitions.
+           $\checkmark$: satisfied by construction.
+           $\sim$: partially satisfied or satisfied under additional assumptions.
+           $\times$: violated in general.}
+  \label{tab:desiderata}
+  \begin{tabular}{lcccc}
+    \toprule
+    Desideratum & S-score & Entropy & Gini & Ratio \\
+    \midrule
+    D1 (reliability threshold)        & $\times$ & $\times$ & $\times$ & $\times$ \\
+    D2 (bounded gap sensitivity)      & $\sim$   & $\checkmark$ & $\checkmark$ & $\times$ \\
+    D3 (distributional consistency)   & $\sim$   & $\times$ & $\times$ & $\checkmark$ \\
+    D4 (monotonicity, weak off-target)& $\checkmark$ & $\checkmark$ & $\checkmark$ & $\times$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
