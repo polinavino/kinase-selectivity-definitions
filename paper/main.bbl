@@ -8,7 +8,7 @@
 \providecommand*\mcitethebibliography{\thebibliography}
 \csname @ifundefined\endcsname{endmcitethebibliography}
   {\let\endmcitethebibliography\endthebibliography}{}
-\begin{mcitethebibliography}{21}
+\begin{mcitethebibliography}{24}
 \providecommand*\natexlab[1]{#1}
 \providecommand*\mciteSetBstSublistMode[1]{}
 \providecommand*\mciteSetBstMaxWidthForm[2]{}
@@ -26,6 +26,31 @@
   {\relax}
   {\relax}
 
+\bibitem[Roskoski(2024)]{Roskoski2024}
+Roskoski,~R. Properties of {FDA}-approved small molecule protein kinase
+  inhibitors: a 2024 update. \emph{Pharmacol. Res.} \textbf{2024}, \emph{200},
+  107059\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Manning \latin{et~al.}(2002)Manning, Whyte, Martinez, Hunter, and
+  Sudarsanam]{Manning2002}
+Manning,~G.; Whyte,~D.~B.; Martinez,~R.; Hunter,~T.; Sudarsanam,~S. The protein
+  kinase complement of the human genome. \emph{Science} \textbf{2002},
+  \emph{298}, 1912--1934\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Bhullar \latin{et~al.}(2018)Bhullar, \latin{et~al.}
+  others]{Bhullar2018}
+Bhullar,~K.~S.; others Kinase-targeted cancer therapies: progress, challenges
+  and future directions. \emph{Mol. Cancer} \textbf{2018}, \emph{17}, 48\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
 \bibitem[Karaman \latin{et~al.}(2008)Karaman, \latin{et~al.}
   others]{Karaman2008}
 Karaman,~M.~W.; others A quantitative analysis of kinase inhibitor selectivity.
@@ -65,14 +90,6 @@ Bosc,~N.; Meyer,~C.; Bonnet,~P. The use of novel selectivity metrics in kinase
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
 \EndOfBibitem
-\bibitem[Miljkovic and Bajorath(2018)Miljkovic, and Bajorath]{Bajorath2018}
-Miljkovic,~F.; Bajorath,~J. Reconciling selectivity trends from a comprehensive
-  kinase inhibitor profiling campaign with known activity data. \emph{ACS
-  Omega} \textbf{2018}, \emph{3}, 17196--17206\relax
-\mciteBstWouldAddEndPuncttrue
-\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
-{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
-\EndOfBibitem
 \bibitem[Dranchak \latin{et~al.}(2018)Dranchak, \latin{et~al.}
   others]{KInhibition2018}
 Dranchak,~P.; others {KInhibition}: a kinase inhibitor selection portal.
@@ -88,16 +105,24 @@ Shannon,~C.~E. A mathematical theory of communication. \emph{Bell Syst. Tech.
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
 \EndOfBibitem
-\bibitem[Khinchin(1957)]{Khinchin1957}
-Khinchin,~A.~Y. \emph{Mathematical Foundations of Information Theory}; Dover:
-  New York, 1957\relax
+\bibitem[Arrow(1951)]{Arrow1951}
+Arrow,~K.~J. \emph{Social Choice and Individual Values}; Wiley: New York,
+  1951\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
 \EndOfBibitem
-\bibitem[Arrow(1951)]{Arrow1951}
-Arrow,~K.~J. \emph{Social Choice and Individual Values}; Wiley: New York,
-  1951\relax
+\bibitem[Miljkovic and Bajorath(2018)Miljkovic, and Bajorath]{Bajorath2018}
+Miljkovic,~F.; Bajorath,~J. Reconciling selectivity trends from a comprehensive
+  kinase inhibitor profiling campaign with known activity data. \emph{ACS
+  Omega} \textbf{2018}, \emph{3}, 17196--17206\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Khinchin(1957)]{Khinchin1957}
+Khinchin,~A.~Y. \emph{Mathematical Foundations of Information Theory}; Dover:
+  New York, 1957\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
