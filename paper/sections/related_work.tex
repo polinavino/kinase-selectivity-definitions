@@ -1,0 +1,94 @@
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Existing Selectivity Metrics and Their Comparison}
+\label{sec:related:metrics}
+
+Several metrics have been proposed to quantify kinase inhibitor selectivity
+from profiling panel data.
+Karaman et al.\cite{Karaman2008} introduced the selectivity score (S-score),
+defined as the fraction of panel kinases inhibited above a fixed concentration
+threshold.
+Uitdehaag and Zaman\cite{Uitdehaag2011} proposed the selectivity entropy,
+which treats the normalized binding profile as a probability distribution and
+computes its Shannon entropy; low entropy indicates activity concentrated on
+few targets.
+Graczyk\cite{Graczyk2010} defined a thermodynamics-based partition index
+estimating the fraction of total binding directed to a reference kinase,
+suited primarily to hit-to-lead optimization against a specified target.
+Klaeger et al.\cite{Klaeger2017} introduced the concentration- and
+target-dependent selectivity (CATDS) score, which quantifies the reduction in
+binding to a given target relative to the summed reduction across all detected
+targets at a specified inhibitor concentration.
+Bosc et al.\cite{Bosc2017} subsequently proposed two further metrics ---
+the window score and ranking score --- and performed a comparative analysis of
+all five definitions on the Davis and Anastassiadis datasets, showing that
+compound rankings differ substantially depending on the metric applied and that
+certain compounds cannot be scored under some definitions when threshold
+conditions are not satisfied.
+
+Reconciliation attempts have remained limited in scope.
+Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
+assessments from Klaeger et al.\ with activity data mined from ChEMBL for the
+same compounds, finding broad consistency between the two sources but noting
+that no simple relationship between selectivity and clinical performance was
+apparent.
+The KInhibition platform\cite{KInhibition2018} explicitly acknowledged that
+multiple metrics yield conflicting results for the same compound but addressed
+this through a unified query interface rather than theoretical analysis.
+
+A common limitation of these studies is that each metric is evaluated at fixed
+parameter values.
+The sensitivity of rankings to parameter choice --- the activity threshold in
+the S-score, the baseline in the entropy and Gini coefficient, the reference
+off-target in ratio-based measures --- has not been systematically
+characterized.
+The structural properties of binding profiles that determine when definitions
+agree or disagree have not been identified.
+The present work addresses both gaps.
+
+\subsection{Axiomatic Approaches to Ranking and Measurement}
+\label{sec:related:axiomatic}
+
+Axiomatic characterization of measurement functions is well-established in
+adjacent fields.
+Shannon\cite{Shannon1948} demonstrated that the entropy of a probability
+distribution is uniquely determined, up to a multiplicative constant, by four
+requirements: continuity, maximality on the uniform distribution,
+expansibility, and additivity over independent subsystems.
+Khinchin\cite{Khinchin1957} subsequently strengthened this uniqueness result.
+The selectivity entropy of Uitdehaag and Zaman applies the Shannon formula to
+normalized binding profiles but provides no analogous axiomatic justification;
+it is not known whether it is the unique function satisfying reasonable
+selectivity-specific desiderata, or one of many equivalent alternatives.
+
+Arrow\cite{Arrow1951} established that no social welfare function satisfies
+simultaneously the requirements of unrestricted domain, Pareto efficiency,
+independence of irrelevant alternatives, and non-dictatorship.
+The theorem is relevant here in two respects: it demonstrates that axiomatic
+analysis of a ranking concept can yield impossibility rather than uniqueness,
+and it shows that competing ranking functions reflect genuine tradeoffs between
+properties that cannot all be achieved simultaneously.
+Pavillidis et al.\cite{Pavillidis2022} applied this methodology to truth
+discovery --- the problem of identifying true facts from conflicting reports of
+unknown reliability --- posing it as a social choice problem, formulating
+candidate axioms, and proving that a subset cannot be jointly satisfied.
+The structure of that problem is closely analogous to selectivity measurement,
+where multiple definitions produce conflicting rankings and the question of
+which to trust is unresolved.
+
+Formal methods have been applied to biological systems primarily in the context
+of process dynamics.
+Cardelli\cite{Cardelli2004} used the pi-calculus to model molecular biology,
+and the Beacon Calculus\cite{Beaconcalculus2019} addresses stochastic reaction
+networks; both verify properties of temporal execution rather than static
+measurements.
+Type-theoretic approaches to scientific units of measure, including
+Kennedy's\cite{Kennedy1994} F\# units-of-measure system and ongoing
+formalization in Lean~4 Mathlib,\cite{Lean4Mathlib} enforce dimensional
+consistency for physical quantities but do not extend to biochemical
+properties.
+To our knowledge, axiomatic analysis has not previously been applied to any
+selectivity or promiscuity measure in drug discovery.
+The present work proposes empirically motivated desiderata as a foundation for
+future formal axiomatization.

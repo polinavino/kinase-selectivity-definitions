@@ -1,0 +1,29 @@
+\begin{abstract}
+Kinase inhibitor selectivity is routinely quantified using one of several
+definitions --- including the S-score, selectivity entropy, Gini coefficient,
+and ratio-based measures --- yet these definitions are applied interchangeably
+without systematic justification.
+We characterize, across two large kinase inhibitor profiling datasets
+(Davis, $n=68$; Klaeger, $n=222$), the extent and structural sources of
+disagreement between definitions as their parameters vary.
+Spearman correlations between median rankings reveal that ratio-based
+definitions cluster separately from entropy- and distribution-based definitions
+($r = 0.27$--$0.48$ vs.\ $r = 0.75$--$0.91$).
+Rank instability is not random: three mechanistically distinct sources are
+identified.
+Drugs with no detected binding above a minimum affinity threshold exhibit
+maximal instability (mean rank $\sigma \approx 74$) due to definitional noise.
+Among active compounds, near-tied top targets drive ratio-specific instability
+($r = -0.293$, $p < 0.001$), while broad flat binding profiles drive
+instability within distribution-based families.
+Attempts to correlate selectivity scores with clinical adverse event rates
+from FAERS ($n=46$) and FDA label discontinuation rates ($n=33$) yield null
+results, which we attribute to confounding by indication severity and
+prescription volume.
+From these findings we derive four desiderata toward a well-formed selectivity
+measure: a reliability threshold condition, bounded gap sensitivity,
+distributional consistency under parameter perturbation, and monotonicity
+under weak off-target addition.
+These desiderata are intended as the empirical foundation for a future formal
+axiomatization, in the tradition of Shannon's characterization of entropy.
+\end{abstract}

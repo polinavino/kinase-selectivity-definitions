@@ -1,0 +1,57 @@
+This is BibTeX, Version 0.99d (TeX Live 2024)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: achemso.bst
+A level-1 auxiliary file: sections/abstract.aux
+A level-1 auxiliary file: sections/introduction.aux
+A level-1 auxiliary file: sections/related_work.aux
+A level-1 auxiliary file: sections/methods.aux
+A level-1 auxiliary file: sections/results.aux
+A level-1 auxiliary file: sections/desiderata.aux
+A level-1 auxiliary file: sections/discussion.aux
+A level-1 auxiliary file: sections/conclusion.aux
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: acs-main.bib
+Database file #2: references.bib
+achemso 2024-01-30 v3.13g
+You've used 16 entries,
+            2538 wiz_defined-function locations,
+            877 strings with 8851 characters,
+and the built_in function-call counts, 4461 in all, are:
+= -- 398
+> -- 170
+< -- 19
++ -- 67
+- -- 51
+* -- 424
+:= -- 594
+add.period$ -- 29
+call.type$ -- 16
+change.case$ -- 4
+chr.to.int$ -- 2
+cite$ -- 16
+duplicate$ -- 245
+empty$ -- 372
+format.name$ -- 72
+if$ -- 920
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 0
+newline$ -- 118
+num.names$ -- 45
+pop$ -- 24
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 15
+stack$ -- 0
+substring$ -- 259
+swap$ -- 195
+text.length$ -- 31
+text.prefix$ -- 0
+top$ -- 1
+type$ -- 103
+warning$ -- 0
+while$ -- 53
+width$ -- 0
+write$ -- 216

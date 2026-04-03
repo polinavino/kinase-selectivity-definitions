@@ -1,0 +1,143 @@
+\providecommand{\latin}[1]{#1}
+\makeatletter
+\providecommand{\doi}
+  {\begingroup\let\do\@makeother\dospecials
+  \catcode`\{=1 \catcode`\}=2 \doi@aux}
+\providecommand{\doi@aux}[1]{\endgroup\texttt{#1}}
+\makeatother
+\providecommand*\mcitethebibliography{\thebibliography}
+\csname @ifundefined\endcsname{endmcitethebibliography}
+  {\let\endmcitethebibliography\endthebibliography}{}
+\begin{mcitethebibliography}{16}
+\providecommand*\natexlab[1]{#1}
+\providecommand*\mciteSetBstSublistMode[1]{}
+\providecommand*\mciteSetBstMaxWidthForm[2]{}
+\providecommand*\mciteBstWouldAddEndPuncttrue
+  {\def\EndOfBibitem{\unskip.}}
+\providecommand*\mciteBstWouldAddEndPunctfalse
+  {\let\EndOfBibitem\relax}
+\providecommand*\mciteSetBstMidEndSepPunct[3]{}
+\providecommand*\mciteSetBstSublistLabelBeginEnd[3]{}
+\providecommand*\EndOfBibitem{}
+\mciteSetBstSublistMode{f}
+\mciteSetBstMaxWidthForm{subitem}{(\alph{mcitesubitemcount})}
+\mciteSetBstSublistLabelBeginEnd
+  {\mcitemaxwidthsubitemform\space}
+  {\relax}
+  {\relax}
+
+\bibitem[Karaman \latin{et~al.}(2008)Karaman, \latin{et~al.}
+  others]{Karaman2008}
+Karaman,~M.~W.; others A quantitative analysis of kinase inhibitor selectivity.
+  \emph{Nat. Biotechnol.} \textbf{2008}, \emph{26}, 127--132\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Uitdehaag and Zaman(2011)Uitdehaag, and Zaman]{Uitdehaag2011}
+Uitdehaag,~J. C.~M.; Zaman,~G. J.~R. A theoretical entropy score as a single
+  value to express inhibitor selectivity. \emph{BMC Bioinformatics}
+  \textbf{2011}, \emph{12}, 94\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Graczyk(2007)]{Graczyk2010}
+Graczyk,~P.~P. Gini coefficient: a new way to express selectivity of kinase
+  inhibitors against a family of kinases. \emph{J. Med. Chem.} \textbf{2007},
+  \emph{50}, 5773--5779\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Klaeger \latin{et~al.}(2017)Klaeger, \latin{et~al.}
+  others]{Klaeger2017}
+Klaeger,~S.; others The target landscape of clinical kinase drugs.
+  \emph{Science} \textbf{2017}, \emph{358}, eaan4368\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Bosc \latin{et~al.}(2017)Bosc, Meyer, and Bonnet]{Bosc2017}
+Bosc,~N.; Meyer,~C.; Bonnet,~P. The use of novel selectivity metrics in kinase
+  research. \emph{BMC Bioinformatics} \textbf{2017}, \emph{18}, 17\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Miljkovic and Bajorath(2018)Miljkovic, and Bajorath]{Bajorath2018}
+Miljkovic,~F.; Bajorath,~J. Reconciling selectivity trends from a comprehensive
+  kinase inhibitor profiling campaign with known activity data. \emph{ACS
+  Omega} \textbf{2018}, \emph{3}, 17196--17206\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Dranchak \latin{et~al.}(2018)Dranchak, \latin{et~al.}
+  others]{KInhibition2018}
+Dranchak,~P.; others {KInhibition}: a kinase inhibitor selection portal.
+  \emph{iScience} \textbf{2018}, \emph{8}, 29--37\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Shannon(1948)]{Shannon1948}
+Shannon,~C.~E. A mathematical theory of communication. \emph{Bell Syst. Tech.
+  J.} \textbf{1948}, \emph{27}, 379--423\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Khinchin(1957)]{Khinchin1957}
+Khinchin,~A.~Y. \emph{Mathematical Foundations of Information Theory}; Dover:
+  New York, 1957\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Arrow(1951)]{Arrow1951}
+Arrow,~K.~J. \emph{Social Choice and Individual Values}; Wiley: New York,
+  1951\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Pavillidis \latin{et~al.}(2022)Pavillidis, \latin{et~al.}
+  others]{Pavillidis2022}
+Pavillidis,~P.; others Towards an axiomatic approach to truth discovery.
+  \emph{Auton. Agents Multi-Agent Syst.} \textbf{2022}, \emph{36}, 43\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Cardelli(2004)]{Cardelli2004}
+Cardelli,~L. Brane calculi. \emph{Lect. Notes Comput. Sci.} \textbf{2004},
+  \emph{3082}, 257--278\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Jones \latin{et~al.}(2020)Jones, \latin{et~al.}
+  others]{Beaconcalculus2019}
+Jones,~B.; others The Beacon Calculus: a formal method for the coarse-grained
+  modelling of biological systems. \emph{PLOS Comput. Biol.} \textbf{2020},
+  \emph{16}, e1007646\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Kennedy(1994)]{Kennedy1994}
+Kennedy,~A.~J. Dimension types. Programming Languages and Systems -- {ESOP}
+  1994. 1994; pp 348--362\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[{The Mathlib Community}(2024)]{Lean4Mathlib}
+{The Mathlib Community} Mathlib4. 2024;
+  \url{https://github.com/leanprover-community/mathlib4}\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\end{mcitethebibliography}

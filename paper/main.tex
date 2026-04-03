@@ -1,0 +1,45 @@
+\documentclass[journal=jcisd8,manuscript=article]{achemso}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\author{Polina Vinogradova}
+\affiliation{Independent Researcher, Ottawa, Canada}
+\email{polina@example.com}
+
+\title{Towards a Formal Definition of Kinase Inhibitor Selectivity:
+  Empirical Characterization of Definitional Instability and Proposed Desiderata}
+
+\abbreviations{S-score, CATDS, pKd, FAERS}
+\keywords{kinase inhibitor selectivity, selectivity metrics, binding affinity,
+  axiomatic analysis, drug discovery, cheminformatics}
+
+\begin{document}
+
+\include{sections/abstract}
+\include{sections/introduction}
+\include{sections/related_work}
+\include{sections/methods}
+\include{sections/results}
+\include{sections/desiderata}
+\include{sections/discussion}
+\include{sections/conclusion}
+
+\begin{acknowledgement}
+The authors thank the developers of the Davis and Klaeger datasets for making
+their data publicly available.
+\end{acknowledgement}
+
+\begin{suppinfo}
+Code and data are available at
+\url{https://github.com/polinavino/kinase-selectivity-definitions}.
+\end{suppinfo}
+
+\bibliography{references}
+
+\end{document}
