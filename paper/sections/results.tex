@@ -49,6 +49,18 @@ second target) but as moderately promiscuous by entropy and Gini
 (activity distributed across many targets).
 
 \subsection{Rank Instability Is Structured and Predictable}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/instability_by_family}
+  \caption{Best predictor of rank instability within each definition family
+           (Klaeger dataset, active compounds, $n=206$).
+           Ratio instability is best predicted by the top$_1$--top$_2$ affinity gap;
+           entropy, Gini, and S-score instability are best predicted by features
+           of the active affinity distribution.}
+  \label{fig:instability}
+\end{figure}
+
 \label{sec:results:instability}
 
 Overall rank instability --- measured as the standard deviation of a
@@ -105,6 +117,21 @@ relative to the threshold rather than by intrinsic profile shape.
 \end{table}
 
 \subsection{Three Mechanistically Distinct Sources of Instability}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/binding_profiles}
+  \caption{Representative binding profiles illustrating the three instability types.
+           Left: Drug~64 (Davis), most stable ($\sigma = 1.6$), two active kinases.
+           Center: Drug~42 (Davis), most unstable ($\sigma = 19.3$), 22 active kinases
+           at near-identical affinities.
+           Right: Drug~23 (Davis), most ratio-sensitive, five active kinases
+           including two near-tied top targets ($\Delta\mathrm{p}K_d = 0.019$).
+           Dashed line: $\mathrm{p}K_d = 6$ activity threshold;
+           dotted line: $\mathrm{p}K_d = 5$ assay floor.}
+  \label{fig:profiles}
+\end{figure}
+
 \label{sec:results:taxonomy}
 
 Examination of the most and least unstable compounds in the Klaeger dataset
@@ -189,3 +216,61 @@ toxicity would require indication-stratified, treatment-related adverse event
 rates from randomized controlled trials with matched comparators, which are not
 available in a standardized form across the breadth of kinase inhibitors
 studied here.
+
+\subsection{Panel Size Dependence of Selectivity Rankings}
+\label{sec:results:panelsize}
+
+To assess the stability of selectivity rankings as a function of kinase panel
+size, we performed a subsampling analysis on the Klaeger dataset.
+The Davis dataset was not used for this analysis for two reasons: its complete
+matrix design (every compound tested against every kinase by construction)
+does not reflect the sparse coverage of real profiling panels, and subsampling
+kinases from Davis changes the apparent number of active compounds in ways that
+confound the panel size effect with the zero-active instability characterized
+in Section~\ref{sec:results:taxonomy}.
+The Klaeger dataset, derived from chemoproteomic dose--response profiling with
+genuine sparse kinase coverage, is the more appropriate substrate for this
+question.
+For each panel size $p \in \{50, 80, \ldots, 320, 343\}$, we drew 50 random
+subsets of $p$ kinases from the full panel of 343, computed each selectivity
+definition on the subpanel, and measured agreement with the full-panel ranking
+using Spearman correlation.
+
+The four definitions differ substantially in their panel size requirements
+(Figure~\ref{fig:panelsize}).
+Selectivity entropy reaches mean $r = 0.90$ against the full-panel ranking at
+approximately 110 kinases, and S-score at approximately 140 kinases.
+The Gini coefficient requires approximately 290 kinases to reach the same
+threshold.
+The ratio definition does not reach $r = 0.90$ until the panel contains 320
+or more kinases, and achieves $r = 0.888$ even at 320 kinases --- only 23
+below the full panel size.
+
+This result has a direct practical implication.
+Standard commercial kinase selectivity panels typically profile 50--100
+kinases.\cite{Bosc2017}
+At these panel sizes, entropy- and S-score-based rankings are reasonably
+stable ($r \approx 0.76$--$0.85$), but Gini and ratio rankings are effectively
+uncorrelated with what would be obtained on a full kinome panel
+($r < 0.14$ for Gini, $r < 0.00$ for ratio at $p = 50$).
+Ratio rankings in particular are unreliable at any panel size commonly used
+in practice, because the identity of the reference off-target ($k$-th ranked
+kinase) changes substantially as panel composition changes.
+This constitutes a fifth source of evidence that ratio-based definitions
+measure a qualitatively different property from distribution-based definitions,
+and reinforces D2 (bounded gap sensitivity) as a necessary desideratum.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.75\textwidth]{figures/panel_size_stability}
+  \caption{Mean Spearman correlation between rankings computed on random
+           kinase subpanels and rankings on the full Klaeger panel (343
+           kinases), as a function of subpanel size.
+           Shaded bands indicate $\pm 1$ standard deviation across 50
+           subsamples.
+           The dashed line marks $r = 0.90$.
+           Entropy and S-score rankings stabilize at approximately 110--140
+           kinases; Gini requires approximately 290 kinases; ratio does not
+           reach $r = 0.90$ at any practically used panel size.}
+  \label{fig:panelsize}
+\end{figure}

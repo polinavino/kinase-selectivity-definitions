@@ -14,6 +14,12 @@ Pairs for which no binding was detected at the screening concentration of
 10~$\mu$M were assigned $\mathrm{p}K_d = 5.0$, corresponding to a $K_d$ of
 1~mM, which represents the detection floor of the assay.
 The resulting affinity matrix is complete ($68 \times 433$, 29{,}444 entries).
+No censored or greater-than values are present in the Davis dataset: the assay
+reports a quantitative $K_d$ for every compound--kinase pair where activity was
+detected at 10~$\mu$M, and assigns the detection floor value otherwise.
+All non-binding pairs are therefore treated as exactly equivalent at
+$\mathrm{p}K_d = 5.0$, which slightly underestimates true non-binding affinity
+but is the standard convention for this dataset.\cite{DeepDTA,Bosc2017}
 
 The Klaeger dataset\cite{Klaeger2017} comprises binding affinities for 243
 clinical kinase inhibitors profiled against the human kinome using
