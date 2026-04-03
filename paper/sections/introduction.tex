@@ -1,4 +1,88 @@
 \section{Introduction}
 \label{sec:intro}
 
-% TODO
+Kinase inhibitors are among the most intensely investigated compound classes
+in drug discovery, with over 80 FDA-approved agents and several hundred in
+clinical development.\cite{Roskoski2024}
+Because the human kinome comprises more than 500 proteins sharing a
+highly conserved ATP-binding site,\cite{Manning2002} the design of inhibitors
+with controlled target profiles remains a central challenge.
+Selectivity --- the degree to which a compound's binding activity is
+concentrated on intended rather than off-target kinases --- is a primary
+criterion in lead optimization and a key determinant of the therapeutic window
+of approved drugs.\cite{Bhullar2018}
+
+Despite its importance, selectivity is not formally defined.
+The field employs at least four distinct quantitative measures:
+the S-score,\cite{Karaman2008} selectivity entropy,\cite{Uitdehaag2011}
+Gini coefficient,\cite{Graczyk2010} and ratio-based measures including the
+CATDS score.\cite{Klaeger2017}
+These definitions are applied interchangeably in the literature without
+systematic justification, and their parameter values --- the activity threshold
+in the S-score, the baseline in the entropy and Gini coefficient, the reference
+off-target in ratio-based measures --- are chosen by convention rather than
+principle.
+Bosc et al.\cite{Bosc2017} showed that these definitions can produce
+substantially different compound rankings on the same dataset, and the
+KInhibition platform\cite{KInhibition2018} explicitly acknowledged that
+conflicting results across metrics are common.
+However, the structural sources of this disagreement --- which binding profile
+properties determine when definitions agree or conflict, and why --- have not
+been characterized.
+
+The absence of a principled basis for selectivity measurement is not merely
+a practical inconvenience.
+Go/no-go decisions worth hundreds of millions of dollars in development costs
+are made on the basis of selectivity assessments whose sensitivity to
+definitional choice is unknown.
+When a compound is described as ``selective'' in the literature, the claim is
+implicitly conditioned on a specific definition and parameterization that is
+rarely stated explicitly and almost never justified.
+This situation is analogous to measuring temperature with instruments whose
+scales have not been calibrated to a common reference: the measurements are
+internally consistent but not directly comparable.
+
+The analogy to measurement theory suggests a remedy.
+In information theory, Shannon\cite{Shannon1948} resolved the question of how
+to measure uncertainty by identifying axioms that uniquely characterize the
+entropy functional.
+In social choice theory, Arrow\cite{Arrow1951} resolved --- negatively ---
+the question of how to aggregate individual rankings by proving that no
+aggregation rule can simultaneously satisfy a small set of reasonable
+requirements.
+In both cases, the path from empirical observation to formal resolution
+required first characterizing the behavior of competing approaches and then
+identifying the properties that distinguish good measures from bad ones.
+
+This paper takes the first step of that program for kinase inhibitor
+selectivity.
+We systematically characterize, across two large profiling datasets, the
+extent and structural sources of disagreement between existing definitions as
+their parameters vary.
+We identify three mechanistically distinct sources of rank instability and show
+that instability is predictable from the shape of a compound's binding profile.
+We then propose four desiderata --- necessary properties of any well-formed
+selectivity measure --- motivated directly by these failure modes.
+
+Specifically, the contributions of this work are as follows.
+First, we show that existing definitions cluster into two families ---
+distribution-based (S-score, entropy, Gini) and ratio-based (CATDS and
+variants) --- that correlate poorly with one another ($r = 0.27$--$0.48$)
+and measure fundamentally different properties of binding profiles.
+Second, we identify three sources of instability: definitional noise for
+compounds below the assay detection threshold, ratio-specific instability
+driven by near-tied top targets, and distribution-ratio disagreement for
+compounds with one dominant target and broad moderate off-target activity.
+Third, we propose four desiderata --- a reliability threshold condition,
+bounded gap sensitivity, distributional consistency, and monotonicity under
+weak off-target addition --- and show that no existing definition satisfies
+all four simultaneously.
+Fourth, we demonstrate that correlations between selectivity scores and
+clinical adverse event outcomes are null under current data sources, and
+identify the confounders responsible.
+
+The desiderata proposed here are intended as the empirical foundation for a
+future formal axiomatization of kinase inhibitor selectivity, in the tradition
+of Shannon's characterization of entropy and Arrow's analysis of social choice
+functions.
+\end{document}
