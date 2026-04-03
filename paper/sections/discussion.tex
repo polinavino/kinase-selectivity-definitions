@@ -35,6 +35,39 @@ selectivity means.
 The desiderata proposed in Section~\ref{sec:desiderata} are an attempt to make
 this question precise enough that it can be answered formally.
 
+\subsection{The Historical Roots of Definitional Ambiguity}
+
+The coexistence of ratio-based and distribution-based selectivity definitions
+in the kinase inhibitor literature has a historical explanation rooted in the
+structure of the selectivity question itself.
+In classical pharmacology and analytical chemistry, selectivity is inherently
+pairwise: how much more potently does a compound bind target A than target B?
+IUPAC formalizes this for analytical methods as a selectivity coefficient ---
+the ratio of binding constants for analyte and interferent --- and organic
+chemistry quantifies chemo-, regio-, and stereoselectivity as ratios of
+competing rate constants.\cite{IUPAC2001}
+These ratio definitions are appropriate because the question is binary.
+
+Kinase inhibitor selectivity, by contrast, is a distributional question: how
+concentrated is a compound's binding activity across a panel of hundreds of
+kinases?
+This is structurally different from a pairwise comparison, and ratio-based
+measures are poorly suited to it precisely because they discard all but two
+data points from a profile of 300--500 kinases, as the panel size analysis of
+Section~\ref{sec:results:panelsize} makes quantitative.
+The entropy and Gini definitions were introduced specifically because
+researchers recognized that ratio measures were inadequate for large panels,
+but the older definitions were never retired.
+The result is a field that applies pairwise measures to distributional
+questions and distributional measures to pairwise questions, without a
+principled basis for choosing between them.
+The desiderata of Section~\ref{sec:desiderata} can be understood as an attempt
+to make this distinction precise: D2 (bounded gap sensitivity) and D4
+(monotonicity) are properties that ratio definitions violate specifically
+because they treat a distributional problem as pairwise, while D3
+(distributional consistency) is a property that ratio definitions satisfy
+trivially because they do not use a distributional baseline at all.
+
 \subsection{Practical Recommendations}
 
 Pending a formal resolution, three practical recommendations follow from our

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.11)  3 APR 2026 15:33
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.7.11)  3 APR 2026 17:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -602,14 +602,22 @@ Package hyperref Warning: Suppressing empty link on input line 35.
 
 
 
-] [24]
+]
 
-Package hyperref Warning: Suppressing empty link on input line 81.
+Package hyperref Warning: Suppressing empty link on input line 57.
 
 
-Package hyperref Warning: Suppressing empty link on input line 90.
+Package hyperref Warning: Suppressing empty link on input line 64.
 
-) [25] [26]
+[24]
+
+Package hyperref Warning: Suppressing empty link on input line 114.
+
+[25]
+
+Package hyperref Warning: Suppressing empty link on input line 123.
+
+) [26]
 \openout2 = `sections/conclusion.aux'.
 
 (./sections/conclusion.tex) [27
@@ -654,10 +662,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 15845 strings out of 474116
- 254610 string characters out of 5743682
+ 15851 strings out of 474116
+ 254718 string characters out of 5743682
  1936187 words of memory out of 5000000
- 37652 multiletter control sequences out of 15000+600000
+ 37656 multiletter control sequences out of 15000+600000
  577972 words of font info for 193 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,15n,131p,1001b,705s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -679,10 +687,10 @@ ive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texli
 ve/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texliv
 e/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/te
 xlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (30 pages, 523106 bytes).
+Output written on main.pdf (30 pages, 525375 bytes).
 PDF statistics:
- 363 PDF objects out of 1000 (max. 8388607)
- 286 compressed objects within 3 object streams
- 93 named destinations out of 1000 (max. 500000)
+ 366 PDF objects out of 1000 (max. 8388607)
+ 289 compressed objects within 3 object streams
+ 95 named destinations out of 1000 (max. 500000)
  45584 words of extra memory for PDF output out of 51595 (max. 10000000)
 

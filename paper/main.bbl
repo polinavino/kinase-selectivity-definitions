@@ -8,7 +8,7 @@
 \providecommand*\mcitethebibliography{\thebibliography}
 \csname @ifundefined\endcsname{endmcitethebibliography}
   {\let\endmcitethebibliography\endthebibliography}{}
-\begin{mcitethebibliography}{24}
+\begin{mcitethebibliography}{25}
 \providecommand*\natexlab[1]{#1}
 \providecommand*\mciteSetBstSublistMode[1]{}
 \providecommand*\mciteSetBstMaxWidthForm[2]{}
@@ -199,6 +199,13 @@ McKinney,~W. Data structures for statistical computing in {Python}. Proceedings
 Virtanen,~P.; others {SciPy} 1.0: fundamental algorithms for scientific
   computing in {Python}. \emph{Nat. Methods} \textbf{2020}, \emph{17},
   261--272\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Vessman \latin{et~al.}(2001)Vessman, \latin{et~al.} others]{IUPAC2001}
+Vessman,~J.; others Selectivity in analytical chemistry. \emph{Pure Appl.
+  Chem.} \textbf{2001}, \emph{73}, 1381--1386\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
