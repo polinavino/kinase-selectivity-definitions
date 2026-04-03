@@ -1,4 +1,119 @@
 \section{Discussion}
 \label{sec:discussion}
 
-% TODO
+The central finding of this work is that existing kinase inhibitor selectivity
+definitions do not measure the same quantity.
+The ratio definition and the distribution-based family (S-score, entropy, Gini)
+produce substantially different compound rankings ($r = 0.27$--$0.48$),
+and the sources of disagreement are mechanistically interpretable rather than
+random.
+This has practical consequences: a compound that ratio-based analysis designates
+as selective may be designated as moderately promiscuous by entropy-based
+analysis, and vice versa, depending on the shape of its binding profile.
+Go/no-go decisions in early drug discovery are routinely made on the basis of
+selectivity assessments without acknowledgment that the choice of definition
+materially affects the outcome.
+
+\subsection{The Two-Family Structure Reflects a Conceptual Distinction}
+
+The clustering of definitions into two families is not a statistical artifact
+but reflects a genuine difference in what is being measured.
+Distribution-based definitions ask: how concentrated is the compound's binding
+activity across the full profiled kinome?
+The ratio definition asks: how much more potently does the compound bind its
+primary target than a specified off-target?
+These are distinct questions with distinct answers for a large class of
+compounds --- specifically, those with one clearly dominant target that also
+bind many kinases at moderate affinity (Type~3 profiles in our taxonomy).
+For such compounds, ratio-based methods report high selectivity while
+distribution-based methods report moderate promiscuity, and both
+characterizations are correct given their respective questions.
+
+The disagreement is therefore not a defect to be corrected by choosing the
+``right'' definition, but a signal that the field has not agreed on what
+selectivity means.
+The desiderata proposed in Section~\ref{sec:desiderata} are an attempt to make
+this question precise enough that it can be answered formally.
+
+\subsection{Practical Recommendations}
+
+Pending a formal resolution, three practical recommendations follow from our
+findings.
+
+First, D1 (reliability threshold) should be adopted immediately as a reporting
+standard.
+Compounds with no detected binding above the assay detection floor should not
+receive selectivity scores, or should have their scores explicitly flagged as
+unreliable.
+Of the 222 Klaeger compounds, 16 (7.2\%) fall into this category and currently
+receive scores that are indistinguishable from noise.
+
+Second, selectivity assessments should report the sensitivity of rankings to
+parameter choice rather than a single score at a single parameter value.
+Our analysis shows that rank standard deviation across the parameter sweep is a
+compound-specific, interpretable quantity that identifies which compounds have
+robust selectivity assessments and which do not.
+This is analogous to reporting confidence intervals in statistical estimation.
+
+Third, when comparing selectivity across studies that use different definitions,
+the comparison should be restricted to the subset of compounds and parameter
+values for which the definitions agree.
+The high within-family correlations ($r > 0.74$) suggest that S-score, entropy,
+and Gini are interchangeable for most purposes when parameters are chosen
+consistently; ratio-based measures should not be compared directly with
+distribution-based measures without acknowledging the conceptual distinction.
+
+\subsection{Limitations}
+
+The analysis is limited to two profiling datasets that, while large and
+well-characterized, represent a small fraction of the chemical and kinase space
+relevant to drug discovery.
+Davis covers 68 compounds and 433 kinases using a fixed-concentration
+competition binding assay; Klaeger covers 222 clinical compounds and 343
+kinases using chemoproteomic dose--response profiling.
+The two assay technologies are not directly comparable, and the difference in
+active compound fractions (17.9\% for Davis vs.\ 3.6\% for Klaeger) reflects
+both genuine selectivity differences and assay-specific detection thresholds.
+Findings should be interpreted in light of these technological differences.
+
+The clinical outcome analysis is limited by the observational nature of FAERS
+data and the heterogeneity of FDA label discontinuation rates across indications.
+The null results reported in Section~\ref{sec:results:outcomes} are consistent
+with a genuine absence of correlation between in vitro selectivity and clinical
+toxicity, but they are equally consistent with the confounders identified
+therein.
+A properly controlled study would require prospective collection of
+treatment-related adverse event rates stratified by indication, which is not
+currently available in a standardized form across the breadth of approved
+kinase inhibitors.
+
+The desiderata proposed in Section~\ref{sec:desiderata} are necessary
+conditions motivated by empirical failure modes; they are not proven to be
+sufficient to uniquely characterize a selectivity measure, and it is not known
+whether they are jointly satisfiable.
+The satisfaction assessments in Table~\ref{tab:desiderata} are based on
+analysis of the functional forms of each definition and the empirical findings
+of this study; a formal proof of satisfaction or violation for each
+desideratum--definition pair is left for future work.
+
+\subsection{Relation to Formal Methods}
+
+The approach taken here --- characterizing the empirical behavior of competing
+definitions to motivate formal desiderata --- follows a methodology well
+established in adjacent fields.
+Shannon's derivation of entropy began with the observation that several
+reasonable-seeming measures of uncertainty existed and proceeded to identify
+the axioms that single out one uniquely.\cite{Shannon1948}
+Arrow's impossibility theorem began with the observation that several
+reasonable voting rules existed and proved that no rule satisfies all
+desirable properties simultaneously.\cite{Arrow1951}
+
+The present work occupies the empirical stage of this process: we have
+characterized where and why existing definitions disagree, and proposed
+properties that any satisfactory definition should have.
+Whether a definition satisfying all four desiderata exists, whether the
+desiderata are jointly consistent, and whether an impossibility result holds,
+are questions for a formal axiomatization.
+We anticipate that such an axiomatization, potentially implemented in a proof
+assistant such as Agda or Lean, would constitute a natural and
+productive extension of this work.\cite{Lean4Mathlib}
