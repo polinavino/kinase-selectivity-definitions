@@ -8,7 +8,7 @@
 \providecommand*\mcitethebibliography{\thebibliography}
 \csname @ifundefined\endcsname{endmcitethebibliography}
   {\let\endmcitethebibliography\endthebibliography}{}
-\begin{mcitethebibliography}{16}
+\begin{mcitethebibliography}{21}
 \providecommand*\natexlab[1]{#1}
 \providecommand*\mciteSetBstSublistMode[1]{}
 \providecommand*\mciteSetBstMaxWidthForm[2]{}
@@ -136,6 +136,44 @@ Kennedy,~A.~J. Dimension types. Programming Languages and Systems -- {ESOP}
 \bibitem[{The Mathlib Community}(2024)]{Lean4Mathlib}
 {The Mathlib Community} Mathlib4. 2024;
   \url{https://github.com/leanprover-community/mathlib4}\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Davis \latin{et~al.}(2011)Davis, \latin{et~al.} others]{Davis2011}
+Davis,~M.~I.; others Comprehensive analysis of kinase inhibitor selectivity.
+  \emph{Nat. Biotechnol.} \textbf{2011}, \emph{29}, 1046--1051\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Öztürk \latin{et~al.}(2018)Öztürk, Özgür, and
+  Ozkirimli]{DeepDTA}
+Öztürk,~H.; Özgür,~A.; Ozkirimli,~E. {DeepDTA}: deep drug--target binding
+  affinity prediction. \emph{Bioinformatics} \textbf{2018}, \emph{34},
+  i821--i829\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Harris \latin{et~al.}(2020)Harris, \latin{et~al.} others]{NumPy}
+Harris,~C.~R.; others Array programming with {NumPy}. \emph{Nature}
+  \textbf{2020}, \emph{585}, 357--362\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[McKinney(2010)]{pandas}
+McKinney,~W. Data structures for statistical computing in {Python}. Proceedings
+  of the 9th Python in Science Conference. 2010; pp 56--61\relax
+\mciteBstWouldAddEndPuncttrue
+\mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
+{\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax
+\EndOfBibitem
+\bibitem[Virtanen \latin{et~al.}(2020)Virtanen, \latin{et~al.} others]{SciPy}
+Virtanen,~P.; others {SciPy} 1.0: fundamental algorithms for scientific
+  computing in {Python}. \emph{Nat. Methods} \textbf{2020}, \emph{17},
+  261--272\relax
 \mciteBstWouldAddEndPuncttrue
 \mciteSetBstMidEndSepPunct{\mcitedefaultmidpunct}
 {\mcitedefaultendpunct}{\mcitedefaultseppunct}\relax

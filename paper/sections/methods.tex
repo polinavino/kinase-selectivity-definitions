@@ -4,19 +4,129 @@
 \subsection{Datasets}
 \label{sec:methods:data}
 
-% TODO
+Two publicly available kinase inhibitor profiling datasets were used.
+The Davis dataset\cite{Davis2011} comprises binding affinities ($K_d$) for 68
+small-molecule kinase inhibitors measured against 433 human kinase domains.
+Affinity values are reported as dissociation constants and were converted to
+$\mathrm{p}K_d = -\log_{10}(K_d / 10^9)$ prior to analysis, following the
+convention of the DeepDTA benchmark.\cite{DeepDTA}
+Pairs for which no binding was detected at the screening concentration of
+10~$\mu$M were assigned $\mathrm{p}K_d = 5.0$, corresponding to a $K_d$ of
+1~mM, which represents the detection floor of the assay.
+The resulting affinity matrix is complete ($68 \times 433$, 29{,}444 entries).
+
+The Klaeger dataset\cite{Klaeger2017} comprises binding affinities for 243
+clinical kinase inhibitors profiled against the human kinome using
+Kinobeads chemical proteomics.
+Apparent dissociation constants ($K_d^\mathrm{app}$) were derived from
+dose--response curves across eight inhibitor concentrations in cancer cell
+lysates.
+Only high-confidence measurements (as annotated by the original authors) were
+retained, yielding 5{,}123 drug--target pairs for 222 drugs and 343 kinase
+targets.
+Affinity values were converted to $\mathrm{p}K_d$ using the same formula as
+above.
+Missing entries, representing kinase--inhibitor combinations not detected in
+the assay, were assigned the background value $\mathrm{p}K_d = 5.0$.
+The resulting matrix ($222 \times 343$) has 17.9\% active entries
+(pKd $> 6$, i.e.\ $K_d < 1~\mu$M) for Davis and 3.6\% for Klaeger,
+reflecting the more stringent detection threshold of the chemoproteomic assay.
 
 \subsection{Selectivity Definitions and Parameterization}
 \label{sec:methods:defs}
 
-% TODO
+Four selectivity definitions were implemented, each controlled by one or more
+parameters whose values are not standardized in the literature.
+
+The \textbf{S-score}\cite{Karaman2008} is defined as
+\begin{equation}
+  S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[\mathrm{p}K_{d,i} > \tau],
+\end{equation}
+where $N$ is the number of kinases in the panel and $\tau$ is an activity
+threshold.
+Lower values indicate greater selectivity.
+We swept $\tau \in \{5.5, 5.75, \ldots, 8.0\}$ (11 values), spanning $K_d$
+cutoffs from approximately 300~nM to 10~nM.
+
+The \textbf{selectivity entropy}\cite{Uitdehaag2011} treats the
+baseline-subtracted binding profile as a probability distribution:
+\begin{equation}
+  H(\beta) = -\sum_{i=1}^{N} p_i \log_2 p_i, \quad
+  p_i = \frac{\max(\mathrm{p}K_{d,i} - \beta,\, 0)}
+             {\sum_j \max(\mathrm{p}K_{d,j} - \beta,\, 0)},
+\end{equation}
+where $\beta$ is a baseline affinity below which binding is considered
+negligible.
+Lower entropy indicates greater selectivity.
+We swept $\beta \in \{5.0, 5.25, \ldots, 6.5\}$ (7 values).
+
+The \textbf{Gini coefficient}\cite{Graczyk2010} of the baseline-subtracted
+profile is
+\begin{equation}
+  G(\beta) = \frac{2\sum_{i=1}^{N} i \cdot x_{(i)}}{N \sum_{i=1}^{N} x_{(i)}} - \frac{N+1}{N},
+\end{equation}
+where $x_{(i)} = \max(\mathrm{p}K_{d,i} - \beta,\, 0)$ sorted in ascending
+order.
+Higher values indicate greater selectivity.
+We swept $\beta$ over the same range as for the entropy.
+
+The \textbf{ratio} definition measures the gap between the primary target and
+a specified off-target:
+\begin{equation}
+  R(k) = \mathrm{p}K_{d,(1)} - \mathrm{p}K_{d,(k+1)},
+\end{equation}
+where $\mathrm{p}K_{d,(j)}$ denotes the $j$-th largest affinity in the profile
+and $k \in \{1, 2, 3, 4, 5\}$ indexes the off-target used as reference.
+Higher values indicate greater selectivity.
 
 \subsection{Rank Stability Analysis}
 \label{sec:methods:stability}
 
-% TODO
+For each definition and each parameter value, compounds were ranked from most
+selective (rank 1) to least selective (rank $n$, where $n$ is the number of
+compounds in the dataset).
+Ties were broken by average rank.
+This yielded 30 rank vectors per dataset: 11 for the S-score, 7 for entropy,
+7 for Gini, and 5 for ratio.
+
+For each compound, rank instability was quantified as the standard deviation
+of its rank across all 30 configurations (overall instability) and separately
+across configurations within each definition family (within-family
+instability).
+Cross-definition agreement was assessed using Spearman rank correlation
+between the median rank vectors of each definition family.
+The median was taken across parameter values within each family prior to
+correlation to obtain a single representative ranking per definition.
+
+Associations between rank instability and binding profile features were
+assessed using Spearman correlation.
+Profile features computed for each compound included: the number of active
+kinases ($\mathrm{p}K_d > 6$), the gap between the top and second-ranked
+affinities, the standard deviation and range of active affinities, and the
+absolute affinity of the second-ranked target.
+All correlations are reported with two-tailed $p$-values; significance
+thresholds of $p < 0.05$, $p < 0.01$, and $p < 0.001$ are denoted *, **, and
+*** respectively.
+Analyses were performed in Python 3.10 using NumPy, pandas, and
+SciPy.\cite{NumPy,pandas,SciPy}
 
 \subsection{Clinical Outcome Data}
 \label{sec:methods:outcomes}
 
-% TODO
+For the subset of Klaeger compounds that are FDA-approved ($n = 46$ after
+excluding drugs with no FAERS records), adverse event report counts were
+retrieved from the FDA Adverse Event Reporting System (FAERS) via the
+openFDA API.
+Total report counts, serious event counts, and death and hospitalization
+subcounts were retrieved per drug.
+Serious event rates and death rates were computed by normalizing subcounts by
+total reports per drug.
+
+Treatment discontinuation rates due to adverse events were extracted from FDA
+drug labels retrieved via the openFDA label API for 33 approved drugs with
+available adverse reactions sections.
+Label text was reviewed manually to identify the primary clinical trial
+discontinuation rate attributable to adverse reactions.
+
+Associations between selectivity scores and each clinical outcome measure were
+assessed using Spearman correlation across drugs with available data.
