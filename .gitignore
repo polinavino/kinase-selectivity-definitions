@@ -52,3 +52,5 @@ venv/
 
 # Large data files that can be re-downloaded
 # (keep processed CSVs and the Excel since it requires manual download)
+paper/achemso.dtx
+paper/achemso.ins
