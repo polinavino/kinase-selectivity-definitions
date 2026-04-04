@@ -1,0 +1,54 @@
+# LaTeX build artifacts
+paper/*.aux
+paper/*.bbl
+paper/*.bcf
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.run.xml
+paper/*.synctex.gz
+paper/*.toc
+paper/*.lot
+paper/*.lof
+paper/*.idx
+paper/*.ilg
+paper/*.ind
+paper/*.nav
+paper/*.snm
+paper/*.vrb
+paper/_minted-*
+paper/sections/*.aux
+
+# Keep the PDF
+!paper/main.pdf
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# Large data files that can be re-downloaded
+# (keep processed CSVs and the Excel since it requires manual download)
