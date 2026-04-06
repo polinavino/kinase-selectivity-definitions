@@ -1,7 +1,7 @@
 # Kinase Inhibitor Selectivity: Towards a Formal Definition
 
 **Paper:** Towards a Formal Definition of Kinase Inhibitor Selectivity: Empirical Characterization of Definitional Instability and Proposed Desiderata
-**Author:** Polina Vinogradova, Input Output Global
+**Author:** Polina Vinogradova
 **Preprint:** ChemRxiv (DOI to be added)
 
 ---
