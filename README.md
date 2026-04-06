@@ -2,7 +2,7 @@
 
 **Paper:** Towards a Formal Definition of Kinase Inhibitor Selectivity: Empirical Characterization of Definitional Instability and Proposed Desiderata
 **Author:** Polina Vinogradova
-**Preprint:** ChemRxiv (DOI to be added)
+**Preprint:** https://doi.org/10.26434/chemrxiv.15001618/v1
 
 ---
 
@@ -180,14 +180,35 @@ Produces: panel_size_stability.png and printed stability table
     +-- faers_counts.csv
     +-- clinical_safety_data.csv
     +-- selectivity_outcomes_merged.csv
-    +-- *.png
+    +-- extended_labels.json
+    +-- label_texts.json
+    +-- binding_profiles.png
+    +-- instability_by_family.png
+    +-- instability_correlations.png
+    +-- panel_size_stability.png
+    +-- selectivity_analysis.png
+    +-- selectivity_vs_outcomes.png
     +-- paper/
         +-- main.tex
         +-- references.bib
+        +-- figures/
+        |   +-- binding_profiles.png
+        |   +-- instability_by_family.png
+        |   +-- panel_size_stability.png
+        |   +-- toc_graphic.png
         +-- sections/
+            +-- abstract.tex
+            +-- introduction.tex
+            +-- related_work.tex
+            +-- methods.tex
+            +-- results.tex
+            +-- desiderata.tex
+            +-- discussion.tex
+            +-- conclusion.tex
 
 ### Citation
 
     Vinogradova, P. (2025). Towards a Formal Definition of Kinase Inhibitor
     Selectivity: Empirical Characterization of Definitional Instability and
-    Proposed Desiderata. ChemRxiv. DOI: [to be added]
+    Proposed Desiderata. ChemRxiv.
+    https://doi.org/10.26434/chemrxiv.15001618/v1
