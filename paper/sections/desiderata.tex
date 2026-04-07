@@ -1,7 +1,7 @@
 \section{Desiderata for a Well-Formed Selectivity Measure}
 \label{sec:desiderata}
 
-The empirical findings of Section~\ref{sec:results} motivate four properties
+The empirical findings of the Results section motivate four properties
 that any well-formed kinase inhibitor selectivity measure should satisfy.
 We present these as desiderata rather than axioms: they are necessary
 conditions motivated by observed failure modes of existing definitions, but
@@ -24,7 +24,7 @@ or explicitly flagged as unreliable, when $\max_i x_i \leq \tau^*$.
 Compounds with no detected binding above the assay detection floor receive
 arbitrary selectivity scores under all four definitions studied here, producing
 rank instability with mean $\sigma \approx 74$ compared with $\sigma \approx
-32$ for active compounds (Section~\ref{sec:results:taxonomy}, Type~1).
+32$ for active compounds (Type~1 instability, above).
 Selectivity is a property of binding; a compound that does not bind cannot be
 meaningfully ranked relative to compounds that do.
 No existing definition incorporates an explicit reliability condition: both
@@ -45,7 +45,7 @@ a compound with near-identical affinities for its top two kinases receives a
 large ratio score when $k=1$ (the gap to the next off-target may be large) but
 a near-zero score when $k=2$ (the gap between the tied targets is negligible).
 This produces the Type~2 instability identified in
-Section~\ref{sec:results:taxonomy}, where top$_1$--top$_2$ gap is the
+the instability taxonomy above, where top$_1$--top$_2$ gap is the
 strongest predictor of ratio instability ($r = -0.293$, $p < 0.001$).
 Distribution-based definitions (entropy, Gini) satisfy a weaker version of
 this property because they do not privilege any single pairwise comparison.

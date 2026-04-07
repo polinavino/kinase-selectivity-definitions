@@ -5,7 +5,6 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{hyperref}
 \usepackage{microtype}
 
 \author{Polina Vinogradova}
@@ -21,14 +20,14 @@
 
 \begin{document}
 
-\include{sections/abstract}
-\include{sections/introduction}
-\include{sections/related_work}
-\include{sections/methods}
-\include{sections/results}
-\include{sections/desiderata}
-\include{sections/discussion}
-\include{sections/conclusion}
+\input{sections/abstract}
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/methods}
+\input{sections/results}
+\input{sections/desiderata}
+\input{sections/discussion}
+\input{sections/conclusion}
 
 \begin{acknowledgement}
 The authors thank the developers of the Davis and Klaeger datasets for making
@@ -39,9 +38,8 @@ Specifically, Claude was used to assist with: data analysis code development and
 debugging in Python; literature search and identification of related work;
 drafting and editing of manuscript text; and research planning and
 interpretation of results.
-All scientific conclusions, the conceptual framework, the desiderata proposed
-in Section~\ref{sec:desiderata}, and the final manuscript content were
-developed, verified, and approved by the author.
+All scientific conclusions, the conceptual framework, the desiderata proposed in the Desiderata section, 
+and the final manuscript content were developed, verified, and approved by the author.
 The author takes full responsibility for the accuracy and integrity of all
 content in this work.
 \end{acknowledgement}
