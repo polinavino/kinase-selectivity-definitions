@@ -1,0 +1,1280 @@
+<h1 id="sec:intro">Introduction</h1>
+<p>Kinase inhibitors are among the most intensely investigated compound
+classes in drug discovery, with over 80 FDA-approved agents and several
+hundred in clinical development.<span class="citation"
+data-cites="Roskoski2024"><sup>[1]</sup></span> Because the human kinome
+comprises more than 500 proteins sharing a highly conserved ATP-binding
+site,<span class="citation"
+data-cites="Manning2002"><sup>[2]</sup></span> the design of inhibitors
+with controlled target profiles remains a central challenge. Selectivity
+— the degree to which a compound’s binding activity is concentrated on
+intended rather than off-target kinases — is a primary criterion in lead
+optimization and a key determinant of the therapeutic window of approved
+drugs.<span class="citation"
+data-cites="Bhullar2018"><sup>[3]</sup></span></p>
+<p>Despite its importance, selectivity is not formally defined. The
+field employs at least four distinct quantitative measures: the
+S-score,<span class="citation"
+data-cites="Karaman2008"><sup>[4]</sup></span> selectivity entropy,<span
+class="citation" data-cites="Uitdehaag2011"><sup>[5]</sup></span> Gini
+coefficient,<span class="citation"
+data-cites="Graczyk2010"><sup>[6]</sup></span> and ratio-based measures
+including the CATDS score.<span class="citation"
+data-cites="Klaeger2017"><sup>[7]</sup></span> These definitions are
+applied interchangeably in the literature without systematic
+justification, and their parameter values — the activity threshold in
+the S-score, the baseline in the entropy and Gini coefficient, the
+reference off-target in ratio-based measures — are chosen by convention
+rather than principle. Standardizing these definitions is a prerequisite
+for reproducible Omics/Open Science workflows, ensuring that
+cross-institutional datasets can be meaningfully integrated.</p>
+<p>Bosc et al.<span class="citation"
+data-cites="Bosc2017"><sup>[8]</sup></span> showed that these
+definitions can produce substantially different compound rankings on the
+same dataset, and the KInhibition platform<span class="citation"
+data-cites="KInhibition2018"><sup>[9]</sup></span> explicitly
+acknowledged that conflicting results across metrics are common.
+However, the structural sources of this disagreement — which binding
+profile properties determine when definitions agree or conflict, and why
+— have not been characterized.</p>
+<p>The absence of a principled basis for selectivity measurement is not
+merely a practical inconvenience. Go/no-go decisions worth hundreds of
+millions of dollars in development costs are made on the basis of
+selectivity assessments whose sensitivity to definitional choice is
+unknown. When a compound is described as “selective” in the literature,
+the claim is implicitly conditioned on a specific definition and
+parameterization that is rarely stated explicitly and almost never
+justified. This situation is analogous to measuring temperature with
+instruments whose scales have not been calibrated to a common reference:
+the measurements are internally consistent but not directly
+comparable.</p>
+<p>Counterintuitively, we find that the compounds most resistant to
+definitional disagreement are not the most selective but the most
+promiscuous: compounds that bind nearly the entire profiled kinome
+receive consistent rankings regardless of which definition is applied,
+because all definitions agree they are non-selective. It is compounds at
+intermediate promiscuity — those with one dominant target and several
+moderate off-targets, or those with near-identical affinities for their
+top two targets — that receive contradictory rankings depending on which
+definition is chosen. This observation points to a deeper problem: the
+definitions are not merely different operationalizations of the same
+concept, but answers to genuinely different questions about binding
+profiles.</p>
+<p>The analogy to measurement theory suggests a remedy. In information
+theory, Shannon<span class="citation"
+data-cites="Shannon1948"><sup>[10]</sup></span> resolved the question of
+how to measure uncertainty by identifying axioms that uniquely
+characterize the entropy functional. In social choice theory, Arrow<span
+class="citation" data-cites="Arrow1951"><sup>[11]</sup></span> resolved
+— negatively — the question of how to aggregate individual rankings by
+proving that no aggregation rule can simultaneously satisfy a small set
+of reasonable requirements. In both cases, the path from empirical
+observation to formal resolution required first characterizing the
+behavior of competing approaches and then identifying the properties
+that distinguish good measures from bad ones.</p>
+<p>This paper takes the first step of that program for kinase inhibitor
+selectivity. We systematically characterize, across two large profiling
+datasets, the extent and structural sources of disagreement between
+existing definitions as their parameters vary. We identify three
+mechanistically distinct sources of rank instability and show that
+instability is predictable from the shape of a compound’s binding
+profile. We then propose four desiderata — necessary properties of any
+well-formed selectivity measure — motivated directly by these failure
+modes.</p>
+<p>Specifically, the contributions of this work are as follows. First,
+we show that existing definitions cluster into two families —
+distribution-based (S-score, entropy, Gini) and ratio-based (CATDS and
+variants) — that correlate poorly with one another (<span
+class="math inline"><em>r</em> = 0.27</span>–<span
+class="math inline">0.48</span>) and measure fundamentally different
+properties of binding profiles. Second, we identify three sources of
+instability: definitional noise for compounds below the assay detection
+threshold, ratio-specific instability driven by near-tied top targets,
+and distribution-ratio disagreement for compounds with one dominant
+target and broad moderate off-target activity. Third, we propose four
+desiderata — a reliability threshold condition, bounded gap sensitivity,
+distributional consistency, and monotonicity under weak off-target
+addition — and show that no existing definition satisfies all four
+simultaneously. Fourth, we demonstrate that correlations between
+selectivity scores and clinical adverse event outcomes are null under
+current data sources, and identify the confounders responsible.</p>
+<p>The desiderata proposed here are intended as the empirical foundation
+for a future formal axiomatization of kinase inhibitor selectivity, in
+the tradition of Shannon’s characterization of entropy and Arrow’s
+analysis of social choice functions.</p>
+<h1 id="sec:related">Related Work</h1>
+<h2 id="sec:related:metrics">Existing Selectivity Metrics and Their
+Comparison</h2>
+<p>Several metrics have been proposed to quantify kinase inhibitor
+selectivity from profiling panel data. Karaman et al.<span
+class="citation" data-cites="Karaman2008"><sup>[4]</sup></span>
+introduced the selectivity score (S-score), defined as the fraction of
+panel kinases inhibited above a fixed concentration threshold. Uitdehaag
+and Zaman<span class="citation"
+data-cites="Uitdehaag2011"><sup>[5]</sup></span> proposed the
+selectivity entropy, which treats the normalized binding profile as a
+probability distribution and computes its Shannon entropy; low entropy
+indicates activity concentrated on few targets. Graczyk<span
+class="citation" data-cites="Graczyk2010"><sup>[6]</sup></span> defined
+a thermodynamics-based partition index estimating the fraction of total
+binding directed to a reference kinase, suited primarily to hit-to-lead
+optimization against a specified target. Klaeger et al.<span
+class="citation" data-cites="Klaeger2017"><sup>[7]</sup></span>
+introduced the concentration- and target-dependent selectivity (CATDS)
+score, which quantifies the reduction in binding to a given target
+relative to the summed reduction across all detected targets at a
+specified inhibitor concentration. Bosc et al.<span class="citation"
+data-cites="Bosc2017"><sup>[8]</sup></span> subsequently proposed two
+further metrics — the window score and ranking score — and performed a
+comparative analysis of all five definitions on the Davis and
+Anastassiadis datasets, showing that compound rankings differ
+substantially depending on the metric applied and that certain compounds
+cannot be scored under some definitions when threshold conditions are
+not satisfied.</p>
+<p>Reconciliation attempts have remained limited in scope. Bajorath et
+al.<span class="citation"
+data-cites="Bajorath2018"><sup>[12]</sup></span> compared CATDS-based
+selectivity assessments from Klaeger et al. with activity data mined
+from ChEMBL for the same compounds, finding broad consistency between
+the two sources but noting that no simple relationship between
+selectivity and clinical performance was apparent. The KInhibition
+platform<span class="citation"
+data-cites="KInhibition2018"><sup>[9]</sup></span> explicitly
+acknowledged that multiple metrics yield conflicting results for the
+same compound but addressed this through a unified query interface
+rather than theoretical analysis.</p>
+<p>A common limitation of these studies is that each metric is evaluated
+at fixed parameter values. The sensitivity of rankings to parameter
+choice — the activity threshold in the S-score, the baseline in the
+entropy and Gini coefficient, the reference off-target in ratio-based
+measures — has not been systematically characterized. The structural
+properties of binding profiles that determine when definitions agree or
+disagree have not been identified. The present work addresses both
+gaps.</p>
+<h2 id="sec:related:axiomatic">Axiomatic Approaches to Ranking and
+Measurement</h2>
+<p>Axiomatic characterization of measurement functions is
+well-established in adjacent fields. Shannon<span class="citation"
+data-cites="Shannon1948"><sup>[10]</sup></span> demonstrated that the
+entropy of a probability distribution is uniquely determined, up to a
+multiplicative constant, by four requirements: continuity, maximality on
+the uniform distribution, expansibility, and additivity over independent
+subsystems. Khinchin<span class="citation"
+data-cites="Khinchin1957"><sup>[13]</sup></span> subsequently
+strengthened this uniqueness result. The selectivity entropy of
+Uitdehaag and Zaman applies the Shannon formula to normalized binding
+profiles but provides no analogous axiomatic justification; it is not
+known whether it is the unique function satisfying reasonable
+selectivity-specific desiderata, or one of many equivalent
+alternatives.</p>
+<p>Arrow<span class="citation"
+data-cites="Arrow1951"><sup>[11]</sup></span> established that no social
+welfare function satisfies simultaneously the requirements of
+unrestricted domain, Pareto efficiency, independence of irrelevant
+alternatives, and non-dictatorship. The theorem is relevant here in two
+respects: it demonstrates that axiomatic analysis of a ranking concept
+can yield impossibility rather than uniqueness, and it shows that
+competing ranking functions reflect genuine tradeoffs between properties
+that cannot all be achieved simultaneously. Pavillidis et al.<span
+class="citation" data-cites="Pavillidis2022"><sup>[14]</sup></span>
+applied this methodology to truth discovery — the problem of identifying
+true facts from conflicting reports of unknown reliability — posing it
+as a social choice problem, formulating candidate axioms, and proving
+that a subset cannot be jointly satisfied. The structure of that problem
+is closely analogous to selectivity measurement, where multiple
+definitions produce conflicting rankings and the question of which to
+trust is unresolved.</p>
+<p>Formal methods have been applied to biological systems primarily in
+the context of process dynamics. Cardelli<span class="citation"
+data-cites="Cardelli2004"><sup>[15]</sup></span> used the pi-calculus to
+model molecular biology, and the Beacon Calculus<span class="citation"
+data-cites="Beaconcalculus2019"><sup>[16]</sup></span> addresses
+stochastic reaction networks; both verify properties of temporal
+execution rather than static measurements. Type-theoretic approaches to
+scientific units of measure, including Kennedy’s<span class="citation"
+data-cites="Kennedy1994"><sup>[17]</sup></span> F# units-of-measure
+system and ongoing formalization in Lean 4 Mathlib,<span
+class="citation" data-cites="Lean4Mathlib"><sup>[18]</sup></span>
+enforce dimensional consistency for physical quantities but do not
+extend to biochemical properties. To our knowledge, axiomatic analysis
+has not previously been applied to any selectivity or promiscuity
+measure in drug discovery. The present work proposes empirically
+motivated desiderata as a foundation for future formal
+axiomatization.</p>
+<h1 id="sec:methods">Methods</h1>
+<h2 id="sec:methods:data">Datasets</h2>
+<p>Two publicly available kinase inhibitor profiling datasets were used.
+The Davis dataset<span class="citation"
+data-cites="Davis2011"><sup>[19]</sup></span> comprises binding
+affinities (<span
+class="math inline"><em>K</em><sub><em>d</em></sub></span>) for 68
+small-molecule kinase inhibitors measured against 433 human kinase
+domains. Affinity values are reported as dissociation constants and were
+converted to <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> = −log<sub>10</sub>(<em>K</em><sub><em>d</em></sub>/10<sup>9</sup>)</span>
+prior to analysis, following the convention of the DeepDTA
+benchmark.<span class="citation"
+data-cites="DeepDTA"><sup>[20]</sup></span> Pairs for which no binding
+was detected at the screening concentration of 10 <span
+class="math inline"><em>μ</em></span>M were assigned <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> = 5.0</span>,
+corresponding to a <span
+class="math inline"><em>K</em><sub><em>d</em></sub></span> of 1 mM,
+which represents the detection floor of the assay. The resulting
+affinity matrix is complete (<span class="math inline">68 × 433</span>,
+29<span>,</span>444 entries). No censored or greater-than values are
+present in the Davis dataset: the assay reports a quantitative <span
+class="math inline"><em>K</em><sub><em>d</em></sub></span> for every
+compound–kinase pair where activity was detected at 10 <span
+class="math inline"><em>μ</em></span>M, and assigns the detection floor
+value otherwise. All non-binding pairs are therefore treated as exactly
+equivalent at <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> = 5.0</span>, which
+slightly underestimates true non-binding affinity but is the standard
+convention for this dataset.<span class="citation"
+data-cites="DeepDTA Bosc2017"><sup>[8,20]</sup></span></p>
+<p>The Klaeger dataset<span class="citation"
+data-cites="Klaeger2017"><sup>[7]</sup></span> comprises binding
+affinities for 243 clinical kinase inhibitors profiled against the human
+kinome using Kinobeads chemical proteomics. Apparent dissociation
+constants (<span
+class="math inline"><em>K</em><sub><em>d</em></sub><sup>app</sup></span>)
+were derived from dose–response curves across eight inhibitor
+concentrations in cancer cell lysates. Only high-confidence measurements
+(as annotated by the original authors) were retained, yielding
+5<span>,</span>123 drug–target pairs for 222 drugs and 343 kinase
+targets. Affinity values were converted to <span
+class="math inline">p<em>K</em><sub><em>d</em></sub></span> using the
+same formula as above. Missing entries, representing kinase–inhibitor
+combinations not detected in the assay, were assigned the background
+value <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> = 5.0</span>. The
+resulting matrix (<span class="math inline">222 × 343</span>) has 17.9%
+active entries (pKd <span class="math inline"> &gt; 6</span>, i.e. <span
+class="math inline"><em>K</em><sub><em>d</em></sub> &lt; 1 <em>μ</em></span>M)
+for Davis and 3.6% for Klaeger, reflecting the more stringent detection
+threshold of the chemoproteomic assay.</p>
+<h2 id="sec:methods:defs">Selectivity Definitions and
+Parameterization</h2>
+<p>Four selectivity definitions were implemented, each controlled by one
+or more parameters whose values are not standardized in the
+literature.</p>
+<p>The <strong>S-score</strong><span class="citation"
+data-cites="Karaman2008"><sup>[4]</sup></span> is defined as <span
+class="math display">$$\begin{equation}
+  S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[\mathrm{p}K_{d,i} &gt;
+\tau],
+\end{equation}$$</span> where <span
+class="math inline"><em>N</em></span> is the number of kinases in the
+panel and <span class="math inline"><em>τ</em></span> is an activity
+threshold. Lower values indicate greater selectivity. We swept <span
+class="math inline"><em>τ</em> ∈ {5.5, 5.75, …, 8.0}</span> (11 values),
+spanning <span
+class="math inline"><em>K</em><sub><em>d</em></sub></span> cutoffs from
+approximately 300 nM to 10 nM.</p>
+<p>The <strong>selectivity entropy</strong><span class="citation"
+data-cites="Uitdehaag2011"><sup>[5]</sup></span> treats the
+baseline-subtracted binding profile as a probability distribution: <span
+class="math display">$$\begin{equation}
+  H(\beta) = -\sum_{i=1}^{N} p_i \log_2 p_i, \quad
+  p_i = \frac{\max(\mathrm{p}K_{d,i} - \beta,\, 0)}
+             {\sum_j \max(\mathrm{p}K_{d,j} - \beta,\, 0)},
+\end{equation}$$</span> where <span
+class="math inline"><em>β</em></span> is a baseline affinity below which
+binding is considered negligible. Lower entropy indicates greater
+selectivity. We swept <span
+class="math inline"><em>β</em> ∈ {5.0, 5.25, …, 6.5}</span> (7
+values).</p>
+<p>The <strong>Gini coefficient</strong><span class="citation"
+data-cites="Graczyk2010"><sup>[6]</sup></span> of the
+baseline-subtracted profile is <span
+class="math display">$$\begin{equation}
+  G(\beta) = \frac{2\sum_{i=1}^{N} i \cdot x_{(i)}}{N \sum_{i=1}^{N}
+x_{(i)}} - \frac{N+1}{N},
+\end{equation}$$</span> where <span
+class="math inline"><em>x</em><sub>(<em>i</em>)</sub> = max (p<em>K</em><sub><em>d</em>, <em>i</em></sub> − <em>β</em>, 0)</span>
+sorted in ascending order. Higher values indicate greater selectivity.
+We swept <span class="math inline"><em>β</em></span> over the same range
+as for the entropy.</p>
+<p>The <strong>ratio</strong> definition measures the gap between the
+primary target and a specified off-target: <span
+class="math display"><em>R</em>(<em>k</em>) = p<em>K</em><sub><em>d</em>, (1)</sub> − p<em>K</em><sub><em>d</em>, (<em>k</em> + 1)</sub>,</span>
+where <span
+class="math inline">p<em>K</em><sub><em>d</em>, (<em>j</em>)</sub></span>
+denotes the <span class="math inline"><em>j</em></span>-th largest
+affinity in the profile and <span
+class="math inline"><em>k</em> ∈ {1, 2, 3, 4, 5}</span> indexes the
+off-target used as reference. Higher values indicate greater
+selectivity.</p>
+<h2 id="sec:methods:stability">Rank Stability Analysis</h2>
+<p>For each definition and each parameter value, compounds were ranked
+from most selective (rank 1) to least selective (rank <span
+class="math inline"><em>n</em></span>, where <span
+class="math inline"><em>n</em></span> is the number of compounds in the
+dataset). Ties were broken by average rank. This yielded 30 rank vectors
+per dataset: 11 for the S-score, 7 for entropy, 7 for Gini, and 5 for
+ratio.</p>
+<p>For each compound, rank instability was quantified as the standard
+deviation of its rank across all 30 configurations (overall instability)
+and separately across configurations within each definition family
+(within-family instability). Cross-definition agreement was assessed
+using Spearman rank correlation between the median rank vectors of each
+definition family. The median was taken across parameter values within
+each family prior to correlation to obtain a single representative
+ranking per definition.</p>
+<p>Associations between rank instability and binding profile features
+were assessed using Spearman correlation. Profile features computed for
+each compound included: the number of active kinases (<span
+class="math inline">p<em>K</em><sub><em>d</em></sub> &gt; 6</span>), the
+gap between the top and second-ranked affinities, the standard deviation
+and range of active affinities, and the absolute affinity of the
+second-ranked target. All correlations are reported with two-tailed
+<span class="math inline"><em>p</em></span>-values; significance
+thresholds of <span class="math inline"><em>p</em> &lt; 0.05</span>,
+<span class="math inline"><em>p</em> &lt; 0.01</span>, and <span
+class="math inline"><em>p</em> &lt; 0.001</span> are denoted *, **, and
+*** respectively. Analyses were performed in Python 3.10 using NumPy,
+pandas, and SciPy.<span class="citation"
+data-cites="NumPy pandas SciPy"><sup>[21–23]</sup></span></p>
+<h2 id="sec:methods:outcomes">Clinical Outcome Data</h2>
+<p>For the subset of Klaeger compounds that are FDA-approved (<span
+class="math inline"><em>n</em> = 46</span> after excluding drugs with no
+FAERS records), adverse event report counts were retrieved from the FDA
+Adverse Event Reporting System (FAERS) via the openFDA API. Total report
+counts, serious event counts, and death and hospitalization subcounts
+were retrieved per drug. Serious event rates and death rates were
+computed by normalizing subcounts by total reports per drug.</p>
+<p>Treatment discontinuation rates due to adverse events were extracted
+from FDA drug labels retrieved via the openFDA label API for 33 approved
+drugs with available adverse reactions sections. Label text was reviewed
+manually to identify the primary clinical trial discontinuation rate
+attributable to adverse reactions.</p>
+<p>Associations between selectivity scores and each clinical outcome
+measure were assessed using Spearman correlation across drugs with
+available data.</p>
+<h1 id="sec:results">Results</h1>
+<h2 id="sec:results:families">Selectivity Definitions Cluster into Two
+Families</h2>
+<p>Across 30 parameter configurations (11 S-score thresholds, 7 entropy
+baselines, 7 Gini baselines, 5 ratio off-target indices), compound
+rankings were computed for all drugs in both datasets. Spearman
+correlations between the median ranking of each definition family reveal
+a consistent two-cluster structure (Table <a href="#tab:correlations"
+data-reference-type="ref" data-reference="tab:correlations">1</a>). On
+the Davis dataset, S-score, entropy, and Gini are mutually correlated
+(<span class="math inline"><em>r</em> = 0.91</span>–<span
+class="math inline">0.999</span>), while ratio correlates substantially
+less with each (<span class="math inline"><em>r</em> = 0.34</span>–<span
+class="math inline">0.45</span>). On the larger Klaeger dataset, the
+same structure is preserved but with lower within-cluster correlations
+(<span class="math inline"><em>r</em> = 0.75</span>–<span
+class="math inline">0.91</span>), reflecting greater diversity of
+binding profiles among the 222 clinical compounds. The ratio definition
+is the consistent outlier in both datasets, with cross-family
+correlations of <span class="math inline"><em>r</em> = 0.27</span>–<span
+class="math inline">0.62</span>.</p>
+<div id="tab:correlations">
+<table>
+<caption>Spearman correlations between median rankings by definition
+family. Upper triangle: Davis (<span
+class="math inline"><em>n</em> = 68</span>). Lower triangle: Klaeger
+(<span class="math inline"><em>n</em> = 222</span>).</caption>
+<thead>
+<tr>
+<th style="text-align: left;"></th>
+<th style="text-align: center;">S-score</th>
+<th style="text-align: center;">Entropy</th>
+<th style="text-align: center;">Gini</th>
+<th style="text-align: center;">Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">S-score</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">0.949</td>
+<td style="text-align: center;">0.954</td>
+<td style="text-align: center;">0.454</td>
+</tr>
+<tr>
+<td style="text-align: left;">Entropy</td>
+<td style="text-align: center;">0.910</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">0.999</td>
+<td style="text-align: center;">0.343</td>
+</tr>
+<tr>
+<td style="text-align: left;">Gini</td>
+<td style="text-align: center;">0.745</td>
+<td style="text-align: center;">0.869</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">0.343</td>
+</tr>
+<tr>
+<td style="text-align: left;">Ratio</td>
+<td style="text-align: center;">0.265</td>
+<td style="text-align: center;">0.480</td>
+<td style="text-align: center;">0.617</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This two-family structure reflects a fundamental difference in what
+the definitions measure. The S-score, entropy, and Gini all quantify the
+concentration of activity across the full kinase panel; they differ in
+functional form but respond to the same underlying property of the
+binding profile. The ratio definition, by contrast, quantifies the gap
+between the primary target and a specific off-target, ignoring the
+remainder of the binding profile entirely. A compound that strongly
+inhibits one kinase and moderately inhibits twenty others will be ranked
+as highly selective by ratio (large gap to the second target) but as
+moderately promiscuous by entropy and Gini (activity distributed across
+many targets).</p>
+<h2 id="rank-instability-is-structured-and-predictable">Rank Instability
+Is Structured and Predictable</h2>
+<figure id="fig:instability" data-latex-placement="h">
+<img src="figures/instability_by_family.png" style="width:85.0%" />
+<figcaption>Best predictor of rank instability within each definition
+family (Klaeger dataset, active compounds, <span
+class="math inline"><em>n</em> = 206</span>). Ratio instability is best
+predicted by the top<span
+class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> affinity gap; entropy, Gini, and
+S-score instability are best predicted by features of the active
+affinity distribution.</figcaption>
+</figure>
+<p><span id="sec:results:instability"
+data-label="sec:results:instability"></span></p>
+<p>Overall rank instability — measured as the standard deviation of a
+compound’s rank across all 30 configurations — varies substantially
+across compounds (Klaeger: mean <span
+class="math inline"><em>σ</em> = 35.4</span>, range <span
+class="math inline">7.1</span>–<span class="math inline">91.6</span>;
+Davis: mean <span class="math inline"><em>σ</em> = 8.5</span>, range
+<span class="math inline">1.6</span>–<span
+class="math inline">19.3</span>). Instability is not uniformly
+distributed: within each definition family, specific binding profile
+features predict which compounds receive unstable rankings (Table <a
+href="#tab:predictors" data-reference-type="ref"
+data-reference="tab:predictors">2</a>).</p>
+<p>Within the ratio family, the gap between the top and second-ranked
+affinities (top<span class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap) is the strongest predictor
+of instability (<span class="math inline"><em>r</em> = −0.446</span>,
+<span class="math inline"><em>p</em> &lt; 0.001</span> on Davis; <span
+class="math inline"><em>r</em> = −0.293</span>, <span
+class="math inline"><em>p</em> &lt; 0.001</span> on Klaeger). Compounds
+with near-identical affinities for their two best-bound kinases receive
+highly variable ratio rankings because the choice of reference
+off-target (<span class="math inline"><em>k</em> = 1</span> vs. <span
+class="math inline"><em>k</em> = 2, …, 5</span>) determines whether the
+compound appears selective or promiscuous.</p>
+<p>Within the entropy and Gini families, the number of active kinases
+(<span
+class="math inline">p<em>K</em><sub><em>d</em></sub> &gt; 6</span>)
+negatively predicts instability (<span
+class="math inline"><em>r</em> = −0.279</span>, <span
+class="math inline"><em>p</em> &lt; 0.05</span> for entropy on Davis;
+<span class="math inline"><em>r</em> = −0.474</span>, <span
+class="math inline"><em>p</em> &lt; 0.001</span> on Klaeger). Compounds
+with many active kinases have well-defined broad profiles whose entropy
+and Gini scores are stable across baseline choices; compounds with few
+active kinases are sensitive to the baseline because small changes can
+move targets in or out of the active set, altering the distribution
+substantially. The active affinity range is also a significant predictor
+across all three distribution-based definitions on Klaeger (<span
+class="math inline"><em>r</em> = −0.31</span> to <span
+class="math inline">−0.37</span>, all <span
+class="math inline"><em>p</em> &lt; 0.001</span>), consistent with the
+interpretation that heterogeneous profiles are easier to rank stably
+than flat ones.</p>
+<p>S-score instability is not significantly predicted by any profile
+feature on either dataset, suggesting that it is driven primarily by
+where compounds fall relative to the threshold rather than by intrinsic
+profile shape.</p>
+<div id="tab:predictors">
+<table>
+<caption>Spearman correlations between binding profile features and
+within-family rank instability on the Klaeger dataset (<span
+class="math inline"><em>n</em> = 206</span> active drugs). Significance:
+* <span class="math inline"><em>p</em> &lt; 0.05</span>, ** <span
+class="math inline"><em>p</em> &lt; 0.01</span>, *** <span
+class="math inline"><em>p</em> &lt; 0.001</span>.</caption>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: center;">S-score</th>
+<th style="text-align: center;">Entropy</th>
+<th style="text-align: center;">Gini</th>
+<th style="text-align: center;">Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><span
+class="math inline"><em>n</em><sub>active</sub></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.263<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.474<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.332<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.091</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">top<span
+class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap</td>
+<td style="text-align: center;"><span
+class="math inline">+0.044</span></td>
+<td style="text-align: center;"><span
+class="math inline">+0.108</span></td>
+<td style="text-align: center;"><span
+class="math inline">+0.068</span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.293<sup>* * *</sup></span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Active affinity std</td>
+<td style="text-align: center;"><span
+class="math inline">−0.302<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.263<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.319<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.131</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">Active affinity range</td>
+<td style="text-align: center;"><span
+class="math inline">−0.366<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.350<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.309<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.141<sup>*</sup></span></td>
+</tr>
+<tr>
+<td style="text-align: left;">top<span
+class="math inline"><sub>2</sub></span> <span
+class="math inline">p<em>K</em><sub><em>d</em></sub></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.312<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.309<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">−0.390<sup>* * *</sup></span></td>
+<td style="text-align: center;"><span
+class="math inline">+0.112</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="three-mechanistically-distinct-sources-of-instability">Three
+Mechanistically Distinct Sources of Instability</h2>
+<figure id="fig:profiles" data-latex-placement="h">
+<img src="figures/binding_profiles.png" style="width:85.0%" />
+<figcaption>Representative binding profiles illustrating the three
+instability types. Left: Drug 64 (Davis), most stable (<span
+class="math inline"><em>σ</em> = 1.6</span>), two active kinases.
+Center: Drug 42 (Davis), most unstable (<span
+class="math inline"><em>σ</em> = 19.3</span>), 22 active kinases at
+near-identical affinities. Right: Drug 23 (Davis), most ratio-sensitive,
+five active kinases including two near-tied top targets (<span
+class="math inline"><em>Δ</em>p<em>K</em><sub><em>d</em></sub> = 0.019</span>).
+Dashed line: <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> = 6</span> activity
+threshold; dotted line: <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> = 5</span> assay
+floor.</figcaption>
+</figure>
+<p><span id="sec:results:taxonomy"
+data-label="sec:results:taxonomy"></span></p>
+<p>Examination of the most and least unstable compounds in the Klaeger
+dataset reveals three structurally distinct sources of rank instability,
+each implicating a different aspect of how the definitions are
+constructed.</p>
+<p><strong>Type 1 — Zero-active compounds.</strong> The five most
+unstable Klaeger compounds (e.g. AZD-8055, BMS-911543, Filgotinib; rank
+<span class="math inline"><em>σ</em> &gt; 80</span>) all have zero
+active kinases at the <span
+class="math inline">p<em>K</em><sub><em>d</em></sub> &gt; 6</span>
+threshold. These compounds have no meaningful binding to any profiled
+kinase at sub-micromolar affinity, yet all four definitions still assign
+them numerical selectivity scores based on the detection floor values.
+The resulting rankings are arbitrary: different parameterizations
+produce different orderings of compounds that are, in practice,
+indistinguishable from one another. Mean rank instability for
+zero-active compounds is <span
+class="math inline"><em>σ</em> ≈ 74</span>, compared with <span
+class="math inline"><em>σ</em> ≈ 32</span> for compounds with at least
+one active kinase (<span
+class="math inline"><em>p</em> &lt; 0.001</span>, Mann–Whitney <span
+class="math inline"><em>U</em></span> test). This pattern is observed
+only in the Klaeger dataset; all Davis compounds have at least one
+active kinase, consistent with Davis’s fixed-concentration screening
+design, which reports a <span
+class="math inline"><em>K</em><sub><em>d</em></sub></span> only when
+activity is first detected at 10 <span
+class="math inline"><em>μ</em></span>M.</p>
+<p><strong>Type 2 — Near-tied top targets.</strong> Among active
+compounds, ratio-specific instability is strongly predicted by a small
+top<span class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap (<span
+class="math inline"><em>r</em> = −0.293</span>, <span
+class="math inline"><em>p</em> &lt; 0.001</span>). Compounds such as
+Dovitinib (top<span class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap <span
+class="math inline"> = 1.935</span> pKd units) and BMS-690514 (gap <span
+class="math inline"> = 1.985</span>) show large entropy-ratio
+disagreement despite having well-defined primary targets, because the
+ratio definition is sensitive to whether the reference off-target is the
+second or a lower-ranked kinase. By contrast, Drug 23 in the Davis
+dataset (top<span class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap <span
+class="math inline"> = 0.019</span>) shows maximal ratio instability
+because its two best-bound kinases are essentially indistinguishable,
+making the ratio highly sensitive to which is designated the primary
+target.</p>
+<p><strong>Type 3 — Broad profiles with a dominant primary
+target.</strong> The largest entropy-ratio disagreements in the Klaeger
+dataset arise for compounds with high <span
+class="math inline"><em>n</em><sub>active</sub></span> and a large
+top<span class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap (e.g. Dovitinib: <span
+class="math inline"><em>n</em><sub>active</sub> = 26</span>, gap <span
+class="math inline"> = 1.935</span>; BMS-690514: <span
+class="math inline"><em>n</em><sub>active</sub> = 20</span>, gap <span
+class="math inline"> = 1.985</span>). These compounds have one clearly
+dominant target but also bind many kinases at moderate affinity. The
+ratio definition scores them as highly selective (large gap between
+primary and secondary target), while the entropy and Gini definitions
+score them as moderately promiscuous (activity spread across many
+targets). Neither characterization is incorrect; they reflect genuinely
+different questions about selectivity.</p>
+<p>Conversely, the most stable compounds in both datasets (e.g. XL-228,
+<span class="math inline"><em>σ</em> = 7.1</span>; PF-03814735, <span
+class="math inline"><em>σ</em> = 8.1</span>) are highly promiscuous,
+with 40–57 active kinases. When a compound binds nearly the entire
+profiled kinome, all definitions rank it as non-selective regardless of
+parameterization, producing low instability despite — or rather because
+of — high promiscuity.</p>
+<h2 id="sec:results:outcomes">Clinical Outcome Correlations</h2>
+<p>Spearman correlations between median selectivity rankings and
+FAERS-derived adverse event rates (serious event rate, death rate,
+hospitalization rate) across 46 FDA-approved Klaeger compounds were
+uniformly weak and non-significant (all <span
+class="math inline">|<em>r</em>| &lt; 0.18</span>, all <span
+class="math inline"><em>p</em> &gt; 0.14</span>). Similarly,
+correlations between selectivity rankings and FDA label discontinuation
+rates due to adverse events (<span
+class="math inline"><em>n</em> = 33</span> drugs) were non-significant
+across all four definition families (all <span
+class="math inline">|<em>r</em>| &lt; 0.27</span>, all <span
+class="math inline"><em>p</em> &gt; 0.13</span>).</p>
+<p>We attribute these null results to confounding inherent in both data
+sources rather than absence of a biological relationship between
+selectivity and toxicity. FAERS report counts are driven primarily by
+prescription volume and indication prevalence rather than drug toxicity
+per se; drugs approved for common conditions (e.g. tofacitinib for
+rheumatoid arthritis, palbociclib for breast cancer) accumulate large
+report counts regardless of their adverse event profiles relative to
+alternative therapies. Discontinuation rates from drug labels reflect
+the clinical trial populations and indication-specific toxicity
+expectations for those populations, making cross-indication comparisons
+unreliable. A rigorous test of the relationship between in vitro
+selectivity and clinical toxicity would require indication-stratified,
+treatment-related adverse event rates from randomized controlled trials
+with matched comparators, which are not available in a standardized form
+across the breadth of kinase inhibitors studied here.</p>
+<h2 id="sec:results:panelsize">Panel Size Dependence of Selectivity
+Rankings</h2>
+<p>To assess the stability of selectivity rankings as a function of
+kinase panel size, we performed a subsampling analysis on the Klaeger
+dataset. The Davis dataset was not used for this analysis for two
+reasons: its complete matrix design (every compound tested against every
+kinase by construction) does not reflect the sparse coverage of real
+profiling panels, and subsampling kinases from Davis changes the
+apparent number of active compounds in ways that confound the panel size
+effect with the zero-active instability characterized in the instability
+taxonomy above. The Klaeger dataset, derived from chemoproteomic
+dose–response profiling with genuine sparse kinase coverage, is the more
+appropriate substrate for this question. For each panel size <span
+class="math inline"><em>p</em> ∈ {50, 80, …, 320, 343}</span>, we drew
+50 random subsets of <span class="math inline"><em>p</em></span> kinases
+from the full panel of 343, computed each selectivity definition on the
+subpanel, and measured agreement with the full-panel ranking using
+Spearman correlation.</p>
+<p>The four definitions differ substantially in their panel size
+requirements (Figure <a href="#fig:panelsize" data-reference-type="ref"
+data-reference="fig:panelsize">3</a>). Selectivity entropy reaches mean
+<span class="math inline"><em>r</em> = 0.90</span> against the
+full-panel ranking at approximately 110 kinases, and S-score at
+approximately 140 kinases. The Gini coefficient requires approximately
+290 kinases to reach the same threshold. The ratio definition does not
+reach <span class="math inline"><em>r</em> = 0.90</span> until the panel
+contains 320 or more kinases, and achieves <span
+class="math inline"><em>r</em> = 0.888</span> even at 320 kinases — only
+23 below the full panel size.</p>
+<p>This result has a direct practical implication. Standard commercial
+kinase selectivity panels typically profile 50–100 kinases.<span
+class="citation" data-cites="Bosc2017"><sup>[8]</sup></span> At these
+panel sizes, entropy- and S-score-based rankings are reasonably stable
+(<span class="math inline"><em>r</em> ≈ 0.76</span>–<span
+class="math inline">0.85</span>), but Gini and ratio rankings are
+effectively uncorrelated with what would be obtained on a full kinome
+panel (<span class="math inline"><em>r</em> &lt; 0.14</span> for Gini,
+<span class="math inline"><em>r</em> &lt; 0.00</span> for ratio at <span
+class="math inline"><em>p</em> = 50</span>). Ratio rankings in
+particular are unreliable at any panel size commonly used in practice,
+because the identity of the reference off-target (<span
+class="math inline"><em>k</em></span>-th ranked kinase) changes
+substantially as panel composition changes. This constitutes a fifth
+source of evidence that ratio-based definitions measure a qualitatively
+different property from distribution-based definitions, and reinforces
+D2 (bounded gap sensitivity) as a necessary desideratum.</p>
+<figure id="fig:panelsize" data-latex-placement="h">
+<img src="figures/panel_size_stability.png" style="width:75.0%" />
+<figcaption>Mean Spearman correlation between rankings computed on
+random kinase subpanels and rankings on the full Klaeger panel (343
+kinases), as a function of subpanel size. Shaded bands indicate <span
+class="math inline">±1</span> standard deviation across 50 subsamples.
+The dashed line marks <span
+class="math inline"><em>r</em> = 0.90</span>. Entropy and S-score
+rankings stabilize at approximately 110–140 kinases; Gini requires
+approximately 290 kinases; ratio does not reach <span
+class="math inline"><em>r</em> = 0.90</span> at any practically used
+panel size.</figcaption>
+</figure>
+<h1 id="sec:desiderata">Desiderata for a Well-Formed Selectivity
+Measure</h1>
+<p>The empirical findings of the Results section motivate four
+properties that any well-formed kinase inhibitor selectivity measure
+should satisfy. We present these as desiderata rather than axioms: they
+are necessary conditions motivated by observed failure modes of existing
+definitions, but they are not yet proven to be jointly sufficient to
+characterize a unique measure, nor is it known whether they are jointly
+satisfiable. Establishing these properties formally is the subject of
+future work.</p>
+<p>Let <span
+class="math inline"><strong>x</strong> = (<em>x</em><sub>1</sub>, …, <em>x</em><sub><em>N</em></sub>) ∈ ℝ<sup><em>N</em></sup></span>
+denote a compound’s binding profile across <span
+class="math inline"><em>N</em></span> kinases, where <span
+class="math inline"><em>x</em><sub><em>i</em></sub> = p<em>K</em><sub><em>d</em>, <em>i</em></sub></span>.
+A selectivity measure is a function <span
+class="math inline"><em>f</em> : ℝ<sup><em>N</em></sup> → ℝ</span>,
+where higher values indicate greater selectivity. A selectivity ranking
+over a set of compounds is induced by ordering their <span
+class="math inline"><em>f</em></span>-scores.</p>
+<h4 id="d1-reliability-threshold.">D1 — Reliability threshold.</h4>
+<p>There exists a threshold <span
+class="math inline"><em>τ</em><sup>*</sup> &gt; 0</span> such that <span
+class="math inline"><em>f</em>(<strong>x</strong>)</span> is undefined,
+or explicitly flagged as unreliable, when <span
+class="math inline">max<sub><em>i</em></sub><em>x</em><sub><em>i</em></sub> ≤ <em>τ</em><sup>*</sup></span>.</p>
+<p><em>Motivation.</em> Compounds with no detected binding above the
+assay detection floor receive arbitrary selectivity scores under all
+four definitions studied here, producing rank instability with mean
+<span class="math inline"><em>σ</em> ≈ 74</span> compared with <span
+class="math inline"><em>σ</em> ≈ 32</span> for active compounds (Type 1
+instability, above). Selectivity is a property of binding; a compound
+that does not bind cannot be meaningfully ranked relative to compounds
+that do. No existing definition incorporates an explicit reliability
+condition: both the S-score and selectivity entropy assign scores to
+compounds with no sub-micromolar binding, treating detection floor
+values as informative.</p>
+<h4 id="d2-bounded-gap-sensitivity.">D2 — Bounded gap sensitivity.</h4>
+<p>For any compound profile <span
+class="math inline"><strong>x</strong></span> satisfying D1, a small
+perturbation to the identity of the reference off-target should produce
+a bounded change in <span
+class="math inline"><em>f</em>(<strong>x</strong>)</span>. Formally, if
+<span class="math inline"><em>f</em></span> depends on the <span
+class="math inline"><em>k</em></span>-th ranked affinity <span
+class="math inline"><em>x</em><sub>(<em>k</em>)</sub></span>, then <span
+class="math inline">|<em>f</em>(<strong>x</strong>; <em>k</em>) − <em>f</em>(<strong>x</strong>; <em>k</em> + 1)|</span>
+should be bounded by a function of <span
+class="math inline"><em>x</em><sub>(<em>k</em>)</sub> − <em>x</em><sub>(<em>k</em> + 1)</sub></span>.</p>
+<p><em>Motivation.</em> Ratio-based definitions violate this property
+when <span
+class="math inline"><em>x</em><sub>(1)</sub> ≈ <em>x</em><sub>(2)</sub></span>:
+a compound with near-identical affinities for its top two kinases
+receives a large ratio score when <span
+class="math inline"><em>k</em> = 1</span> (the gap to the next
+off-target may be large) but a near-zero score when <span
+class="math inline"><em>k</em> = 2</span> (the gap between the tied
+targets is negligible). This produces the Type 2 instability identified
+in the instability taxonomy above, where top<span
+class="math inline"><sub>1</sub></span>–top<span
+class="math inline"><sub>2</sub></span> gap is the strongest predictor
+of ratio instability (<span
+class="math inline"><em>r</em> = −0.293</span>, <span
+class="math inline"><em>p</em> &lt; 0.001</span>). Distribution-based
+definitions (entropy, Gini) satisfy a weaker version of this property
+because they do not privilege any single pairwise comparison.</p>
+<h4 id="d3-distributional-consistency.">D3 — Distributional
+consistency.</h4>
+<p>The ranking induced by <span class="math inline"><em>f</em></span>
+should be stable under small perturbations to the activity baseline
+<span class="math inline"><em>β</em></span> used to define the active
+binding distribution. Formally, for any two compounds <span
+class="math inline"><strong>x</strong>, <strong>y</strong></span> and
+any <span class="math inline"><em>ϵ</em> &gt; 0</span>, there exists
+<span class="math inline"><em>δ</em> &gt; 0</span> such that if <span
+class="math inline">|<em>β</em><sub>1</sub> − <em>β</em><sub>2</sub>| &lt; <em>δ</em></span>
+then the ranking of <span class="math inline"><strong>x</strong></span>
+relative to <span class="math inline"><strong>y</strong></span> under
+<span class="math inline"><em>f</em>(⋅; <em>β</em><sub>1</sub>)</span>
+agrees with that under <span
+class="math inline"><em>f</em>(⋅; <em>β</em><sub>2</sub>)</span>.</p>
+<p><em>Motivation.</em> The entropy and Gini definitions are
+parameterized by a baseline <span class="math inline"><em>β</em></span>
+that determines which affinities contribute to the binding distribution.
+Compounds with few active kinases are sensitive to this choice because
+small changes in <span class="math inline"><em>β</em></span> can move
+individual kinases in or out of the active set, substantially altering
+the distribution. The negative correlation between <span
+class="math inline"><em>n</em><sub>active</sub></span> and entropy/Gini
+instability (<span class="math inline"><em>r</em> = −0.47</span> on
+Klaeger, <span class="math inline"><em>p</em> &lt; 0.001</span>)
+reflects this sensitivity. D3 requires that the ranking be robust to the
+choice of <span class="math inline"><em>β</em></span> within a
+reasonable neighborhood, which existing implementations do not
+guarantee.</p>
+<h4 id="d4-monotonicity-under-weak-off-target-addition.">D4 —
+Monotonicity under weak off-target addition.</h4>
+<p>If compound <span class="math inline"><strong>x</strong></span> has a
+weak additional binding interaction added — formally, if <span
+class="math inline"><strong>x</strong><sup>′</sup> = (<em>x</em><sub>1</sub>, …, <em>x</em><sub><em>N</em></sub>, <em>x</em><sub><em>N</em> + 1</sub>)</span>
+where <span
+class="math inline"><em>x</em><sub><em>N</em> + 1</sub> ≤ <em>τ</em><sup>*</sup></span>
+— then <span
+class="math inline"><em>f</em>(<strong>x</strong><sup>′</sup>) ≤ <em>f</em>(<strong>x</strong>)</span>.
+Adding a sub-threshold binding interaction should not increase a
+compound’s selectivity score.</p>
+<p><em>Motivation.</em> Ratio-based definitions can violate this
+property: if the new weak interaction becomes the reference off-target
+(<span class="math inline"><em>k</em> = 1</span>), the ratio to the
+primary target may increase, artifactually improving the apparent
+selectivity score. This failure mode is practically relevant when
+profiling panels differ in size or composition across experiments, as is
+common when comparing selectivity across different assay platforms or
+across datasets such as Davis and Klaeger. Distribution-based
+definitions satisfy D4 naturally, since adding a sub-threshold term to
+the probability distribution decreases or preserves entropy and
+Gini.</p>
+<p>Table <a href="#tab:desiderata" data-reference-type="ref"
+data-reference="tab:desiderata">3</a> summarizes which existing
+definitions satisfy each desideratum. No existing definition satisfies
+all four simultaneously. Whether a definition satisfying all four
+exists, and whether the four desiderata are jointly consistent, are open
+questions that we identify as the primary targets of a formal
+axiomatization.</p>
+<div id="tab:desiderata">
+<table>
+<caption>Satisfaction of desiderata by existing selectivity definitions.
+<span class="math inline">✓</span>: satisfied by construction. <span
+class="math inline">∼</span>: partially satisfied or satisfied under
+additional assumptions. <span class="math inline">×</span>: violated in
+general.</caption>
+<thead>
+<tr>
+<th style="text-align: left;">Desideratum</th>
+<th style="text-align: center;">S-score</th>
+<th style="text-align: center;">Entropy</th>
+<th style="text-align: center;">Gini</th>
+<th style="text-align: center;">Ratio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">D1 (reliability threshold)</td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">D2 (bounded gap sensitivity)</td>
+<td style="text-align: center;"><span class="math inline">∼</span></td>
+<td style="text-align: center;"><span class="math inline">✓</span></td>
+<td style="text-align: center;"><span class="math inline">✓</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">D3 (distributional consistency)</td>
+<td style="text-align: center;"><span class="math inline">∼</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+<td style="text-align: center;"><span class="math inline">✓</span></td>
+</tr>
+<tr>
+<td style="text-align: left;">D4 (monotonicity, weak off-target)</td>
+<td style="text-align: center;"><span class="math inline">✓</span></td>
+<td style="text-align: center;"><span class="math inline">✓</span></td>
+<td style="text-align: center;"><span class="math inline">✓</span></td>
+<td style="text-align: center;"><span class="math inline">×</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="sec:discussion">Discussion</h1>
+<p>The central finding of this work is that existing kinase inhibitor
+selectivity definitions do not measure the same quantity. The ratio
+definition and the distribution-based family (S-score, entropy, Gini)
+produce substantially different compound rankings (<span
+class="math inline"><em>r</em> = 0.27</span>–<span
+class="math inline">0.48</span>), and the sources of disagreement are
+mechanistically interpretable rather than random. This has practical
+consequences: a compound that ratio-based analysis designates as
+selective may be designated as moderately promiscuous by entropy-based
+analysis, and vice versa, depending on the shape of its binding profile.
+Go/no-go decisions in early drug discovery are routinely made on the
+basis of selectivity assessments without acknowledgment that the choice
+of definition materially affects the outcome.</p>
+<h2 id="the-two-family-structure-reflects-a-conceptual-distinction">The
+Two-Family Structure Reflects a Conceptual Distinction</h2>
+<p>The clustering of definitions into two families is not a statistical
+artifact but reflects a genuine difference in what is being measured.
+Distribution-based definitions ask: how concentrated is the compound’s
+binding activity across the full profiled kinome? The ratio definition
+asks: how much more potently does the compound bind its primary target
+than a specified off-target? These are distinct questions with distinct
+answers for a large class of compounds — specifically, those with one
+clearly dominant target that also bind many kinases at moderate affinity
+(Type 3 profiles in our taxonomy). For such compounds, ratio-based
+methods report high selectivity while distribution-based methods report
+moderate promiscuity, and both characterizations are correct given their
+respective questions.</p>
+<p>The disagreement is therefore not a defect to be corrected by
+choosing the “right” definition, but a signal that the field has not
+agreed on what selectivity means. The desiderata proposed in the
+Desiderata section are an attempt to make this question precise enough
+that it can be answered formally.</p>
+<h2 id="the-historical-roots-of-definitional-ambiguity">The Historical
+Roots of Definitional Ambiguity</h2>
+<p>The coexistence of ratio-based and distribution-based selectivity
+definitions in the kinase inhibitor literature has a historical
+explanation rooted in the structure of the selectivity question itself.
+In classical pharmacology and analytical chemistry, selectivity is
+inherently pairwise: how much more potently does a compound bind target
+A than target B? IUPAC formalizes this for analytical methods as a
+selectivity coefficient — the ratio of binding constants for analyte and
+interferent — and organic chemistry quantifies chemo-, regio-, and
+stereoselectivity as ratios of competing rate constants.<span
+class="citation" data-cites="IUPAC2001"><sup>[24]</sup></span> These
+ratio definitions are appropriate because the question is binary.</p>
+<p>Kinase inhibitor selectivity, by contrast, is a distributional
+question: how concentrated is a compound’s binding activity across a
+panel of hundreds of kinases? This is structurally different from a
+pairwise comparison, and ratio-based measures are poorly suited to it
+precisely because they discard all but two data points from a profile of
+300–500 kinases, as the panel size analysis of the panel size analysis
+makes quantitative. The entropy and Gini definitions were introduced
+specifically because researchers recognized that ratio measures were
+inadequate for large panels, but the older definitions were never
+retired. The result is a field that applies pairwise measures to
+distributional questions and distributional measures to pairwise
+questions, without a principled basis for choosing between them. The
+desiderata proposed above can be understood as an attempt to make this
+distinction precise: D2 (bounded gap sensitivity) and D4 (monotonicity)
+are properties that ratio definitions violate specifically because they
+treat a distributional problem as pairwise, while D3 (distributional
+consistency) is a property that ratio definitions satisfy trivially
+because they do not use a distributional baseline at all.</p>
+<h2 id="practical-recommendations">Practical Recommendations</h2>
+<p>Pending a formal resolution, three practical recommendations follow
+from our findings.</p>
+<p>First, D1 (reliability threshold) should be adopted immediately as a
+reporting standard. Compounds with no detected binding above the assay
+detection floor should not receive selectivity scores, or should have
+their scores explicitly flagged as unreliable. Of the 222 Klaeger
+compounds, 16 (7.2%) fall into this category and currently receive
+scores that are indistinguishable from noise.</p>
+<p>Second, selectivity assessments should report the sensitivity of
+rankings to parameter choice rather than a single score at a single
+parameter value. Our analysis shows that rank standard deviation across
+the parameter sweep is a compound-specific, interpretable quantity that
+identifies which compounds have robust selectivity assessments and which
+do not. This is analogous to reporting confidence intervals in
+statistical estimation.</p>
+<p>Third, when comparing selectivity across studies that use different
+definitions, the comparison should be restricted to the subset of
+compounds and parameter values for which the definitions agree. The high
+within-family correlations (<span
+class="math inline"><em>r</em> &gt; 0.74</span>) suggest that S-score,
+entropy, and Gini are interchangeable for most purposes when parameters
+are chosen consistently; ratio-based measures should not be compared
+directly with distribution-based measures without acknowledging the
+conceptual distinction.</p>
+<h2 id="limitations">Limitations</h2>
+<p>The analysis is limited to two profiling datasets that, while large
+and well-characterized, represent a small fraction of the chemical and
+kinase space relevant to drug discovery. Davis covers 68 compounds and
+433 kinases using a fixed-concentration competition binding assay;
+Klaeger covers 222 clinical compounds and 343 kinases using
+chemoproteomic dose–response profiling. The two assay technologies are
+not directly comparable, and the difference in active compound fractions
+(17.9% for Davis vs. 3.6% for Klaeger) reflects both genuine selectivity
+differences and assay-specific detection thresholds. Findings should be
+interpreted in light of these technological differences.</p>
+<p>The clinical outcome analysis is limited by the observational nature
+of FAERS data and the heterogeneity of FDA label discontinuation rates
+across indications. The null results reported in the Clinical Outcome
+Correlations section are consistent with a genuine absence of
+correlation between in vitro selectivity and clinical toxicity, but they
+are equally consistent with the confounders identified therein. A
+properly controlled study would require prospective collection of
+treatment-related adverse event rates stratified by indication, which is
+not currently available in a standardized form across the breadth of
+approved kinase inhibitors.</p>
+<p>The desiderata proposed above are necessary conditions motivated by
+empirical failure modes; they are not proven to be sufficient to
+uniquely characterize a selectivity measure, and it is not known whether
+they are jointly satisfiable. The satisfaction assessments in Table <a
+href="#tab:desiderata" data-reference-type="ref"
+data-reference="tab:desiderata">3</a> are based on analysis of the
+functional forms of each definition and the empirical findings of this
+study; a formal proof of satisfaction or violation for each
+desideratum–definition pair is left for future work.</p>
+<h2 id="relation-to-formal-methods">Relation to Formal Methods</h2>
+<p>The approach taken here — characterizing the empirical behavior of
+competing definitions to motivate formal desiderata — follows a
+methodology well established in adjacent fields. Shannon’s derivation of
+entropy began with the observation that several reasonable-seeming
+measures of uncertainty existed and proceeded to identify the axioms
+that single out one uniquely.<span class="citation"
+data-cites="Shannon1948"><sup>[10]</sup></span> Arrow’s impossibility
+theorem began with the observation that several reasonable voting rules
+existed and proved that no rule satisfies all desirable properties
+simultaneously.<span class="citation"
+data-cites="Arrow1951"><sup>[11]</sup></span></p>
+<p>The present work occupies the empirical stage of this process: we
+have characterized where and why existing definitions disagree, and
+proposed properties that any satisfactory definition should have.
+Whether a definition satisfying all four desiderata exists, whether the
+desiderata are jointly consistent, and whether an impossibility result
+holds, are questions for a formal axiomatization. We anticipate that
+such an axiomatization, potentially implemented in a proof assistant
+such as Agda or Lean, would constitute a natural and productive
+extension of this work.<span class="citation"
+data-cites="Lean4Mathlib"><sup>[18]</sup></span></p>
+<h1 id="sec:conclusion">Conclusion</h1>
+<p>We have shown that commonly used kinase inhibitor selectivity
+definitions cluster into two families that measure fundamentally
+different properties of binding profiles, that rank instability within
+and between families is mechanistically predictable from binding profile
+shape, and that three structurally distinct sources of instability can
+be identified and characterized. These findings motivate four desiderata
+— a reliability threshold condition, bounded gap sensitivity,
+distributional consistency, and monotonicity under weak off-target
+addition — that any well-formed selectivity measure should satisfy. No
+existing definition satisfies all four simultaneously.</p>
+<p>The immediate practical implication is that selectivity assessments
+should report the sensitivity of rankings to parameter choice, and
+should explicitly flag compounds with no sub-threshold binding as
+unreliable. The longer-term implication is that the field requires a
+principled basis for choosing among selectivity definitions, analogous
+to the axiomatic foundations that have been established for entropy in
+information theory and for ranking functions in social choice theory.
+The desiderata proposed here are intended as the empirical foundation
+for that formal program.</p>
+<h1 class="unnumbered" id="acknowledgements">Acknowledgements</h1>
+<p>The authors thank the developers of the Davis and Klaeger datasets
+for making their data publicly available. The author used Claude
+(Anthropic, claude.ai), a large language model assistant, during the
+preparation of this manuscript. Specifically, Claude was used to assist
+with: data analysis code development and debugging in Python; literature
+search and identification of related work; drafting and editing of
+manuscript text; and research planning and interpretation of results.
+All scientific conclusions, the conceptual framework, the desiderata
+proposed in the Desiderata section, and the final manuscript content
+were developed, verified, and approved by the author. The author takes
+full responsibility for the accuracy and integrity of all content in
+this work.</p>
+<h1 class="unnumbered" id="supporting-information">Supporting
+Information</h1>
+<p>A preprint of this manuscript is available on ChemRxiv at <a
+href="https://doi.org/10.26434/chemrxiv.15001618/v1"
+class="uri">https://doi.org/10.26434/chemrxiv.15001618/v1</a>.</p>
+<h1 class="unnumbered" id="data-and-software-availability">Data and
+Software Availability</h1>
+<p>All data and software used in this study are publicly available. The
+Davis kinase inhibitor profiling dataset is available at <a
+href="https://github.com/dingyan20/Davis-Dataset-for-DTA-Prediction"
+class="uri">https://github.com/dingyan20/Davis-Dataset-for-DTA-Prediction</a>.
+The Klaeger et al. dataset is available as supplementary data to the
+original publication (Science, 2017, <a
+href="https://doi.org/10.1126/science.aan4368"
+class="uri">https://doi.org/10.1126/science.aan4368</a>). All analysis
+scripts, processed data files, and the LaTeX source for this manuscript
+are available at <a
+href="https://github.com/polinavino/kinase-selectivity-definitions"
+class="uri">https://github.com/polinavino/kinase-selectivity-definitions</a>.
+No confidential data were used in this study. All results reported in
+this manuscript are fully reproducible from the publicly available data
+and code.</p>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0"
+role="list">
+<div id="ref-Roskoski2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div
+class="csl-right-inline">Roskoski R <a
+href="https://doi.org/10.1016/j.phrs.2024.107059">Properties of
+<span>FDA</span>-approved small molecule protein kinase inhibitors: A
+2024 update</a>. <em>Pharmacol. Res.</em> 200:107059.</div>
+</div>
+<div id="ref-Manning2002" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div
+class="csl-right-inline">Manning G, Whyte DB, Martinez R, Hunter T,
+Sudarsanam S <a href="https://doi.org/10.1126/science.1075762">The
+protein kinase complement of the human genome</a>. <em>Science</em>
+298:1912–1934.</div>
+</div>
+<div id="ref-Bhullar2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div
+class="csl-right-inline"><span class="nocase">Bhullar KS, others</span>
+<a href="https://doi.org/10.1186/s12943-018-0804-2">Kinase-targeted
+cancer therapies: Progress, challenges and future directions</a>.
+<em>Mol. Cancer</em> 17:48.</div>
+</div>
+<div id="ref-Karaman2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div
+class="csl-right-inline"><span class="nocase">Karaman MW, others</span>
+<a href="https://doi.org/10.1038/nbt1358">A quantitative analysis of
+kinase inhibitor selectivity</a>. <em>Nat. Biotechnol.</em>
+26:127–132.</div>
+</div>
+<div id="ref-Uitdehaag2011" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div
+class="csl-right-inline">Uitdehaag JCM, Zaman GJR <a
+href="https://doi.org/10.1186/1471-2105-12-94">A theoretical entropy
+score as a single value to express inhibitor selectivity</a>. <em>BMC
+Bioinformatics</em> 12:94.</div>
+</div>
+<div id="ref-Graczyk2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div
+class="csl-right-inline">Graczyk PP <a
+href="https://doi.org/10.1021/jm070562u">Gini coefficient: A new way to
+express selectivity of kinase inhibitors against a family of
+kinases</a>. <em>J. Med. Chem.</em> 50:5773–5779.</div>
+</div>
+<div id="ref-Klaeger2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div
+class="csl-right-inline"><span class="nocase">Klaeger S, others</span>
+<a href="https://doi.org/10.1126/science.aan4368">The target landscape
+of clinical kinase drugs</a>. <em>Science</em> 358:eaan4368.</div>
+</div>
+<div id="ref-Bosc2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div
+class="csl-right-inline">Bosc N, Meyer C, Bonnet P <a
+href="https://doi.org/10.1186/s12859-016-1413-y">The use of novel
+selectivity metrics in kinase research</a>. <em>BMC Bioinformatics</em>
+18:17.</div>
+</div>
+<div id="ref-KInhibition2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div
+class="csl-right-inline"><span class="nocase">Dranchak P, others</span>
+<a
+href="https://doi.org/10.1016/j.isci.2018.09.022"><span>KInhibition</span>:
+A kinase inhibitor selection portal</a>. <em>iScience</em>
+8:29–37.</div>
+</div>
+<div id="ref-Shannon1948" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div
+class="csl-right-inline">Shannon CE <a
+href="https://doi.org/10.1002/j.1538-7305.1948.tb01338.x">A mathematical
+theory of communication</a>. <em>Bell Syst. Tech. J.</em>
+27:379–423.</div>
+</div>
+<div id="ref-Arrow1951" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div
+class="csl-right-inline">Arrow KJ Social choice and individual values.
+Wiley, New York,.</div>
+</div>
+<div id="ref-Bajorath2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div
+class="csl-right-inline">Miljkovic F, Bajorath J <a
+href="https://doi.org/10.1021/acsomega.8b00243">Reconciling selectivity
+trends from a comprehensive kinase inhibitor profiling campaign with
+known activity data</a>. <em>ACS Omega</em> 3:17196–17206.</div>
+</div>
+<div id="ref-Khinchin1957" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div
+class="csl-right-inline">Khinchin AYa Mathematical foundations of
+information theory. Dover, New York,.</div>
+</div>
+<div id="ref-Pavillidis2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div
+class="csl-right-inline"><span class="nocase">Pavillidis P,
+others</span> <a
+href="https://doi.org/10.1007/s10458-022-09569-3">Towards an axiomatic
+approach to truth discovery</a>. <em>Auton. Agents Multi-Agent
+Syst.</em> 36:43.</div>
+</div>
+<div id="ref-Cardelli2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div
+class="csl-right-inline">Cardelli L <a
+href="https://doi.org/10.1007/978-3-540-25927-5_20">Brane calculi</a>.
+<em>Lect. Notes Comput. Sci.</em> 3082:257–278.</div>
+</div>
+<div id="ref-Beaconcalculus2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div
+class="csl-right-inline"><span class="nocase">Jones B, others</span> <a
+href="https://doi.org/10.1371/journal.pcbi.1007646">The beacon calculus:
+A formal method for the coarse-grained modelling of biological
+systems</a>. <em>PLOS Comput. Biol.</em> 16:e1007646.</div>
+</div>
+<div id="ref-Kennedy1994" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div
+class="csl-right-inline">Kennedy AJ <a
+href="https://doi.org/10.1007/3-540-57880-3_23">Dimension types</a>.
+Springer,.</div>
+</div>
+<div id="ref-Lean4Mathlib" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div
+class="csl-right-inline">The Mathlib Community <a
+href="https://github.com/leanprover-community/mathlib4">Mathlib4</a>.</div>
+</div>
+<div id="ref-Davis2011" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div
+class="csl-right-inline"><span class="nocase">Davis MI, others</span> <a
+href="https://doi.org/10.1038/nbt.1990">Comprehensive analysis of kinase
+inhibitor selectivity</a>. <em>Nat. Biotechnol.</em> 29:1046–1051.</div>
+</div>
+<div id="ref-DeepDTA" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[20] </div><div
+class="csl-right-inline">Öztürk H, Özgür A, Ozkirimli E <a
+href="https://doi.org/10.1093/bioinformatics/bty593"><span>DeepDTA</span>:
+Deep drug–target binding affinity prediction</a>.
+<em>Bioinformatics</em> 34:i821–i829.</div>
+</div>
+<div id="ref-NumPy" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[21] </div><div
+class="csl-right-inline"><span class="nocase">Harris CR, others</span>
+<a href="https://doi.org/10.1038/s41586-020-2649-2">Array programming
+with <span>NumPy</span></a>. <em>Nature</em> 585:357–362.</div>
+</div>
+<div id="ref-pandas" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[22] </div><div
+class="csl-right-inline">McKinney W <a
+href="https://doi.org/10.25080/Majora-92bf1922-00a">Data structures for
+statistical computing in <span>Python</span></a>.</div>
+</div>
+<div id="ref-SciPy" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[23] </div><div
+class="csl-right-inline"><span class="nocase">Virtanen P, others</span>
+<a href="https://doi.org/10.1038/s41592-019-0686-2"><span>SciPy</span>
+1.0: Fundamental algorithms for scientific computing in
+<span>Python</span></a>. <em>Nat. Methods</em> 17:261–272.</div>
+</div>
+<div id="ref-IUPAC2001" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[24] </div><div
+class="csl-right-inline"><span class="nocase">Vessman J, others</span>
+<a href="https://doi.org/10.1351/pac200173081381">Selectivity in
+analytical chemistry</a>. <em>Pure Appl. Chem.</em> 73:1381–1386.</div>
+</div>
+</div>
