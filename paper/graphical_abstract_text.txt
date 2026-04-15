@@ -1,0 +1,1 @@
+Kinase inhibitor selectivity definitions cluster into two families measuring fundamentally different binding profile properties, and rank instability is predictable from compound structure. We identify three mechanistically distinct instability sources and propose four desiderata that any well-formed selectivity measure should satisfy.

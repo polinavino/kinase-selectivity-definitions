@@ -1,0 +1,14 @@
+Kinase inhibitor selectivity is quantified using several competing definitions
+-- S-score, selectivity entropy, Gini coefficient, and ratio-based measures --
+applied interchangeably without justification.
+Across two profiling datasets (Davis, n=68; Klaeger, n=222), we show these
+definitions cluster into two families measuring fundamentally different
+properties (r = 0.27-0.48 between families) and that rank instability is
+predictable from binding profile shape.
+Three instability sources are identified: definitional noise below the detection
+threshold, ratio-specific instability from near-tied top targets, and
+distribution-ratio disagreement for promiscuous compounds with a dominant target.
+Ratio-based rankings are unreliable at any practically used panel size;
+entropy-based rankings stabilize at approximately 110 kinases.
+We derive four desiderata that any well-formed selectivity measure should
+satisfy; no existing definition satisfies all four simultaneously.
