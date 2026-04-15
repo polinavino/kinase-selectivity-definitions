@@ -1,30 +1,16 @@
 \begin{abstract}
-Kinase inhibitor selectivity is routinely quantified using one of several
-definitions --- including the S-score, selectivity entropy, Gini coefficient,
-and ratio-based measures --- yet these definitions are not interchangeable.
-Across two large kinase inhibitor profiling datasets
-(Davis, $n=68$; Klaeger, $n=222$), we demonstrate that they produce
-contradictory rankings for the same compound, that the degree of contradiction
-varies systematically with parameter choice, and that its structural sources
-are predictable from the shape of a compound's binding profile.
-Spearman correlations between median rankings reveal that ratio-based
-definitions cluster separately from entropy- and distribution-based definitions
-($r = 0.27$--$0.48$ vs.\ $r = 0.75$--$0.91$).
-Rank instability is not random: three mechanistically distinct sources are
-identified.
-Drugs with no detected binding above a minimum affinity threshold exhibit
-maximal instability (mean rank $\sigma \approx 74$) due to definitional noise.
-Among active compounds, near-tied top targets drive ratio-specific instability
-($r = -0.293$, $p < 0.001$), while broad flat binding profiles drive
-instability within distribution-based families.
-Attempts to correlate selectivity scores with clinical adverse event rates
-from FAERS ($n=46$) and FDA label discontinuation rates ($n=33$) yield null
-results, which we attribute to confounding by indication severity and
-prescription volume.
-From these findings we derive four desiderata toward a well-formed selectivity
-measure: a reliability threshold condition, bounded gap sensitivity,
-distributional consistency under parameter perturbation, and monotonicity
-under weak off-target addition.
-These desiderata are intended as the empirical foundation for a future formal
-axiomatization, in the tradition of Shannon's characterization of entropy.
+Kinase inhibitor selectivity is quantified using several competing definitions
+--- S-score, selectivity entropy, Gini coefficient, and ratio-based measures ---
+applied interchangeably without justification.
+Across two profiling datasets (Davis, $n=68$; Klaeger, $n=222$), we show these
+definitions cluster into two families measuring fundamentally different
+properties ($r = 0.27$--$0.48$ between families) and that rank instability is
+predictable from binding profile shape.
+Three instability sources are identified: definitional noise below the detection
+threshold, ratio-specific instability from near-tied top targets, and
+distribution-ratio disagreement for promiscuous compounds with a dominant target.
+Ratio-based rankings are unreliable at any practically used panel size;
+entropy-based rankings stabilize at approximately 110 kinases.
+We derive four desiderata that any well-formed selectivity measure should
+satisfy; no existing definition satisfies all four simultaneously.
 \end{abstract}
