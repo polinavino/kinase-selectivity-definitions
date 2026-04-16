@@ -1,36 +1,22 @@
 Dear Editors of Molecular Informatics,
 
-We submit for consideration the manuscript "Towards a Formal Definition of
-Kinase Inhibitor Selectivity: Empirical Characterization of Definitional
-Instability and Proposed Desiderata" as a Research Article.
+We resubmit the revised manuscript "Towards a Formal Definition of Kinase
+Inhibitor Selectivity: Empirical Characterization of Definitional Instability
+and Proposed Desiderata" as a Research Article, addressing the editorial
+comments as follows:
 
-Kinase inhibitor selectivity is quantified in the literature using at least
-four distinct definitions -- the S-score, selectivity entropy, Gini
-coefficient, and ratio-based measures -- that are applied interchangeably
-without systematic justification. We demonstrate, across two large profiling
-datasets (Davis, n=68; Klaeger, n=222), that these definitions are not
-interchangeable: they cluster into two families measuring fundamentally
-different properties of binding profiles and correlate poorly across families
-(r = 0.27-0.48). Counterintuitively, the most definition-stable compounds are
-not the most selective but the most promiscuous -- compounds binding nearly the
-entire kinome receive consistent rankings across all definitions, while
-compounds at intermediate promiscuity receive contradictory rankings depending
-on definitional choice.
+1. Figure and table legends: All figures and tables now include explicit
+numbered captions (Table 1, Table 2, Table 3, Figure 1, Figure 2, Figure 3)
+and are cited in the main text.
 
-We identify three mechanistically distinct sources of rank instability, show
-that instability is predictable from binding profile shape, and demonstrate
-that ratio-based rankings are unreliable at any kinase panel size used in
-practice. From these findings we derive four desiderata -- a reliability
-threshold condition, bounded gap sensitivity, distributional consistency, and
-monotonicity under weak off-target addition -- that any well-formed selectivity
-measure should satisfy. No existing definition satisfies all four
-simultaneously.
+2. Corresponding author details: The corresponding author's affiliation
+(Input Output Global, Singapore) and email address
+(polina.vinogradova@iohk.io) are now provided in the manuscript.
 
-This work is directly relevant to Molecular Informatics as a methodology paper
-addressing a fundamental measurement problem in cheminformatics and drug
-discovery. We note that the closest prior work, Bosc et al. (2017), was
-published in this journal, and our paper extends and formalizes that line of
-inquiry. A preprint has been deposited on ChemRxiv
+The manuscript has not been submitted elsewhere. All data and code are publicly
+available at https://github.com/polinavino/kinase-selectivity-definitions.
+
+A preprint has been deposited on ChemRxiv
 (https://doi.org/10.26434/chemrxiv.15001618/v1).
 
 We suggest the following five reviewers:
@@ -41,10 +27,8 @@ We suggest the following five reviewers:
 5. John Chodera, Memorial Sloan Kettering Cancer Center
    (john.chodera@choderalab.org)
 
-The manuscript has not been submitted elsewhere. All data and code are publicly
-available at https://github.com/polinavino/kinase-selectivity-definitions.
-
 Sincerely,
 Polina Vinogradova
+Input Output Global, Singapore
 polina.vinogradova@iohk.io
 ORCID: 0000-0003-3271-3841
