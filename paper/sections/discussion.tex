@@ -4,17 +4,15 @@
 The central finding of this work is that existing kinase inhibitor selectivity
 definitions do not measure the same quantity.
 The ratio definition and the distribution-based family (S-score, entropy, Gini)
-produce substantially different compound rankings ($r = 0.27$--$0.48$),
-and the sources of disagreement are mechanistically interpretable rather than
-random.
+produce substantially different compound rankings (cross-family
+$r = 0.14$--$0.62$ across four datasets), and the sources of disagreement are
+mechanistically interpretable rather than random.
 This has practical consequences: a compound that ratio-based analysis designates
 as selective may be designated as moderately promiscuous by entropy-based
 analysis, and vice versa, depending on the shape of its binding profile.
 Go/no-go decisions in early drug discovery are routinely made on the basis of
 selectivity assessments without acknowledgment that the choice of definition
 materially affects the outcome.
-
-\subsection{The Two-Family Structure Reflects a Conceptual Distinction}
 
 The clustering of definitions into two families is not a statistical artifact
 but reflects a genuine difference in what is being measured.
@@ -29,44 +27,21 @@ For such compounds, ratio-based methods report high selectivity while
 distribution-based methods report moderate promiscuity, and both
 characterizations are correct given their respective questions.
 
-The disagreement is therefore not a defect to be corrected by choosing the
-``right'' definition, but a signal that the field has not agreed on what
-selectivity means.
-The desiderata proposed in the Desiderata section are an attempt to make
-this question precise enough that it can be answered formally.
-
-\subsection{The Historical Roots of Definitional Ambiguity}
-
-The coexistence of ratio-based and distribution-based selectivity definitions
-in the kinase inhibitor literature has a historical explanation rooted in the
-structure of the selectivity question itself.
+This coexistence has a historical explanation.
 In classical pharmacology and analytical chemistry, selectivity is inherently
-pairwise: how much more potently does a compound bind target A than target B?
-IUPAC formalizes this for analytical methods as a selectivity coefficient ---
-the ratio of binding constants for analyte and interferent --- and organic
-chemistry quantifies chemo-, regio-, and stereoselectivity as ratios of
-competing rate constants.\cite{IUPAC2001}
-These ratio definitions are appropriate because the question is binary.
-
-Kinase inhibitor selectivity, by contrast, is a distributional question: how
-concentrated is a compound's binding activity across a panel of hundreds of
-kinases?
-This is structurally different from a pairwise comparison, and ratio-based
-measures are poorly suited to it precisely because they discard all but two
-data points from a profile of 300--500 kinases, as the panel size analysis of
-the panel size analysis makes quantitative.
-The entropy and Gini definitions were introduced specifically because
-researchers recognized that ratio measures were inadequate for large panels,
-but the older definitions were never retired.
-The result is a field that applies pairwise measures to distributional
-questions and distributional measures to pairwise questions, without a
-principled basis for choosing between them.
-The desiderata proposed above can be understood as an attempt
-to make this distinction precise: D2 (bounded gap sensitivity) and D4
-(monotonicity) are properties that ratio definitions violate specifically
-because they treat a distributional problem as pairwise, while D3
-(distributional consistency) is a property that ratio definitions satisfy
-trivially because they do not use a distributional baseline at all.
+pairwise. IUPAC formalizes it as a selectivity coefficient, the ratio of
+binding constants for an analyte and an interferent\cite{IUPAC2001}, and
+ratio measures entered kinase profiling on that basis.
+Kinome-wide profiling, however, poses a distributional question: how
+concentrated is a compound's binding across hundreds of kinases?
+Entropy and Gini were introduced because ratio measures are ill-suited to it, since
+they discard all but two points of a 300--500 kinase profile. However, the older
+pairwise measures were never retired, leaving the field applying pairwise
+measures to a distributional question without a principled basis for choosing
+between them.
+The required properties proposed in the Required Properties section are an
+attempt to express what it means for a compound to be selective in a way that is
+precise enough to assess candidate selectivity definitions formally.
 
 \subsection{Practical Recommendations}
 
@@ -93,60 +68,46 @@ the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
 The high within-family correlations ($r > 0.74$) suggest that S-score, entropy,
 and Gini are interchangeable for most purposes when parameters are chosen
-consistently; ratio-based measures should not be compared directly with
+consistently. However, ratio-based measures should not be compared directly with
 distribution-based measures without acknowledging the conceptual distinction.
 
 \subsection{Limitations}
 
-The analysis is limited to two profiling datasets that, while large and
-well-characterized, represent a small fraction of the chemical and kinase space
-relevant to drug discovery.
-Davis covers 68 compounds and 433 kinases using a fixed-concentration
-competition binding assay; Klaeger covers 222 clinical compounds and 343
-kinases using chemoproteomic dose--response profiling.
-The two assay technologies are not directly comparable, and the difference in
-active compound fractions (17.9\% for Davis vs.\ 3.6\% for Klaeger) reflects
-both genuine selectivity differences and assay-specific detection thresholds.
-Findings should be interpreted in light of these technological differences.
+The analysis covers four profiling datasets spanning three assay technologies
+and two readout types, but these still represent a fraction of the chemical and
+kinase space relevant to drug discovery.
+The assay technologies are not directly comparable in absolute terms --- the
+active-compound fractions differ across datasets for both genuine
+selectivity reasons and assay-specific detection thresholds. As a consequence,
+our analysis
+relies on within-dataset rank comparisons rather than cross-dataset absolute
+scores.
+The consistency of the two-family structure and the instability predictors
+across all four datasets indicates that the findings are not artifacts of a
+single assay platform. However, findings should still be interpreted in light of
+these technological differences.
 
-The clinical outcome analysis is limited by the observational nature of FAERS
-data and the heterogeneity of FDA label discontinuation rates across indications.
-The null results reported in the Clinical Outcome Correlations section are consistent
-with a genuine absence of correlation between in vitro selectivity and clinical
-toxicity, but they are equally consistent with the confounders identified
-therein.
-A properly controlled study would require prospective collection of
-treatment-related adverse event rates stratified by indication, which is not
-currently available in a standardized form across the breadth of approved
-kinase inhibitors.
+We also examined whether in vitro selectivity predicts clinical toxicity,
+correlating the selectivity rankings of the FDA-approved Klaeger compounds with
+FAERS adverse-event rates ($n = 46$) and FDA-label discontinuation rates
+($n = 33$).
+No association was significant under any definition (all $|r| < 0.27$, all
+$p > 0.13$).
+We do not read this as evidence that selectivity and toxicity are unrelated.
+FAERS counts mostly track how often a drug is prescribed, and how often a drug is
+withdrawn depends on the patient population treated for each indication, so
+neither measure can isolate the effect of selectivity.
+A proper test would require indication-stratified, treatment-related
+adverse-event rates from controlled trials with matched comparators, which are
+not available in standardized form across these drugs.
+Full details are given in the Supporting Information.
 
-The desiderata proposed above are necessary
-conditions motivated by empirical failure modes; they are not proven to be
-sufficient to uniquely characterize a selectivity measure, and it is not known
-whether they are jointly satisfiable.
+The four properties proposed above are necessary
+conditions motivated by empirical failure modes.
+The candidate measure shows that they are jointly satisfiable, but they are not
+proven to be sufficient to uniquely characterize a selectivity measure, and we do
+not show that they single out a measure of the candidate's form.
 The satisfaction assessments in Table~\ref{tab:desiderata} are based on
-analysis of the functional forms of each definition and the empirical findings
-of this study; a formal proof of satisfaction or violation for each
-desideratum--definition pair is left for future work.
-
-\subsection{Relation to Formal Methods}
-
-The approach taken here --- characterizing the empirical behavior of competing
-definitions to motivate formal desiderata --- follows a methodology well
-established in adjacent fields.
-Shannon's derivation of entropy began with the observation that several
-reasonable-seeming measures of uncertainty existed and proceeded to identify
-the axioms that single out one uniquely.\cite{Shannon1948}
-Arrow's impossibility theorem began with the observation that several
-reasonable voting rules existed and proved that no rule satisfies all
-desirable properties simultaneously.\cite{Arrow1951}
-
-The present work occupies the empirical stage of this process: we have
-characterized where and why existing definitions disagree, and proposed
-properties that any satisfactory definition should have.
-Whether a definition satisfying all four desiderata exists, whether the
-desiderata are jointly consistent, and whether an impossibility result holds,
-are questions for a formal axiomatization.
-We anticipate that such an axiomatization, potentially implemented in a proof
-assistant such as Agda or Lean, would constitute a natural and
-productive extension of this work.\cite{Lean4Mathlib}
+analysis of the functional forms of each definition together with the empirical
+checks of this study. A formal proof of satisfaction or violation for each
+property--definition pair is left for future work.

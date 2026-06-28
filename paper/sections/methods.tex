@@ -10,16 +10,14 @@ small-molecule kinase inhibitors measured against 433 human kinase domains.
 Affinity values are reported as dissociation constants and were converted to
 $\mathrm{p}K_d = -\log_{10}(K_d / 10^9)$ prior to analysis, following the
 convention of the DeepDTA benchmark.\cite{DeepDTA}
-Pairs for which no binding was detected at the screening concentration of
-10~$\mu$M were assigned $\mathrm{p}K_d = 5.0$, corresponding to a $K_d$ of
-1~mM, which represents the detection floor of the assay.
+% Pairs for which no binding was detected at the screening concentration of
+% 10~$\mu$M were assigned $\mathrm{p}K_d = 5.0$, corresponding to a $K_d$ of
+% 1~mM, which represents the detection floor of the assay.
 The resulting affinity matrix is complete ($68 \times 433$, 29{,}444 entries).
-No censored or greater-than values are present in the Davis dataset: the assay
-reports a quantitative $K_d$ for every compound--kinase pair where activity was
-detected at 10~$\mu$M, and assigns the detection floor value otherwise.
-All non-binding pairs are therefore treated as exactly equivalent at
-$\mathrm{p}K_d = 5.0$, which slightly underestimates true non-binding affinity
-but is the standard convention for this dataset.\cite{DeepDTA,Bosc2017}
+with all non-binding pairs assigned the detection-floor value
+$\mathrm{p}K_d = 5.0$ (corresponding to a $K_d$ of 1~mM).
+This is the standard convention for the dataset\cite{DeepDTA,Bosc2017} and
+slightly underestimates true non-binding affinity.
 
 The Klaeger dataset\cite{Klaeger2017} comprises binding affinities for 243
 clinical kinase inhibitors profiled against the human kinome using
@@ -34,56 +32,161 @@ Affinity values were converted to $\mathrm{p}K_d$ using the same formula as
 above.
 Missing entries, representing kinase--inhibitor combinations not detected in
 the assay, were assigned the background value $\mathrm{p}K_d = 5.0$.
-The resulting matrix ($222 \times 343$) has 17.9\% active entries
-(pKd $> 6$, i.e.\ $K_d < 1~\mu$M) for Davis and 3.6\% for Klaeger,
-reflecting the more stringent detection threshold of the chemoproteomic assay.
+The resulting Klaeger matrix is $222 \times 343$.
+The fraction of active entries (pKd $> 6$, i.e.\ $K_d < 1~\mu$M) is 17.9\% for
+Davis and 3.6\% for Klaeger, and are recorded at the background value
+whenever weak interactions fall below the limit of detection.
+These reflect the more stringent detection threshold
+of the chemoproteomic assay.
+
+To test whether our findings depend on the assay technology, we added two
+further datasets that measure kinase inhibition by different means.
+The Anastassiadis dataset\cite{Anastassiadis2011} profiles 178 inhibitors
+against 300 kinases in a single-concentration ($0.5~\mu$M) radiometric activity
+assay, reported as percent residual kinase activity relative to a solvent
+control.
+We converted these to percent inhibition ($100$ minus residual activity,
+clipped to $[0,100]$, where higher values denote stronger inhibition), with the
+$1.1\%$ missing entries set to zero inhibition.
+The Metz dataset\cite{Metz2011} reports $\mathrm{p}K_i$ affinities for a large 
+medicinal-chemistry
+campaign using the same negative-log scale as $\mathrm{p}K_d$. We restricted 
+it to the 704 compounds profiled against at least 50 of
+the 172 kinases, assigning the assay floor $\mathrm{p}K_i = 4.0$ to unmeasured
+combinations.
+The four datasets thus span three assay technologies (competition binding,
+chemoproteomics, and functional activity) and two readout types (affinity and
+single-concentration inhibition).
+Each selectivity definition is computed on the native readout of its
+dataset and our analyses concern rank correlations between definitions and rank
+instability, which are both invariant to a common monotone rescaling within a dataset.
+For this reason, the definitions remain directly comparable across datasets.
+For the percent-inhibition and $\mathrm{p}K_i$ datasets, the S-score threshold and
+entropy/Gini baseline grids were shifted to span each dataset's active range,
+while the ratio off-target index $k \in \{1,\ldots,5\}$ was left unchanged
+(it indexes ranked off-targets and so needs no rescaling).
+
+We excluded two additional candidate datasets.
+The Gao screen\cite{Gao2013} is a single-concentration functional inhibition
+assay of the same readout type as the Anastassiadis dataset already included,
+and its raw data are not openly redistributable. Including it would add a
+second instance of an assay type rather than a new modality.
+The Patricelli study\cite{Patricelli2011} profiles only a small number of
+inhibitors against native kinases as a proof of concept for the KiNativ
+platform. A ranking-stability analysis requires many compounds to produce a
+meaningful ranking, so this dataset is not suited to the present comparison.
 
 \subsection{Selectivity Definitions and Parameterization}
 \label{sec:methods:defs}
 
-Four selectivity definitions were implemented, each controlled by one or more
+We implemented four selectivity definitions, each including
 parameters whose values are not standardized in the literature.
+We discuss each definition below.
+Throughout, a compound's binding profile is the vector of its affinities
+$\mathrm{p}K_{d,i}$ across the $N$ panel kinases, with higher
+$\mathrm{p}K_{d}$ denoting tighter binding.
 
-The \textbf{S-score}\cite{Karaman2008} is defined as
+\paragraph{S-score.}
+Karaman et al.\cite{Karaman2008} defined the selectivity score as the fraction
+of the panel that a compound inhibits: the number of kinases ``bound'' divided
+by the number tested, where a kinase counts as bound when the compound reduces
+its activity below a fixed cutoff at a single screening concentration (the
+original work reports $S(35)$, $S(10)$ and $S(1)$ for cutoffs of $35\%$, $10\%$
+and $1\%$ of control activity).
+We implemented the same fraction, expressing the bound criterion as an affinity
+threshold $\tau$ on $\mathrm{p}K_d$:
 \begin{equation}
-  S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[\mathrm{p}K_{d,i} > \tau],
+  S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[\mathrm{p}K_{d,i} > \tau].
 \end{equation}
-where $N$ is the number of kinases in the panel and $\tau$ is an activity
-threshold.
-Lower values indicate greater selectivity.
-We swept $\tau \in \{5.5, 5.75, \ldots, 8.0\}$ (11 values), spanning $K_d$
-cutoffs from approximately 300~nM to 10~nM.
+Karaman et al.\ defined the cutoff on percent of control activity ($35\%$,
+$10\%$, $1\%$). Because we work on the $\mathrm{p}K_d$ scale, the equivalent
+``bound'' criterion is an affinity threshold $\tau$, and sweeping it reproduces
+their family of cutoffs. We used
+$\tau \in \{5.5, 5.75, \ldots, 8.0\}$ (11 values), spanning $K_d$ cutoffs from
+approximately 300~nM to 10~nM.
 
-The \textbf{selectivity entropy}\cite{Uitdehaag2011} treats the
-baseline-subtracted binding profile as a probability distribution:
+\paragraph{Selectivity entropy.}
+Uitdehaag and Zaman\cite{Uitdehaag2011} treat the compound's binding across the
+panel as a probability distribution and report its Shannon entropy. A profile
+concentrated on few kinases has low entropy and is selective.
+In the original definition the weight on each kinase is its association constant
+$K_{a,i} = 1/K_{d,i}$ (the share of compound that would be bound to kinase $i$
+in an equimolar mixture), so $p_i = K_{a,i}/\sum_j K_{a,j}$.
+We implemented the entropy on the same log-affinity scale used by the other
+metrics, weighting each kinase by its affinity in excess of a baseline $\beta$:
 \begin{equation}
   H(\beta) = -\sum_{i=1}^{N} p_i \log_2 p_i, \quad
   p_i = \frac{\max(\mathrm{p}K_{d,i} - \beta,\, 0)}
              {\sum_j \max(\mathrm{p}K_{d,j} - \beta,\, 0)},
 \end{equation}
-where $\beta$ is a baseline affinity below which binding is considered
-negligible.
-Lower entropy indicates greater selectivity.
-We swept $\beta \in \{5.0, 5.25, \ldots, 6.5\}$ (7 values).
+where $\beta$ is the affinity below which binding is treated as negligible.
+This makes $\beta$ an explicit parameter (its under-specification motivates
+property D3 below). We swept $\beta \in \{5.0, 5.25, \ldots, 6.5\}$ (7 values).
+The association-constant and log-affinity weightings are distinct reasonable
+choices that can rank compounds differently, which is itself an instance of the
+definitional instability this paper characterizes. We quantify the difference
+below. % (``Faithfulness to the original definitions'').
 
-The \textbf{Gini coefficient}\cite{Graczyk2010} of the baseline-subtracted
-profile is
+\paragraph{Gini coefficient.}
+Graczyk\cite{Graczyk2010} adapted the Gini coefficient from economics: kinases
+are sorted by activity and the cumulative fraction of total binding is plotted
+against the cumulative fraction of kinases (a Lorenz curve). The Gini
+coefficient, which measures how unequally is binding distributed across the kinome,
+is twice the area between this curve and the diagonal of equal
+distribution.
+The original work computes it from percent-inhibition values.
+We applied the standard discrete Gini formula to the same baseline-subtracted
+log-affinities used for the entropy:
 \begin{equation}
   G(\beta) = \frac{2\sum_{i=1}^{N} i \cdot x_{(i)}}{N \sum_{i=1}^{N} x_{(i)}} - \frac{N+1}{N},
+  \qquad x_{(i)} = \max(\mathrm{p}K_{d,i} - \beta,\, 0)\  \text{sorted ascending}.
 \end{equation}
-where $x_{(i)} = \max(\mathrm{p}K_{d,i} - \beta,\, 0)$ sorted in ascending
-order.
-Higher values indicate greater selectivity.
 We swept $\beta$ over the same range as for the entropy.
+A compound whose binding is concentrated on one kinase has a highly unequal
+distribution and $G$ near 1, while a compound that binds many kinases equally has
+$G$ near 0. Higher values therefore indicate greater selectivity.
 
-The \textbf{ratio} definition measures the gap between the primary target and
-a specified off-target:
+\paragraph{Ratio.}
+Classical pharmacological selectivity is pairwise: how much more tightly does a
+compound bind its primary target than an off-target?
+We implemented this as the fold-selectivity, in log units, between the primary
+target and the $k$-th ranked off-target:
 \begin{equation}
-  R(k) = \mathrm{p}K_{d,(1)} - \mathrm{p}K_{d,(k+1)},
+  R(k) = \mathrm{p}K_{d,(1)} - \mathrm{p}K_{d,(k+1)}
+       = \log_{10}\!\frac{K_{d,(k+1)}}{K_{d,(1)}},
 \end{equation}
-where $\mathrm{p}K_{d,(j)}$ denotes the $j$-th largest affinity in the profile
-and $k \in \{1, 2, 3, 4, 5\}$ indexes the off-target used as reference.
-Higher values indicate greater selectivity.
+where $\mathrm{p}K_{d,(j)}$ is the $j$-th largest affinity in the profile and
+$k \in \{1, 2, 3, 4, 5\}$ selects the reference off-target.
+This is the prototypical member of the ratio family, which also includes the
+concentration- and target-dependent selectivity (CATDS) score of Klaeger et
+al.\cite{Klaeger2017}. Members of the ratio family of selectivity definitions 
+are concentration-dependent fractions quantifying the
+binding reduction at one target relative to the summed reduction across all
+targets.
+We use the simpler fold-selectivity because the reference off-target index $k$
+is then an explicit parameter whose effect can be studied directly.
+A larger affinity gap to the nearest competitor means greater selectivity, so
+higher $R(k)$ indicates greater selectivity.
+% \emph{In words:} how big is the affinity gap between the primary target and the
+% next-best one? A larger gap means greater selectivity.
+
+\paragraph{Faithfulness to the original definitions.}
+The S-score and the ratio are computed in the form given by their original
+sources (a panel-hit fraction and a primary-to-off-target affinity ratio,
+respectively).
+For the entropy and the Gini coefficient, we used the baseline-subtracted
+log-affinity profile in place of the original association constants (entropy)
+and percent-inhibition values (Gini), so that all four metrics operate on one
+common scale, and so that the baseline $\beta$ appears as an explicit parameter.
+To confirm that this choice does not silently determine our conclusions, we
+recomputed the entropy and Gini in forms closer to the originals
+(association-constant weighting) and compared the resulting rankings with the
+log-affinity forms.
+The two operationalizations differ substantially --- for entropy, Spearman
+$r = 0.42$ (Davis) and $-0.32$ (Klaeger), while for Gini, $r = 0.11$ and $-0.46$
+(Supporting Information, Figure~S1). This confirms that the operationalization
+of a named metric is itself a source of the definitional instability we report,
+not a neutral implementation detail.
 
 \subsection{Rank Stability Analysis}
 \label{sec:methods:stability}
@@ -97,7 +200,7 @@ This yielded 30 rank vectors per dataset: 11 for the S-score, 7 for entropy,
 
 For each compound, rank instability was quantified as the standard deviation
 of its rank across all 30 configurations (overall instability) and separately
-across configurations within each definition family (within-family
+across parameter configurations within each definition family (within-family
 instability).
 Cross-definition agreement was assessed using Spearman rank correlation
 between the median rank vectors of each definition family.
@@ -110,29 +213,12 @@ Profile features computed for each compound included: the number of active
 kinases ($\mathrm{p}K_d > 6$), the gap between the top and second-ranked
 affinities, the standard deviation and range of active affinities, and the
 absolute affinity of the second-ranked target.
-All correlations are reported with two-tailed $p$-values; significance
+All correlations are reported with two-tailed $p$-values. Significance
 thresholds of $p < 0.05$, $p < 0.01$, and $p < 0.001$ are denoted *, **, and
 *** respectively.
 Analyses were performed in Python 3.10 using NumPy, pandas, and
 SciPy.\cite{NumPy,pandas,SciPy}
-
-\subsection{Clinical Outcome Data}
-\label{sec:methods:outcomes}
-
-For the subset of Klaeger compounds that are FDA-approved ($n = 46$ after
-excluding drugs with no FAERS records), adverse event report counts were
-retrieved from the FDA Adverse Event Reporting System (FAERS) via the
-openFDA API.
-Total report counts, serious event counts, and death and hospitalization
-subcounts were retrieved per drug.
-Serious event rates and death rates were computed by normalizing subcounts by
-total reports per drug.
-
-Treatment discontinuation rates due to adverse events were extracted from FDA
-drug labels retrieved via the openFDA label API for 33 approved drugs with
-available adverse reactions sections.
-Label text was reviewed manually to identify the primary clinical trial
-discontinuation rate attributable to adverse reactions.
-
-Associations between selectivity scores and each clinical outcome measure were
-assessed using Spearman correlation across drugs with available data.
+A secondary analysis relating selectivity rankings to clinical adverse-event
+outcomes (FAERS report rates and FDA-label discontinuation rates for the
+FDA-approved Klaeger compounds) is summarized in the Limitations section 
+and reported in full in the Supporting Information section.

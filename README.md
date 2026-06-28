@@ -1,7 +1,8 @@
-# Kinase Inhibitor Selectivity: Towards a Formal Definition
+# Kinase Inhibitor Selectivity: Definitional Instability and Required Properties
 
-**Paper:** Towards a Formal Definition of Kinase Inhibitor Selectivity: Empirical Characterization of Definitional Instability and Proposed Desiderata
-**Author:** Polina Vinogradova
+**Paper:** Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
+Characterization Across Four Datasets and Required Properties for a Well-Formed Measure
+**Author:** Polina Vinogradova (Input Output Global, Singapore)
 **Preprint:** https://doi.org/10.26434/chemrxiv.15001618/v1
 
 ---
@@ -10,55 +11,83 @@
 
 ### Background: kinases and cancer drugs
 
-Your body's cells are constantly sending signals to each other — "grow," "divide," "die," "make this protein." Kinases are the molecular switches that carry these signals. You have over 500 different kinases, and they work by physically tagging other proteins with a small chemical label (a phosphate group), which switches those proteins on or off.
-
-When kinases malfunction — usually because of a mutation — they can send the wrong signals and cause cells to grow uncontrollably. That's cancer.
-
-A kinase inhibitor is a drug that blocks a specific kinase from working. The idea is: if a mutant kinase is causing cancer by sending "grow" signals all the time, block that kinase and the signal stops. Imatinib (Gleevec) was the first famous example — it blocks a kinase called BCR-ABL and transformed a previously fatal blood cancer into a manageable condition.
+Your body's cells constantly send signals — "grow," "divide," "die." Kinases are
+the molecular switches that carry these signals: you have over 500 of them, and
+they work by tagging other proteins with a phosphate group, switching those
+proteins on or off. When a kinase malfunctions (usually from a mutation) it can
+drive uncontrolled growth — cancer. A **kinase inhibitor** is a drug that blocks
+a specific kinase. Imatinib (Gleevec) was the first famous example.
 
 ### The problem: kinases look almost identical
 
-All 500+ kinases share a nearly identical region where drugs bind. This means that when you design a drug to block one kinase, it very often accidentally blocks several others too. Sometimes that is fine or even helpful. But sometimes blocking the wrong kinase causes side effects — heart problems, liver damage, immune suppression.
-
-The property that describes how concentrated a drug's effect is on its intended target versus everything else is called **selectivity**.
+All 500+ kinases share a nearly identical region where drugs bind, so a drug
+designed for one kinase very often hits several others too. Sometimes that is
+harmless; sometimes it causes side effects. The property describing how
+concentrated a drug's effect is on its intended target versus everything else is
+called **selectivity**.
 
 ### How selectivity is measured
 
-You take your drug and test it against a panel of hundreds of kinases in a lab. For each kinase you measure how tightly the drug binds (the binding affinity). You end up with a list of 300-500 numbers, one per kinase. Then you apply a mathematical formula to that list to get a single selectivity score. A high score means the drug mostly hits one kinase. A low score means it hits many kinases roughly equally.
+You test a drug against a panel of hundreds of kinases and record how tightly it
+binds each one — a list of 300–500 numbers. Then you apply a formula to collapse
+that list into a single selectivity score. The field uses at least four different
+formulas, invented by different groups:
 
-### The problem this paper found
+- **S-score** — what fraction of the panel does the drug hit above a cutoff?
+- **Selectivity entropy** — borrows Shannon's information-theory entropy; low
+  entropy means activity concentrated on few targets.
+- **Gini coefficient** — borrows the economics inequality measure; high Gini
+  means binding concentrated on few kinases.
+- **Ratio** — how much more tightly does the drug bind its top target than its
+  next-best one? It ignores everything else.
 
-The field uses at least four different formulas, each invented by different research groups:
+These are used interchangeably in the literature. Our question: does it matter
+which one you use?
 
-- **S-score** counts how many kinases the drug hits above a cutoff threshold. Simple but sensitive to where you draw the line.
-- **Selectivity entropy** borrows a formula from information theory — the same mathematics used to measure uncertainty in a phone signal — and applies it to the binding profile. Low entropy means activity concentrated on few targets.
-- **Gini coefficient** borrows a formula from economics originally designed to measure income inequality. Applied here, it measures how unequally a drug distributes its binding across kinases.
-- **Ratio** simply asks: how much more tightly does the drug bind its main target compared to its next-best target?
+### What this paper found
 
-These four formulas are used interchangeably in the scientific literature. Our question was: does it matter which formula you use?
+It matters, in a structured and predictable way. The S-score, entropy, and Gini
+all ask roughly the same question (how spread out is the binding?) and mostly
+agree. The **ratio** asks a genuinely different question (how big is the gap to
+the single nearest competitor?) and is the consistent outlier. So a drug that
+hits one kinase strongly and twenty others moderately looks **selective** by
+ratio but **promiscuous** by entropy — neither answer is wrong; they answer
+different questions.
 
-It matters a lot — but in a structured, predictable way.
-
-The S-score, entropy, and Gini are all asking roughly the same question: how spread out is the drug's binding activity across the whole kinase panel? They mostly agree on rankings. The ratio definition asks a completely different question: how much better is the drug at hitting its top target compared to its second-best target? It ignores everything else entirely.
-
-This means a drug that hits one kinase very strongly and twenty others moderately will look highly selective by ratio (big gap between first and second) but moderately promiscuous by entropy (activity spread across many targets). Neither answer is wrong — they are answering different questions.
-
-We also found that if you only test a drug against 50 kinases instead of 300, ratio-based scores become essentially meaningless, while entropy-based scores remain reasonably stable above about 110 kinases.
+We confirmed this across **four datasets spanning three assay technologies**
+(competition binding, chemoproteomics, and functional-activity assays), so it is
+not an artifact of one dataset or one assay. We also found that the disagreements
+are predictable from the shape of a drug's binding profile, and that ratio-based
+scores become unreliable on the small (50–100 kinase) panels used in practice,
+while entropy-based scores stabilize above ~110 kinases.
 
 ### What we proposed
 
-We proposed four properties that any good selectivity formula should have — called desiderata:
+Four **required properties** that any good selectivity formula should satisfy:
 
-1. A drug with no meaningful binding to any kinase should not get a selectivity score — it is just noise
-2. Small changes in which off-target you compare against should not cause large swings in the score
-3. The ranking should not change completely just because you changed a background parameter slightly
-4. Adding a very weak accidental binding interaction should not make a drug look more selective
+1. A drug with no meaningful binding to any kinase should not get a selectivity
+   score — it is just noise.
+2. Small changes in which off-target you compare against should not cause large
+   swings in the score.
+3. The ranking should not change completely from a small change to a background
+   parameter.
+4. Adding a very weak accidental binding interaction should not make a drug look
+   *more* selective.
 
-No existing formula satisfies all four properties simultaneously.
+No existing formula satisfies all four at once. We then propose a **candidate
+measure** that does: the selectivity entropy with two fixes — a reliability gate
+(property 1) and a smooth rather than hard activity cutoff (property 3). It
+recovers its full-panel ranking from roughly half a typical panel, so it stays
+practical.
 
 ### The bigger picture
 
-This paper is the first step toward something more ambitious. In the 1940s, Claude Shannon did not just propose a formula for measuring information — he proved mathematically that his formula was the only one satisfying a small set of reasonable requirements. We want to do something similar for selectivity: find the formula (or prove no perfect formula exists) by starting from first principles. That is a harder problem left for future work. This paper characterizes the mess before cleaning it up.
+This is a first step. In the 1940s Claude Shannon didn't just propose a formula
+for measuring information — he showed it was the *only* one satisfying a few
+reasonable requirements. The long-term goal is the analogous result for
+selectivity. This paper characterizes the mess, states the properties a solution
+should have, and offers a candidate that meets them; proving whether it is the
+*unique* such measure is left for future work.
 
 ---
 
@@ -66,49 +95,68 @@ This paper is the first step toward something more ambitious. In the 1940s, Clau
 
 ### Requirements
 
-Python 3.10 with the following packages:
+Python 3.10 with:
 
-    numpy pandas scipy matplotlib openpyxl requests
+    numpy pandas scipy matplotlib openpyxl xlrd requests
 
 Install with conda:
 
     conda create -n selectivity python=3.10
     conda activate selectivity
-    pip install numpy pandas scipy matplotlib openpyxl requests
+    pip install numpy pandas scipy matplotlib openpyxl xlrd requests
 
-On Apple Silicon, set this environment variable before running any script:
+On Apple Silicon, set this before running any script:
 
     export KMP_DUPLICATE_LIB_OK=TRUE
 
+### Datasets
+
+| Dataset | Readout | Size (cpd × kinase) | Source |
+|---------|---------|---------------------|--------|
+| Davis | pK_d (competition binding) | 68 × 433 | github.com/dingyan20/Davis-Dataset-for-DTA-Prediction |
+| Klaeger | pK_d (chemoproteomics) | 222 × 343 | Science 2017, suppl. (doi.org/10.1126/science.aan4368) |
+| Anastassiadis | % inhibition @0.5 µM (functional) | 178 × 300 | Nat. Biotechnol. 2011, suppl. (doi.org/10.1038/nbt.2017) |
+| Metz | pK_i | 704 × 172 | Nat. Chem. Biol. 2011, suppl. (doi.org/10.1038/nchembio.530) |
+
+The Gao (Biochem. J. 2013) and Patricelli (Chem. Biol. 2011) datasets named by a
+reviewer were not included: Gao is the same single-concentration functional
+modality as Anastassiadis (already represented) and is not openly
+redistributable, and Patricelli profiles only a handful of inhibitors — too few
+for a ranking-stability analysis. See the manuscript Methods for details.
+
+Raw supplementary files (downloaded programmatically):
+
+- Anastassiadis: `https://static-content.springer.com/esm/art%3A10.1038%2Fnbt.2017/MediaObjects/41587_2011_BFnbt2017_MOESM23_ESM.xls`
+- Metz: `https://static-content.springer.com/esm/art%3A10.1038%2Fnchembio.530/MediaObjects/41589_2011_BFnchembio530_MOESM137_ESM.xls`
+
 ### Data files
 
-| File | Description | Source |
-|------|-------------|--------|
-| davis_affinity.csv | Drug-kinase binding affinities (pKd), long format | github.com/dingyan20/Davis-Dataset-for-DTA-Prediction |
-| davis_drugs.csv | Drug names and SMILES | Same |
-| davis_proteins.csv | Kinase names and sequences | Same |
-| aan4368_Table_S2.xlsx | Klaeger et al. 2017 raw data | science.org/doi/10.1126/science.aan4368 (supplementary) |
-| klaeger_matrix.csv | Processed Klaeger drug-kinase matrix | Generated by preprocessing step |
-| faers_counts.csv | FAERS adverse event counts | Generated by faers_pull.py |
-| clinical_safety_data.csv | FDA label discontinuation rates | Manually extracted from FDA labels |
-| selectivity_results.csv | Davis analysis output | Generated by selectivity_analysis.py |
-| klaeger_selectivity_results.csv | Klaeger analysis output | Generated by klaeger_analysis.py |
-| selectivity_outcomes_merged.csv | Selectivity scores merged with FAERS | Generated by analysis |
+| File | Description |
+|------|-------------|
+| davis_affinity.csv, davis_drugs.csv, davis_proteins.csv | Davis pK_d data |
+| aan4368_Table_S2.xlsx | Klaeger raw supplementary data |
+| klaeger_matrix.csv | Processed Klaeger drug × kinase pK_d matrix |
+| anastassiadis.xls / anastassiadis_matrix.csv | Anastassiadis raw / processed % inhibition matrix |
+| metz.xls / metz_matrix.csv | Metz raw / processed pK_i matrix (≥50-kinase coverage subset) |
+| cross_dataset_summary.csv | Cross-dataset two-family + instability summary |
+| selectivity_results.csv, klaeger_selectivity_results.csv | Per-compound analysis outputs |
+| faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv | Clinical-outcome (SI) analysis data |
 
 ### Scripts
 
 | Script | Description |
 |--------|-------------|
-| selectivity_analysis.py | Main Davis selectivity analysis |
-| klaeger_analysis.py | Klaeger selectivity analysis |
-| faers_pull.py | Pulls adverse event counts from openFDA API |
-| panel_size_analysis.py | Subsampling analysis of panel size dependence |
+| selectivity_analysis.py | Main Davis selectivity analysis (two-family correlations, instability) |
+| klaeger_analysis.py | Klaeger analysis (reproduces Table 1 lower triangle and Table 2) |
+| additional_datasets_analysis.py | Anastassiadis + Metz; reproduces the four-dataset two-family result (Figure 1) and `cross_dataset_summary.csv` |
+| metric_fidelity_robustness.py | Operationalization-sensitivity check; original vs. log-affinity entropy/Gini (Figure S1) |
+| panel_size_analysis.py | Panel-size subsampling on Klaeger (Figure 4) |
+| candidate_measure.py | Candidate measure satisfying D1–D4; verifies D3/D4 and panel-size convergence (`candidate_panel_convergence.png`) |
+| faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical SI analysis) |
 
 ### Replication steps
 
-**Step 1: preprocess the Klaeger data**
-
-Run the following to convert the raw Excel file to a drug x kinase pKd matrix:
+**Preprocess Klaeger** (produces `klaeger_matrix.csv`, expected shape `(222, 343)`):
 
     python3 -c "
     import pandas as pd, numpy as np
@@ -120,95 +168,57 @@ Run the following to convert the raw Excel file to a drug x kinase pKd matrix:
     print(matrix.shape)
     "
 
-Expected output: (222, 343)
+**Run the analyses:**
 
-**Step 2: Davis selectivity analysis**
+    python3 selectivity_analysis.py         # Davis
+    python3 klaeger_analysis.py             # Klaeger (Table 1 / Table 2 values)
+    python3 additional_datasets_analysis.py # Anastassiadis + Metz (Figure 1, summary)
+    python3 metric_fidelity_robustness.py   # Figure S1
+    python3 panel_size_analysis.py          # Figure 4
+    python3 candidate_measure.py            # candidate measure (Figure 5, D3/D4 checks)
+    python3 faers_pull.py                    # clinical SI data (needs internet)
 
-    python3 selectivity_analysis.py
-
-Produces: selectivity_results.csv, selectivity_analysis.png, binding_profiles.png, instability_by_family.png
-
-**Step 3: Klaeger selectivity analysis**
-
-    python3 klaeger_analysis.py
-
-Produces: klaeger_selectivity_results.csv and printed correlation/instability tables
-
-**Step 4: FAERS adverse event data**
-
-Requires internet access. Queries the openFDA API.
-
-    python3 faers_pull.py
-
-Produces: faers_counts.csv
-
-**Step 5: panel size subsampling analysis**
-
-    python3 panel_size_analysis.py
-
-Produces: panel_size_stability.png and printed stability table
+`additional_datasets_analysis.py` reads `anastassiadis_matrix.csv` / `metz_matrix.csv`
+if present, otherwise regenerates them from the raw `.xls` files.
 
 ### Expected key results
 
 | Result | Value |
 |--------|-------|
-| Ratio vs entropy correlation (Davis) | r = 0.343 |
-| Ratio vs entropy correlation (Klaeger) | r = 0.480 |
-| top1_top2_gap vs ratio instability (Klaeger) | r = -0.293, p < 0.001 |
-| n_active vs entropy instability (Klaeger) | r = -0.474, p < 0.001 |
-| Zero-active drug rank std | ~74 |
-| Active drug rank std | ~32 |
-| Entropy stability threshold | ~110 kinases |
-| Ratio stability threshold | >320 kinases |
+| Two-family: ratio vs. distribution family | r = 0.34–0.45 (Davis), 0.27–0.62 (Klaeger), 0.52–0.56 (Anastassiadis), 0.14–0.19 (Metz) |
+| Within-distribution-family correlation (all datasets) | r = 0.74–0.99 |
+| Ratio vs. entropy correlation (Davis / Klaeger) | r = 0.343 / 0.480 |
+| top1–top2 gap vs. ratio instability (Klaeger) | r = −0.341, p < 0.001 |
+| n_active vs. entropy instability (Klaeger) | r = −0.455, p < 0.001 |
+| Zero-active vs. active rank std (Klaeger) | ~73.8 vs. ~32.4 |
+| Zero-active vs. active rank std (Anastassiadis / Metz) | 37.6 vs. 22.0 / 178.7 vs. 108.2 |
+| Entropy panel-size stability threshold | ~110 kinases |
+| Ratio panel-size stability threshold | > 320 kinases |
+| Entropy operationalization sensitivity (literal vs. log-affinity) | r = 0.42 (Davis), −0.32 (Klaeger) |
 
 ### Repository structure
 
     .
-    +-- README.md
-    +-- RESEARCH_NOTES.md
-    +-- selectivity_analysis.py
-    +-- klaeger_analysis.py
-    +-- faers_pull.py
-    +-- panel_size_analysis.py
-    +-- davis_affinity.csv
-    +-- davis_drugs.csv
-    +-- davis_proteins.csv
-    +-- aan4368_Table_S2.xlsx
-    +-- klaeger_matrix.csv
-    +-- klaeger_selectivity_results.csv
-    +-- selectivity_results.csv
-    +-- faers_counts.csv
-    +-- clinical_safety_data.csv
-    +-- selectivity_outcomes_merged.csv
-    +-- extended_labels.json
-    +-- label_texts.json
-    +-- binding_profiles.png
-    +-- instability_by_family.png
-    +-- instability_correlations.png
-    +-- panel_size_stability.png
-    +-- selectivity_analysis.png
-    +-- selectivity_vs_outcomes.png
-    +-- paper/
-        +-- main.tex
-        +-- references.bib
-        +-- figures/
-        |   +-- binding_profiles.png
-        |   +-- instability_by_family.png
-        |   +-- panel_size_stability.png
-        |   +-- toc_graphic.png
-        +-- sections/
-            +-- abstract.tex
-            +-- introduction.tex
-            +-- related_work.tex
-            +-- methods.tex
-            +-- results.tex
-            +-- desiderata.tex
-            +-- discussion.tex
-            +-- conclusion.tex
+    ├── README.md, RESEARCH_NOTES.md
+    ├── selectivity_analysis.py, klaeger_analysis.py
+    ├── additional_datasets_analysis.py, metric_fidelity_robustness.py
+    ├── panel_size_analysis.py, candidate_measure.py, faers_pull.py
+    ├── davis_*.csv, klaeger_matrix.csv, aan4368_Table_S2.xlsx
+    ├── anastassiadis.xls, anastassiadis_matrix.csv
+    ├── metz.xls, metz_matrix.csv
+    ├── cross_dataset_summary.csv, *_selectivity_results.csv
+    ├── faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv
+    ├── *.png  (analysis figures)
+    └── paper/
+        ├── main.tex, references.bib, main.pdf
+        ├── figures/  (binding_profiles, instability_by_family, panel_size_stability,
+        │             cross_dataset_correlations, metric_fidelity, toc_graphic)
+        └── sections/ (abstract, introduction, related_work, methods, results,
+                       desiderata, discussion, conclusion)
 
 ### Citation
 
-    Vinogradova, P. (2025). Towards a Formal Definition of Kinase Inhibitor
-    Selectivity: Empirical Characterization of Definitional Instability and
-    Proposed Desiderata. ChemRxiv.
+    Vinogradova, P. (2025). Definitional Instability in Kinase Inhibitor
+    Selectivity: An Empirical Characterization Across Four Datasets and Required
+    Properties for a Well-Formed Measure. ChemRxiv.
     https://doi.org/10.26434/chemrxiv.15001618/v1

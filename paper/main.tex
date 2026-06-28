@@ -12,12 +12,13 @@
 \altaffiliation{ORCID: 0000-0003-3271-3841}
 \email{polina.vinogradova@iohk.io}
 
-\title{Towards a Formal Definition of Kinase Inhibitor Selectivity:
-  Empirical Characterization of Definitional Instability and Proposed Desiderata}
+\title{Definitional Instability in Kinase Inhibitor Selectivity:
+  An Empirical Characterization Across Four Datasets and Required Properties
+  for a Well-Formed Measure}
 
 \abbreviations{S-score, CATDS, pKd, FAERS}
-\keywords{kinase inhibitor selectivity, selectivity metrics, binding affinity,
-  axiomatic analysis, drug discovery, cheminformatics}
+\keywords{binding affinity, cheminformatics, drug discovery,
+  kinase inhibitor selectivity, selectivity metrics}
 
 \begin{document}
 
@@ -39,8 +40,9 @@ Specifically, Claude was used to assist with: data analysis code development and
 debugging in Python; literature search and identification of related work;
 drafting and editing of manuscript text; and research planning and
 interpretation of results.
-All scientific conclusions, the conceptual framework, the desiderata proposed in the Desiderata section, 
-and the final manuscript content were developed, verified, and approved by the author.
+All scientific conclusions, the conceptual framework, the required properties proposed in the
+Required Properties section, and the final manuscript content were developed, verified, and
+approved by the author.
 The author takes full responsibility for the accuracy and integrity of all
 content in this work.
 The use of Claude does not transfer any rights over the content of this manuscript
@@ -48,6 +50,14 @@ to Anthropic or any third party.
 \end{acknowledgement}
 
 \begin{suppinfo}
+Figure~S1: operationalization-sensitivity check comparing the entropy and Gini
+rankings computed in forms close to the original publications
+(association-constant weighting) with the baseline-subtracted log-affinity forms
+used in the main text.
+Clinical outcome analysis: methods and full results of the secondary analysis
+relating selectivity rankings to FAERS adverse-event report rates and FDA-label
+discontinuation rates for the FDA-approved Klaeger compounds, including the
+per-definition correlations and the openFDA queries used.
 A preprint of this manuscript is available on ChemRxiv at
 \url{https://doi.org/10.26434/chemrxiv.15001618/v1}.
 \end{suppinfo}
@@ -58,12 +68,23 @@ The Davis kinase inhibitor profiling dataset is available at
 \url{https://github.com/dingyan20/Davis-Dataset-for-DTA-Prediction}.
 The Klaeger et al.\ dataset is available as supplementary data to the
 original publication (Science, 2017, \url{https://doi.org/10.1126/science.aan4368}).
+The Anastassiadis et al.\ (\emph{Nat. Biotechnol.} 2011) and Metz et al.\
+(\emph{Nat. Chem. Biol.} 2011) datasets are available as supplementary data to
+their original publications
+(\url{https://doi.org/10.1038/nbt.2017}; \url{https://doi.org/10.1038/nchembio.530}).
 All analysis scripts, processed data files, and the \LaTeX\ source for
 this manuscript are available at
 \url{https://github.com/polinavino/kinase-selectivity-definitions}.
 No confidential data were used in this study.
 All results reported in this manuscript are fully reproducible from the
 publicly available data and code.
+
+\section*{Funding}
+This research received no specific grant from any funding agency in the public,
+commercial, or not-for-profit sectors.
+
+\section*{Conflict of Interest}
+The author declares no conflict of interest.
 
 \bibliography{references}
 

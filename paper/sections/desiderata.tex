@@ -1,13 +1,10 @@
-\section{Desiderata for a Well-Formed Selectivity Measure}
+\section{Required Properties for a Well-Formed Selectivity Measure}
 \label{sec:desiderata}
 
-The empirical findings of the Results section motivate four properties
-that any well-formed kinase inhibitor selectivity measure should satisfy.
-We present these as desiderata rather than axioms: they are necessary
-conditions motivated by observed failure modes of existing definitions, but
-they are not yet proven to be jointly sufficient to characterize a unique
-measure, nor is it known whether they are jointly satisfiable.
-Establishing these properties formally is the subject of future work.
+The empirical findings of the Results section motivate four properties that any
+well-formed kinase inhibitor selectivity measure should satisfy.
+Each property is stated below together with the observed failure mode that
+motivates it.
 
 Let $\mathbf{x} = (x_1, \ldots, x_N) \in \mathbb{R}^N$ denote a compound's
 binding profile across $N$ kinases, where $x_i = \mathrm{p}K_{d,i}$.
@@ -25,7 +22,7 @@ Compounds with no detected binding above the assay detection floor receive
 arbitrary selectivity scores under all four definitions studied here, producing
 rank instability with mean $\sigma \approx 74$ compared with $\sigma \approx
 32$ for active compounds (Type~1 instability, above).
-Selectivity is a property of binding; a compound that does not bind cannot be
+Selectivity is a property of binding, so a compound that does not bind cannot be
 meaningfully ranked relative to compounds that do.
 No existing definition incorporates an explicit reliability condition: both
 the S-score and selectivity entropy assign scores to compounds with no
@@ -46,9 +43,10 @@ large ratio score when $k=1$ (the gap to the next off-target may be large) but
 a near-zero score when $k=2$ (the gap between the tied targets is negligible).
 This produces the Type~2 instability identified in
 the instability taxonomy above, where top$_1$--top$_2$ gap is the
-strongest predictor of ratio instability ($r = -0.293$, $p < 0.001$).
+strongest predictor of ratio instability ($r = -0.341$, $p < 0.001$).
 Distribution-based definitions (entropy, Gini) satisfy a weaker version of
-this property because they do not privilege any single pairwise comparison.
+this property because they are symmetric functions of the full set of normalized
+activities, with no term that singles out a particular ranked off-target.
 
 \paragraph{D3 --- Distributional consistency.}
 The ranking induced by $f$ should be stable under small perturbations to the
@@ -77,39 +75,120 @@ Adding a sub-threshold binding interaction should not increase a compound's
 selectivity score.
 
 \textit{Motivation.}
-Ratio-based definitions can violate this property: if the new weak interaction
-becomes the reference off-target ($k=1$), the ratio to the primary target may
-increase, artifactually improving the apparent selectivity score.
-This failure mode is practically relevant when profiling panels differ in size
-or composition across experiments, as is common when comparing selectivity
-across different assay platforms or across datasets such as Davis and Klaeger.
-Distribution-based definitions satisfy D4 naturally, since adding a
-sub-threshold term to the probability distribution decreases or preserves
-entropy and Gini.
+The S-score and the Gini coefficient violate this property.
+Adding a kinase that the compound does not meaningfully bind increases the panel
+size without adding activity: this lowers the S-score's fraction of hit kinases
+and raises the Gini coefficient's inequality, in both cases inflating the
+apparent selectivity.
+A compound can therefore be made to look more selective simply by profiling it
+against more inactive kinases --- a serious problem when panels differ in size or
+composition across experiments, as between Davis and Klaeger.
+The entropy and the ratio satisfy D4: a sub-threshold target adds negligible
+weight to the entropy's normalized distribution and falls at or below the
+ratio's reference off-target, so neither score increases (verified empirically
+in the next section).
 
 \bigskip
-Table~\ref{tab:desiderata} summarizes which existing definitions satisfy each
-desideratum.
-No existing definition satisfies all four simultaneously.
-Whether a definition satisfying all four exists, and whether the four desiderata
-are jointly consistent, are open questions that we identify as the primary
-targets of a formal axiomatization.
+Table~\ref{tab:desiderata} summarizes which definitions satisfy each property.
+No existing definition satisfies all four simultaneously, but the candidate measure
+introduced next does.
 
 \begin{table}[h]
   \centering
-  \caption{Table 3. Satisfaction of desiderata by existing selectivity definitions.
-           $\checkmark$: satisfied by construction.
+  \caption{Satisfaction of the four required properties by existing selectivity
+           definitions and by the candidate measure of
+           Section~\ref{sec:candidate}.
+           $\checkmark$: satisfied (by construction, or verified empirically for
+           the candidate).
            $\sim$: partially satisfied or satisfied under additional assumptions.
            $\times$: violated in general.}
   \label{tab:desiderata}
-  \begin{tabular}{lcccc}
+  \begin{tabular}{lccccc}
     \toprule
-    Desideratum & S-score & Entropy & Gini & Ratio \\
+    Property & S-score & Entropy & Gini & Ratio & Candidate \\
     \midrule
-    D1 (reliability threshold)        & $\times$ & $\times$ & $\times$ & $\times$ \\
-    D2 (bounded gap sensitivity)      & $\sim$   & $\checkmark$ & $\checkmark$ & $\times$ \\
-    D3 (distributional consistency)   & $\sim$   & $\times$ & $\times$ & $\checkmark$ \\
-    D4 (monotonicity, weak off-target)& $\checkmark$ & $\checkmark$ & $\checkmark$ & $\times$ \\
+    D1 (reliability threshold)        & $\times$ & $\times$     & $\times$     & $\times$     & $\checkmark$ \\
+    D2 (bounded gap sensitivity)      & $\sim$   & $\checkmark$ & $\checkmark$ & $\times$     & $\checkmark$ \\
+    D3 (distributional consistency)   & $\sim$   & $\times$     & $\times$     & $\checkmark$ & $\checkmark$ \\
+    D4 (monotonicity, weak off-target)& $\times$ & $\checkmark$ & $\times$     & $\checkmark$ & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}
+
+\subsection{A Candidate Measure}
+\label{sec:candidate}
+
+The four properties can indeed be satisfied, and the selectivity entropy is the
+natural starting point.
+Of the existing definitions it is the only one that already satisfies both D2 and
+D4 (Table~\ref{tab:desiderata}): because it scores the whole normalized profile
+rather than a single pairwise gap, it neither privileges a reference off-target
+(D2) nor rewards the addition of non-binders (D4).
+It fails only D1, having no reliability gate, and D3, because its hard
+active/inactive cutoff $\max(x_i - \beta, 0)$ makes the ranking sensitive to the
+baseline.
+The ratio cannot be repaired this way, as it fails D2 by construction, and the
+S-score and Gini violate D4 intrinsically. The entropy is therefore the one
+existing measure that can reach all four properties through purely local changes.
+The candidate makes exactly two: it adds the D1 reliability gate, and it replaces
+the hard cutoff with a smooth (softplus) hinge that removes the baseline
+sensitivity.
+For a profile $\mathbf{x}$ with $\max_i x_i > \tau^*$ (and undefined otherwise,
+satisfying D1), define
+\begin{equation}
+  w_i = T \log\!\big(1 + e^{(x_i - x_0)/T}\big), \qquad
+  p_i = \frac{w_i}{\sum_j w_j}, \qquad
+  f(\mathbf{x}) = \sum_i p_i \log_2 p_i,
+\end{equation}
+where $x_0$ is the fixed assay detection floor and $T$ a smoothing width in
+$\mathrm{p}K_d$ units.
+The score is minus the Shannon entropy of the smoothed, normalized profile ---
+equivalently, minus the logarithm of the effective number of targets the
+compound binds.
+
+This measure satisfies all four properties.
+D1 holds by the explicit reliability gate.
+D2 holds because $f$ is a symmetric function of the full normalized profile and
+references no particular off-target.
+D3 holds because the smooth hinge has no hard active/inactive boundary, so no
+kinase abruptly enters or leaves the active set as $x_0$ shifts: empirically, the
+candidate's ranking is essentially invariant to the floor over
+$x_0 \in [4.5, 6.5]$ (worst-case pairwise Spearman $\rho = 0.99$), whereas the
+existing entropy's ranking can reverse over the same range ($\rho = -0.95$).
+D4 holds because the softplus weight vanishes below the floor and is monotone, so
+adding a sub-threshold target never raises the score (verified for $100\%$ of
+Klaeger compounds).
+
+A usable measure must also be recoverable from realistic panels.
+Applying the subsampling analysis of
+Section~\ref{sec:results:panelsize} to the candidate (same grid and 50 random
+subpanels per size), the smallest panel at which its ranking reaches mean
+Spearman $\rho > 0.90$ with its full-panel ranking is $p^* \approx 170$ kinases
+(Figure~\ref{fig:candidate}), placing it in the fast regime alongside the
+entropy ($p^* \approx 110$) and S-score ($\approx 140$) and well ahead of the
+Gini ($\approx 290$) and the ratio (which does not reach $\rho = 0.90$ even at
+the full panel).
+The candidate thus recovers its full-panel ranking from roughly half a typical
+large panel.
+
+We present this as a candidate, not a unique solution.
+The properties are necessary conditions, and we have not shown that they single
+out a measure of this form. The smoothing width $T$ is itself a design choice
+($T \approx 1$ gives the values above).
+Establishing whether the properties are jointly satisfiable only by measures of
+this family, and whether a uniqueness result analogous to Shannon's holds, is the
+subject of future work.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/candidate_panel_convergence}
+  \caption{Panel-size convergence of the candidate measure compared with the
+           four existing definitions (Klaeger, 50 random subpanels per size).
+           Curves show the mean Spearman correlation between the ranking computed
+           on a random subpanel and the full-panel ranking; $p^*$ (legend) is the
+           smallest panel reaching mean $\rho > 0.90$.
+           The candidate converges in the fast regime ($p^* \approx 170$),
+           comparable to the entropy and S-score and well ahead of the Gini and
+           ratio.}
+  \label{fig:candidate}
+\end{figure}
