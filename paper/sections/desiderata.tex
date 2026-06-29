@@ -96,8 +96,7 @@ introduced next does.
 \begin{table}[h]
   \centering
   \caption{Satisfaction of the four required properties by existing selectivity
-           definitions and by the candidate measure of
-           Section~\ref{sec:candidate}.
+           definitions and by the candidate measure introduced below.
            $\checkmark$: satisfied (by construction, or verified empirically for
            the candidate).
            $\sim$: partially satisfied or satisfied under additional assumptions.
@@ -160,8 +159,8 @@ adding a sub-threshold target never raises the score (verified for $100\%$ of
 Klaeger compounds).
 
 A usable measure must also be recoverable from realistic panels.
-Applying the subsampling analysis of
-Section~\ref{sec:results:panelsize} to the candidate (same grid and 50 random
+Applying the panel-size subsampling analysis described above to the candidate
+(same grid and 50 random
 subpanels per size), the smallest panel at which its ranking reaches mean
 Spearman $\rho > 0.90$ with its full-panel ranking is $p^* \approx 170$ kinases
 (Figure~\ref{fig:candidate}), placing it in the fast regime alongside the
@@ -174,7 +173,10 @@ large panel.
 We present this as a candidate, not a unique solution.
 The properties are necessary conditions, and we have not shown that they single
 out a measure of this form. The smoothing width $T$ is itself a design choice
-($T \approx 1$ gives the values above).
+($T \approx 1$ gives the values above): as $T \to 0$ the softplus hinge
+$T\log(1+e^{(x_i-x_0)/T})$ converges to the hard cutoff $\max(x_i - x_0, 0)$,
+recovering the standard entropy and reintroducing its D3 baseline sensitivity,
+so a strictly positive $T$ is what buys distributional consistency.
 Establishing whether the properties are jointly satisfiable only by measures of
 this family, and whether a uniqueness result analogous to Shannon's holds, is the
 subject of future work.

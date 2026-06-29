@@ -1,30 +1,50 @@
-Dear Editors of Molecular Informatics,
+Dear Professor Baumann,
 
-We resubmit the revised manuscript "Towards a Formal Definition of Kinase
-Inhibitor Selectivity: Empirical Characterization of Definitional Instability
-and Proposed Desiderata" as a Research Article, addressing the editorial
-comments as follows:
+I am pleased to submit a revised version of manuscript 7756455, now titled
+"Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
+Characterization Across Four Datasets and Required Properties for a Well-Formed
+Measure" (previously "Towards a Formal Definition of Kinase Inhibitor
+Selectivity: Empirical Characterization of Definitional Instability and Proposed
+Desiderata"), as a Research Article (Full Paper).
 
-1. Corresponding author email: The email address in the submission system
-has been updated to polina.vinogradova@iohk.io to match the manuscript.
+I am grateful to the reviewer for a constructive assessment. The manuscript has
+been substantially revised in response, most notably by:
 
-2. Figure citations: In-text citations for Figure 1 and Figure 2 have been
-added to the Results section at the appropriate locations.
+  - simplifying the language and removing the speculative passages identified,
+    including deletion of the "Relation to Formal Methods" section and replacing
+    the term "desiderata" with "required properties" throughout;
 
-The manuscript has not been submitted elsewhere. All data and code are
-publicly available at
-https://github.com/polinavino/kinase-selectivity-definitions.
+  - extending the analysis from two datasets to four (adding the Anastassiadis
+    and Metz datasets, spanning three assay technologies), and explicitly
+    motivating the exclusion of the Gao and Patricelli datasets;
 
-A preprint has been deposited on ChemRxiv
-(https://doi.org/10.26434/chemrxiv.15001618/v1).
+  - deriving and explaining each selectivity definition from its original
+    publication, with a new "Faithfulness to the original definitions"
+    subsection and a supporting sensitivity check; and
 
-We suggest the following five reviewers:
+  - introducing a concrete candidate measure that satisfies all four required
+    properties, strengthening the contribution beyond the previous version.
+
+A detailed point-by-point response to the reviewer's comments is provided in the
+accompanying author response letter.
+
+The manuscript has not been submitted or published elsewhere. A preprint is
+available on ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1). All data
+and code are publicly available at
+https://github.com/polinavino/kinase-selectivity-definitions, and no
+confidential data were used. I declare no conflict of interest, and the work
+received no specific external funding. The use of a large language model
+assistant in preparing the manuscript is disclosed in the Acknowledgement.
+
+I suggest the following reviewers:
 1. Juergen Bajorath, University of Bonn (bajorath@bit.uni-bonn.de)
 2. Pascal Bonnet, University of Orleans (pascal.bonnet@univ-orleans.fr)
 3. Bernhard Kuster, Technical University of Munich (kuster@tum.de)
 4. Stefan Knapp, Goethe University Frankfurt (knapp@pharmchem.uni-frankfurt.de)
 5. John Chodera, Memorial Sloan Kettering Cancer Center
    (john.chodera@choderalab.org)
+
+Thank you for considering this revised manuscript.
 
 Sincerely,
 Polina Vinogradova

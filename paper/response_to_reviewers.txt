@@ -1,0 +1,213 @@
+Response to Reviewers — Manuscript 7756455
+
+"Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
+Characterization Across Four Datasets and Required Properties for a
+Well-Formed Measure"
+(previously: "Towards a Formal Definition of Kinase Inhibitor Selectivity:
+Empirical Characterization of Definitional Instability and Proposed Desiderata")
+
+Polina Vinogradova — Input Output Global, Singapore
+polina.vinogradova@iohk.io — ORCID 0000-0003-3271-3841
+
+
+Dear Professor Baumann,
+
+Thank you for the opportunity to revise my manuscript. I thank Reviewer 1 for a
+careful and constructive reading; the comments have materially improved the
+paper. In response, the manuscript has been revised on three main axes:
+
+  (1) the language has been simplified and the speculative passages flagged by
+      the reviewer have been removed, including the deletion of the entire
+      "Relation to Formal Methods" section and the replacement of the term
+      "desiderata" with "required properties" throughout (including in the
+      title);
+
+  (2) the analysis has been extended from two datasets to four, adding the
+      Anastassiadis and Metz datasets and explicitly motivating the exclusion
+      of the Gao and Patricelli datasets; and
+
+  (3) the selectivity definitions are now derived and explained from their
+      original publications, with a new "Faithfulness to the original
+      definitions" subsection and a supporting sensitivity check (Figure S1).
+
+In addition, the revision strengthens the paper's contribution by introducing a
+concrete candidate measure that satisfies all four required properties, so that
+the paper no longer ends on open questions alone but demonstrates that the
+properties are jointly satisfiable.
+
+A point-by-point response follows. Reviewer text is quoted, and the location of
+each change is given by section name.
+
+
+====================================================================
+REVIEWER 1
+====================================================================
+
+GENERAL
+"...a good contribution to the field as it will help to work towards one
+uniformly accepted selectivity measure, if there exists one."
+
+I thank the reviewer for this assessment, and have taken the suggestion of a
+"uniformly accepted measure" seriously: the revised manuscript now proposes a
+concrete candidate measure (new section "A Candidate Measure") that satisfies
+all four required properties and recovers its full-panel ranking from roughly
+half a typical panel.
+
+
+--------------------------------------------------------------------
+A. Overly complex language; concepts cited to impress rather than explain
+--------------------------------------------------------------------
+
+I agree, and have simplified the writing throughout, removing the specific
+passages identified.
+
+A.1 — Use of the word "desiderata".
+The term has been removed everywhere and replaced with "required properties"
+(or simply "properties"). The title, the section heading ("Required Properties
+for a Well-Formed Selectivity Measure"), the abstract, and the running text
+have all been updated.
+
+A.2 — "The desiderata proposed here are intended as the empirical foundation
+for a future formal axiomatization ... in the tradition of Shannon's
+characterization of entropy and Arrow's analysis of social choice functions."
+This sentence has been removed. The Introduction now ends its list of
+contributions on the concrete candidate measure, with no free-floating
+forward-looking claim.
+
+A.3 — "We present these as desiderata rather than axioms: they are necessary
+conditions ... Establishing these properties formally is the subject of future
+work."
+This research-proposal phrasing has been removed from the properties section.
+That section now opens plainly ("The empirical findings of the Results section
+motivate four properties that any well-formed kinase inhibitor selectivity
+measure should satisfy. Each property is stated below together with the observed
+failure mode that motivates it.") and proceeds directly to the properties. The
+single remaining statement about future work is now a brief, concrete sentence
+at the end of the candidate-measure section.
+
+A.4 — "Relation to Formal Methods" section (the Shannon/Arrow/Agda/Lean
+passage).
+This entire section has been deleted. The one analogy I retain — Shannon's
+identification of properties that single out entropy — now appears once, briefly
+and in plain language, in the Introduction and is echoed in a single closing
+sentence of the Conclusion. References to proof assistants (Agda/Lean) have been
+removed, as has the speculative impossibility-result discussion. The Related
+Work subsection on axiomatic approaches has likewise been trimmed to its
+factual content.
+
+
+--------------------------------------------------------------------
+B. Use additional kinase selectivity datasets (Gao; Metz; Patricelli;
+   Anastassiadis), or motivate why not
+--------------------------------------------------------------------
+
+I have substantially expanded the dataset coverage. The analysis now spans
+four datasets across three assay technologies and two readout types, and every
+main result (the two-family clustering and the instability predictors) is shown
+to replicate across all four (new Results subsection "The Two-Family Structure
+Replicates Across Assay Technologies", and new Figure 1).
+
+  - Anastassiadis et al. (Nat. Biotechnol. 2011): ADDED. 178 inhibitors x 300
+    kinases, single-concentration radiometric activity assay (percent residual
+    activity, converted to percent inhibition). See Methods, "Datasets".
+
+  - Metz et al. (Nat. Chem. Biol. 2011): ADDED. 704 compounds profiled against
+    >=50 of 172 kinases, pKi affinities. See Methods, "Datasets".
+
+  - Gao et al. (Biochem. J. 2013): NOT ADDED, with stated reason. It is a
+    single-concentration functional inhibition assay of the same readout type
+    as the already-included Anastassiadis dataset, and its raw data are not
+    openly redistributable; including it would add a second instance of an
+    existing assay type rather than a new modality. See Methods, "Datasets".
+
+  - Patricelli et al. (Chem. Biol. 2011): NOT ADDED, with stated reason. It
+    profiles only a small number of inhibitors against native kinases as a
+    proof of concept for the KiNativ platform; a ranking-stability analysis
+    requires many compounds to produce a meaningful ranking, so this dataset is
+    not suited to the present comparison. See Methods, "Datasets".
+
+The four datasets together span competition binding (Davis), chemoproteomics
+(Klaeger), and functional activity (Anastassiadis, Metz/affinity), giving the
+cross-technology robustness the reviewer's comment was aimed at.
+
+
+--------------------------------------------------------------------
+C. Equations presented without context; explain their derivation from the
+   original publications and what they mean
+--------------------------------------------------------------------
+
+I agree this was a gap, since the definitions are the foundation of the paper.
+The "Selectivity Definitions and Parameterization" section has been rewritten so
+that each definition is now (i) traced to its original source, (ii) related to
+the form in which it is implemented here, and (iii) explained in words for the
+non-specialist:
+
+  - S-score: I now state Karaman et al.'s original definition (fraction of the
+    panel inhibited below a percent-of-control cutoff, reported as S(35), S(10),
+    S(1)) and explain that, working on the pKd scale, the equivalent "bound"
+    criterion is an affinity threshold tau, and that sweeping tau reproduces
+    their family of cutoffs.
+
+  - Selectivity entropy: I now give Uitdehaag and Zaman's original
+    association-constant weighting (K_a,i = 1/K_d,i, p_i = K_a,i / sum_j K_a,j)
+    and explain that I implement the entropy on the same log-affinity scale as
+    the other metrics, with the baseline beta made an explicit parameter. I note
+    that the two weightings can rank compounds differently and that this is
+    itself an instance of the definitional instability the paper characterizes.
+
+  - Gini coefficient: I now explain the Lorenz-curve construction (twice the
+    area between the cumulative-binding curve and the line of equal
+    distribution), note that Graczyk computed it from percent-inhibition values,
+    and state that I apply the standard discrete Gini formula to the same
+    baseline-subtracted log-affinities used for the entropy, with an
+    interpretation of the G->1 and G->0 limits.
+
+  - Ratio: I now present it as the prototypical member of the ratio family
+    (which includes Klaeger's CATDS), written as a fold-selectivity in log
+    units, and explain why I use this simpler form (the reference off-target
+    index k becomes an explicit parameter whose effect can be studied directly).
+
+In addition, a new subsection "Faithfulness to the original definitions" states
+explicitly which metrics are computed exactly as in their sources (S-score,
+ratio) and which were re-operationalized onto the common log-affinity scale
+(entropy, Gini). To show that this choice does not silently drive the
+conclusions, I recomputed the entropy and Gini in forms close to the originals
+and compared rankings; the two operationalizations differ substantially
+(Figure S1), which I report transparently as further evidence that the
+operationalization of a named metric is itself a source of instability rather
+than a neutral implementation detail.
+
+
+====================================================================
+ADDITIONAL CORRECTIONS (not requested by the reviewer)
+====================================================================
+
+While revising, I addressed three further items:
+
+1. Candidate-measure property arguments. The motivations for D3 and D4 of the
+   candidate now include a brief analytic argument alongside the empirical
+   check: D4 follows because the softplus weight is monotone and vanishes below
+   the floor (so adding a sub-threshold target cannot raise the score), and D3
+   follows because the smooth hinge has no hard active/inactive boundary
+   (verified empirically: worst-case pairwise Spearman rho = 0.99 for the
+   candidate vs. -0.95 for the existing hard-cutoff entropy over the floor
+   range).
+
+2. Sensitivity to the smoothing width T. I now note explicitly that as T -> 0
+   the softplus hinge converges to the hard cutoff max(x_i - x_0, 0), recovering
+   the standard entropy and reintroducing its D3 baseline sensitivity; a
+   strictly positive T is therefore what buys distributional consistency
+   (candidate-measure section).
+
+3. Cross-references. Two in-text cross-references to unnumbered sections
+   rendered as blank section numbers in the previous PDF. These have been
+   rewritten as named references, consistent with the rest of the manuscript
+   and with the journal's convention for sections that are not numbered.
+
+
+I believe the manuscript is significantly improved and hope it is now suitable
+for publication in Molecular Informatics. Thank you again for the constructive
+review.
+
+Sincerely,
+Polina Vinogradova
