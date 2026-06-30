@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\pagestyle{empty}
+\begin{document}
+\begin{table}
+  \caption{Table 1. Spearman correlations between median rankings by definition
+           family. Upper triangle: Davis ($n=68$). Lower triangle: Klaeger
+           ($n=222$).}
+  \begin{tabular}{lcccc}
+    \toprule
+                & S-score & Entropy & Gini  & Ratio \\
+    \midrule
+    S-score     & ---     & 0.949   & 0.954 & 0.454 \\
+    Entropy     & 0.910   & ---     & 0.999 & 0.343 \\
+    Gini        & 0.745   & 0.869   & ---   & 0.343 \\
+    Ratio       & 0.265   & 0.480   & 0.617 & ---   \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{document}

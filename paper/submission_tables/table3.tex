@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\pagestyle{empty}
+\begin{document}
+\begin{table}
+  \caption{Table 3. Satisfaction of the four required properties by existing
+           selectivity definitions and by the candidate measure.
+           $\checkmark$: satisfied (by construction, or verified empirically for
+           the candidate). $\sim$: partially satisfied or satisfied under
+           additional assumptions. $\times$: violated in general.}
+  \begin{tabular}{lccccc}
+    \toprule
+    Property & S-score & Entropy & Gini & Ratio & Candidate \\
+    \midrule
+    D1 (reliability threshold)         & $\times$ & $\times$     & $\times$     & $\times$     & $\checkmark$ \\
+    D2 (bounded gap sensitivity)       & $\sim$   & $\checkmark$ & $\checkmark$ & $\times$     & $\checkmark$ \\
+    D3 (distributional consistency)    & $\sim$   & $\times$     & $\times$     & $\checkmark$ & $\checkmark$ \\
+    D4 (monotonicity, weak off-target) & $\times$ & $\checkmark$ & $\times$     & $\checkmark$ & $\checkmark$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{document}

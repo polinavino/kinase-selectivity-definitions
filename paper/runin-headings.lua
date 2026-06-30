@@ -18,6 +18,33 @@ function Div(div)
   return nil
 end
 
+-- Number figures and tables so captions read "Figure N." / "Table N." in
+-- document order, matching the PDF (pandoc does not auto-number for docx).
+local fig_count = 0
+local tbl_count = 0
+
+local function prepend_label(caption, label)
+  if caption and caption.long and #caption.long > 0 then
+    local first = caption.long[1]
+    if first.content then
+      table.insert(first.content, 1, pandoc.Space())
+      table.insert(first.content, 1, pandoc.Str(label))
+    end
+  end
+end
+
+function Figure(fig)
+  fig_count = fig_count + 1
+  prepend_label(fig.caption, "Figure " .. fig_count .. ".")
+  return fig
+end
+
+function Table(tbl)
+  tbl_count = tbl_count + 1
+  prepend_label(tbl.caption, "Table " .. tbl_count .. ".")
+  return tbl
+end
+
 -- Convert LaTeX \paragraph run-in headings (pandoc Header level >= 4) into
 -- run-in bold text merged into the following paragraph, matching the PDF where
 -- the heading and its body start on the same line.

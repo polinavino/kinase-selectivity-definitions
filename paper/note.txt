@@ -1,0 +1,12 @@
+Note on keywords:
+
+The keyword taxonomy on the submission portal appeared to be experiencing a
+database error (displaying hematology/serum iron terms across all fields). I
+selected Biology, Chemistry, and Research Methodology to proceed, but the
+intended keywords for this paper (max. 5, alphabetical) are:
+
+  binding affinity, cheminformatics, drug discovery,
+  kinase inhibitor selectivity, selectivity metrics
+
+(cheminformatics and drug discovery are taken from the journal Keyword
+Catalog.) These are also the keywords recorded in the manuscript source.

@@ -12,10 +12,17 @@ set -euo pipefail
 
 NATURE="$(kpsewhich nature.csl)"
 
+# references.bib uses achemso's "and {et~al.}" form so the LaTeX/PDF renders
+# "et al." (achemso prints a literal "others" otherwise). citeproc wants the
+# standard "and others" marker, so derive a citeproc-form bib on the fly.
+CSL_BIB="${TMPDIR:-/tmp}/refs_csl_$$.bib"
+trap 'rm -f "$CSL_BIB"' EXIT
+sed 's/and {et~al\.}}/and others}/' references.bib > "$CSL_BIB"
+
 pandoc main.tex \
   --resource-path=.:sections \
   --citeproc \
-  --bibliography=references.bib \
+  --bibliography="$CSL_BIB" \
   --csl="$NATURE" \
   --metadata reference-section-title=References \
   --lua-filter=runin-headings.lua \

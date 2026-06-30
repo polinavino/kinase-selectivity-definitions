@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\pagestyle{empty}
+\begin{document}
+\begin{table}
+  \caption{Table 2. Spearman correlations between binding profile features and
+           within-family rank instability on the Klaeger dataset ($n=206$
+           active drugs). Significance: * $p<0.05$, ** $p<0.01$, *** $p<0.001$.}
+  \begin{tabular}{lcccc}
+    \toprule
+    Feature & S-score & Entropy & Gini & Ratio \\
+    \midrule
+    $n_\mathrm{active}$      & $-0.350^{***}$ & $-0.455^{***}$ & $-0.166^{*}$   & $-0.040$ \\
+    top$_1$--top$_2$ gap     & $+0.058$       & $+0.128$       & $+0.109$       & $-0.341^{***}$ \\
+    Active affinity std      & $-0.386^{***}$ & $-0.215^{**}$  & $-0.176^{*}$   & $-0.107$ \\
+    Active affinity range    & $-0.458^{***}$ & $-0.318^{***}$ & $-0.163^{*}$   & $-0.116$ \\
+    top$_2$ $\mathrm{p}K_d$  & $-0.394^{***}$ & $-0.282^{***}$ & $-0.268^{***}$ & $+0.186^{**}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{document}

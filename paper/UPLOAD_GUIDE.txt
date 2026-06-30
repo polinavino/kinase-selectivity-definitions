@@ -1,0 +1,49 @@
+Molecular Informatics — revised submission (ms 7756455)
+Which file to upload in each slot
+========================================================
+
+MAIN DOCUMENT (Word, with tracked changes)
+  Your Google-Docs tracked-changes file (the full manuscript text with redline
+  markup vs. the reviewed version).
+  - This is the marked-up Main Document.
+  - Keep the figure and table CAPTIONS in it. Figures and tables themselves are
+    uploaded separately (see below); at revision Molecular Informatics wants
+    them as separate files, so you may either leave them embedded for the
+    reviewer's convenience or replace each with a "[Figure N here]" /
+    "[Table N here]" callout. Leaving them embedded is the safer default.
+
+CLEAN MAIN DOCUMENT (Word, no tracked changes) — if the system asks for one
+  molecular_informatics_submission.docx
+
+AUTHOR RESPONSE LETTER
+  response_to_reviewers.txt  (paste into the response box, or upload as-is)
+
+COVER LETTER
+  cover_letter.txt
+
+FIGURES  (one file per figure, separate slot each)  -> submission_figures/
+  Figure1.png  = two-family structure across four datasets
+  Figure2.png  = best predictor of instability per family
+  Figure3.png  = representative binding profiles (3 instability types)
+  Figure4.png  = panel-size stability of existing definitions
+  Figure5.png  = panel-size convergence of the candidate measure
+
+TABLES  (one file per table, separate slot each)  -> submission_tables/
+  Table1.docx  = cross-family Spearman correlations
+  Table2.docx  = profile-feature vs. instability correlations
+  Table3.docx  = property satisfaction by definition
+
+GRAPHICAL ABSTRACT / TOC
+  Image:  figures/toc_graphic.png
+  Text:   graphical_abstract_text.txt   (<= 80 words / 3 sentences)
+
+LATEX SOURCE (optional — "Production"/"Supplementary for review" slot)
+  kinase-selectivity-latex-source.zip   (compiles main.pdf with: latexmk -pdf main.tex)
+
+Notes
+-----
+- Figures are PNG at ~300 dpi at their print widths (the multi-panel figures are
+  2000-2400 px wide). If the system requires TIFF/EPS or a higher nominal dpi,
+  the plotting scripts can re-export; Figures 4-5 use random subsampling, so a
+  re-run will shift those curves slightly (the reported numbers stay the same).
+- The Tables .docx files are editable Word tables, each with its caption.
