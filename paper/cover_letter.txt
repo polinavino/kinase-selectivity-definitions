@@ -2,8 +2,8 @@ Dear Professor Baumann,
 
 I am pleased to submit a revised version of manuscript 7756455, now titled
 "Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization Across Four Datasets and Required Properties for a Well-Formed
-Measure" (previously "Towards a Formal Definition of Kinase Inhibitor
+Characterization and Required Properties for a Well-Formed Measure"
+(previously "Towards a Formal Definition of Kinase Inhibitor
 Selectivity: Empirical Characterization of Definitional Instability and Proposed
 Desiderata"), as a Research Article (Full Paper).
 

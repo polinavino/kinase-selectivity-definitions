@@ -1,8 +1,7 @@
 Response to Reviewers — Manuscript 7756455
 
 "Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization Across Four Datasets and Required Properties for a
-Well-Formed Measure"
+Characterization and Required Properties for a Well-Formed Measure"
 (previously: "Towards a Formal Definition of Kinase Inhibitor Selectivity:
 Empirical Characterization of Definitional Instability and Proposed Desiderata")
 
