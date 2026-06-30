@@ -5,8 +5,8 @@ Characterization and Required Properties for a Well-Formed Measure"
 (previously: "Towards a Formal Definition of Kinase Inhibitor Selectivity:
 Empirical Characterization of Definitional Instability and Proposed Desiderata")
 
-Polina Vinogradova — Input Output Global, Singapore
-polina.vinogradova@iohk.io — ORCID 0000-0003-3271-3841
+Polina Vinogradova — Independent Researcher
+polina.vino@gmail.com — ORCID 0000-0003-3271-3841
 
 
 Dear Professor Baumann,
