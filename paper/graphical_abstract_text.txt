@@ -3,9 +3,8 @@ Characterization and Required Properties for a Well-Formed Measure
 
 Polina Vinogradova*
 
-Across four kinase profiling datasets and three assay technologies, selectivity
-definitions cluster into two families that measure different properties, and
-rank instability is predictable from a compound's binding profile. We (1) identify
-three distinct instability sources, (2) propose four properties that any
-well-formed selectivity measure should satisfy, and (3) propose a measure that
-satisfies all four, which no existing definition does.
+Across four kinase profiling datasets spanning three assay technologies,
+selectivity definitions cluster into two families measuring different
+properties, and rank instability is predictable from binding-profile shape.
+We identify three instability sources and derive four properties that no
+existing selectivity measure satisfies, then propose one that does.
