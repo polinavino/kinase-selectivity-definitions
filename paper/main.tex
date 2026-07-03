@@ -17,8 +17,8 @@
   for a Well-Formed Measure}
 
 \abbreviations{S-score, CATDS, pKd, FAERS}
-\keywords{binding affinity, cheminformatics, drug discovery,
-  kinase inhibitor selectivity, selectivity metrics}
+\keywords{binding affinities, binding selectivity, cancer drug discovery,
+  cheminformatics, kinase inhibition, research methodology}
 
 \begin{document}
 
@@ -49,19 +49,6 @@ The use of Claude does not transfer any rights over the content of this manuscri
 to Anthropic or any third party.
 \end{acknowledgement}
 
-\begin{suppinfo}
-Figure~S1: operationalization-sensitivity check comparing the entropy and Gini
-rankings computed in forms close to the original publications
-(association-constant weighting) with the baseline-subtracted log-affinity forms
-used in the main text.
-Clinical outcome analysis: methods and full results of the secondary analysis
-relating selectivity rankings to FAERS adverse-event report rates and FDA-label
-discontinuation rates for the FDA-approved Klaeger compounds, including the
-per-definition correlations and the openFDA queries used.
-A preprint of this manuscript is available on ChemRxiv at
-\url{https://doi.org/10.26434/chemrxiv.15001618/v1}.
-\end{suppinfo}
-
 \section*{Data and Software Availability}
 All data and software used in this study are publicly available.
 The Davis kinase inhibitor profiling dataset is available at
@@ -74,10 +61,16 @@ their original publications
 (\url{https://doi.org/10.1038/nbt.2017}; \url{https://doi.org/10.1038/nchembio.530}).
 All analysis scripts, processed data files, and the \LaTeX\ source for
 this manuscript are available at
-\url{https://github.com/polinavino/kinase-selectivity-definitions}.
+\url{https://github.com/polinavino/kinase-selectivity-definitions};
+this repository includes the code and full per-definition results for the
+secondary clinical-outcome analysis (FAERS adverse-event report rates and
+FDA-label discontinuation rates for the FDA-approved Klaeger compounds,
+with the openFDA queries used).
 No confidential data were used in this study.
 All results reported in this manuscript are fully reproducible from the
 publicly available data and code.
+A preprint of this manuscript is available on ChemRxiv at
+\url{https://doi.org/10.26434/chemrxiv.15001618/v1}.
 
 \section*{Funding}
 This research received no specific grant from any funding agency in the public,

@@ -13,7 +13,7 @@ convention of the DeepDTA benchmark.\cite{DeepDTA}
 % Pairs for which no binding was detected at the screening concentration of
 % 10~$\mu$M were assigned $\mathrm{p}K_d = 5.0$, corresponding to a $K_d$ of
 % 1~mM, which represents the detection floor of the assay.
-The resulting affinity matrix is complete ($68 \times 433$, 29{,}444 entries).
+The resulting affinity matrix is complete ($68 \times 433$, 29{,}444 entries),
 with all non-binding pairs assigned the detection-floor value
 $\mathrm{p}K_d = 5.0$ (corresponding to a $K_d$ of 1~mM).
 This is the standard convention for the dataset\cite{DeepDTA,Bosc2017} and
@@ -33,11 +33,11 @@ above.
 Missing entries, representing kinase--inhibitor combinations not detected in
 the assay, were assigned the background value $\mathrm{p}K_d = 5.0$.
 The resulting Klaeger matrix is $222 \times 343$.
-The fraction of active entries (pKd $> 6$, i.e.\ $K_d < 1~\mu$M) is 17.9\% for
-Davis and 3.6\% for Klaeger, and are recorded at the background value
-whenever weak interactions fall below the limit of detection.
-These reflect the more stringent detection threshold
-of the chemoproteomic assay.
+Active entries (pKd $> 6$, i.e.\ $K_d < 1~\mu$M) make up 17.9\% of the Davis
+matrix and 3.6\% of the Klaeger matrix. Weaker interactions that fall below the
+limit of detection are recorded at the background value.
+The lower active fraction for Klaeger reflects the more stringent detection
+threshold of the chemoproteomic assay.
 
 To test whether our findings depend on the assay technology, we added two
 further datasets that measure kinase inhibition by different means.
@@ -182,11 +182,26 @@ To confirm that this choice does not silently determine our conclusions, we
 recomputed the entropy and Gini in forms closer to the originals
 (association-constant weighting) and compared the resulting rankings with the
 log-affinity forms.
-The two operationalizations differ substantially --- for entropy, Spearman
+The two operationalizations differ substantially: for entropy, Spearman
 $r = 0.42$ (Davis) and $-0.32$ (Klaeger), while for Gini, $r = 0.11$ and $-0.46$
-(Supporting Information, Figure~S1). This confirms that the operationalization
+(Figure~\ref{fig:fidelity}). This confirms that the operationalization
 of a named metric is itself a source of the definitional instability we report,
 not a neutral implementation detail.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{figures/metric_fidelity}
+  \caption{Operationalization sensitivity of the entropy and Gini coefficient.
+           For each dataset, the compound selectivity ranking computed in a form
+           close to the original publication (association-constant weighting) is
+           plotted against the baseline-subtracted log-affinity form used in the
+           main text. Top row: selectivity entropy; bottom row: Gini coefficient.
+           The two operationalizations of the same named metric differ
+           substantially, and the entropy ranking even reverses on Klaeger,
+           confirming that the operationalization of a named metric is itself a
+           source of the definitional instability we report.}
+  \label{fig:fidelity}
+\end{figure}
 
 \subsection{Rank Stability Analysis}
 \label{sec:methods:stability}
@@ -220,5 +235,6 @@ Analyses were performed in Python 3.10 using NumPy, pandas, and
 SciPy.\cite{NumPy,pandas,SciPy}
 A secondary analysis relating selectivity rankings to clinical adverse-event
 outcomes (FAERS report rates and FDA-label discontinuation rates for the
-FDA-approved Klaeger compounds) is summarized in the Limitations section 
-and reported in full in the Supporting Information section.
+FDA-approved Klaeger compounds) is summarized in the Limitations section.
+The analysis code and full per-definition results are available in the code
+repository (see Data and Software Availability).

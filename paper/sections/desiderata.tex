@@ -13,7 +13,7 @@ higher values indicate greater selectivity.
 A selectivity ranking over a set of compounds is induced by ordering their
 $f$-scores.
 
-\paragraph{D1 --- Reliability threshold.}
+\paragraph{D1: Reliability threshold.}
 There exists a threshold $\tau^* > 0$ such that $f(\mathbf{x})$ is undefined,
 or explicitly flagged as unreliable, when $\max_i x_i \leq \tau^*$.
 
@@ -28,7 +28,7 @@ No existing definition incorporates an explicit reliability condition: both
 the S-score and selectivity entropy assign scores to compounds with no
 sub-micromolar binding, treating detection floor values as informative.
 
-\paragraph{D2 --- Bounded gap sensitivity.}
+\paragraph{D2: Bounded gap sensitivity.}
 For any compound profile $\mathbf{x}$ satisfying D1, a small perturbation to
 the identity of the reference off-target should produce a bounded change in
 $f(\mathbf{x})$.
@@ -48,7 +48,7 @@ Distribution-based definitions (entropy, Gini) satisfy a weaker version of
 this property because they are symmetric functions of the full set of normalized
 activities, with no term that singles out a particular ranked off-target.
 
-\paragraph{D3 --- Distributional consistency.}
+\paragraph{D3: Distributional consistency.}
 The ranking induced by $f$ should be stable under small perturbations to the
 activity baseline $\beta$ used to define the active binding distribution.
 Formally, for any two compounds $\mathbf{x}, \mathbf{y}$ and any
@@ -67,10 +67,10 @@ instability ($r = -0.47$ on Klaeger, $p < 0.001$) reflects this sensitivity.
 D3 requires that the ranking be robust to the choice of $\beta$ within a
 reasonable neighborhood, which existing implementations do not guarantee.
 
-\paragraph{D4 --- Monotonicity under weak off-target addition.}
-If compound $\mathbf{x}$ has a weak additional binding interaction added ---
-formally, if $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ where $x_{N+1} \leq
-\tau^*$ --- then $f(\mathbf{x}') \leq f(\mathbf{x})$.
+\paragraph{D4: Monotonicity under weak off-target addition.}
+If compound $\mathbf{x}$ has a weak additional binding interaction added, i.e.
+if $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ where $x_{N+1} \leq
+\tau^*$, then $f(\mathbf{x}') \leq f(\mathbf{x})$.
 Adding a sub-threshold binding interaction should not increase a compound's
 selectivity score.
 
@@ -81,7 +81,7 @@ size without adding activity: this lowers the S-score's fraction of hit kinases
 and raises the Gini coefficient's inequality, in both cases inflating the
 apparent selectivity.
 A compound can therefore be made to look more selective simply by profiling it
-against more inactive kinases --- a serious problem when panels differ in size or
+against more inactive kinases. This is a serious problem when panels differ in size or
 composition across experiments, as between Davis and Klaeger.
 The entropy and the ratio satisfy D4: a sub-threshold target adds negligible
 weight to the entropy's normalized distribution and falls at or below the
@@ -141,7 +141,7 @@ satisfying D1), define
 \end{equation}
 where $x_0$ is the fixed assay detection floor and $T$ a smoothing width in
 $\mathrm{p}K_d$ units.
-The score is minus the Shannon entropy of the smoothed, normalized profile ---
+The score is minus the Shannon entropy of the smoothed, normalized profile, and,
 equivalently, minus the logarithm of the effective number of targets the
 compound binds.
 
@@ -165,11 +165,11 @@ subpanels per size), the smallest panel at which its ranking reaches mean
 Spearman $\rho > 0.90$ with its full-panel ranking is $p^* \approx 170$ kinases
 (Figure~\ref{fig:candidate}), placing it in the fast regime alongside the
 entropy ($p^* \approx 110$) and S-score ($\approx 140$) and well ahead of the
-Gini ($\approx 290$) and the ratio (which does not reach $\rho = 0.90$ even at
-the full panel).
+Gini ($\approx 290$) and the ratio, which reaches $\rho = 0.90$ only on the
+full panel ($p^* = 343$).
 It converges slightly slower than the bare entropy because the D1 reliability
-gate and the smooth hinge add structure that stabilizes a little later; this is
-a modest price for satisfying all four properties, which the entropy does not.
+gate and the smooth hinge add structure that stabilizes a little later, which is
+a modest price for satisfying all four properties (recall that the entropy does not).
 The candidate thus recovers its full-panel ranking from roughly half a typical
 large panel.
 

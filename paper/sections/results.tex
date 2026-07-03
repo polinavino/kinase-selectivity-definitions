@@ -10,13 +10,13 @@ were computed for all drugs in both datasets.
 Spearman correlations between the median ranking of each definition family
 reveal a consistent two-cluster structure (Table~\ref{tab:correlations}).
 On the Davis dataset, S-score, entropy, and Gini are mutually correlated
-($r = 0.91$--$0.999$), while ratio correlates substantially less with each
+($r = 0.95$--$0.999$), while ratio correlates substantially less with each
 ($r = 0.34$--$0.45$).
 On the larger Klaeger dataset, the same structure is preserved but with lower
 within-cluster correlations ($r = 0.75$--$0.91$), reflecting greater
 diversity of binding profiles among the 222 clinical compounds.
 The ratio definition is the consistent outlier in both datasets, with
-cross-family correlations of $r = 0.27$--$0.62$.
+cross-family correlations of $r = 0.26$--$0.62$.
 
 \begin{table}[h]
   \centering
@@ -168,7 +168,7 @@ relative to the threshold rather than by intrinsic profile shape.
            Center: Drug~42 (Davis), most unstable ($\sigma = 19.3$), 22 active kinases
            at near-identical affinities.
            Right: Drug~23 (Davis), most ratio-sensitive, five active kinases
-           including two near-tied top targets ($\Delta\mathrm{p}K_d = 0.019$).
+           including two near-tied top targets ($\Delta\mathrm{p}K_d = 0.024$).
            Dashed line: $\mathrm{p}K_d = 6$ activity threshold;
            dotted line: $\mathrm{p}K_d = 5$ assay floor.}
   \label{fig:profiles}
@@ -181,7 +181,7 @@ reveals three structurally distinct sources of rank instability
 (Figure~\ref{fig:profiles}), each
 implicating a different aspect of how the definitions are constructed.
 
-\textbf{Type~1 --- Zero-active compounds.}
+\textbf{Type~1: Zero-active compounds.}
 The five most unstable Klaeger compounds (e.g.\ AZD-8055, BMS-911543,
 Filgotinib, rank $\sigma > 80$) all have zero active kinases at the
 $\mathrm{p}K_d > 6$ threshold.
@@ -199,17 +199,17 @@ have at least one active kinase, consistent with Davis's fixed-concentration
 screening design, which reports a $K_d$ only when activity is first detected
 at 10~$\mu$M.
 
-\textbf{Type~2 --- Near-tied top targets.}
+\textbf{Type~2: Near-tied top targets.}
 Among active compounds, ratio-specific instability is strongly predicted by a
 small top$_1$--top$_2$ gap ($r = -0.341$, $p < 0.001$).
 When a compound's two best-bound kinases have near-identical affinities, the
 ratio is highly sensitive to which is designated the primary target and which
 the reference off-target, because a small parameter change can swap their roles.
-Drug~23 in the Davis dataset (top$_1$--top$_2$ gap $= 0.019$~pKd units) is the
+Drug~23 in the Davis dataset (top$_1$--top$_2$ gap $= 0.024$~pKd units) is the
 extreme case: its two best-bound kinases are essentially indistinguishable, so
 it receives maximally unstable ratio rankings.
 
-\textbf{Type~3 --- Broad profiles with a dominant primary target.}
+\textbf{Type~3: Broad profiles with a dominant primary target.}
 The largest entropy-ratio disagreements in the Klaeger dataset arise for
 compounds with high $n_\mathrm{active}$ and a large top$_1$--top$_2$ gap
 (e.g.\ Dovitinib: $n_\mathrm{active} = 26$, gap $= 1.935$;
@@ -253,9 +253,9 @@ Selectivity entropy reaches mean $r = 0.90$ against the full-panel ranking at
 approximately 110 kinases, and S-score at approximately 140 kinases.
 The Gini coefficient requires approximately 290 kinases to reach the same
 threshold.
-The ratio definition does not reach $r = 0.90$ until the panel contains 320
-or more kinases, and achieves $r = 0.888$ even at 320 kinases --- only 23
-below the full panel size.
+The ratio definition does not reach $r = 0.90$ at any subpanel size short of
+the full panel: it achieves only $r = 0.888$ even at 320 kinases, just 23
+below the full panel of 343, and attains $r = 0.90$ only on the complete panel.
 
 This result has a direct practical implication.
 Standard commercial kinase selectivity panels typically profile 50--100

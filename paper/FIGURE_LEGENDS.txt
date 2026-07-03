@@ -1,7 +1,17 @@
 Figure legends (place together at the end of the manuscript, after the
 references, per Molecular Informatics style; figures upload as separate files).
 
-Figure 1. Spearman correlations between the median rankings of the four
+Figure 1. Operationalization sensitivity of the entropy and Gini coefficient.
+For each dataset, the compound selectivity ranking computed in a form close to
+the original publication (association-constant weighting) is plotted against the
+baseline-subtracted log-affinity form used in the main text. Top row: selectivity
+entropy; bottom row: Gini coefficient. The two operationalizations of the same
+named metric differ substantially, and the entropy ranking even reverses on
+Klaeger (entropy r = 0.42 Davis, -0.32 Klaeger; Gini r = 0.11, -0.46), confirming
+that the operationalization of a named metric is itself a source of the
+definitional instability we report.
+
+Figure 2. Spearman correlations between the median rankings of the four
 selectivity definitions, computed independently on each of the four datasets
 (compound x kinase panel sizes shown). In every dataset the S-score (S),
 entropy (Ent), and Gini cluster together while the ratio is the consistent
@@ -9,26 +19,26 @@ outlier (the ratio row and column are the least green throughout), confirming
 the two-family structure across competition-binding, chemoproteomic, and
 functional-activity assays.
 
-Figure 2. Best predictor of rank instability within each definition family
+Figure 3. Best predictor of rank instability within each definition family
 (Klaeger dataset, active compounds, n = 206). Ratio instability is best
 predicted by the top1-top2 affinity gap; entropy, Gini, and S-score instability
 are best predicted by features of the active affinity distribution.
 
-Figure 3. Representative binding profiles illustrating the three instability
+Figure 4. Representative binding profiles illustrating the three instability
 types. Left: Drug 64 (Davis), most stable (sigma = 1.6), two active kinases.
 Center: Drug 42 (Davis), most unstable (sigma = 19.3), 22 active kinases at
 near-identical affinities. Right: Drug 23 (Davis), most ratio-sensitive, five
-active kinases including two near-tied top targets (delta pKd = 0.019). Dashed
+active kinases including two near-tied top targets (delta pKd = 0.024). Dashed
 line: pKd = 6 activity threshold; dotted line: pKd = 5 assay floor.
 
-Figure 4. Mean Spearman correlation between rankings computed on random kinase
+Figure 5. Mean Spearman correlation between rankings computed on random kinase
 subpanels and rankings on the full Klaeger panel (343 kinases), as a function of
 subpanel size. Shaded bands indicate +/-1 standard deviation across 50
 subsamples. The dashed line marks r = 0.90. Entropy and S-score rankings
 stabilize at approximately 110-140 kinases; Gini requires approximately 290
 kinases; ratio does not reach r = 0.90 at any practically used panel size.
 
-Figure 5. Panel-size convergence of the candidate measure compared with the four
+Figure 6. Panel-size convergence of the candidate measure compared with the four
 existing definitions (Klaeger, 50 random subpanels per size). Curves show the
 mean Spearman correlation between the ranking computed on a random subpanel and
 the full-panel ranking; p* (legend) is the smallest panel reaching mean

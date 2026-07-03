@@ -22,11 +22,12 @@ COVER LETTER
   cover_letter.txt
 
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
-  Figure1.png  = two-family structure across four datasets
-  Figure2.png  = best predictor of instability per family
-  Figure3.png  = representative binding profiles (3 instability types)
-  Figure4.png  = panel-size stability of existing definitions
-  Figure5.png  = panel-size convergence of the candidate measure
+  Figure1.png  = operationalization sensitivity of entropy & Gini (new figure)
+  Figure2.png  = two-family structure across four datasets
+  Figure3.png  = best predictor of instability per family
+  Figure4.png  = representative binding profiles (3 instability types)
+  Figure5.png  = panel-size stability of existing definitions
+  Figure6.png  = panel-size convergence of the candidate measure
 
 TABLES  (one file per table, separate slot each)  -> submission_tables/
   Table1.docx  = cross-family Spearman correlations

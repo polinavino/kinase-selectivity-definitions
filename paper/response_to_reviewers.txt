@@ -12,7 +12,7 @@ polina.vino@gmail.com — ORCID 0000-0003-3271-3841
 Dear Professor Baumann,
 
 Thank you for the opportunity to revise my manuscript. I thank Reviewer 1 for a
-careful and constructive reading; the comments have materially improved the
+careful and constructive reading. The comments have materially improved the
 paper. In response, the manuscript has been revised on three main axes:
 
   (1) the language has been simplified and the speculative passages flagged by
@@ -23,11 +23,11 @@ paper. In response, the manuscript has been revised on three main axes:
 
   (2) the analysis has been extended from two datasets to four, adding the
       Anastassiadis and Metz datasets and explicitly motivating the exclusion
-      of the Gao and Patricelli datasets; and
+      of the Gao and Patricelli datasets; 
 
   (3) the selectivity definitions are now derived and explained from their
       original publications, with a new "Faithfulness to the original
-      definitions" subsection and a supporting sensitivity check (Figure S1).
+      definitions" subsection and a supporting sensitivity check (Figure 1).
 
 In addition, the revision strengthens the paper's contribution by introducing a
 concrete candidate measure that satisfies all four required properties, so that
@@ -104,7 +104,7 @@ I have substantially expanded the dataset coverage. The analysis now spans
 four datasets across three assay technologies and two readout types, and every
 main result (the two-family clustering and the instability predictors) is shown
 to replicate across all four (new Results subsection "The Two-Family Structure
-Replicates Across Assay Technologies", and new Figure 1).
+Replicates Across Assay Technologies", and new Figure 2).
 
   - Anastassiadis et al. (Nat. Biotechnol. 2011): ADDED. 178 inhibitors x 300
     kinases, single-concentration radiometric activity assay (percent residual
@@ -116,12 +116,12 @@ Replicates Across Assay Technologies", and new Figure 1).
   - Gao et al. (Biochem. J. 2013): NOT ADDED, with stated reason. It is a
     single-concentration functional inhibition assay of the same readout type
     as the already-included Anastassiadis dataset, and its raw data are not
-    openly redistributable; including it would add a second instance of an
+    openly redistributable. Including it would add a second instance of an
     existing assay type rather than a new modality. See Methods, "Datasets".
 
   - Patricelli et al. (Chem. Biol. 2011): NOT ADDED, with stated reason. It
     profiles only a small number of inhibitors against native kinases as a
-    proof of concept for the KiNativ platform; a ranking-stability analysis
+    proof of concept for the KiNativ platform. A ranking-stability analysis
     requires many compounds to produce a meaningful ranking, so this dataset is
     not suited to the present comparison. See Methods, "Datasets".
 
@@ -171,8 +171,8 @@ explicitly which metrics are computed exactly as in their sources (S-score,
 ratio) and which were re-operationalized onto the common log-affinity scale
 (entropy, Gini). To show that this choice does not silently drive the
 conclusions, I recomputed the entropy and Gini in forms close to the originals
-and compared rankings; the two operationalizations differ substantially
-(Figure S1), which I report transparently as further evidence that the
+and compared rankings. The two operationalizations differ substantially
+(Figure 1), which I report transparently as further evidence that the
 operationalization of a named metric is itself a source of instability rather
 than a neutral implementation detail.
 
@@ -194,7 +194,7 @@ While revising, I addressed three further items:
 
 2. Sensitivity to the smoothing width T. I now note explicitly that as T -> 0
    the softplus hinge converges to the hard cutoff max(x_i - x_0, 0), recovering
-   the standard entropy and reintroducing its D3 baseline sensitivity; a
+   the standard entropy and reintroducing its D3 baseline sensitivity. A
    strictly positive T is therefore what buys distributional consistency
    (candidate-measure section).
 

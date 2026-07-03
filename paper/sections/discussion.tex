@@ -5,8 +5,8 @@ The central finding of this work is that existing kinase inhibitor selectivity
 definitions do not measure the same quantity.
 The ratio definition and the distribution-based family (S-score, entropy, Gini)
 produce substantially different compound rankings (cross-family
-$r = 0.14$--$0.62$ across four datasets), and the sources of disagreement are
-mechanistically interpretable rather than random.
+$r = 0.14$--$0.62$ across four datasets, versus within-family $r > 0.74$), and
+the sources of disagreement are mechanistically interpretable rather than random.
 This has practical consequences: a compound that ratio-based analysis designates
 as selective may be designated as moderately promiscuous by entropy-based
 analysis, and vice versa, depending on the shape of its binding profile.
@@ -21,7 +21,7 @@ activity across the full profiled kinome?
 The ratio definition asks: how much more potently does the compound bind its
 primary target than a specified off-target?
 These are distinct questions with distinct answers for a large class of
-compounds --- specifically, those with one clearly dominant target that also
+compounds, specifically, those with one clearly dominant target that also
 bind many kinases at moderate affinity (Type~3 profiles in our taxonomy).
 For such compounds, ratio-based methods report high selectivity while
 distribution-based methods report moderate promiscuity, and both
@@ -100,7 +100,8 @@ neither measure can isolate the effect of selectivity.
 A proper test would require indication-stratified, treatment-related
 adverse-event rates from controlled trials with matched comparators, which are
 not available in standardized form across these drugs.
-Full details are given in the Supporting Information.
+The analysis code and full results are available in the code repository
+(see Data and Software Availability).
 
 The four properties proposed above are necessary
 conditions motivated by empirical failure modes.

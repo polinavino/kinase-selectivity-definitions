@@ -1,1 +1,11 @@
-Across four kinase profiling datasets and three assay technologies, selectivity definitions cluster into two families that measure different properties, and rank instability is predictable from a compound's binding profile. We identify three distinct instability sources and propose four required properties that any well-formed selectivity measure should satisfy; no existing definition satisfies all four.
+Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
+Characterization and Required Properties for a Well-Formed Measure
+
+Polina Vinogradova*
+
+Across four kinase profiling datasets and three assay technologies, selectivity
+definitions cluster into two families that measure different properties, and
+rank instability is predictable from a compound's binding profile. We (1) identify
+three distinct instability sources, (2) propose four properties that any
+well-formed selectivity measure should satisfy, and (3) propose a measure that
+satisfies all four, which no existing definition does.
