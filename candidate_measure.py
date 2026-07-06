@@ -11,7 +11,10 @@ of a compound's binding profile, where each kinase is weighted by a SMOOTH
     p_i = w_i / sum_j w_j,
     H(x) = - sum_i p_i log p_i,    selectivity  S(x) = -H(x),
 
-reported only for compounds with max_i x_i > tau* (the D1 gate).
+reported only for compounds with max_i x_i > tau* (the D1 gate).  That gate is a
+reporting rule applied when the measure is used in practice; the panel-size, D3,
+and D4 checks below are computed on all compounds, since they concern ranking
+stability, which the gate does not affect.
 
 Why this satisfies D1-D4:
   D1  explicit reliability gate on max_i x_i.

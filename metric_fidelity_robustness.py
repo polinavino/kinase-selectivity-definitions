@@ -1,5 +1,5 @@
 """
-Operationalization-sensitivity check (revision for Molecular Informatics, Reviewer C).
+Operationalization-sensitivity check (revision for Molecular Informatics, Reviewer 1, comment C).
 
 The manuscript computes selectivity entropy and the Gini coefficient on
 baseline-subtracted pKd (a log-affinity scale).  The original papers use

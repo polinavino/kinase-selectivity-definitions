@@ -4,7 +4,9 @@
 \subsection{Datasets}
 \label{sec:methods:data}
 
-Two publicly available kinase inhibitor profiling datasets were used.
+Our primary analysis uses two publicly available kinase inhibitor profiling
+datasets, described first. Two further datasets are added below to confirm the
+findings across additional assay technologies.
 The Davis dataset\cite{Davis2011} comprises binding affinities ($K_d$) for 68
 small-molecule kinase inhibitors measured against 433 human kinase domains.
 Affinity values are reported as dissociation constants and were converted to
@@ -103,7 +105,7 @@ $10\%$, $1\%$). Because we work on the $\mathrm{p}K_d$ scale, the equivalent
 ``bound'' criterion is an affinity threshold $\tau$, and sweeping it reproduces
 their family of cutoffs. We used
 $\tau \in \{5.5, 5.75, \ldots, 8.0\}$ (11 values), spanning $K_d$ cutoffs from
-approximately 300~nM to 10~nM.
+approximately 3~$\mu$M to 10~nM.
 
 \paragraph{Selectivity entropy.}
 Uitdehaag and Zaman\cite{Uitdehaag2011} treat the compound's binding across the

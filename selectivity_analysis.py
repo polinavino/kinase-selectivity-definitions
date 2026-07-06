@@ -106,7 +106,7 @@ def ratio_selectivity(profiles, top_n=1):
 # ── Sweep parameter spaces ──────────────────────────────────────────────────
 
 # S-score thresholds (pKd): 5.5 to 8.0 in steps of 0.25
-# covers range from weak binders (Kd~300nM) to strong binders (Kd~10nM)
+# covers range from weak binders (Kd~3uM at pKd 5.5) to strong binders (Kd~10nM at pKd 8.0)
 s_thresholds = np.arange(5.5, 8.25, 0.25)
 
 # Entropy baselines: 5.0 to 6.5
