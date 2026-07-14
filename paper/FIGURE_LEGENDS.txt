@@ -42,5 +42,5 @@ Figure 6. Panel-size convergence of the candidate measure compared with the four
 existing definitions (Klaeger, 50 random subpanels per size). Curves show the
 mean Spearman correlation between the ranking computed on a random subpanel and
 the full-panel ranking; p* (legend) is the smallest panel reaching mean
-rho > 0.90. The candidate converges in the fast regime (p* approx 170),
-comparable to the entropy and S-score and well ahead of the Gini and ratio.
+rho > 0.90. The candidate converges in the fast regime (p* = 110), matching the
+entropy, ahead of the S-score, and well ahead of the Gini and ratio.

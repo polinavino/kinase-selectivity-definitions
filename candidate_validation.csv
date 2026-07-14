@@ -1,0 +1,5 @@
+dataset,n_cpd,n_kin,orient_r,d3_emphasis,d3_boundary,d4_pct
+Davis,68,433,-0.969,0.998,-0.838,100.0
+Klaeger,222,343,-0.936,0.998,-0.931,100.0
+Anastassiadis,178,300,-0.936,0.997,0.909,100.0
+Metz,704,172,-0.791,0.991,-0.33,100.0

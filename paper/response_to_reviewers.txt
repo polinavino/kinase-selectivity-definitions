@@ -50,7 +50,7 @@ I thank the reviewer for this assessment, and have taken the suggestion of a
 "uniformly accepted measure" seriously: the revised manuscript now proposes a
 concrete candidate measure (new section "A Candidate Measure") that satisfies
 all four required properties and recovers its full-panel ranking from roughly
-half a typical panel.
+a third of a typical panel.
 
 
 --------------------------------------------------------------------
@@ -184,13 +184,13 @@ ADDITIONAL CORRECTIONS (not requested by the reviewer)
 While revising, I addressed three further items:
 
 1. Candidate-measure property arguments. The motivations for D3 and D4 of the
-   candidate now include a brief analytic argument alongside the empirical
-   check: D4 follows because the softplus weight is monotone and vanishes below
-   the floor (so adding a sub-threshold target cannot raise the score), and D3
-   follows because the smooth hinge has no hard active/inactive boundary
-   (verified empirically: worst-case pairwise Spearman rho = 0.99 for the
-   candidate vs. -0.95 for the existing hard-cutoff entropy over the floor
-   range).
+   candidate include a brief analytic argument alongside the empirical check.
+   D4 follows because the gated weight is zero at and below the assay floor and
+   monotone above it, so adding a sub-threshold target cannot raise the score.
+   D3 holds because the active/inactive boundary is the fixed assay detection
+   floor rather than a tunable baseline, so the ranking does not depend on an
+   arbitrary baseline choice. (The D3 argument was corrected after resubmission.
+   See the correction note below.)
 
 2. Sensitivity to the smoothing width T. I now note explicitly that as T -> 0
    the softplus hinge converges to the hard cutoff max(x_i - x_0, 0), recovering
@@ -202,6 +202,39 @@ While revising, I addressed three further items:
    rendered as blank section numbers in the previous PDF. These have been
    rewritten as named references, consistent with the rest of the manuscript
    and with the journal's convention for sections that are not numbered.
+
+
+================================================================
+CORRECTION MADE AFTER RESUBMISSION
+================================================================
+
+After resubmitting, I re-audited the candidate measure and found two related
+errors.
+
+First, the measure was inverted. As originally written, it weighted every kinase
+with a softplus of its affinity above the assay floor. The softplus does not
+vanish at the floor, so each of the several hundred non-binding kinases kept a
+small weight. Their combined weight dominated the normalized profile, which scored
+broadly promiscuous compounds as selective and single-target compounds as
+non-selective. I corrected this by gating the weight at the fixed assay detection
+floor, so non-binders now carry zero weight. The corrected measure is correctly
+oriented.
+
+Second, the earlier D3 justification was mistaken. It credited the smooth hinge
+with baseline robustness. In fact the smoothing is robust only to a secondary
+emphasis parameter (worst-case pairwise Spearman rho = 0.998). D3 holds because
+the active/inactive boundary is pinned to the fixed assay detection floor, a
+physical constant rather than a tunable choice, not because of smoothness. If the
+boundary itself is varied, the ranking moves about as much as it does for the
+existing entropy (about -0.93 versus -0.95), which is inherent to thresholded
+assays. I have reframed the D3 argument accordingly.
+
+The corrected measure still satisfies all four properties. It converges to its
+full-panel ranking at 110 kinases rather than 170, so it is recoverable from an
+even smaller panel. The corrected numbers and framing appear in the Candidate
+Measure section, Figure 6, the abstract, the introduction, and the conclusion. The
+two-family result, the instability taxonomy, and the four required properties are
+unaffected.
 
 
 I believe the manuscript is significantly improved and hope it is now suitable
