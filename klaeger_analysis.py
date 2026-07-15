@@ -1,3 +1,4 @@
+import script_logging; script_logging.capture(__file__)
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 

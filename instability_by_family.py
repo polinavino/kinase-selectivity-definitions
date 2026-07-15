@@ -8,6 +8,7 @@ of binding-profile features, and plot the single best-predicting feature per
 family. Produces instability_by_family.png (Figure 3) and prints the full
 feature x family correlation table (Table 2).
 """
+import script_logging; script_logging.capture(__file__)
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 

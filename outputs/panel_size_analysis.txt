@@ -1,0 +1,20 @@
+Panel size stability (mean Spearman r vs full panel):
+  Panel size    entropy       gini    s_score      ratio
+          50  +0.764  -0.092  +0.779  -0.085
+          80  +0.871  +0.137  +0.850  -0.007
+         110  +0.921  +0.315  +0.890  +0.072
+         140  +0.950  +0.456  +0.922  +0.167
+         170  +0.964  +0.570  +0.940  +0.267
+         200  +0.976  +0.705  +0.959  +0.369
+         230  +0.982  +0.783  +0.967  +0.501
+         260  +0.988  +0.851  +0.977  +0.642
+         290  +0.993  +0.921  +0.985  +0.769
+         320  +0.997  +0.961  +0.992  +0.888
+         343  +1.000  +1.000  +1.000  +1.000
+
+Minimum panel size for mean r > 0.90:
+  entropy: 110 kinases
+  gini: 290 kinases
+  s_score: 140 kinases
+  ratio: 343 kinases
+Saved panel_size_stability.png

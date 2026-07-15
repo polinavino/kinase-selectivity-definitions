@@ -1,3 +1,4 @@
+import script_logging; script_logging.capture(__file__)
 import requests
 import pandas as pd
 import time

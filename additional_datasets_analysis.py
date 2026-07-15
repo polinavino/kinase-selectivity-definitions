@@ -24,6 +24,7 @@ scale-appropriate parameter sweep; because the analysis concerns rank
 correlations between metrics and rank instability (both invariant to a common
 monotone rescaling within a dataset), the metrics remain directly comparable.
 """
+import script_logging; script_logging.capture(__file__)
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import sys

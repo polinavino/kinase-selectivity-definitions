@@ -1,0 +1,24 @@
+Computing selectivity scores across parameter space...
+Computed 30 score vectors
+Each covers 68 drugs
+
+Rank stability across all parameter configurations:
+Mean rank std per drug: 8.47
+Min rank std (most stable): 1.64 (Drug 64)
+Max rank std (most unstable): 19.32 (Drug 42)
+
+Within-definition rank stability (std of rank as parameter varies):
+  s_score     : mean rank std = 5.23, max = 13.16 (Drug 41)
+  entropy     : mean rank std = 2.76, max = 8.41 (Drug 3)
+  gini        : mean rank std = 2.89, max = 8.60 (Drug 3)
+  ratio       : mean rank std = 5.35, max = 22.53 (Drug 23)
+
+Spearman correlations between definitions (using median rank per definition):
+            s_score     entropy     gini        ratio       
+s_score            1.000       0.949       0.954       0.454
+entropy            0.949       1.000       0.999       0.343
+gini               0.954       0.999       1.000       0.343
+ratio              0.454       0.343       0.343       1.000
+
+Saved selectivity_results.csv
+Saved selectivity_analysis.png

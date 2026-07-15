@@ -19,6 +19,7 @@ characterizes.  The manuscript adopts the baseline-subtracted log-affinity forms
 because they place all four metrics on a single comparable scale and expose the
 baseline parameter beta whose under-specification motivates property D3.
 """
+import script_logging; script_logging.capture(__file__)
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import numpy as np

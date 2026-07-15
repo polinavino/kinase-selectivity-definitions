@@ -1,0 +1,5 @@
+most stable           : Drug 64  sigma=1.64  n_active=2  top1-top2 gap=1.422
+most unstable         : Drug 42  sigma=19.32  n_active=22  top1-top2 gap=0.032
+most ratio-sensitive  : Drug 23  sigma=9.86  n_active=5  top1-top2 gap=0.023
+
+Saved binding_profiles.png

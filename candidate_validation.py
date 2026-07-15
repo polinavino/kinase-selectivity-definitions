@@ -9,6 +9,7 @@ floor gate inverts the measure, which is what makes the gate necessary.
 
 Writes candidate_validation.csv and prints a summary.  Deterministic.
 """
+import script_logging; script_logging.capture(__file__)
 import os
 import numpy as np
 import pandas as pd

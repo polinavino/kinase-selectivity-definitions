@@ -40,6 +40,7 @@ The design choice is the smoothing width T (in pK_d units).  T ~ 1 places the
 candidate's panel-size convergence in the fast class (entropy, S-score).  The
 active/inactive boundary is fixed at the assay floor rather than tuned.
 """
+import script_logging; script_logging.capture(__file__)
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import numpy as np
@@ -136,7 +137,7 @@ for k in measures:
             label=f"{k} (p*={pstar(k)})")
 ax.axhline(0.90, color='black', ls=':', lw=1)
 ax.set_xlabel('Panel size (kinases)'); ax.set_ylabel('Spearman rho vs full-panel ranking')
-ax.set_title('Panel-size convergence: candidate (gated smooth-hinge effective-target number)\n'
+ax.set_title('Panel-size convergence: candidate (gated, smooth-hinge effective-target number)\n'
              'vs existing measures (Klaeger, 50 subsamples per size)')
 ax.legend(fontsize=8); ax.set_ylim(0, 1.01)
 plt.tight_layout(); plt.savefig('candidate_panel_convergence.png', dpi=150, bbox_inches='tight')

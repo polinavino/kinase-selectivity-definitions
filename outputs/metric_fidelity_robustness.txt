@@ -1,0 +1,8 @@
+Dataset      entropy: r(literal, manuscript)    Gini: r(literal, manuscript)
+Davis                            0.419                           0.110
+Klaeger                         -0.318                          -0.455
+
+Saved /Users/polina/Documents/BioInfStuff/selectivity/metric_fidelity.png
+Two reasonable operationalizations of the same named metric give substantially
+different rankings (entropy even reverses on Klaeger): the operationalization
+choice is itself a source of definitional instability.

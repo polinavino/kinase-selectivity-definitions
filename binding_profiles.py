@@ -9,6 +9,7 @@ dataset (same parameter sweep as selectivity_analysis.py):
 and plots each compound's kinase affinities sorted in descending order.
 Produces binding_profiles.png (Figure 4).
 """
+import script_logging; script_logging.capture(__file__)
 import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 

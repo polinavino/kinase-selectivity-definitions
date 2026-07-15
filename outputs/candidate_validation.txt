@@ -1,0 +1,23 @@
+Cross-dataset validation (orientation must be negative, D3 emphasis high, D4 = 100):
+      dataset  n_cpd  n_kin  orient_r  d3_emphasis  d3_boundary  d4_pct
+        Davis     68    433    -0.969        0.998       -0.838   100.0
+      Klaeger    222    343    -0.936        0.998       -0.931   100.0
+Anastassiadis    178    300    -0.936        0.997        0.909   100.0
+         Metz    704    172    -0.791        0.991       -0.330   100.0
+
+Smoothing-width T sweep on Klaeger:
+   T  orient_r  d3_emphasis
+0.50    -0.937        0.988
+0.75    -0.936        0.997
+1.00    -0.936        0.998
+1.50    -0.936        0.999
+2.00    -0.935        1.000
+worst-case cross-T ranking agreement (Spearman) = 0.999
+
+Why the gate is needed (Klaeger):
+  gated   selectivity vs n_active = -0.936  (correct: negative)
+  ungated selectivity vs n_active = +0.943  (inverted: positive)
+  ungated selectivity vs distribution family = -0.943  (anti-correlated)
+  gated   selectivity vs distribution family = +0.936
+
+Saved candidate_validation.csv
