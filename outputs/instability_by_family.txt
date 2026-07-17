@@ -1,14 +1,26 @@
-Klaeger: 222 drugs x 343 kinases; active drugs n=206
 
-Feature               s_score     entropy        gini       ratio
-n_active           -0.350*   -0.455*   -0.166*   -0.040  
-top1_top2_gap      +0.058    +0.128    +0.109    -0.341* 
-active_std         -0.386*   -0.215*   -0.176*   -0.107  
-active_range       -0.458*   -0.318*   -0.163*   -0.116  
-top2_pkd           -0.394*   -0.282*   -0.268*   +0.186* 
+=== Klaeger: 222 drugs x 343 kinases; active drugs n=206 ===
+Feature                 s_score       entropy          gini         ratio
+n_active              -0.350***     -0.455***       -0.166*        -0.040
+top1_top2_gap            +0.058        +0.128        +0.109     -0.341***
+active_std            -0.386***      -0.215**       -0.176*        -0.107
+active_range          -0.458***     -0.318***       -0.163*        -0.116
+top2_pkd              -0.394***     -0.282***     -0.268***      +0.186**
 best predictor s_score   : active_range   r=-0.458 p=0.000
 best predictor entropy   : n_active       r=-0.455 p=0.000
 best predictor gini      : top2_pkd       r=-0.268 p=0.000
 best predictor ratio     : top1_top2_gap  r=-0.341 p=0.000
 
 Saved instability_by_family.png
+
+=== Davis: 68 drugs x 433 kinases; active drugs n=68 ===
+Feature                 s_score       entropy          gini         ratio
+n_active                 -0.150       -0.279*       -0.299*       +0.294*
+top1_top2_gap            -0.096        -0.007        -0.029     -0.446***
+active_std               -0.003        -0.015        +0.005        +0.042
+active_range             +0.003        -0.111        -0.098        +0.136
+top2_pkd                 -0.055        -0.203        -0.187       +0.298*
+best predictor s_score   : n_active       r=-0.150 p=0.221
+best predictor entropy   : n_active       r=-0.279 p=0.021
+best predictor gini      : n_active       r=-0.299 p=0.013
+best predictor ratio     : top1_top2_gap  r=-0.446 p=0.000

@@ -60,13 +60,15 @@ The four datasets thus span three assay technologies (competition binding,
 chemoproteomics, and functional activity) and two readout types (affinity and
 single-concentration inhibition).
 Each selectivity definition is computed on the native readout of its
-dataset and our analyses concern rank correlations between definitions and rank
-instability, which are both invariant to a common monotone rescaling within a dataset.
-For this reason, the definitions remain directly comparable across datasets.
-For the percent-inhibition and $\mathrm{p}K_i$ datasets, the S-score threshold and
+dataset, and our analyses concern rank correlations between definitions and rank
+instability. 
+The definitions remain directly comparable across datasets
+because both of these computations are invariant to a common monotone 
+rescaling within a dataset.
+For the percent-inhibition and $\mathrm{p}K_i$ datasets, the S-score threshold, and
 entropy/Gini baseline grids were shifted to span each dataset's active range,
 while the ratio off-target index $k \in \{1,\ldots,5\}$ was left unchanged
-(it indexes ranked off-targets and so needs no rescaling).
+(it is an index of off-targets and so needs no rescaling).
 
 We excluded two additional candidate datasets.
 The Gao screen\cite{Gao2013} is a single-concentration functional inhibition
@@ -177,7 +179,7 @@ For the entropy and the Gini coefficient, we used the baseline-subtracted
 log-affinity profile in place of the original association constants (entropy)
 and percent-inhibition values (Gini), so that all four metrics operate on one
 common scale, and so that the baseline $\beta$ appears as an explicit parameter.
-To confirm that this choice does not silently determine our conclusions, we
+To confirm that this choice does not implicitly determine our conclusions, we
 recomputed the entropy and Gini in forms closer to the originals
 (association-constant weighting) and compared the resulting rankings with the
 log-affinity forms.

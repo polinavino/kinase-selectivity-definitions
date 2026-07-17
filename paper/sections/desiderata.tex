@@ -203,9 +203,11 @@ Spearman $\rho > 0.90$ with its full-panel ranking is $p^* = 110$ kinases
 entropy ($p^* = 110$), sits ahead of the S-score ($140$), and is well ahead of
 the Gini ($290$) and the ratio, which reaches $\rho = 0.90$ only on the full
 panel ($p^* = 343$).
-It converges as fast as the bare entropy, so the D1 gate and the smooth emphasis
-cost nothing in panel recoverability while adding the two properties the entropy
-lacks.
+The same holds on Metz: the candidate reaches $\rho > 0.90$ at $p^* = 80$ of the
+172 kinases, again matching the entropy and far ahead of the ratio ($p^* = 170$).
+It converges as fast as the bare entropy on both datasets, so the D1 gate and the
+smooth emphasis cost nothing in panel recoverability while adding the two
+properties the entropy lacks.
 The candidate thus recovers its full-panel ranking from about a third of a typical
 large panel.
 
@@ -235,14 +237,15 @@ data for the construction of the most informative possible measure.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.85\textwidth]{figures/candidate_panel_convergence}
-  \caption{Panel-size convergence of the candidate measure compared with the
-           four existing definitions (Klaeger, 50 random subpanels per size).
+  \includegraphics[width=\textwidth]{figures/candidate_panel_convergence}
+  \caption{Panel-size convergence of the candidate measure compared with the four
+           existing definitions, on the two sparse-coverage datasets (Klaeger,
+           left; Metz, right; 50 random subpanels per size).
            Curves show the mean Spearman correlation between the ranking computed
            on a random subpanel and the full-panel ranking; $p^*$ (legend) is the
            smallest panel reaching mean $\rho > 0.90$.
-           The candidate converges in the fast regime ($p^* = 110$),
-           matching the entropy, ahead of the S-score, and well ahead of the Gini
-           and ratio.}
+           On both datasets the candidate converges in the fast regime
+           ($p^* = 110$ on Klaeger, $80$ on Metz), matching the entropy and well
+           ahead of the ratio.}
   \label{fig:candidate}
 \end{figure}

@@ -68,8 +68,16 @@ the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
 The high within-family correlations ($r > 0.74$) suggest that S-score, entropy,
 and Gini are interchangeable for most purposes when parameters are chosen
-consistently. However, ratio-based measures should not be compared directly with
-distribution-based measures without acknowledging the conceptual distinction.
+consistently. This interchangeability is a full-panel property, however: the
+within-family agreement is measured on the complete kinome, and the panel-size
+analysis shows that the Gini coefficient can diverge from the entropy and
+S-score on the smaller panels used in practice (on Klaeger it requires roughly
+290 of 343 kinases to recover its full-panel ranking, against 110--140 for
+entropy and the S-score). The three should therefore be treated as
+interchangeable only when compared on panels of similar, near-complete coverage.
+Ratio-based measures, in turn, should not be compared directly with
+distribution-based measures at any panel size without acknowledging the
+conceptual distinction.
 
 \subsection{Limitations}
 

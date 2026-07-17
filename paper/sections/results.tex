@@ -140,25 +140,43 @@ by every profile-shape feature except the top$_1$--top$_2$ gap
 affinities. Compounds whose active affinities cluster near the threshold gain or
 lose panel hits under small shifts in $\tau$, whereas those with a wide affinity
 range retain a stable hit count regardless of the exact cutoff.
+This S-score pattern is specific to Klaeger, however: on Davis no profile feature
+significantly predicts S-score instability (all $|r| \le 0.15$;
+Table~\ref{tab:predictors}, right). The contrast is expected for a threshold
+count, whose instability is governed by where each assay's detection window falls
+relative to the cutoff rather than by profile shape, and this differs between the
+two assays. The one predictor that replicates cleanly across both datasets is the
+ratio family's dependence on the top$_1$--top$_2$ gap (above), a scale-free
+feature of the ranked profile rather than a threshold artifact; the
+entropy/Gini dependence on the number of active kinases replicates in direction
+but more weakly on the smaller Davis panel.
 
 \begin{table}[h]
   \centering
   \caption{Spearman correlations between binding profile features and
-           within-family rank instability on the Klaeger dataset ($n=206$
-           active drugs). Significance: * $p<0.05$, ** $p<0.01$,
+           within-family rank instability, on the Klaeger ($n=206$ active drugs)
+           and Davis ($n=68$) datasets. Columns are the S-score (S), entropy (E),
+           Gini (G), and ratio (R) families. The ratio family's dependence on the
+           top$_1$--top$_2$ gap replicates strongly on both datasets; the
+           S-score's dependence on the active-affinity spread does not (no feature
+           is significant on Davis). Significance: * $p<0.05$, ** $p<0.01$,
            *** $p<0.001$.}
   \label{tab:predictors}
-  \begin{tabular}{lcccc}
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{lcccc@{\hskip 1.4em}cccc}
     \toprule
-    Feature & S-score & Entropy & Gini & Ratio \\
+    & \multicolumn{4}{c}{Klaeger ($n=206$)} & \multicolumn{4}{c}{Davis ($n=68$)} \\
+    \cmidrule(lr){2-5}\cmidrule(lr){6-9}
+    Feature & S & E & G & R & S & E & G & R \\
     \midrule
-    $n_\mathrm{active}$      & $-0.350^{***}$ & $-0.455^{***}$ & $-0.166^{*}$   & $-0.040$ \\
-    top$_1$--top$_2$ gap     & $+0.058$       & $+0.128$       & $+0.109$       & $-0.341^{***}$ \\
-    Active affinity std      & $-0.386^{***}$ & $-0.215^{**}$  & $-0.176^{*}$   & $-0.107$ \\
-    Active affinity range    & $-0.458^{***}$ & $-0.318^{***}$ & $-0.163^{*}$   & $-0.116$ \\
-    top$_2$ $\mathrm{p}K_d$  & $-0.394^{***}$ & $-0.282^{***}$ & $-0.268^{***}$ & $+0.186^{**}$ \\
+    $n_\mathrm{active}$      & $-0.350^{***}$ & $-0.455^{***}$ & $-0.166^{*}$   & $-0.040$       & $-0.150$ & $-0.279^{*}$ & $-0.299^{*}$ & $+0.294^{*}$ \\
+    top$_1$--top$_2$ gap     & $+0.058$       & $+0.128$       & $+0.109$       & $-0.341^{***}$ & $-0.096$ & $-0.007$     & $-0.029$     & $-0.446^{***}$ \\
+    Active affinity std      & $-0.386^{***}$ & $-0.215^{**}$  & $-0.176^{*}$   & $-0.107$       & $-0.003$ & $-0.015$     & $+0.005$     & $+0.042$ \\
+    Active affinity range    & $-0.458^{***}$ & $-0.318^{***}$ & $-0.163^{*}$   & $-0.116$       & $+0.003$ & $-0.111$     & $-0.098$     & $+0.136$ \\
+    top$_2$ $\mathrm{p}K_d$  & $-0.394^{***}$ & $-0.282^{***}$ & $-0.268^{***}$ & $+0.186^{**}$  & $-0.055$ & $-0.203$     & $-0.187$     & $+0.298^{*}$ \\
     \bottomrule
-  \end{tabular}
+  \end{tabular}%
+  }
 \end{table}
 
 \subsection{Three Mechanistically Distinct Sources of Instability}
@@ -234,20 +252,21 @@ it as non-selective regardless of parameterization, producing low instability.
 \label{sec:results:panelsize}
 
 To assess the stability of selectivity rankings as a function of kinase panel
-size, we performed a subsampling analysis on the Klaeger dataset.
-The Davis dataset was not used for this analysis for two reasons: its complete
-matrix design (every compound tested against every kinase by construction)
-does not reflect the sparse coverage of real profiling panels, and subsampling
-kinases from Davis changes the apparent number of active compounds in ways that
-confound the panel size effect with the zero-active instability characterized
-in the instability taxonomy above.
-The Klaeger dataset, derived from chemoproteomic dose--response profiling with
-genuine sparse kinase coverage, is the more appropriate substrate for this
-question.
-For each panel size $p \in \{50, 80, \ldots, 320, 343\}$, we drew 50 random
-subsets of $p$ kinases from the full panel of 343, computed each selectivity
-definition on the subpanel, and measured agreement with the full-panel ranking
-using Spearman correlation.
+size, we performed a subsampling analysis on the two datasets with genuine
+sparse kinase coverage: Klaeger (343 kinases) and Metz (172 kinases).
+The Davis and Anastassiadis datasets were not used for this analysis, because
+both are dense complete-matrix screens (every compound tested against every
+kinase by construction). This does not reflect the sparse coverage of real
+profiling panels, and subsampling their kinases changes the apparent number of
+active compounds in ways that confound the panel size effect with the
+zero-active instability characterized in the instability taxonomy above.
+Klaeger and Metz, derived respectively from chemoproteomic dose--response
+profiling and a medicinal-chemistry campaign in which each compound was tested
+against a subset of the panel, are the appropriate substrates for this question.
+For each panel size (Klaeger $p \in \{50, 80, \ldots, 320, 343\}$; Metz
+$p \in \{50, 80, \ldots, 170, 172\}$), we drew 50 random subsets of $p$ kinases
+from the full panel, computed each selectivity definition on the subpanel, and
+measured agreement with the full-panel ranking using Spearman correlation.
 
 The four definitions differ substantially in their panel size requirements
 (Figure~\ref{fig:panelsize}).
@@ -273,17 +292,32 @@ This is further evidence that ratio-based definitions measure a qualitatively
 different property from distribution-based definitions, and reinforces D2
 (bounded gap sensitivity) as a necessary property.
 
+To test whether these patterns generalize beyond a single assay, we repeated the
+analysis on Metz (172 kinases; Figure~\ref{fig:panelsize}, right). The ordering
+of the definitions by panel-size requirement is preserved: the distribution-based
+definitions recover the full-panel ranking from a small fraction of the panel
+(S-score at approximately 50 kinases, entropy and Gini at approximately 80),
+while the ratio again lags, reaching $r = 0.90$ only at 170 of the 172 kinases.
+Two points follow. First, the ratio's poor recoverability is universal, holding
+on both sparse datasets, which strengthens the case that it measures a distinct,
+panel-composition-dependent property. Second, the Gini coefficient is the one
+measure whose recoverability is dataset-specific: slow on Klaeger ($p^* = 290$)
+but fast on Metz ($p^* = 80$), so its poor behavior on Klaeger should not be read
+as a general property. Entropy and the S-score are fast on both.
+
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.75\textwidth]{figures/panel_size_stability}
-  \caption{Mean Spearman correlation between rankings computed on random
-           kinase subpanels and rankings on the full Klaeger panel (343
-           kinases), as a function of subpanel size.
-           Shaded bands indicate $\pm 1$ standard deviation across 50
-           subsamples.
-           The dashed line marks $r = 0.90$.
-           Entropy and S-score rankings stabilize at approximately 110--140
-           kinases; Gini requires approximately 290 kinases; ratio does not
-           reach $r = 0.90$ at any practically used panel size.}
+  \includegraphics[width=\textwidth]{figures/panel_size_stability}
+  \caption{Mean Spearman correlation between rankings computed on random kinase
+           subpanels and rankings on the full panel, as a function of subpanel
+           size, for the two sparse-coverage datasets: Klaeger (left, 343 kinases)
+           and Metz (right, 172 kinases).
+           Shaded bands indicate $\pm 1$ standard deviation across 50 subsamples;
+           the dashed line marks $r = 0.90$.
+           On both datasets the distribution-based definitions recover the
+           full-panel ranking from a fraction of the kinome (entropy and S-score
+           at 50--140 kinases), while the ratio reaches $r = 0.90$ only near the
+           full panel. The Gini coefficient is slow on Klaeger ($\approx 290$
+           kinases) but fast on Metz ($\approx 80$).}
   \label{fig:panelsize}
 \end{figure}

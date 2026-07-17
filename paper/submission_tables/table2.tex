@@ -4,18 +4,26 @@
 \pagestyle{empty}
 \begin{document}
 \begin{table}
+  \centering
   \caption{Table 2. Spearman correlations between binding profile features and
-           within-family rank instability on the Klaeger dataset ($n=206$
-           active drugs). Significance: * $p<0.05$, ** $p<0.01$, *** $p<0.001$.}
-  \begin{tabular}{lcccc}
+           within-family rank instability, on the Klaeger ($n=206$ active drugs)
+           and Davis ($n=68$) datasets. Columns are the S-score (S), entropy (E),
+           Gini (G), and ratio (R) families. The ratio family's dependence on the
+           top$_1$--top$_2$ gap replicates strongly on both datasets; the
+           S-score's dependence on the active-affinity spread does not (no feature
+           is significant on Davis). Significance: * $p<0.05$, ** $p<0.01$,
+           *** $p<0.001$.}
+  \small
+  \begin{tabular}{lcccc@{\hskip 1.4em}cccc}
     \toprule
-    Feature & S-score & Entropy & Gini & Ratio \\
+    & \multicolumn{4}{c}{Klaeger ($n=206$)} & \multicolumn{4}{c}{Davis ($n=68$)} \\
+    Feature & S & E & G & R & S & E & G & R \\
     \midrule
-    $n_\mathrm{active}$      & $-0.350^{***}$ & $-0.455^{***}$ & $-0.166^{*}$   & $-0.040$ \\
-    top$_1$--top$_2$ gap     & $+0.058$       & $+0.128$       & $+0.109$       & $-0.341^{***}$ \\
-    Active affinity std      & $-0.386^{***}$ & $-0.215^{**}$  & $-0.176^{*}$   & $-0.107$ \\
-    Active affinity range    & $-0.458^{***}$ & $-0.318^{***}$ & $-0.163^{*}$   & $-0.116$ \\
-    top$_2$ $\mathrm{p}K_d$  & $-0.394^{***}$ & $-0.282^{***}$ & $-0.268^{***}$ & $+0.186^{**}$ \\
+    $n_\mathrm{active}$      & $-0.350^{***}$ & $-0.455^{***}$ & $-0.166^{*}$   & $-0.040$       & $-0.150$ & $-0.279^{*}$ & $-0.299^{*}$ & $+0.294^{*}$ \\
+    top$_1$--top$_2$ gap     & $+0.058$       & $+0.128$       & $+0.109$       & $-0.341^{***}$ & $-0.096$ & $-0.007$     & $-0.029$     & $-0.446^{***}$ \\
+    Active affinity std      & $-0.386^{***}$ & $-0.215^{**}$  & $-0.176^{*}$   & $-0.107$       & $-0.003$ & $-0.015$     & $+0.005$     & $+0.042$ \\
+    Active affinity range    & $-0.458^{***}$ & $-0.318^{***}$ & $-0.163^{*}$   & $-0.116$       & $+0.003$ & $-0.111$     & $-0.098$     & $+0.136$ \\
+    top$_2$ $\mathrm{p}K_d$  & $-0.394^{***}$ & $-0.282^{***}$ & $-0.268^{***}$ & $+0.186^{**}$  & $-0.055$ & $-0.203$     & $-0.187$     & $+0.298^{*}$ \\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -101,10 +101,15 @@ B. Use additional kinase selectivity datasets (Gao; Metz; Patricelli;
 --------------------------------------------------------------------
 
 I have substantially expanded the dataset coverage. The analysis now spans
-four datasets across three assay technologies and two readout types, and every
-main result (the two-family clustering and the instability predictors) is shown
-to replicate across all four (new Results subsection "The Two-Family Structure
-Replicates Across Assay Technologies", and new Figure 2).
+four datasets across three assay technologies and two readout types. The
+two-family clustering replicates on all four (new Results subsection "The
+Two-Family Structure Replicates Across Assay Technologies", and new Figure 2),
+as do the key instability-predictor relationships, most robustly the ratio
+family's dependence on the top-1 vs top-2 affinity gap. The full per-feature
+predictor structure is reported for the two pKd datasets (Klaeger and Davis) in
+Table 2; the ratio/gap relationship replicates strongly across both, while some
+family-specific predictors (notably the S-score's) are assay-dependent, which I
+now note explicitly.
 
   - Anastassiadis et al. (Nat. Biotechnol. 2011): ADDED. 178 inhibitors x 300
     kinases, single-concentration radiometric activity assay (percent residual

@@ -38,7 +38,10 @@ Why this satisfies D1-D4:
 
 The design choice is the smoothing width T (in pK_d units).  T ~ 1 places the
 candidate's panel-size convergence in the fast class (entropy, S-score).  The
-active/inactive boundary is fixed at the assay floor rather than tuned.
+active/inactive boundary is fixed at the assay floor rather than tuned.  The
+panel-size convergence is checked on the two sparse-coverage datasets (Klaeger,
+Metz); the dense complete-matrix screens (Davis, Anastassiadis) are unsuitable
+for kinase subsampling, as explained in the paper.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -48,15 +51,13 @@ import pandas as pd
 from scipy.stats import spearmanr
 import matplotlib.pyplot as plt
 
-M = pd.read_csv("klaeger_matrix.csv", index_col=0).values
-n_drugs, n_kin = M.shape
-FLOOR, TAU_STAR, T = 5.0, 6.0, 1.0
+T = 1.0
 
 def to_ranks(s):
     return len(s) - s.argsort().argsort()
 
 # ---------------- candidate ----------------
-def candidate(P, baseline=FLOOR, floor=FLOOR, T=T, eps=1e-10):
+def candidate(P, baseline, floor, T=T, eps=1e-10):
     # Gate at the fixed assay detection floor. Sub-floor kinases are non-binders.
     # They carry zero weight, so the effective-target count reflects real binding.
     # The gate is what keeps the measure correctly oriented (concentrated = selective).
@@ -68,77 +69,102 @@ def candidate(P, baseline=FLOOR, floor=FLOOR, T=T, eps=1e-10):
     return -(-(p * np.where(p > 0, np.log2(p + eps), 0)).sum(1))   # -Shannon entropy
 
 # ---------------- existing measures (match panel_size_analysis.py) ----------------
-def entropy(P, b=5.0, e=1e-10):
+def entropy(P, b, e=1e-10):
     s = np.maximum(P - b, 0); rs = np.where(s.sum(1, keepdims=True) == 0, e, s.sum(1, keepdims=True))
     p = s / rs; return -(-(p * np.where(p > 0, np.log2(p + e), 0)).sum(1))
-def gini(P, b=5.0):
+def gini(P, b):
     s = np.maximum(P - b, 0); out = []
     for r in s:
         rs = np.sort(r); n = len(rs); t = rs.sum()
         out.append(0.0 if t == 0 else (2 * np.sum(np.arange(1, n + 1) * rs)) / (n * t) - (n + 1) / n)
     return np.array(out)
-def s_score(P, thr=6.0): return -(P > thr).astype(float).mean(1)
-def ratio(P, k=1):
-    return np.array([np.sort(r)[::-1][0] - max(np.sort(r)[::-1][k] if len(r) > k else 5.0, 5.0) for r in P])
+def s_score(P, thr): return -(P > thr).astype(float).mean(1)
+def ratio(P, floor, k=1):
+    return np.array([np.sort(r)[::-1][0] - max(np.sort(r)[::-1][k] if len(r) > k else floor, floor) for r in P])
 
-measures = {'candidate': candidate, 'entropy': entropy, 'gini': gini,
-            's_score': s_score, 'ratio': ratio}
-ref = {k: to_ranks(f(M)) for k, f in measures.items()}
 
-# ---------------- orientation guard ----------------
-# A valid selectivity measure must score concentrated binders as MORE selective.
-# Selectivity must therefore fall as the number of active kinases rises.
-# This catches the sign or normalization inversion that a background-weighted
-# effective-target count would produce.
-n_active = (M > TAU_STAR).sum(1)
-orient_r = spearmanr(candidate(M), n_active)[0]
+def measures_for(baseline, threshold, floor):
+    return {
+        'candidate': lambda P: candidate(P, baseline=floor, floor=floor),
+        'entropy':   lambda P: entropy(P, b=baseline),
+        'gini':      lambda P: gini(P, b=baseline),
+        's_score':   lambda P: s_score(P, thr=threshold),
+        'ratio':     lambda P: ratio(P, floor=floor),
+    }
+
+
+def panel_convergence(M, baseline, threshold, floor, R=50, seed=42):
+    n_drugs, n_kin = M.shape
+    meas = measures_for(baseline, threshold, floor)
+    ref = {k: to_ranks(f(M)) for k, f in meas.items()}
+    panel = list(range(50, n_kin, 30)) + [n_kin]
+    rng = np.random.RandomState(seed)
+    res = {k: {ps: [] for ps in panel} for k in meas}
+    for ps in panel:
+        for _ in range(R):
+            idx = rng.choice(n_kin, ps, replace=False); Ms = M[:, idx]
+            for k, f in meas.items():
+                res[k][ps].append(spearmanr(ref[k], to_ranks(f(Ms)))[0])
+    pstar = {k: next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None) for k in meas}
+    return panel, res, pstar
+
+
+# Sparse-coverage datasets only (see module docstring / paper).
+DATASETS = [
+    dict(name='Klaeger', file='klaeger_matrix.csv', baseline=5.0, threshold=6.0, floor=5.0),
+    dict(name='Metz',    file='metz_matrix.csv',    baseline=4.0, threshold=6.0, floor=4.0),
+]
+order = ['candidate', 'entropy', 's_score', 'gini', 'ratio']
+styles = {'candidate': ('C3', '-', 2.6), 'entropy': ('C1', '--', 1.6),
+          's_score': ('C0', '--', 1.6), 'gini': ('C2', '--', 1.6), 'ratio': ('C4', '--', 1.6)}
+
+# ---------------- (checks on Klaeger, as before) ----------------
+Mk = pd.read_csv('klaeger_matrix.csv', index_col=0).values
+FLOOR, TAU_STAR = 5.0, 6.0
+n_drugs_k = Mk.shape[0]
+
+# orientation guard
+n_active = (Mk > TAU_STAR).sum(1)
+orient_r = spearmanr(candidate(Mk, FLOOR, FLOOR), n_active)[0]
 assert orient_r < -0.3, f"candidate is inverted: corr(selectivity, n_active) = {orient_r:+.3f}"
-print(f"Orientation check: corr(candidate selectivity, n_active) = {orient_r:+.3f} (must be negative)")
+print(f"Orientation check (Klaeger): corr(candidate selectivity, n_active) = {orient_r:+.3f} (must be negative)")
 
-# ---------------- (A) panel-size convergence ----------------
-panel = list(range(50, n_kin, 30)) + [n_kin]   # match panel_size_analysis.py grid
-np.random.seed(42); R = 50
-res = {k: {ps: [] for ps in panel} for k in measures}
-for ps in panel:
-    for _ in range(R):
-        idx = np.random.choice(n_kin, ps, replace=False); Ms = M[:, idx]
-        for k, f in measures.items():
-            res[k][ps].append(spearmanr(ref[k], to_ranks(f(Ms)))[0])
-def pstar(k):
-    return next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None)
-
-print("Panel-size convergence  p* = smallest panel with mean Spearman rho > 0.90:")
-for k in measures:
-    print(f"  {k:10s} p* = {pstar(k)}")
-
-# ---------------- (B) D3: baseline robustness ----------------
+# D3: baseline robustness
 betas = np.arange(4.5, 6.6, 0.25)
 def worst_pair(fn):
-    rr = np.array([to_ranks(fn(M, b)) for b in betas])
+    rr = np.array([to_ranks(fn(b)) for b in betas])
     return min(spearmanr(rr[i], rr[j])[0] for i in range(len(betas)) for j in range(i + 1, len(betas)))
 print("\nD3 check (worst-case rank Spearman over [4.5,6.5]):")
-print(f"  candidate, vary emphasis baseline (gate pinned at floor): {worst_pair(lambda P,b: candidate(P, baseline=b)):+.3f}")
-print(f"  candidate, vary active-set boundary (gate floor)        : {worst_pair(lambda P,b: candidate(P, baseline=b, floor=b)):+.3f}")
-print(f"  existing entropy, vary baseline                         : {worst_pair(lambda P,b: entropy(P, b=b)):+.3f}")
+print(f"  candidate, vary emphasis baseline (gate pinned at floor): {worst_pair(lambda b: candidate(Mk, baseline=b, floor=FLOOR)):+.3f}")
+print(f"  candidate, vary active-set boundary (gate = floor)       : {worst_pair(lambda b: candidate(Mk, baseline=b, floor=b)):+.3f}")
+print(f"  existing entropy, vary baseline                          : {worst_pair(lambda b: entropy(Mk, b=b)):+.3f}")
 
-# ---------------- (C) D4: monotonicity under weak off-target addition ----------------
-base = candidate(M)
-new = candidate(np.hstack([M, np.full((n_drugs, 1), TAU_STAR - 0.7)]))
+# D4: monotonicity under weak off-target addition
+base = candidate(Mk, FLOOR, FLOOR)
+new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR - 0.7)]), FLOOR, FLOOR)
 print(f"\nD4 (add a sub-threshold off-target): selectivity non-increasing for "
       f"{(new <= base + 1e-9).mean() * 100:.0f}% of compounds; max increase = {max(0.0, (new - base).max()):.4f}")
 
-# ---------------- figure ----------------
-fig, ax = plt.subplots(figsize=(8.5, 5))
-styles = {'candidate': ('C3', '-', 2.6), 'entropy': ('C1', '--', 1.6),
-          's_score': ('C0', '--', 1.6), 'gini': ('C2', '--', 1.6), 'ratio': ('C4', '--', 1.6)}
-for k in measures:
-    c, ls, lw = styles[k]
-    ax.plot(panel, [np.mean(res[k][ps]) for ps in panel], color=c, ls=ls, lw=lw,
-            label=f"{k} (p*={pstar(k)})")
-ax.axhline(0.90, color='black', ls=':', lw=1)
-ax.set_xlabel('Panel size (kinases)'); ax.set_ylabel('Spearman rho vs full-panel ranking')
-ax.set_title('Panel-size convergence: candidate (gated, smooth-hinge effective-target number)\n'
-             'vs existing measures (Klaeger, 50 subsamples per size)')
-ax.legend(fontsize=8); ax.set_ylim(0, 1.01)
-plt.tight_layout(); plt.savefig('candidate_panel_convergence.png', dpi=150, bbox_inches='tight')
+# ---------------- panel-size convergence (Klaeger + Metz) ----------------
+fig, axes = plt.subplots(1, len(DATASETS), figsize=(7 * len(DATASETS), 5), squeeze=False)
+for ax, ds in zip(axes[0], DATASETS):
+    M = pd.read_csv(ds['file'], index_col=0).values
+    n_drugs, n_kin = M.shape
+    panel, res, pstar = panel_convergence(M, ds['baseline'], ds['threshold'], ds['floor'])
+    print(f"\nPanel-size convergence p* ({ds['name']}, {n_drugs} cpd x {n_kin} kin):")
+    for k in order:
+        print(f"  {k:10s} p* = {pstar[k]}")
+    for k in order:
+        c, ls, lw = styles[k]
+        ax.plot(panel, [np.mean(res[k][ps]) for ps in panel], color=c, ls=ls, lw=lw,
+                label=f"{k} (p*={pstar[k]})")
+    ax.axhline(0.90, color='black', ls=':', lw=1)
+    ax.set_xlabel('Panel size (kinases)'); ax.set_ylabel('Spearman rho vs full-panel ranking')
+    ax.set_title(f"{ds['name']} ({n_drugs} cpd $\\times$ {n_kin} kin)")
+    ax.legend(fontsize=8); ax.set_ylim(0, 1.01)
+
+fig.suptitle('Panel-size convergence: candidate (gated, smooth-hinge effective-target number) '
+             'vs existing measures (50 subsamples per size)', fontsize=12)
+plt.tight_layout(rect=[0, 0, 1, 0.96])
+plt.savefig('candidate_panel_convergence.png', dpi=150, bbox_inches='tight')
 print("\nSaved candidate_panel_convergence.png")
