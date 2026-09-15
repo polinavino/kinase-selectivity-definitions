@@ -7,21 +7,32 @@
 Our primary analysis uses two publicly available kinase inhibitor profiling
 datasets, described first. Two further datasets are added below to confirm the
 findings across additional assay technologies.
-The Davis dataset\cite{Davis2011} comprises binding affinities ($K_d$) for 68
+The Davis dataset\cite{Davis2011} is comprised of binding affinities ($K_d$) for 68
 small-molecule kinase inhibitors measured against 433 human kinase domains.
 Affinity values are reported as dissociation constants and were converted to
 $\mathrm{p}K_d = -\log_{10}(K_d / 10^9)$ prior to analysis, following the
 convention of the DeepDTA benchmark.\cite{DeepDTA}
 % Pairs for which no binding was detected at the screening concentration of
 % 10~$\mu$M were assigned $\mathrm{p}K_d = 5.0$, corresponding to a $K_d$ of
-% 1~mM, which represents the detection floor of the assay.
+% 10~$\mu$M, which represents the detection floor of the assay.
 The resulting affinity matrix is complete ($68 \times 433$, 29{,}444 entries),
 with all non-binding pairs assigned the detection-floor value
-$\mathrm{p}K_d = 5.0$ (corresponding to a $K_d$ of 1~mM).
+$\mathrm{p}K_d = 5.0$ (corresponding to a $K_d$ of 10~$\mu$M).
 This is the standard convention for the dataset\cite{DeepDTA,Bosc2017} and
 slightly underestimates true non-binding affinity.
 
-The Klaeger dataset\cite{Klaeger2017} comprises binding affinities for 243
+Active entries (pKd $> 6$, i.e.\ $K_d < 1~\mu$M) make up 17.9\% of the Davis
+matrix. This cutoff answers ``was binding detected above assay noise/floor,''
+the conventional boundary used in kinase profiling, rather than ``is this
+target plausibly occupied at physiological drug concentrations,'' a question
+affinity values alone cannot answer without exposure data (e.g.\ free-drug
+concentration) that neither dataset provides. A stricter cutoff
+($\mathrm{p}K_d \geq 7$, $K_d < 100$~nM) leaves the agreement between
+selectivity definitions unchanged but shrinks per-compound active sets,
+pushing more compounds toward the zero/near-zero-active regime that
+Section \ref{sec:results:instability} identifies as least rank-stable. 
+
+The Klaeger dataset\cite{Klaeger2017} is comprised of binding affinities for 243
 clinical kinase inhibitors profiled against the human kinome using
 Kinobeads chemical proteomics.
 Apparent dissociation constants ($K_d^\mathrm{app}$) were derived from
@@ -35,9 +46,8 @@ above.
 Missing entries, representing kinase--inhibitor combinations not detected in
 the assay, were assigned the background value $\mathrm{p}K_d = 5.0$.
 The resulting Klaeger matrix is $222 \times 343$.
-Active entries (pKd $> 6$, i.e.\ $K_d < 1~\mu$M) make up 17.9\% of the Davis
-matrix and 3.6\% of the Klaeger matrix. Weaker interactions that fall below the
-limit of detection are recorded at the background value.
+Active entries (pKd $> 6$) make up 3.6\% of the Klaeger matrix, versus 17.9\%
+for Davis above.
 The lower active fraction for Klaeger reflects the more stringent detection
 threshold of the chemoproteomic assay.
 
@@ -50,13 +60,20 @@ control.
 We converted these to percent inhibition ($100$ minus residual activity,
 clipped to $[0,100]$, where higher values denote stronger inhibition), with the
 $1.1\%$ missing entries set to zero inhibition.
-The Metz dataset\cite{Metz2011} reports $\mathrm{p}K_i$ affinities for a large 
+The Metz dataset\cite{Metz2011} reports $\mathrm{p}K_i$ affinities for a large
 medicinal-chemistry
-campaign using the same negative-log scale as $\mathrm{p}K_d$. We restricted 
-it to the 704 compounds profiled against at least 50 of
-the 172 kinases, assigning the assay floor $\mathrm{p}K_i = 4.0$ to unmeasured
-combinations.
-The four datasets thus span three assay technologies (competition binding,
+campaign using the same negative-log scale as $\mathrm{p}K_d$. The value
+$\mathrm{p}K_i = 4.0$ is the lowest value reported anywhere in the released
+data (only $0.17\%$ of measurements), so we assign it to unmeasured
+combinations as the assay's own detection floor (the same convention used for
+the Davis $\mathrm{p}K_d = 5.0$ floor above). Coverage per compound is highly
+skewed (a median compound is measured against only 21 of the 172 kinases), so
+we restricted the dataset to the 704 compounds profiled against at least 50 of
+the 172 kinases, keeping profiles in which most entries reflect a real
+measurement rather than floor imputation while retaining a large enough
+compound set for the panel-size and instability analyses.
+
+The four datasets span three assay technologies (competition binding,
 chemoproteomics, and functional activity) and two readout types (affinity and
 single-concentration inhibition).
 Each selectivity definition is computed on the native readout of its
@@ -74,7 +91,7 @@ We excluded two additional candidate datasets.
 The Gao screen\cite{Gao2013} is a single-concentration functional inhibition
 assay of the same readout type as the Anastassiadis dataset already included,
 and its raw data are not openly redistributable. Including it would add a
-second instance of an assay type rather than a new modality.
+second instance of an assay type rather than a new assay technology.
 The Patricelli study\cite{Patricelli2011} profiles only a small number of
 inhibitors against native kinases as a proof of concept for the KiNativ
 platform. A ranking-stability analysis requires many compounds to produce a
@@ -110,7 +127,7 @@ approximately 3~$\mu$M to 10~nM.
 Uitdehaag and Zaman\cite{Uitdehaag2011} treat the compound's binding across the
 panel as a probability distribution and report its Shannon entropy. A profile
 concentrated on few kinases has low entropy and is selective.
-In the original definition the weight on each kinase is its association constant
+In the original definition, the weight on each kinase is its association constant
 $K_{a,i} = 1/K_{d,i}$ (the share of compound that would be bound to kinase $i$
 in an equimolar mixture), so $p_i = K_{a,i}/\sum_j K_{a,j}$.
 We implemented the entropy on the same log-affinity scale used by the other
@@ -122,7 +139,18 @@ metrics, weighting each kinase by its affinity in excess of a baseline $\beta$:
 \end{equation}
 where $\beta$ is the affinity below which binding is treated as negligible.
 This makes $\beta$ an explicit parameter (its under-specification motivates
-property D3 below). We swept $\beta \in \{5.0, 5.25, \ldots, 6.5\}$ (7 values).
+property D3 below). We swept $\beta \in \{5.0, 5.25, \ldots, 6.5\}$ (7 values),
+a narrower range than the S-score's $\tau$ sweep above. Both parameters key off
+the same threshold-crossing event, so sweeping either one far enough leaves a
+growing share of compounds with no kinase above the cutoff (on Klaeger, 7.2\%
+of compounds at $\mathrm{p}K_d = 6.0$ versus 55\% at $\mathrm{p}K_d = 8.0$),
+degenerating the S-score toward an uninformative 0 and the entropy and Gini
+weights toward an undefined 0/0 alike. The $\tau$ range 
+(whose S-score is not necessarily immune to this) is wider because it was 
+chosen to reproduce Karaman
+et al.'s published cutoffs (approximately 3~$\mu$M to 10~nM). $\beta$ has no
+equivalent published reference points and was kept closer to the
+$\mathrm{p}K_d = 6$ active threshold used elsewhere in this work.
 The association-constant and log-affinity weightings are distinct reasonable
 choices that can rank compounds differently, which is itself an instance of the
 definitional instability this paper characterizes. We quantify the difference
@@ -136,20 +164,22 @@ coefficient, which measures how unequally is binding distributed across the kino
 is twice the area between this curve and the diagonal of equal
 distribution.
 The original work computes it from percent-inhibition values.
-We applied the standard discrete Gini formula to the same baseline-subtracted
-log-affinities used for the entropy:
+As with the entropy above, implemented the entropy on the same log-affinity scale
+for the same reason.
+We applied the standard discrete Gini formula to that baseline-subtracted
+log-affinity profile:
 \begin{equation}
   G(\beta) = \frac{2\sum_{i=1}^{N} i \cdot x_{(i)}}{N \sum_{i=1}^{N} x_{(i)}} - \frac{N+1}{N},
   \qquad x_{(i)} = \max(\mathrm{p}K_{d,i} - \beta,\, 0)\  \text{sorted ascending}.
 \end{equation}
 We swept $\beta$ over the same range as for the entropy.
 A compound whose binding is concentrated on one kinase has a highly unequal
-distribution and $G$ near 1, while a compound that binds many kinases equally has
+distribution ($G$ is near 1), while a compound that binds many kinases equally has
 $G$ near 0. Higher values therefore indicate greater selectivity.
 
 \paragraph{Ratio.}
-Classical pharmacological selectivity is pairwise: how much more tightly does a
-compound bind its primary target than an off-target?
+Classical pharmacological selectivity is pairwise. It quantifies how much more tightly a
+compound binds its primary target than an off-target.
 We implemented this as the fold-selectivity, in log units, between the primary
 target and the $k$-th ranked off-target:
 \begin{equation}
@@ -157,13 +187,18 @@ target and the $k$-th ranked off-target:
        = \log_{10}\frac{K_{d,(k+1)}}{K_{d,(1)}},
 \end{equation}
 where $\mathrm{p}K_{d,(j)}$ is the $j$-th largest affinity in the profile and
-$k \in \{1, 2, 3, 4, 5\}$ selects the reference off-target.
-This is the prototypical member of the ratio family, which also includes the
-concentration- and target-dependent selectivity (CATDS) score of Klaeger et
-al.\cite{Klaeger2017}. Members of the ratio family of selectivity definitions 
-are concentration-dependent fractions quantifying the
-binding reduction at one target relative to the summed reduction across all
-targets.
+$k \in \{1, 2, 3, 4, 5\}$ selects the reference off-target. We capped $k$ at 5
+because, on the sparser Klaeger panel, a large share of compounds already have
+fewer than five active kinases (median 5.5; $45\%$ have fewer than five). For
+those compounds, a larger $k$ would compare the primary target against the
+assay floor rather than a genuine off-target.
+$R(k)$ takes
+the affinity gap to a single chosen competitor, the $k$-th ranked off-target.
+The family also includes the concentration- and target-dependent selectivity
+(CATDS) score of Klaeger et al.\cite{Klaeger2017}, which instead divides each
+target's concentration-dependent binding reduction by the sum of binding
+reductions over \emph{every} target in the panel (rather than comparing to a
+single chosen competitor).
 We use the simpler fold-selectivity because the reference off-target index $k$
 is then an explicit parameter whose effect can be studied directly.
 A larger affinity gap to the nearest competitor means greater selectivity, so
@@ -178,16 +213,15 @@ respectively).
 For the entropy and the Gini coefficient, we used the baseline-subtracted
 log-affinity profile in place of the original association constants (entropy)
 and percent-inhibition values (Gini), so that all four metrics operate on one
-common scale, and so that the baseline $\beta$ appears as an explicit parameter.
+common scale, and making baseline $\beta$ an explicit calculation parameter.
 To confirm that this choice does not implicitly determine our conclusions, we
 recomputed the entropy and Gini in forms closer to the originals
 (association-constant weighting) and compared the resulting rankings with the
 log-affinity forms.
 The two operationalizations differ substantially: for entropy, Spearman
-$r = 0.42$ (Davis) and $-0.32$ (Klaeger), while for Gini, $r = 0.11$ and $-0.46$
+$r = 0.42$ (Davis) and $-0.32$ (Klaeger), while for Gini, $r = 0.11$ and $-0.45$
 (Figure~\ref{fig:fidelity}). This confirms that the operationalization
-of a named metric is itself a source of the definitional instability we report,
-not a neutral implementation detail.
+of a named metric is a source of the definitional instability.
 
 \begin{figure}[htbp]
   \centering
@@ -199,8 +233,8 @@ not a neutral implementation detail.
            main text. Top row: selectivity entropy; bottom row: Gini coefficient.
            The two operationalizations of the same named metric differ
            substantially, and the entropy ranking even reverses on Klaeger,
-           confirming that the operationalization of a named metric is itself a
-           source of the definitional instability we report.}
+           confirming that the operationalization of a named metric is a
+           source of the definitional instability.}
   \label{fig:fidelity}
 \end{figure}
 
@@ -211,20 +245,27 @@ For each definition and each parameter value, compounds were ranked from most
 selective (rank 1) to least selective (rank $n$, where $n$ is the number of
 compounds in the dataset).
 Ties were broken by average rank.
-This yielded 30 rank vectors per dataset: 11 for the S-score, 7 for entropy,
-7 for Gini, and 5 for ratio.
+This yielded 30 rank vectors per dataset for Davis, Klaeger, and Metz (11 for
+the S-score, 7 for entropy, 7 for Gini, and 5 for ratio), and 28 for
+Anastassiadis, whose coarser native percent-inhibition scale supports only 9
+S-score threshold values rather than 11.
 
 For each compound, rank instability was quantified as the standard deviation
-of its rank across all 30 configurations (overall instability) and separately
+of its rank across all configurations for that dataset (overall instability)
+and separately
 across parameter configurations within each definition family (within-family
 instability).
-Cross-definition agreement was assessed using Spearman rank correlation
+Cross-definition-family agreement was assessed using Spearman rank correlation
 between the median rank vectors of each definition family.
-The median was taken across parameter values within each family prior to
-correlation to obtain a single representative ranking per definition.
+The median was taken across parameter values within each family, rather than
+the mean, because the
+median is less sensitive to the inclusion or exclusion of outliers than the mean.
 
 Associations between rank instability and binding profile features were
-assessed using Spearman correlation.
+assessed using Spearman correlation, restricted to the Klaeger and Davis
+datasets. These are the two datasets on a $\mathrm{p}K_d$ scale, so the same
+activity threshold and affinity-based features apply directly, allowing the
+predictor structure to be checked for replication across a second dataset.
 Profile features computed for each compound included: the number of active
 kinases ($\mathrm{p}K_d > 6$), the gap between the top and second-ranked
 affinities, the standard deviation and range of active affinities, and the

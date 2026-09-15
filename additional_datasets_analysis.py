@@ -30,7 +30,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import sys
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, rankdata
 import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -64,7 +64,7 @@ def ratio_selectivity(M, top_n, floor):
     return np.array(out)
 
 def to_ranks(scores):
-    return len(scores) - scores.argsort().argsort()
+    return rankdata(-np.asarray(scores), method='average')
 
 DEFNS = ['s_score', 'entropy', 'gini', 'ratio']
 

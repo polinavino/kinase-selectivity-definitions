@@ -5,7 +5,7 @@ The central finding of this work is that existing kinase inhibitor selectivity
 definitions do not measure the same quantity.
 The ratio definition and the distribution-based family (S-score, entropy, Gini)
 produce substantially different compound rankings (cross-family
-$r = 0.14$--$0.62$ across four datasets, versus within-family $r > 0.74$), and
+$r = 0.14$--$0.62$ across four datasets, versus within-family $r > 0.72$), and
 the sources of disagreement are mechanistically interpretable rather than random.
 This has practical consequences: a compound that ratio-based analysis designates
 as selective may be designated as moderately promiscuous by entropy-based
@@ -66,13 +66,21 @@ This is analogous to reporting confidence intervals in statistical estimation.
 Third, when comparing selectivity across studies that use different definitions,
 the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
-The high within-family correlations ($r > 0.74$) suggest that S-score, entropy,
+The high within-family correlations ($r > 0.72$) suggest that S-score, entropy,
 and Gini are interchangeable for most purposes when parameters are chosen
-consistently. This interchangeability is a full-panel property, however: the
+consistently. This is an empirical observation rather than a preset adequacy
+bar: $r = 0.72$ is the lowest within-family correlation we observed (Klaeger
+S-score vs.\ Gini, Table~\ref{tab:correlations}), and it answers a different
+question from the $\rho > 0.90$ criterion used in the panel-size analysis
+below. The former asks how similarly two distinct definitions rank compounds
+on the full panel; the latter asks how similarly the same definition ranks
+compounds on a subpanel versus the full panel. The two should not be read as
+a single, consistent standard of agreement.
+This interchangeability is also a full-panel property: the
 within-family agreement is measured on the complete kinome, and the panel-size
 analysis shows that the Gini coefficient can diverge from the entropy and
 S-score on the smaller panels used in practice (on Klaeger it requires roughly
-290 of 343 kinases to recover its full-panel ranking, against 110--140 for
+290 of 343 kinases to recover its full-panel ranking, against 110 for
 entropy and the S-score). The three should therefore be treated as
 interchangeable only when compared on panels of similar, near-complete coverage.
 Ratio-based measures, in turn, should not be compared directly with
@@ -94,6 +102,31 @@ The consistency of the two-family structure and the instability predictors
 across all four datasets indicates that the findings are not artifacts of a
 single assay platform. However, findings should still be interpreted in light of
 these technological differences.
+Our comparison is also restricted to four widely used, historically
+established definitions. Bosc et al.'s window score and ranking
+score\cite{Bosc2017} were not included, but a check on the same four datasets
+confirms both correlate with the ratio family (Spearman $r = 0.80$--$0.96$)
+rather than forming a distinct third cluster, consistent with their shared
+dependence on the gap between the top target and its nearest competitors.
+The CATDS score\cite{Klaeger2017}, historically classified alongside the
+ratio-based measures, was also not implemented directly. Unlike $R(k)$, CATDS
+normalizes each target's binding reduction by the sum of reductions across the
+entire panel rather than comparing to a single off-target, a construction it
+shares with the distribution-based family rather than with $R(k)$. A proxy
+computed from our baseline-subtracted affinity profiles, in place of the raw
+concentration-response data CATDS requires, correlates more strongly with Gini
+and entropy than with $R(k)$ on Klaeger, consistent with this structural
+reading. We did not add it as a fifth measure: the distribution family is
+already represented by three members, and CATDS appears to be an additional
+instance of the same underlying construct rather than an independent
+perspective.
+A further axis of platform dependence that this analysis does not examine is
+cell-based versus cell-free profiling: recent work shows that selectivity
+classifications for the same compounds can differ substantially between
+biochemical binding panels and cellular target-engagement assays, particularly
+for inhibitors that bind the inactive, DFG-out kinase conformation, which
+cell-free panels built on truncated or active-conformation constructs may not
+sample\cite{Binder2026}.
 
 We also examined whether in vitro selectivity predicts clinical toxicity,
 correlating the selectivity rankings of the FDA-approved Klaeger compounds with

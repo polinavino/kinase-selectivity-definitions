@@ -4,7 +4,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 import pandas as pd
 import numpy as np
-from scipy.stats import spearmanr, kendalltau
+from scipy.stats import spearmanr, kendalltau, rankdata
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from itertools import product
@@ -147,7 +147,7 @@ for n in ratio_top_ns:
 all_ranks = {}
 for key, scores in all_scores.items():
     # argsort twice gives rank
-    ranks = len(scores) - scores.argsort().argsort()
+    ranks = rankdata(-np.asarray(scores), method='average')
     all_ranks[key] = ranks
 
 print(f"Computed {len(all_scores)} score vectors")

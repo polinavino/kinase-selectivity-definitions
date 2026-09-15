@@ -1,0 +1,20 @@
+
+=== Klaeger: 222 drugs x 343 kinases; active drugs n=206 ===
+HHI vs n_active:       r=-0.998***  (redundancy check)
+CR1 vs n_active:       r=-0.987***  (redundancy check)
+Feature                 s_score       entropy          gini         ratio
+cr1_share             +0.230***     +0.403***        +0.122        -0.001
+hhi                   +0.260***     +0.403***        +0.091        +0.022
+top1_pkd               -0.216**     -0.265***     -0.260***      -0.215**
+near_tie_1pkd            -0.051      -0.213**        -0.059        +0.088
+active_cv             -0.285***       -0.177*        -0.087        -0.112
+
+=== Davis: 68 drugs x 433 kinases; active drugs n=68 ===
+HHI vs n_active:       r=-0.998***  (redundancy check)
+CR1 vs n_active:       r=-0.982***  (redundancy check)
+Feature                 s_score       entropy          gini         ratio
+cr1_share                +0.163       +0.274*       +0.298*      -0.340**
+hhi                      +0.152       +0.276*       +0.299*       -0.302*
+top1_pkd                 -0.006        -0.129        -0.118        +0.101
+near_tie_1pkd            -0.087        -0.176        -0.147        +0.191
+active_cv                +0.017        -0.007        +0.013        +0.044

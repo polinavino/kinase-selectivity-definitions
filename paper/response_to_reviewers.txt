@@ -208,6 +208,64 @@ While revising, I addressed three further items:
    rewritten as named references, consistent with the rest of the manuscript
    and with the journal's convention for sections that are not numbered.
 
+4. Comparison against Bosc et al.'s window and ranking scores, and against
+   CATDS. The Limitations section previously noted only that the comparison
+   was restricted to four widely used definitions. It now reports a check
+   (against the same four datasets) showing that Bosc et al.'s window and
+   ranking scores correlate with the ratio family (Spearman r = 0.80-0.96)
+   rather than forming a distinct third cluster, consistent with their shared
+   dependence on the gap to the nearest competing target. It also explains why
+   CATDS was not implemented directly (it normalizes by total panel binding
+   reduction rather than a single off-target, structurally closer to the
+   distribution family than to R(k)) and reports that a proxy computed from
+   our baseline-subtracted profiles correlates more strongly with Gini and
+   entropy than with R(k) on Klaeger, consistent with that reading.
+
+5. Platform-dependence limitation (cell-based vs. cell-free assays). The
+   Limitations section now notes an axis of platform dependence this analysis
+   does not examine: recent work shows selectivity classifications for the
+   same compounds can differ substantially between biochemical binding panels
+   and cellular target-engagement assays, particularly for inhibitors that
+   bind the inactive, DFG-out kinase conformation that cell-free panels built
+   on truncated or active-conformation constructs may not sample.
+
+6. Refined panel-size nuance in Practical Recommendation Three. The
+   recommendation that S-score, entropy, and Gini are interchangeable when
+   parameters are chosen consistently is now qualified as a full-panel
+   property: the panel-size analysis shows Gini can diverge from entropy and
+   the S-score on the smaller panels used in practice (on Klaeger it needs
+   roughly 290 of 343 kinases to recover its full-panel ranking, against 110
+   for entropy and the S-score), so the three should be treated as
+   interchangeable only when compared on panels of similar, near-complete
+   coverage.
+
+7. Further defense of the D2 and D3 motivation paragraphs, and a concrete,
+   verified non-uniqueness argument for the candidate measure. Reviewing the
+   required-properties section for claims that were asserted but not
+   defended, I strengthened three: why entropy and Gini's lack of a k-th
+   ranked term satisfies D2 in more than a vacuous sense (they are symmetric,
+   continuous functions of the full profile, so a near-tie changes the score
+   by only a vanishing amount); why the S-score is graded ~ rather than
+   checkmark on D2 (its threshold tau gives it a bounded, single-kinase
+   version of the same instability, smaller than the ratio's but not
+   vanishing); and why the ratio is graded checkmark on D3 only vacuously (it
+   has no baseline for D3 to perturb, unlike D2's explicit conditional on the
+   k-th ranked affinity). The word "antecedent" used in an earlier draft of
+   this reasoning has been removed throughout in favor of plainer phrasing.
+   Separately, the closing paragraph of the candidate-measure section claimed,
+   without a supporting computation, that a per-compound low-quantile
+   reference gives a shift-invariant variant with nearly the same ranking
+   (Spearman r ~ 1.00). This is now backed by a script and log in the
+   repository: the claim holds (r = 1.000 on both datasets; D3 across choices
+   of the quantile itself is equally robust, worst-case rho = 1.000; D4 holds
+   exactly). The same check also verified a second, independent family axis
+   -- generalizing the Shannon functional to any Renyi order alpha > 0 -- which
+   satisfies D1-D4 for every alpha tested while giving a genuinely different
+   ranking for alpha != 1 (Spearman agreement with alpha = 1 is 0.997-1.000).
+   The closing paragraph now cites both as concrete evidence that more than
+   one construction satisfies the required properties, rather than resting on
+   a single unverified aside.
+
 
 ================================================================
 CORRECTION MADE AFTER RESUBMISSION

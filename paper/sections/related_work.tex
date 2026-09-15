@@ -20,10 +20,12 @@ near 0 indicates activity spread evenly.
 Klaeger et al.\cite{Klaeger2017} introduced the concentration- and
 target-dependent selectivity (CATDS) score, which quantifies the reduction in
 binding to a given target relative to the summed reduction across all detected
-targets at a specified inhibitor concentration.
-Bosc et al.\cite{Bosc2017} subsequently proposed two further metrics:
-the window score and ranking score. They performed a comparative analysis of
-all five definitions on the Davis and Anastassiadis datasets, showing that
+targets at a specified inhibitor concentration (see Discussion for why we
+did not implement it as a fifth measure).
+Bosc et al.\cite{Bosc2017} subsequently proposed two further metrics, the
+window score and ranking score, and compared them against four previously
+published metrics (the S-score, Gini coefficient, selectivity entropy, and a
+partition index) on the Davis and Anastassiadis datasets, showing that
 compound rankings differ substantially depending on the metric applied and that
 certain compounds cannot be scored under some definitions when threshold
 conditions are not satisfied. For example, ratio-based scores are undefined
@@ -33,25 +35,33 @@ no primary target or off-target to compare.
 Reconciliation attempts have remained limited in scope.
 Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
 assessments from Klaeger et al.\ with activity data mined from ChEMBL for the
-same compounds. They found broad consistency between the two sources but noted
-that no simple relationship between selectivity and clinical performance was
-apparent.
+same compounds, finding broad consistency between the two sources.
 The KInhibition platform\cite{KInhibition2018} explicitly acknowledged that
-multiple metrics yield conflicting results for the same compound but addressed
-this through a unified query interface rather than theoretical analysis.
+multiple existing metrics yield conflicting results for the same compound, but
+addressed this by introducing its own composite score (combining on-target
+inhibition with an off-target inhibition penalty) rather than reconciling the
+disagreement among the existing definitions.
+More recently, the same group's built a KIRHub resource\cite{Gujral2026}
+on a
+new profiling campaign of 86 approved kinase inhibitors against 758 kinases
+and disease-associated mutant variants. This resource offers users a choice 
+between a further
+named metric (the KISS score, an on-target/off-target balance) and a separate
+Gini-based score, thus proliferating named, ad hoc definitions.
 
-A common limitation of these studies is that each metric is evaluated at fixed
-parameter values, so the sensitivity of rankings to parameter choice has not
-been systematically characterized.
-The structural properties of binding profiles that determine when definitions
+Two further notable gaps surface in existing work. The first is that
+is that each metric is evaluated at fixed
+parameter values. Thus, the sensitivity of rankings to parameter choice has not
+been systematically characterized. The second i that
+the structural properties of binding profiles that determine when definitions
 agree or disagree have not been identified.
 The present work addresses both gaps.
 
 \subsection{Axiomatic Approaches to Ranking and Measurement}
 \label{sec:related:axiomatic}
 
-Axiomatic characterization of measurement functions is well-established in
-adjacent fields.
+Precedent for an
+axiomatic characterization of measurement functions is established.
 Shannon\cite{Shannon1948} demonstrated that the entropy of a probability
 distribution is uniquely determined, up to a multiplicative constant, by four
 requirements: continuity, maximality on the uniform distribution,
@@ -62,24 +72,18 @@ normalized binding profiles but provides no analogous axiomatic justification.
 The axioms that single out Shannon entropy, such as maximality on the uniform
 distribution and additivity over independent subsystems, characterize a measure
 of uncertainty rather than a measure of selectivity.
-It is therefore not known whether the selectivity entropy is the unique function
-satisfying reasonable selectivity-specific properties, or one of many equivalent
-alternatives.
 
 Arrow\cite{Arrow1951} established that no social welfare function satisfies
 simultaneously the requirements of unrestricted domain, Pareto efficiency,
 independence of irrelevant alternatives, and non-dictatorship.
 The theorem is relevant here in two respects: it demonstrates that axiomatic
-analysis of a ranking concept can yield impossibility rather than uniqueness,
+analysis of a ranking concept can yield impossibility,
 and it shows that competing ranking functions reflect genuine tradeoffs between
 properties that cannot all be achieved simultaneously.
 Singleton and Booth\cite{Singleton2022} applied this methodology to truth
 discovery, i.e. the problem of identifying true facts from conflicting reports of
 unknown reliability, posing it as a social choice problem, formulating
 candidate axioms, and proving that a subset cannot be jointly satisfied.
-The structure of that problem is closely analogous to selectivity measurement,
-where multiple definitions produce conflicting rankings and the question of
-which to trust is unresolved.
 
 To our knowledge, this axiomatic style of analysis has not previously been
 applied to any selectivity or promiscuity measure in drug discovery.

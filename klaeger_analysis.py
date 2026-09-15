@@ -4,7 +4,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 import pandas as pd
 import numpy as np
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, rankdata
 import matplotlib.pyplot as plt
 
 matrix = pd.read_csv("klaeger_matrix.csv", index_col=0)
@@ -41,7 +41,7 @@ def ratio_selectivity(profiles, top_n=1):
     return np.array(ratios)
 
 def to_ranks(scores):
-    return len(scores) - scores.argsort().argsort()
+    return rankdata(-np.asarray(scores), method='average')
 
 s_thresholds   = np.arange(5.5, 8.25, 0.25)
 ent_baselines  = np.arange(5.0, 6.75, 0.25)

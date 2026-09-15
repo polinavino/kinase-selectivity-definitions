@@ -1,45 +1,45 @@
 Klaeger matrix: 222 drugs x 343 kinases
 
 Rank stability:
-  Mean rank std: 35.41
-  Most stable:   XL-228 (7.06)
-  Most unstable: AZD-8055 (91.59)
+  Mean rank std: 34.30
+  Most stable:   XL-228 (7.01)
+  Most unstable: AZD-8055 (90.69)
 
 Within-definition stability:
-  s_score     : mean=26.64, max=70.20 (MGCD-265)
-  entropy     : mean=13.02, max=45.90 (BGT-226)
-  gini        : mean=21.17, max=101.78 (RAF-265)
+  s_score     : mean=23.90, max=56.98 (BI-847325)
+  entropy     : mean=12.81, max=42.42 (BGT-226)
+  gini        : mean=20.93, max=100.82 (RAF-265)
   ratio       : mean=20.90, max=79.16 (PD-325901)
 
 Spearman correlations between definitions:
             s_score     entropy     gini        ratio       
-s_score            1.000       0.910       0.745       0.265
-entropy            0.910       1.000       0.869       0.480
-gini               0.745       0.869       1.000       0.617
-ratio              0.265       0.480       0.617       1.000
+s_score            1.000       0.901       0.722       0.223
+entropy            0.901       1.000       0.866       0.483
+gini               0.722       0.866       1.000       0.616
+ratio              0.223       0.483       0.616       1.000
 
 Zero-active drugs: 16
-Rank std zero-active: 73.8
-Rank std active:      32.4
+Rank std zero-active: 72.9
+Rank std active:      31.3
 
 Correlations with per-definition instability (active drugs only):
 Feature                 s_score    entropy       gini      ratio
-n_active              -0.350***  -0.455***  -0.166*    -0.040   
-top1_top2_gap         +0.058     +0.128     +0.109     -0.341***
-active_std            -0.386***  -0.215**   -0.176*    -0.107   
-active_range          -0.458***  -0.318***  -0.163*    -0.116   
-top2_pkd              -0.394***  -0.282***  -0.268***  +0.186** 
+n_active              -0.272***  -0.409***  -0.093     -0.040   
+top1_top2_gap         +0.039     +0.082     +0.031     -0.341***
+active_std            -0.281***  -0.170*    -0.117     -0.107   
+active_range          -0.354***  -0.273***  -0.102     -0.116   
+top2_pkd              -0.314***  -0.234***  -0.192**   +0.186** 
 
 Top 10 ratio-entropy disagreement drugs:
 Drug                     Disagree   n_active   top1_top2_gap
-AZD-8055                    187.0          0           0.161
-BMS-911543                  179.0          0           0.232
-Vatalanib                   172.0          0           0.357
+AZD-8055                    183.0          0           0.161
+BMS-911543                  176.0          0           0.232
+Vatalanib                   167.0          0           0.357
 Dovitinib                   158.0         26           1.935
+Filgotinib                  151.5          0           0.026
 BMS-690514                  147.0         20           1.985
-Filgotinib                  145.0          0           0.026
+ARRY-380                    144.0          0           0.012
 Defactinib                  141.0         14           1.649
-ARRY-380                    138.0          0           0.012
 MK-5108                     137.0         20           1.668
 Momelotinib                 134.0         31           0.057
 

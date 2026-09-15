@@ -24,13 +24,13 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, rankdata
 import matplotlib.pyplot as plt
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 def to_ranks(s):
-    return len(s) - s.argsort().argsort()          # rank 1 = most selective
+    return rankdata(-np.asarray(s), method='average')          # rank 1 = most selective
 
 def entropy_literal(M, eps=1e-12):                  # Uitdehaag: p ~ Ka = 1/Kd
     Ka = np.power(10.0, M - 9.0)

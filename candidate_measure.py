@@ -48,13 +48,13 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, rankdata
 import matplotlib.pyplot as plt
 
 T = 1.0
 
 def to_ranks(s):
-    return len(s) - s.argsort().argsort()
+    return rankdata(-np.asarray(s), method='average')
 
 # ---------------- candidate ----------------
 def candidate(P, baseline, floor, T=T, eps=1e-10):

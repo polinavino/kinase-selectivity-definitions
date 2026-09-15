@@ -4,7 +4,7 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 import pandas as pd
 import numpy as np
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, rankdata
 import matplotlib.pyplot as plt
 
 
@@ -42,7 +42,7 @@ def ratio_selectivity(profiles, floor, top_n=1):
 
 
 def to_ranks(scores):
-    return len(scores) - scores.argsort().argsort()
+    return rankdata(-np.asarray(scores), method='average')
 
 
 def scores_at(M, baseline, threshold, floor):

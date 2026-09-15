@@ -1,0 +1,39 @@
+======================================================================
+1. Soft gate (sigmoid ramp instead of the hard floor indicator)
+======================================================================
+
+Davis:
+  T_gate=0.05  orient_r=+0.258  D3(worst-case)=-0.827  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.151
+  T_gate=0.1   orient_r=+0.268  D3(worst-case)=-0.813  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.161
+  T_gate=0.25  orient_r=+0.302  D3(worst-case)=-0.706  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.194
+  T_gate=0.5   orient_r=+0.374  D3(worst-case)=-0.073  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.267
+  T_gate=1.0   orient_r=+0.451  D3(worst-case)=+0.546  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.346
+
+Klaeger:
+  T_gate=0.05  orient_r=+0.968  D3(worst-case)=-0.899  D4(pct-non-incr)= 92.8 maxinc=0.0003  vs-hard-gate=-0.920
+  T_gate=0.1   orient_r=+0.969  D3(worst-case)=-0.850  D4(pct-non-incr)= 94.1 maxinc=0.0002  vs-hard-gate=-0.918
+  T_gate=0.25  orient_r=+0.967  D3(worst-case)=-0.307  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.908
+  T_gate=0.5   orient_r=+0.959  D3(worst-case)=+0.763  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.887
+  T_gate=1.0   orient_r=+0.942  D3(worst-case)=+0.961  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-hard-gate=-0.860
+
+======================================================================
+2. Rank-based weights (D2 stress test: same active-set ranks, different gaps)
+======================================================================
+
+Davis:
+  decay=0.5  orient_r=-0.777  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-magnitude-weighted=0.817
+  decay=0.7  orient_r=-0.858  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-magnitude-weighted=0.885
+  decay=0.9  orient_r=-0.968  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-magnitude-weighted=0.999
+  decay=0.5  D2 stress: small-gap score=-1.3788  big-gap score=-1.3788  diff=0.000000
+  decay=0.7  D2 stress: small-gap score=-1.5257  big-gap score=-1.5257  diff=0.000000
+  decay=0.9  D2 stress: small-gap score=-1.5796  big-gap score=-1.5796  diff=0.000000
+
+Klaeger:
+  decay=0.5  orient_r=-0.937  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-magnitude-weighted=0.999
+  decay=0.7  orient_r=-0.937  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-magnitude-weighted=0.999
+  decay=0.9  orient_r=-0.937  D4(pct-non-incr)=100.0 maxinc=0.0000  vs-magnitude-weighted=0.999
+  decay=0.5  D2 stress: small-gap score=-1.3788  big-gap score=-1.3788  diff=0.000000
+  decay=0.7  D2 stress: small-gap score=-1.5257  big-gap score=-1.5257  diff=0.000000
+  decay=0.9  D2 stress: small-gap score=-1.5796  big-gap score=-1.5796  diff=0.000000
+
+Done.

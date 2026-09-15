@@ -14,6 +14,7 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 
 import numpy as np
+from scipy.stats import rankdata
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -69,7 +70,7 @@ def ratio_selectivity(profiles, top_n=1):
 
 
 def to_ranks(scores):
-    return len(scores) - scores.argsort().argsort()
+    return rankdata(-np.asarray(scores), method='average')
 
 
 s_thresholds  = np.arange(5.5, 8.25, 0.25)

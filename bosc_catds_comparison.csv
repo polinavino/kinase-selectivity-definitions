@@ -1,0 +1,5 @@
+dataset,n_cpd,n_kin,ws_vs_ratio,rs_vs_ratio,catds_vs_ratio,catds_vs_entropy,catds_vs_gini
+Davis,68,433,0.804,0.878,0.509,0.955,0.96
+Klaeger,222,343,0.909,0.892,0.681,0.85,0.985
+Anastassiadis,178,300,0.959,0.891,0.696,0.948,0.965
+Metz,704,172,0.91,0.899,0.447,0.883,0.906

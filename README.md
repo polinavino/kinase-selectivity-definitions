@@ -141,6 +141,21 @@ Raw supplementary files (downloaded programmatically):
 | cross_dataset_summary.csv | Cross-dataset two-family + instability summary |
 | selectivity_results.csv, klaeger_selectivity_results.csv | Per-compound analysis outputs |
 | faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv | Clinical-outcome (SI) analysis data |
+| label_texts.json, extended_labels.json | Raw FDA drug label text underlying clinical_safety_data.csv |
+| bosc_catds_comparison.csv | Bosc et al. window/ranking score and CATDS-proxy comparison (Discussion) |
+| clinical_outcomes_correlation.csv | FAERS/discontinuation-rate vs. selectivity-rank correlations (Discussion, Limitations) |
+
+**Clinical data provenance.** `faers_counts.csv` is pulled live from the openFDA
+adverse-event API by `faers_pull.py` and is fully script-reproducible (though
+report counts grow over time, so re-running will not reproduce the exact
+frozen numbers in the paper). `clinical_safety_data.csv`, `label_texts.json`,
+and `extended_labels.json` are **manually curated**: discontinuation rates and
+grade 3/4 adverse-event rates were extracted by hand from FDA drug label text
+(no script performs this extraction). `selectivity_outcomes_merged.csv` merges
+FAERS counts with each drug's median selectivity rank under every definition
+family. `bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
+the permanent, reproducible scripts for the two correlation analyses computed
+from these files and cited in the Discussion/Limitations sections.
 
 ### Scripts
 
@@ -153,6 +168,8 @@ Raw supplementary files (downloaded programmatically):
 | panel_size_analysis.py | Panel-size subsampling on Klaeger (Figure 4) |
 | candidate_measure.py | Candidate measure satisfying D1–D4; verifies D3/D4 and panel-size convergence (`candidate_panel_convergence.png`) |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical SI analysis) |
+| bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion) |
+| clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations (Discussion, Limitations) |
 
 ### Replication steps
 
@@ -177,9 +194,14 @@ Raw supplementary files (downloaded programmatically):
     python3 panel_size_analysis.py          # Figure 4
     python3 candidate_measure.py            # candidate measure (Figure 5, D3/D4 checks)
     python3 faers_pull.py                    # clinical SI data (needs internet)
+    python3 bosc_catds_comparison.py         # Bosc/CATDS comparison (Discussion)
+    python3 clinical_outcomes_correlation.py # FAERS/discontinuation correlations (Discussion, Limitations)
 
 `additional_datasets_analysis.py` reads `anastassiadis_matrix.csv` / `metz_matrix.csv`
 if present, otherwise regenerates them from the raw `.xls` files.
+`clinical_outcomes_correlation.py` requires `selectivity_outcomes_merged.csv`
+and `clinical_safety_data.csv`, both manually curated (see Data files above)
+and already committed — it does not need internet access.
 
 ### Expected key results
 
@@ -203,11 +225,14 @@ if present, otherwise regenerates them from the raw `.xls` files.
     ├── selectivity_analysis.py, klaeger_analysis.py
     ├── additional_datasets_analysis.py, metric_fidelity_robustness.py
     ├── panel_size_analysis.py, candidate_measure.py, faers_pull.py
+    ├── bosc_catds_comparison.py, clinical_outcomes_correlation.py
     ├── davis_*.csv, klaeger_matrix.csv, aan4368_Table_S2.xlsx
     ├── anastassiadis.xls, anastassiadis_matrix.csv
     ├── metz.xls, metz_matrix.csv
     ├── cross_dataset_summary.csv, *_selectivity_results.csv
     ├── faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv
+    ├── label_texts.json, extended_labels.json (manually curated FDA label text)
+    ├── bosc_catds_comparison.csv, clinical_outcomes_correlation.csv
     ├── *.png  (analysis figures)
     └── paper/
         ├── main.tex, references.bib, main.pdf

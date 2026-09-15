@@ -26,21 +26,27 @@ are best predicted by features of the active affinity distribution.
 
 Figure 4. Representative binding profiles illustrating the three instability
 types. Left: Drug 64 (Davis), most stable (sigma = 1.6), two active kinases.
-Center: Drug 42 (Davis), most unstable (sigma = 19.3), 22 active kinases at
-near-identical affinities. Right: Drug 23 (Davis), most ratio-sensitive, five
+Center: Drug 42 (Davis), most unstable (sigma = 19.3), 22 active kinases with
+no dominant target. Right: Drug 23 (Davis), most ratio-sensitive, five
 active kinases including two near-tied top targets (delta pKd = 0.023). Dashed
 line: pKd = 6 activity threshold; dotted line: pKd = 5 assay floor.
 
 Figure 5. Mean Spearman correlation between rankings computed on random kinase
-subpanels and rankings on the full Klaeger panel (343 kinases), as a function of
-subpanel size. Shaded bands indicate +/-1 standard deviation across 50
-subsamples. The dashed line marks r = 0.90. Entropy and S-score rankings
-stabilize at approximately 110-140 kinases; Gini requires approximately 290
-kinases; ratio does not reach r = 0.90 at any practically used panel size.
+subpanels and rankings on the full panel, as a function of subpanel size, for
+the Klaeger (343 kinases) and Metz (172 kinases) datasets. Shaded bands
+indicate +/-1 standard deviation across 50 subsamples. The dashed line marks
+r = 0.90. On Klaeger, entropy and S-score rankings stabilize at approximately
+110 kinases, Gini requires approximately 290 kinases, and ratio does not
+reach r = 0.90 within the practical panel range. On Metz, entropy, Gini, and
+S-score all stabilize by 50-80 kinases, while ratio requires approximately 170
+kinases, close to the full panel.
 
 Figure 6. Panel-size convergence of the candidate measure compared with the four
-existing definitions (Klaeger, 50 random subpanels per size). Curves show the
-mean Spearman correlation between the ranking computed on a random subpanel and
-the full-panel ranking; p* (legend) is the smallest panel reaching mean
-rho > 0.90. The candidate converges in the fast regime (p* = 110), matching the
-entropy, ahead of the S-score, and well ahead of the Gini and ratio.
+existing definitions, on the Klaeger and Metz datasets (50 random subpanels per
+size). Curves show the mean Spearman correlation between the ranking computed
+on a random subpanel and the full-panel ranking; p* (legend) is the smallest
+panel reaching mean rho > 0.90. On Klaeger the candidate converges in the fast
+regime (p* = 110), matching entropy and the S-score (both p* = 110), and well
+ahead of Gini (p* = 290) and ratio (p* = 343). On Metz the candidate converges
+at p* = 80, matching entropy and Gini and close behind the S-score (p* = 50),
+well ahead of ratio (p* = 170).

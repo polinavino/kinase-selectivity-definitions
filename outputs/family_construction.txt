@@ -1,0 +1,31 @@
+======================================================================
+Renyi-order family: alpha=1 is the Shannon candidate
+======================================================================
+
+Davis (68 cpd x 433 kin):
+  alpha=0.5  orient_r=-0.968  D3(worst-case)=+0.999  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
+  alpha=1.0  orient_r=-0.969  D3(worst-case)=+0.998  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=2.0  orient_r=-0.970  D3(worst-case)=+0.994  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
+  alpha=3.0  orient_r=-0.972  D3(worst-case)=+0.991  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.997
+
+Klaeger (222 cpd x 343 kin):
+  alpha=0.5  orient_r=-0.936  D3(worst-case)=+1.000  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=1.0  orient_r=-0.936  D3(worst-case)=+0.999  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=2.0  orient_r=-0.935  D3(worst-case)=+0.997  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
+  alpha=3.0  orient_r=-0.935  D3(worst-case)=+0.993  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.998
+
+======================================================================
+Quantile-referenced floor (per-compound, replaces the fixed assay floor)
+======================================================================
+
+Davis (68 cpd x 433 kin):
+  q=0.1: orient_r=-0.969  Spearman vs fixed-floor candidate = 1.000
+  D3 (worst-case rank Spearman over q in [0.05, 0.075, 0.1, 0.125, 0.15]) = +1.000
+  D4 (add a sub-threshold off-target): non-increasing for 100.0% of compounds; max increase = 0.0000
+
+Klaeger (222 cpd x 343 kin):
+  q=0.1: orient_r=-0.936  Spearman vs fixed-floor candidate = 1.000
+  D3 (worst-case rank Spearman over q in [0.05, 0.075, 0.1, 0.125, 0.15]) = +1.000
+  D4 (add a sub-threshold off-target): non-increasing for 100.0% of compounds; max increase = 0.0000
+
+Done.

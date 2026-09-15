@@ -1,0 +1,22 @@
+                rate                rank  n      r      p
+        serious_rate median_rank_s_score 46 -0.133 0.3779
+        serious_rate median_rank_entropy 46 -0.038 0.8008
+        serious_rate    median_rank_gini 46 -0.035 0.8153
+        serious_rate   median_rank_ratio 46  0.134 0.3744
+          death_rate median_rank_s_score 46 -0.107 0.4775
+          death_rate median_rank_entropy 46 -0.037 0.8087
+          death_rate    median_rank_gini 46 -0.028 0.8547
+          death_rate   median_rank_ratio 46 -0.043 0.7770
+           hosp_rate median_rank_s_score 46  0.091 0.5457
+           hosp_rate median_rank_entropy 46  0.164 0.2757
+           hosp_rate    median_rank_gini 46  0.161 0.2859
+           hosp_rate   median_rank_ratio 46  0.126 0.4048
+discontinuation_rate median_rank_s_score 33  0.002 0.9893
+discontinuation_rate median_rank_entropy 33 -0.045 0.8024
+discontinuation_rate    median_rank_gini 33 -0.046 0.7988
+discontinuation_rate   median_rank_ratio 33 -0.047 0.7970
+
+max |r| across all rate x rank pairs = 0.164, min p = 0.2757
+n (FAERS rates) = 46, n (discontinuation_rate) = 33
+
+total_reports vs median_rank_ratio: r = 0.312, p = 0.0350

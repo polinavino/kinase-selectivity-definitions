@@ -1,0 +1,14 @@
+
+=== Klaeger (222 drugs x 343 kinases) ===
+   bar   entropy      gini   s_score     ratio
+  0.80        80       260        50       320
+  0.85        80       260        80       320
+  0.90       110       290       110       343
+  0.95       140       320       200       343
+
+=== Metz (704 drugs x 172 kinases) ===
+   bar   entropy      gini   s_score     ratio
+  0.80        50        50        50       170
+  0.85        50        50        50       170
+  0.90        80        80        50       170
+  0.95       110       110        80       170

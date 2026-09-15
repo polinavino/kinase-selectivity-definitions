@@ -13,13 +13,13 @@ import script_logging; script_logging.capture(__file__)
 import os
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
+from scipy.stats import spearmanr, rankdata
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def to_ranks(s):
-    return len(s) - s.argsort().argsort()
+    return rankdata(-np.asarray(s), method='average')
 
 
 def negH(w):
