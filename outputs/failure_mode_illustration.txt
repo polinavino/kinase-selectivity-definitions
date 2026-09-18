@@ -1,0 +1,5 @@
+D1: rank std, zero-active = 72.9; active = 31.3 (n_zero=16, n_active=206)
+D3: corr(n_active, instability) -- entropy r=-0.409 (p=1.0e-09); candidate r=+0.195 (p=5.0e-03)
+D3: mean instability -- entropy 12.48; candidate 0.73 (17x smaller)
+
+Saved failure_modes.png

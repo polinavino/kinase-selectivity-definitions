@@ -11,21 +11,22 @@ This has practical consequences: a compound that ratio-based analysis designates
 as selective may be designated as moderately promiscuous by entropy-based
 analysis, and vice versa, depending on the shape of its binding profile.
 Go/no-go decisions in early drug discovery are routinely made on the basis of
-selectivity assessments without acknowledgment that the choice of definition
-materially affects the outcome.
+selectivity assessments without a principled choice of selectivity definition.
 
-The clustering of definitions into two families is not a statistical artifact
-but reflects a genuine difference in what is being measured.
+The clustering of definitions into two families
+reflects a difference in what is being measured.
 Distribution-based definitions ask: how concentrated is the compound's binding
 activity across the full profiled kinome?
 The ratio definition asks: how much more potently does the compound bind its
 primary target than a specified off-target?
-These are distinct questions with distinct answers for a large class of
-compounds, specifically, those with one clearly dominant target that also
+The selectivity measure discrepancy is most pronounced 
+for compounds with one clearly dominant target that also
 bind many kinases at moderate affinity (Type~3 profiles in our taxonomy).
 For such compounds, ratio-based methods report high selectivity while
-distribution-based methods report moderate promiscuity, and both
-characterizations are correct given their respective questions.
+distribution-based methods report moderate promiscuity.
+The required properties proposed in the Required Properties section are an
+attempt to express what it means for a compound to be selective in a way that is
+precise enough to assess candidate selectivity definitions formally.
 
 This coexistence has a historical explanation.
 In classical pharmacology and analytical chemistry, selectivity is inherently
@@ -35,20 +36,14 @@ ratio measures entered kinase profiling on that basis.
 Kinome-wide profiling, however, poses a distributional question: how
 concentrated is a compound's binding across hundreds of kinases?
 Entropy and Gini were introduced because ratio measures are ill-suited to it, since
-they discard all but two points of a 300--500 kinase profile. However, the older
-pairwise measures were never retired, leaving the field applying pairwise
-measures to a distributional question without a principled basis for choosing
-between them.
-The required properties proposed in the Required Properties section are an
-attempt to express what it means for a compound to be selective in a way that is
-precise enough to assess candidate selectivity definitions formally.
+they discard all but two points of a 300--500 kinase profile. 
+
 
 \subsection{Practical Recommendations}
 
 Pending a formal resolution, three practical recommendations follow from our
 findings.
-
-First, D1 (reliability threshold) should be adopted immediately as a reporting
+First, D1 (reliability threshold) should be adopted as a reporting
 standard.
 Compounds with no detected binding above the assay detection floor should not
 receive selectivity scores, or should have their scores explicitly flagged as
@@ -70,18 +65,16 @@ The high within-family correlations ($r > 0.72$) suggest that S-score, entropy,
 and Gini are interchangeable for most purposes when parameters are chosen
 consistently. This is an empirical observation rather than a preset adequacy
 bar: $r = 0.72$ is the lowest within-family correlation we observed (Klaeger
-S-score vs.\ Gini, Table~\ref{tab:correlations}), and it answers a different
-question from the $\rho > 0.90$ criterion used in the panel-size analysis
-below. The former asks how similarly two distinct definitions rank compounds
-on the full panel; the latter asks how similarly the same definition ranks
-compounds on a subpanel versus the full panel. The two should not be read as
-a single, consistent standard of agreement.
-This interchangeability is also a full-panel property: the
+S-score vs.\ Gini, Table~\ref{tab:correlations}), and it measures a different
+property than the $\rho > 0.90$ criterion used in the panel-size analysis
+below. The former measures how similarly two distinct definitions rank compounds
+on the full panel; the latter measures how similarly the same definition ranks
+compounds on a subpanel versus the full panel. The
 within-family agreement is measured on the complete kinome, and the panel-size
 analysis shows that the Gini coefficient can diverge from the entropy and
 S-score on the smaller panels used in practice (on Klaeger it requires roughly
 290 of 343 kinases to recover its full-panel ranking, against 110 for
-entropy and the S-score). The three should therefore be treated as
+entropy and the S-score). The three measures should therefore be treated as
 interchangeable only when compared on panels of similar, near-complete coverage.
 Ratio-based measures, in turn, should not be compared directly with
 distribution-based measures at any panel size without acknowledging the
@@ -93,8 +86,7 @@ The analysis covers four profiling datasets spanning three assay technologies
 and two readout types, but these still represent a fraction of the chemical and
 kinase space relevant to drug discovery.
 The assay technologies are not directly comparable in absolute terms --- the
-active-compound fractions differ across datasets for both genuine
-selectivity reasons and assay-specific detection thresholds. As a consequence,
+active-compound fractions differ across datasets. As a consequence,
 our analysis
 relies on within-dataset rank comparisons rather than cross-dataset absolute
 scores.
@@ -106,8 +98,7 @@ Our comparison is also restricted to four widely used, historically
 established definitions. Bosc et al.'s window score and ranking
 score\cite{Bosc2017} were not included, but a check on the same four datasets
 confirms both correlate with the ratio family (Spearman $r = 0.80$--$0.96$)
-rather than forming a distinct third cluster, consistent with their shared
-dependence on the gap between the top target and its nearest competitors.
+rather than forming a distinct third cluster.
 The CATDS score\cite{Klaeger2017}, historically classified alongside the
 ratio-based measures, was also not implemented directly. Unlike $R(k)$, CATDS
 normalizes each target's binding reduction by the sum of reductions across the
@@ -119,26 +110,28 @@ and entropy than with $R(k)$ on Klaeger, consistent with this structural
 reading. We did not add it as a fifth measure: the distribution family is
 already represented by three members, and CATDS appears to be an additional
 instance of the same underlying construct rather than an independent
-perspective.
+perspective (see repository for results).
+
 A further axis of platform dependence that this analysis does not examine is
-cell-based versus cell-free profiling: recent work shows that selectivity
+cell-based versus cell-free profiling. Recent work shows that selectivity
 classifications for the same compounds can differ substantially between
-biochemical binding panels and cellular target-engagement assays, particularly
-for inhibitors that bind the inactive, DFG-out kinase conformation, which
-cell-free panels built on truncated or active-conformation constructs may not
-sample\cite{Binder2026}.
+biochemical binding panels and cellular target-engagement assays. For example, several
+type II (DFG-out-binding) inhibitors show cellular interactions that
+cell-free assays miss\cite{Binder2026}. A plausible contributor, not established
+by that work, is that cell-free panels often use truncated or constitutively
+active kinase-domain constructs, which cannot adopt the DFG-out state.
 
 We also examined whether in vitro selectivity predicts clinical toxicity,
 correlating the selectivity rankings of the FDA-approved Klaeger compounds with
 FAERS adverse-event rates ($n = 46$) and FDA-label discontinuation rates
 ($n = 33$).
-None of the rate-based outcomes was significantly associated with selectivity
+None of the rate-based outcomes were significantly associated with selectivity
 under any definition (all $|r| < 0.17$, all $p > 0.27$).
 The only nominal signal is a weak correlation between raw FAERS report counts and
 the ratio ranking ($r = 0.31$, $p = 0.035$), which most likely reflects
 prescription volume rather than toxicity.
 We do not read the absence of a rate-based association as evidence that
-selectivity and toxicity are unrelated: FAERS report counts mostly track how
+selectivity and toxicity are unrelated. FAERS report counts mostly track how
 often a drug is prescribed, and label discontinuation depends on the patient
 population treated for each indication, so neither can isolate the effect of
 selectivity.

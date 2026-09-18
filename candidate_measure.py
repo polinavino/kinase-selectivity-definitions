@@ -115,8 +115,14 @@ DATASETS = [
     dict(name='Metz',    file='metz_matrix.csv',    baseline=4.0, threshold=6.0, floor=4.0),
 ]
 order = ['candidate', 'entropy', 's_score', 'gini', 'ratio']
-styles = {'candidate': ('C3', '-', 2.6), 'entropy': ('C1', '--', 1.6),
-          's_score': ('C0', '--', 1.6), 'gini': ('C2', '--', 1.6), 'ratio': ('C4', '--', 1.6)}
+# marker/dash pairs differ per curve so near-identical p* curves (e.g. candidate,
+# entropy, and gini all converge at the same panel size on Metz) stay visually
+# distinguishable instead of one line hiding the others.
+styles = {'candidate': ('C3', '-',  2.2, None, 1),
+          'entropy':   ('C1', '--', 1.6, 'o',  1),
+          's_score':   ('C0', '-.', 1.6, 's',  1),
+          'gini':      ('C2', ':',  1.8, '^',  1),
+          'ratio':     ('C4', '--', 1.6, 'D',  1)}
 
 # ---------------- (checks on Klaeger, as before) ----------------
 Mk = pd.read_csv('klaeger_matrix.csv', index_col=0).values
@@ -155,8 +161,10 @@ for ax, ds in zip(axes[0], DATASETS):
     for k in order:
         print(f"  {k:10s} p* = {pstar[k]}")
     for k in order:
-        c, ls, lw = styles[k]
+        c, ls, lw, marker, markevery = styles[k]
         ax.plot(panel, [np.mean(res[k][ps]) for ps in panel], color=c, ls=ls, lw=lw,
+                marker=marker, markevery=markevery, markersize=5,
+                markerfacecolor='none' if marker else None,
                 label=f"{k} (p*={pstar[k]})")
     ax.axhline(0.90, color='black', ls=':', lw=1)
     ax.set_xlabel('Panel size (kinases)'); ax.set_ylabel('Spearman rho vs full-panel ranking')

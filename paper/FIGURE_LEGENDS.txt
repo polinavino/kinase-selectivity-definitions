@@ -50,3 +50,15 @@ regime (p* = 110), matching entropy and the S-score (both p* = 110), and well
 ahead of Gini (p* = 290) and ratio (p* = 343). On Metz the candidate converges
 at p* = 80, matching entropy and Gini and close behind the S-score (p* = 50),
 well ahead of ratio (p* = 170).
+
+Figure 7. The two failure modes the candidate measure repairs (Klaeger
+dataset). Left (D1): rank standard deviation, pooled across the four existing
+definitions' parameter sweeps, for compounds with no detected binding above
+the assay floor (sigma = 72.9, n = 16) versus compounds with at least one
+active kinase (sigma = 31.3, n = 206); the candidate assigns the first group
+no score at all (D1 gate) rather than an unstable one. Right (D3):
+per-compound rank instability under the free activity baseline, plotted
+against the number of active kinases, for the entropy (r = -0.41) and for the
+candidate (r = +0.20); the entropy's instability grows sharply as the active
+set shrinks, while the candidate's stays near zero (17x smaller mean
+instability) because it has no free activity baseline.
