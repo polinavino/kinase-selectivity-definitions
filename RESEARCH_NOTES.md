@@ -15,13 +15,13 @@ are used interchangeably but measure different things. This paper:
 
 ## Key findings so far
 - Ratio definition clusters separately from S-score/entropy/Gini in all four
-  datasets (cross-family r=0.14-0.62 vs within-distribution-family r=0.74-0.99)
+  datasets (cross-family r=0.14-0.62 vs within-distribution-family r=0.72-1.00)
 - Three instability sources identified:
-  * Type 1: Zero-active drugs (no pKd>6 binding) — definitional noise, rank_std ~74
+  * Type 1: Zero-active drugs (no pKd>6 binding) — definitional noise, rank_std 72.9 vs 31.3 (Klaeger)
   * Type 2: Near-tied top targets (small top1_top2_gap) — ratio-specific instability (Klaeger r=-0.341***)
   * Type 3: High n_active with large gap — entropy-ratio disagreement
 - n_active / active_range / active_std predict instability within entropy/Gini/S-score
-  family (Klaeger n_active~entropy r=-0.455***)
+  family (Klaeger n_active~entropy r=-0.409***)
 - Replicated across four datasets / three assay technologies: Davis (68, pKd),
   Klaeger (222, pKd), Anastassiadis (178, % inhibition), Metz (704, pKi)
 - Operationalization check: literal vs log-affinity entropy/Gini diverge

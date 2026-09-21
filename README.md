@@ -207,15 +207,15 @@ and already committed — it does not need internet access.
 
 | Result | Value |
 |--------|-------|
-| Two-family: ratio vs. distribution family | r = 0.34–0.45 (Davis), 0.27–0.62 (Klaeger), 0.52–0.56 (Anastassiadis), 0.14–0.19 (Metz) |
-| Within-distribution-family correlation (all datasets) | r = 0.74–0.99 |
-| Ratio vs. entropy correlation (Davis / Klaeger) | r = 0.343 / 0.480 |
+| Two-family: ratio vs. distribution family | r = 0.34–0.46 (Davis), 0.22–0.62 (Klaeger), 0.49–0.56 (Anastassiadis), 0.14–0.19 (Metz) |
+| Within-distribution-family correlation (all datasets) | r = 0.72–1.00 |
+| Ratio vs. entropy correlation (Davis / Klaeger) | r = 0.343 / 0.483 |
 | top1–top2 gap vs. ratio instability (Klaeger) | r = −0.341, p < 0.001 |
-| n_active vs. entropy instability (Klaeger) | r = −0.455, p < 0.001 |
-| Zero-active vs. active rank std (Klaeger) | ~73.8 vs. ~32.4 |
-| Zero-active vs. active rank std (Anastassiadis / Metz) | 37.6 vs. 22.0 / 178.7 vs. 108.2 |
-| Entropy panel-size stability threshold | ~110 kinases |
-| Ratio panel-size stability threshold | > 320 kinases |
+| n_active vs. entropy instability (Klaeger) | r = −0.409, p < 0.001 |
+| Zero-active vs. active rank std (Klaeger) | 72.9 vs. 31.3 |
+| Zero-active vs. active rank std (Anastassiadis / Metz) | 36.8 vs. 21.7 / 178.5 vs. 108.1 |
+| Entropy panel-size stability threshold | 110 kinases (Klaeger), 80 (Metz) |
+| Ratio panel-size stability threshold | 343 kinases, the full Klaeger panel (170 on Metz) |
 | Entropy operationalization sensitivity (literal vs. log-affinity) | r = 0.42 (Davis), −0.32 (Klaeger) |
 
 ### Repository structure
