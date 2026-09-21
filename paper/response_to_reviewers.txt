@@ -9,11 +9,11 @@ Polina Vinogradova — Independent Researcher
 polina.vino@gmail.com — ORCID 0000-0003-3271-3841
 
 
-Dear Professor Baumann,
+Dear Reviewer(s),
 
-Thank you for the opportunity to revise my manuscript. I thank Reviewer 1 for a
-careful and constructive reading. The comments have materially improved the
-paper. In response, the manuscript has been revised on three main axes:
+Thank you for the opportunity to revise my manuscript, and for Reviewer 1's
+careful, constructive reading. The comments have materially improved the
+paper. It has been revised on three main axes:
 
   (1) the language has been simplified and the speculative passages flagged by
       the reviewer have been removed, including the deletion of the entire
@@ -29,10 +29,17 @@ paper. In response, the manuscript has been revised on three main axes:
       original publications, with a new "Faithfulness to the original
       definitions" subsection and a supporting sensitivity check (Figure 1).
 
-In addition, the revision strengthens the paper's contribution by introducing a
-concrete candidate measure that satisfies all four required properties, so that
-the paper no longer ends on open questions alone but demonstrates that the
-properties are jointly satisfiable.
+In addition, the revision introduces a concrete candidate measure satisfying
+all four required properties, demonstrating that the properties are jointly
+satisfiable.
+
+Note on scope: after this revision was submitted, I found an error in the
+candidate measure while re-auditing it, and was asked to resubmit a corrected
+version. This response therefore covers both rounds of correction: the
+reviewer-requested changes above, and the corrections made at resubmission
+(itemized at the end of the ADDITIONAL CORRECTIONS list below). However, the
+document of corrections to the work shows only the second round, against the
+version submitted after the first round.
 
 A point-by-point response follows. Reviewer text is quoted, and the location of
 each change is given by section name.
@@ -46,8 +53,8 @@ GENERAL
 "...a good contribution to the field as it will help to work towards one
 uniformly accepted selectivity measure, if there exists one."
 
-I thank the reviewer for this assessment, and have taken the suggestion of a
-"uniformly accepted measure" seriously: the revised manuscript now proposes a
+I thank the reviewer for this assessment and have taken the suggestion of a
+"uniformly accepted measure" seriously: the revised manuscript proposes a
 concrete candidate measure (new section "A Candidate Measure") that satisfies
 all four required properties and recovers its full-panel ranking from roughly
 a third of a typical panel.
@@ -69,9 +76,7 @@ have all been updated.
 A.2 — "The desiderata proposed here are intended as the empirical foundation
 for a future formal axiomatization ... in the tradition of Shannon's
 characterization of entropy and Arrow's analysis of social choice functions."
-This sentence has been removed. The Introduction now ends its list of
-contributions on the concrete candidate measure, with no free-floating
-forward-looking claim.
+This sentence has been removed. 
 
 A.3 — "We present these as desiderata rather than axioms: they are necessary
 conditions ... Establishing these properties formally is the subject of future
@@ -81,18 +86,16 @@ That section now opens plainly ("The empirical findings of the Results section
 motivate four properties that any well-formed kinase inhibitor selectivity
 measure should satisfy. Each property is stated below together with the observed
 failure mode that motivates it.") and proceeds directly to the properties. The
-single remaining statement about future work is now a brief, concrete sentence
-at the end of the candidate-measure section.
+sentence naming this as future work is at the end of the candidate-measure section.
 
 A.4 — "Relation to Formal Methods" section (the Shannon/Arrow/Agda/Lean
 passage).
-This entire section has been deleted. The one analogy I retain — Shannon's
-identification of properties that single out entropy — now appears once, briefly
-and in plain language, in the Introduction and is echoed in a single closing
-sentence of the Conclusion. References to proof assistants (Agda/Lean) have been
-removed, as has the speculative impossibility-result discussion. The Related
-Work subsection on axiomatic approaches has likewise been trimmed to its
-factual content.
+This section has been deleted, including the proof-assistant references and
+the speculative impossibility-result discussion. The one analogy I retain
+(Shannon's identification of properties that single out entropy) now appears
+once, briefly, in the Introduction, echoed in a single closing sentence of the
+Conclusion. The Related Work subsection on axiomatic approaches has likewise
+been trimmed to its factual content.
 
 
 --------------------------------------------------------------------
@@ -107,7 +110,7 @@ Two-Family Structure Replicates Across Assay Technologies", and new Figure 2),
 as do the key instability-predictor relationships, most robustly the ratio
 family's dependence on the top-1 vs top-2 affinity gap. The full per-feature
 predictor structure is reported for the two pKd datasets (Klaeger and Davis) in
-Table 2; the ratio/gap relationship replicates strongly across both, while some
+Table 2. The ratio/gap relationship replicates strongly across both, while some
 family-specific predictors (notably the S-score's) are assay-dependent, which I
 now note explicitly.
 
@@ -122,7 +125,7 @@ now note explicitly.
     single-concentration functional inhibition assay of the same readout type
     as the already-included Anastassiadis dataset, and its raw data are not
     openly redistributable. Including it would add a second instance of an
-    existing assay type rather than a new modality. See Methods, "Datasets".
+    existing assay type. See Methods, "Datasets".
 
   - Patricelli et al. (Chem. Biol. 2011): NOT ADDED, with stated reason. It
     profiles only a small number of inhibitors against native kinases as a
@@ -174,19 +177,18 @@ non-specialist:
 In addition, a new subsection "Faithfulness to the original definitions" states
 explicitly which metrics are computed exactly as in their sources (S-score,
 ratio) and which were re-operationalized onto the common log-affinity scale
-(entropy, Gini). To show that this choice does not silently drive the
+(entropy, Gini). To show that this choice does not drive the
 conclusions, I recomputed the entropy and Gini in forms close to the originals
 and compared rankings. The two operationalizations differ substantially
 (Figure 1), which I report transparently as further evidence that the
-operationalization of a named metric is itself a source of instability rather
-than a neutral implementation detail.
+operationalization of a named metric is itself a source of instability.
 
 
 ====================================================================
 ADDITIONAL CORRECTIONS (not requested by the reviewer)
 ====================================================================
 
-While revising, I addressed three further items:
+While revising, I addressed ten further items:
 
 1. Candidate-measure property arguments. The motivations for D3 and D4 of the
    candidate include a brief analytic argument alongside the empirical check.
@@ -194,8 +196,8 @@ While revising, I addressed three further items:
    monotone above it, so adding a sub-threshold target cannot raise the score.
    D3 holds because the active/inactive boundary is the fixed assay detection
    floor rather than a tunable baseline, so the ranking does not depend on an
-   arbitrary baseline choice. (The D3 argument was corrected after resubmission.
-   See the correction note below.)
+   arbitrary baseline choice. (The D3 argument was corrected after
+   resubmission; see item 10.)
 
 2. Sensitivity to the smoothing width T. I now note explicitly that as T -> 0
    the softplus hinge converges to the hard cutoff max(x_i - x_0, 0), recovering
@@ -211,93 +213,79 @@ While revising, I addressed three further items:
 4. Comparison against Bosc et al.'s window and ranking scores, and against
    CATDS. The Limitations section previously noted only that the comparison
    was restricted to four widely used definitions. It now reports a check
-   (against the same four datasets) showing that Bosc et al.'s window and
-   ranking scores correlate with the ratio family (Spearman r = 0.80-0.96)
-   rather than forming a distinct third cluster, consistent with their shared
-   dependence on the gap to the nearest competing target. It also explains why
-   CATDS was not implemented directly (it normalizes by total panel binding
-   reduction rather than a single off-target, structurally closer to the
-   distribution family than to R(k)) and reports that a proxy computed from
-   our baseline-subtracted profiles correlates more strongly with Gini and
-   entropy than with R(k) on Klaeger, consistent with that reading.
+   (same four datasets) showing Bosc et al.'s window and ranking scores
+   correlate with the ratio family (Spearman r = 0.80-0.96) rather than
+   forming a distinct third cluster, consistent with their shared dependence
+   on the gap to the nearest competing target. It also explains why CATDS was
+   not implemented directly: it normalizes by total panel binding reduction
+   rather than a single off-target, structurally closer to the distribution
+   family than to R(k). Moreover, a proxy computed from our baseline-subtracted
+   profiles correlates more strongly with Gini and entropy than with R(k) on
+   Klaeger.
 
 5. Platform-dependence limitation (cell-based vs. cell-free assays). The
    Limitations section now notes an axis of platform dependence this analysis
-   does not examine: recent work shows selectivity classifications for the
-   same compounds can differ substantially between biochemical binding panels
-   and cellular target-engagement assays, particularly for inhibitors that
-   bind the inactive, DFG-out kinase conformation that cell-free panels built
-   on truncated or active-conformation constructs may not sample.
+   does not examine: recent work shows several type II (DFG-out-binding)
+   inhibitors have cellular interactions that cell-free assays miss
+   (Binder et al. 2026). I note a plausible contributor (not established 
+   by this work): cell-free
+   panels often use truncated or constitutively active kinase-domain
+   constructs, which cannot adopt the DFG-out state.  
 
-6. Refined panel-size nuance in Practical Recommendation Three. The
-   recommendation that S-score, entropy, and Gini are interchangeable when
-   parameters are chosen consistently is now qualified as a full-panel
-   property: the panel-size analysis shows Gini can diverge from entropy and
-   the S-score on the smaller panels used in practice (on Klaeger it needs
-   roughly 290 of 343 kinases to recover its full-panel ranking, against 110
-   for entropy and the S-score), so the three should be treated as
-   interchangeable only when compared on panels of similar, near-complete
-   coverage.
+6. Refined panel-size nuance in Practical Recommendation Three. The claim that
+   S-score, entropy, and Gini are interchangeable under consistent parameters
+   is now qualified as a full-panel property: Gini can diverge from the other
+   two on smaller panels (on Klaeger it needs roughly 290 of 343 kinases to
+   recover its full-panel ranking, against 110 for entropy and the S-score),
+   so the three should be treated as interchangeable only on panels of
+   similar, near-complete coverage.
 
-7. Further defense of the D2 and D3 motivation paragraphs, and a concrete,
-   verified non-uniqueness argument for the candidate measure. Reviewing the
-   required-properties section for claims that were asserted but not
-   defended, I strengthened three: why entropy and Gini's lack of a k-th
-   ranked term satisfies D2 in more than a vacuous sense (they are symmetric,
-   continuous functions of the full profile, so a near-tie changes the score
-   by only a vanishing amount); why the S-score is graded ~ rather than
-   checkmark on D2 (its threshold tau gives it a bounded, single-kinase
-   version of the same instability, smaller than the ratio's but not
-   vanishing); and why the ratio is graded checkmark on D3 only vacuously (it
-   has no baseline for D3 to perturb, unlike D2's explicit conditional on the
-   k-th ranked affinity). The word "antecedent" used in an earlier draft of
-   this reasoning has been removed throughout in favor of plainer phrasing.
-   Separately, the closing paragraph of the candidate-measure section claimed,
-   without a supporting computation, that a per-compound low-quantile
-   reference gives a shift-invariant variant with nearly the same ranking
-   (Spearman r ~ 1.00). This is now backed by a script and log in the
-   repository: the claim holds (r = 1.000 on both datasets; D3 across choices
+7. Further defense of the D2 and D3 motivation paragraphs, and a verified
+   non-uniqueness argument for the candidate measure. I strengthened three
+   claims that were previously asserted but not defended: (1) why entropy and
+   Gini's lack of a k-th ranked term satisfies D2 in more than a vacuous
+   sense (both are symmetric, continuous functions of the full profile, so
+   a near-tie changes the score only vanishingly), (2) why the S-score is graded
+   ~ on D2 (its threshold tau gives a bounded,
+   single-kinase version of the same instability), and (3) why the ratio is
+   graded checkmark on D3 only vacuously (it has no baseline for D3 to
+   perturb). The word "antecedent" has been removed throughout in favor of
+   plainer phrasing.
+
+8. Verified non-uniqueness argument for the candidate measure. The closing
+   paragraph of the candidate-measure section had claimed, unsupported, that
+   a per-compound low-quantile reference gives a shift-invariant variant with
+   nearly the same ranking. This is now backed by a script and log in the
+   repository. The claim holds (r = 1.000 on both datasets; D3 across choices
    of the quantile itself is equally robust, worst-case rho = 1.000; D4 holds
-   exactly). The same check also verified a second, independent family axis
-   -- generalizing the Shannon functional to any Renyi order alpha > 0 -- which
+   exactly). The same check verified a second, independent family axis,
+   generalizing the Shannon functional to any Renyi order alpha > 0. This
    satisfies D1-D4 for every alpha tested while giving a genuinely different
    ranking for alpha != 1 (Spearman agreement with alpha = 1 is 0.997-1.000).
-   The closing paragraph now cites both as concrete evidence that more than
-   one construction satisfies the required properties, rather than resting on
-   a single unverified aside.
+   The closing paragraph now cites both as concrete evidence of non-uniqueness.
 
+9. Post-resubmission correction: the candidate measure was inverted. While
+   re-auditing after resubmission, I found that every kinase was weighted by
+   a softplus of its affinity above the assay floor, but the softplus does
+   not vanish at the floor. Ass a result, the several hundred non-binding kinases kept
+   a small weight whose combined mass dominated the normalized profile,
+   scoring broadly promiscuous compounds as selective and single-target
+   compounds as non-selective. I corrected this by gating the weight at the
+   fixed assay detection floor, so non-binders now carry zero weight and the
+   measure is correctly oriented.
+   The corrected measure still satisfies all four properties, and now converges
+   to its full-panel ranking at 110 kinases rather than 170, i.e. recoverable
+   from an even smaller panel. 
 
-================================================================
-CORRECTION MADE AFTER RESUBMISSION
-================================================================
-
-After resubmitting, I re-audited the candidate measure and found two related
-errors.
-
-First, the measure was inverted. As originally written, it weighted every kinase
-with a softplus of its affinity above the assay floor. The softplus does not
-vanish at the floor, so each of the several hundred non-binding kinases kept a
-small weight. Their combined weight dominated the normalized profile, which scored
-broadly promiscuous compounds as selective and single-target compounds as
-non-selective. I corrected this by gating the weight at the fixed assay detection
-floor, so non-binders now carry zero weight. The corrected measure is correctly
-oriented.
-
-Second, the earlier D3 justification was mistaken. It credited the smooth hinge
-with baseline robustness. In fact the smoothing is robust only to a secondary
-emphasis parameter (worst-case pairwise Spearman rho = 0.998). D3 holds because
-the active/inactive boundary is pinned to the fixed assay detection floor, a
-physical constant rather than a tunable choice, not because of smoothness. If the
-boundary itself is varied, the ranking moves about as much as it does for the
-existing entropy (about -0.93 versus -0.95), which is inherent to thresholded
-assays. I have reframed the D3 argument accordingly.
-
-The corrected measure still satisfies all four properties. It converges to its
-full-panel ranking at 110 kinases rather than 170, so it is recoverable from an
-even smaller panel. The corrected numbers and framing appear in the Candidate
-Measure section, Figure 6, the abstract, the introduction, and the conclusion. The
-two-family result, the instability taxonomy, and the four required properties are
-unaffected.
+10. Post-resubmission correction: the D3 justification in item 1 was
+    mistaken. It credited the smooth hinge with baseline robustness, but the
+    smoothing is only robust to a secondary emphasis parameter (worst-case
+    pairwise Spearman rho = 0.999); D3 actually holds because the
+    active/inactive boundary is pinned to the fixed assay detection floor --
+    a physical constant, not a tunable choice. Varying the boundary itself
+    moves the ranking about as much as it does for the existing entropy
+    (-0.93 versus -0.95), an instability inherent to thresholded assays, so
+    I reframed the D3 argument in item 1 accordingly.
 
 
 I believe the manuscript is significantly improved and hope it is now suitable

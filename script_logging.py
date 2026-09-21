@@ -31,8 +31,8 @@ FIGURE_MAP = {
     "instability_by_family.png": "Figure3.png",
     "binding_profiles.png": "Figure4.png",
     "panel_size_stability.png": "Figure5.png",
-    "candidate_panel_convergence.png": "Figure6.png",
-    "failure_modes.png": "Figure7.png",
+    "failure_modes.png": "Figure6.png",
+    "candidate_panel_convergence.png": "Figure7.png",
 }
 
 

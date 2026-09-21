@@ -11,15 +11,27 @@ These findings motivate four required properties that any well-formed selectivit
 should satisfy: a reliability threshold
 condition, bounded gap sensitivity, distributional consistency, and monotonicity
 under weak off-target addition.
+
 No existing definition satisfies all four simultaneously, but we show that a
-gated, smooth-hinge effective-target number does, and that it recovers its
-full-panel ranking from roughly a third of a typical panel.
+gated, smooth-hinge effective-target number does. We demonstrate that it recovers its
+full-panel ranking from roughly a third of a typical panel, and that it is
+part of a whole family of candidate definitions satisfying the four properties.
+However, our featured candidate measure is close to identical to the
+entropy measure in terms of performance on the given datasets, and
+looking for a significantly better measure within the candidate family is future work,
+likely requiring additional datasets.
+Establishing additional properties that characterize a selectivity measure
+uniquely, as Shannon's axioms do for entropy, is a natural next step.
 
 The immediate practical implication is that selectivity assessments should
 report the sensitivity of rankings to parameter choice, and should explicitly
 flag compounds with no binding above the detection threshold as unreliable.
 The longer-term implication is that the field needs a principled basis for
-choosing among selectivity definitions rather than applying them
-interchangeably.
-Establishing whether these four properties characterize a selectivity measure
-uniquely, as Shannon's axioms do for entropy, is the natural next step.
+choosing among selectivity definitions.
+The need for a principled measure is not specific to selectivity. 
+As future and ongoing work, we are developing a general
+measurement-theoretic framework for defining and comparing the competing
+measures of one concept, reporting where they agree and which pairs they
+leave undecided, with kinase selectivity as one instance alongside cases
+as varied as biological age and variant effect prediction.
+

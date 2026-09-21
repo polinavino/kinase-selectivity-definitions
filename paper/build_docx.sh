@@ -31,7 +31,4 @@ pandoc main.tex \
 # pandoc drops achemso's \affiliation/\email; restore them after the author name
 python3 add_author_block.py molecular_informatics_submission.docx
 
-# pandoc emits no page numbers; add a centered page-number footer
-python3 add_page_numbers.py molecular_informatics_submission.docx
-
 echo "Wrote molecular_informatics_submission.docx"

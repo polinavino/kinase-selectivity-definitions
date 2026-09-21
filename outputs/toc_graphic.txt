@@ -1,0 +1,14 @@
+Davis cross-definition Spearman correlations (median ranks):
+        S       Ent     Gini    Ratio   
+S          1.000   0.946   0.952   0.456
+Ent        0.946   1.000   0.999   0.343
+Gini       0.952   0.999   1.000   0.343
+Ratio      0.456   0.343   0.343   1.000
+
+Klaeger (222 drugs x 343 kinases) minimum panel size for mean r > 0.90:
+  entropy: 110 kinases
+  gini: 290 kinases
+  s_score: 110 kinases
+  ratio: 343 kinases
+
+Saved /Users/polina/Documents/BioInfStuff/selectivity/paper/figures/toc_graphic.png

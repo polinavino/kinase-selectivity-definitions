@@ -7,7 +7,7 @@ the original publication (association-constant weighting) is plotted against the
 baseline-subtracted log-affinity form used in the main text. Top row: selectivity
 entropy; bottom row: Gini coefficient. The two operationalizations of the same
 named metric differ substantially, and the entropy ranking even reverses on
-Klaeger (entropy r = 0.42 Davis, -0.32 Klaeger; Gini r = 0.11, -0.46), confirming
+Klaeger (entropy r = 0.42 Davis, -0.32 Klaeger; Gini r = 0.11, -0.45), confirming
 that the operationalization of a named metric is itself a source of the
 definitional instability we report.
 
@@ -25,7 +25,7 @@ predicted by the top1-top2 affinity gap; entropy, Gini, and S-score instability
 are best predicted by features of the active affinity distribution.
 
 Figure 4. Representative binding profiles illustrating the three instability
-types. Left: Drug 64 (Davis), most stable (sigma = 1.6), two active kinases.
+types. Left: Drug 64 (Davis), most stable (sigma = 1.8), two active kinases.
 Center: Drug 42 (Davis), most unstable (sigma = 19.3), 22 active kinases with
 no dominant target. Right: Drug 23 (Davis), most ratio-sensitive, five
 active kinases including two near-tied top targets (delta pKd = 0.023). Dashed
@@ -41,17 +41,7 @@ reach r = 0.90 within the practical panel range. On Metz, entropy, Gini, and
 S-score all stabilize by 50-80 kinases, while ratio requires approximately 170
 kinases, close to the full panel.
 
-Figure 6. Panel-size convergence of the candidate measure compared with the four
-existing definitions, on the Klaeger and Metz datasets (50 random subpanels per
-size). Curves show the mean Spearman correlation between the ranking computed
-on a random subpanel and the full-panel ranking; p* (legend) is the smallest
-panel reaching mean rho > 0.90. On Klaeger the candidate converges in the fast
-regime (p* = 110), matching entropy and the S-score (both p* = 110), and well
-ahead of Gini (p* = 290) and ratio (p* = 343). On Metz the candidate converges
-at p* = 80, matching entropy and Gini and close behind the S-score (p* = 50),
-well ahead of ratio (p* = 170).
-
-Figure 7. The two failure modes the candidate measure repairs (Klaeger
+Figure 6. The two failure modes the candidate measure repairs (Klaeger
 dataset). Left (D1): rank standard deviation, pooled across the four existing
 definitions' parameter sweeps, for compounds with no detected binding above
 the assay floor (sigma = 72.9, n = 16) versus compounds with at least one
@@ -62,3 +52,13 @@ against the number of active kinases, for the entropy (r = -0.41) and for the
 candidate (r = +0.20); the entropy's instability grows sharply as the active
 set shrinks, while the candidate's stays near zero (17x smaller mean
 instability) because it has no free activity baseline.
+
+Figure 7. Panel-size convergence of the candidate measure compared with the four
+existing definitions, on the Klaeger and Metz datasets (50 random subpanels per
+size). Curves show the mean Spearman correlation between the ranking computed
+on a random subpanel and the full-panel ranking; p* (legend) is the smallest
+panel reaching mean rho > 0.90. On Klaeger the candidate converges in the fast
+regime (p* = 110), matching entropy and the S-score (both p* = 110), and well
+ahead of Gini (p* = 290) and ratio (p* = 343). On Metz the candidate converges
+at p* = 80, matching entropy and Gini and close behind the S-score (p* = 50),
+well ahead of ratio (p* = 170).

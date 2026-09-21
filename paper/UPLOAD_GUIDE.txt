@@ -27,7 +27,8 @@ FIGURES  (one file per figure, separate slot each)  -> submission_figures/
   Figure3.png  = best predictor of instability per family
   Figure4.png  = representative binding profiles (3 instability types)
   Figure5.png  = panel-size stability of existing definitions
-  Figure6.png  = panel-size convergence of the candidate measure
+  Figure6.png  = the two failure modes the candidate measure repairs
+  Figure7.png  = panel-size convergence of the candidate measure
 
 TABLES  (one file per table, separate slot each)  -> submission_tables/
   Table1.docx  = cross-family Spearman correlations
