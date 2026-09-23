@@ -69,9 +69,11 @@ $\sigma = 36.8$ vs.\ $21.7$ on Anastassiadis and $178.5$ vs.\ $108.1$ on Metz,
 matching the $72.9$ vs.\ $31.3$ contrast on Klaeger (Davis contains no
 zero-active compounds).
 Within the distribution-based family, the number of active kinases negatively
-predicts entropy instability in every dataset ($r = -0.28$ to $-0.43$), and the
-top$_1$--top$_2$ affinity gap predicts ratio instability on Davis, Klaeger, and
-Metz ($r = -0.44$, $-0.34$, $-0.27$; all $p < 0.001$), as detailed below.
+predicts entropy instability in every dataset ($r = -0.28$ to $-0.43$). The
+top$_1$--top$_2$ affinity gap predicts ratio instability on three of the four
+datasets, Davis, Klaeger and Metz ($r = -0.44$, $-0.34$, $-0.27$; all
+$p < 0.001$), but not on Anastassiadis ($r = -0.104$, $p = 0.23$), as detailed
+below.
 
 \begin{figure}[h]
   \centering
@@ -164,9 +166,12 @@ count's instability is governed by where each assay's detection window falls
 relative to the cutoff, and the two assays place
 that window very differently: 3.6\% of the Klaeger matrix is active versus
 17.9\% of Davis (Methods). 
-The one predictor that replicates cleanly across both datasets is the
-ratio family's dependence on the top$_1$--top$_2$ gap (above), which compares
-two affinities directly rather than counting how many pass a cutoff. The entropy
+Within Table~\ref{tab:predictors}, the only pairing that holds on both
+pK$_d$ datasets is the ratio family's dependence on the top$_1$--top$_2$ gap,
+which compares two affinities directly rather than counting how many pass a
+cutoff. As reported above, that dependence also holds on Metz but fails on
+Anastassiadis, so it replicates on three of the four datasets and specifically
+not on the percent-inhibition readout. The entropy
 dependence on the number of active kinases replicates in direction but more
 weakly on the smaller Davis panel ($r = -0.409$ on Klaeger vs.\ $-0.279$ on
 Davis). Gini shows the reverse pattern in strength, reaching significance on
@@ -246,7 +251,7 @@ Filgotinib, ARRY-380; rank $\sigma > 76$) all have zero active kinases at the
 $\mathrm{p}K_d > 6$ threshold.
 These compounds have no meaningful binding to any profiled kinase at
 sub-micromolar affinity, yet all four definitions still assign them numerical
-selectivity scores based on the detection floor values.
+selectivity scores based on sub-threshold values.
 The resulting rankings are arbitrary: different parameterizations produce
 different orderings of compounds that are, in practice,
 indistinguishable from one another.
@@ -328,12 +333,14 @@ the full panel: it achieves only $r = 0.888$ even at 320 kinases, just 23
 below the full panel of 343, and attains $r = 0.90$ only on the complete panel.
 
 This result has a direct practical implication.
-Standard commercial kinase selectivity panels typically profile 50--100
-kinases.\cite{Bosc2017}
-At these panel sizes, entropy- and S-score-based rankings are reasonably
-stable ($r \approx 0.76$--$0.85$), but Gini and ratio rankings are effectively
+Commercial kinase selectivity panels vary widely in size, from focused
+subpanels of a few dozen kinases to near-kinome panels of several hundred.
+On a 50-kinase subpanel, entropy- and S-score-based rankings are reasonably
+stable ($r \approx 0.78$--$0.82$), while Gini and ratio rankings are effectively
 uncorrelated with what would be obtained on a full kinome panel
-($r < 0.14$ for Gini, $r < 0.00$ for ratio at $p = 50$).
+($r = -0.09$ for Gini and $r = -0.08$ for ratio at $p = 50$). The practical
+consequence is that the smaller the panel, the more the choice of definition
+determines the answer.
 Ratio rankings in particular are unreliable at any panel size commonly used
 in practice, because the identity of the reference off-target ($k$-th ranked
 kinase) changes substantially as panel composition changes.

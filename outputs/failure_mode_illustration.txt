@@ -1,4 +1,13 @@
-D1: rank std, zero-active = 72.9; active = 31.3 (n_zero=16, n_active=206)
+D1: rank std, zero-active = 72.9; active = 31.3 (n_zero=16, n_active=206; Mann-Whitney U=3296, p=2.80e-11, two-sided)
+D1: max pK_d among the 16 zero-active compounds: 5.16 to 6.00 (all above the assay detection floor of 5.0)
+
+D1 decomposed per definition (mean rank std within that definition's own sweep):
+  s_score  zero-active  18.54   active  24.31   REVERSES
+  entropy  zero-active  17.08   active  12.48   holds
+  gini     zero-active  86.08   active  15.87   holds
+  ratio    zero-active  24.04   active  20.66   holds
+  (pooled figure is driven by entropy and Gini; the S-score reverses because its
+   score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)
 D3: corr(n_active, instability) -- entropy r=-0.409 (p=1.0e-09); candidate r=+0.195 (p=5.0e-03)
 D3: mean instability -- entropy 12.48; candidate 0.73 (17x smaller)
 

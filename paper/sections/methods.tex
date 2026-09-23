@@ -78,10 +78,11 @@ chemoproteomics, and functional activity) and two readout types (affinity and
 single-concentration inhibition).
 Each selectivity definition is computed on the native readout of its
 dataset, and our analyses concern rank correlations between definitions and rank
-instability. 
-The definitions remain directly comparable across datasets
-because both of these computations are invariant to a common monotone 
-rescaling within a dataset.
+instability. Figure~\ref{fig:fidelity} shows the definitions are not 
+invariant to the choice of readout. In fact, two defensible
+operationalizations of the entropy rank compounds differently, and on Klaeger in
+reverse. Cross-dataset comparison here rests on rank correlations computed within
+each dataset, never on absolute scores compared across them.
 For the percent-inhibition and $\mathrm{p}K_i$ datasets, the S-score threshold, and
 entropy/Gini baseline grids were shifted to span each dataset's active range,
 while the ratio off-target index $k \in \{1,\ldots,5\}$ was left unchanged
@@ -194,11 +195,14 @@ those compounds, a larger $k$ would compare the primary target against the
 assay floor rather than a genuine off-target.
 $R(k)$ takes
 the affinity gap to a single chosen competitor, the $k$-th ranked off-target.
-The family also includes the concentration- and target-dependent selectivity
-(CATDS) score of Klaeger et al.\cite{Klaeger2017}, which instead divides each
+The field also assigns the concentration- and target-dependent selectivity
+(CATDS) score of Klaeger et al.\cite{Klaeger2017} to this family, though we find
+that it does not behave like a member of it. CATDS divides each
 target's concentration-dependent binding reduction by the sum of binding
-reductions over \emph{every} target in the panel (rather than comparing to a
-single chosen competitor).
+reductions over \emph{every} target in the panel, rather than comparing to a
+single chosen competitor, which is a distributional construction. We therefore
+represent the ratio family by $R(k)$ alone and treat CATDS separately in the
+Discussion.
 We use the simpler fold-selectivity because the reference off-target index $k$
 is then an explicit parameter whose effect can be studied directly.
 A larger affinity gap to the nearest competitor means greater selectivity, so

@@ -43,10 +43,14 @@ kinases, close to the full panel.
 
 Figure 6. The two failure modes the candidate measure repairs (Klaeger
 dataset). Left (D1): rank standard deviation, pooled across the four existing
-definitions' parameter sweeps, for compounds with no detected binding above
-the assay floor (sigma = 72.9, n = 16) versus compounds with at least one
-active kinase (sigma = 31.3, n = 206); the candidate assigns the first group
-no score at all (D1 gate) rather than an unstable one. Right (D3):
+definitions' parameter sweeps, for compounds with no binding above the
+pKd > 6 activity threshold (sigma = 72.9, n = 16) versus compounds with at
+least one active kinase (sigma = 31.3, n = 206; p = 2.8e-11, Mann-Whitney U,
+two-sided); the candidate assigns the first group no score at all (D1 gate)
+rather than an unstable one. All 16 compounds in the first group do bind above
+the assay detection floor of pKd = 5.0, with maxima from 5.16 to 6.00; the
+pooled sigma is driven by Gini and entropy and reverses for the S-score, and
+the per-definition decomposition is reported in the text. Right (D3):
 per-compound rank instability under the free activity baseline, plotted
 against the number of active kinases, for the entropy (r = -0.41) and for the
 candidate (r = +0.20); the entropy's instability grows sharply as the active

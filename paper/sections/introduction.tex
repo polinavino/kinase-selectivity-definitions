@@ -14,8 +14,8 @@ process.\cite{Bhullar2018}
 Despite its importance, no single consistent definition of selectivity exists.
 The field employs at least four distinct quantitative measures:
 the S-score,\cite{Karaman2008} selectivity entropy,\cite{Uitdehaag2011}
-Gini coefficient,\cite{Graczyk2010} and ratio-based measures including the
-CATDS score.\cite{Klaeger2017}
+Gini coefficient,\cite{Graczyk2010} and ratio-based measures, a family to which
+the field assigns the CATDS score.\cite{Klaeger2017}
 These definitions are applied interchangeably in the literature without
 systematic justification, and their parameter values (the activity threshold
 in the S-score, the baseline in the entropy and Gini coefficient, the reference
@@ -34,21 +34,10 @@ been characterized.
 
 The absence of a principled basis for selectivity measurement is not merely
 a practical inconvenience. 
-Go/no-go decisions worth hundreds of millions of dollars in development costs
-are made on the basis of selectivity assessments whose sensitivity to
-definitional choice is unknown. The lack of consistency across 
+Go/no-go decisions in lead optimization are made on the basis of selectivity
+assessments whose sensitivity to definitional choice is unknown. The lack of consistency across 
 applications of selectivity definitions for different compounds makes 
 comparison very challenging. 
-
-% Counterintuitively, we find that the compounds most resistant to
-% definitional disagreement are not the most selective but the most promiscuous:
-% compounds that bind nearly the entire profiled kinome receive consistent
-% rankings regardless of which definition is applied, because all definitions
-% agree they are non-selective.
-% Compounds at intermediate promiscuity, i.e. those with one dominant target
-% and several moderate off-targets, or those with near-identical affinities for
-% their top two targets, often receive contradictory rankings depending on
-% which definition is chosen.
 
 Our analyses suggest that existing selectivity definitions are, in some cases,
 measuring entirely different qualities of binding profiles, and therefore
@@ -67,23 +56,30 @@ In service of the overarching goal of developing a principled, standardized
 formula for defining selectivity, our contributions are as follows:
 
 \begin{itemize}
-    \item[(i)] we show that existing definitions cluster into two families:
-distribution-based (S-score, entropy, Gini) and ratio-based (CATDS and
-variants), which correlate weakly with one another across all four datasets
-(cross-family $r = 0.14$--$0.62$, versus within-family $r > 0.72$) and measure
-distinct properties of binding profiles;
+    \item[(i)] we show that the
+S-score, entropy and Gini agree closely with each other on every one of the four
+datasets (Spearman $0.72$--$1.00$), while the fold-selectivity ratio $R(k)$
+agrees with none of them ($0.14$--$0.62$). We call the first group the
+distribution-based family, and $R(k)$ the ratio-based family. The split
+follows what each quantifies: how concentrated a compound's activity is across
+the whole panel, against how large the gap is to one chosen off-target;
 
     \item[(ii)] we identify three sources of instability: definitional noise for
-compounds below the assay detection threshold, ratio-specific instability
+compounds with no binding above the activity threshold, ratio-specific instability
 driven by near-tied top targets, and distribution-ratio disagreement for
 compounds with one dominant target and broad moderate off-target activity;
 
-    \item[(iii)] we propose four required properties: (D1) a reliability threshold condition,
+    \item[(iii)] we propose four motivated properties: (D1) a reliability threshold condition,
 (D2) bounded gap sensitivity, (D3) distributional consistency, and (D4) monotonicity under
-weak off-target addition. We then show that no existing definition satisfies
-all four simultaneously;
+weak off-target addition. We then find that none of the four definitions
+assessed satisfies all four simultaneously;
 
     \item[(iv)] we propose a candidate measure: a gated, smooth-hinge
 effective-target number that satisfies all four properties and recovers its
 full-panel ranking from roughly a third of a typical panel.
 \end{itemize}
+
+We demonstrate that candidate measure we propose is neither unique as a measure 
+satisfying the four properties jointly, nor is it guaranteed to perform better than 
+existing measures in all cases. 
+

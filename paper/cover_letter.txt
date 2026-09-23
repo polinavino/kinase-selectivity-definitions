@@ -2,7 +2,7 @@ Dear Professor Baumann,
 
 I am pleased to submit a revised version of manuscript 7756455, now titled
 "Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Required Properties for a Well-Formed Measure"
+Characterization and Motivated Properties for a Well-Formed Measure"
 (previously "Towards a Formal Definition of Kinase Inhibitor
 Selectivity: Empirical Characterization of Definitional Instability and Proposed
 Desiderata"), as a Research Article (Full Paper).
@@ -12,7 +12,7 @@ been substantially revised in response, most notably by:
 
   - simplifying the language and removing the speculative passages identified,
     including deletion of the "Relation to Formal Methods" section and replacing
-    the term "desiderata" with "required properties" throughout;
+    the term "desiderata" with "motivated properties" throughout;
 
   - extending the analysis from two datasets to four (adding the Anastassiadis
     and Metz datasets, spanning three assay technologies), and explicitly

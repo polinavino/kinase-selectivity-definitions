@@ -1,31 +1,44 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have shown that commonly used kinase inhibitor selectivity definitions
-cluster into two families that measure fundamentally different properties of
-binding profiles. We also showed that rank instability within and between families is
-mechanistically predictable from binding profile shape, and that three
+We have shown that commonly used kinase inhibitor selectivity definitions split
+three to one, into a distribution-based group whose members agree closely and a
+ratio measure that agrees with none of them, and that the two measure
+fundamentally different properties of binding profiles. 
+We also showed that rank instability within and between families is
+predictable from binding profile shape, and that three
 structurally distinct sources of instability can be identified and
 characterized.
-These findings motivate four required properties that any well-formed selectivity measure
+These findings motivate four properties that any well-formed selectivity measure
 should satisfy: a reliability threshold
 condition, bounded gap sensitivity, distributional consistency, and monotonicity
 under weak off-target addition.
 
-No existing definition satisfies all four simultaneously, but we show that a
-gated, smooth-hinge effective-target number does. We demonstrate that it recovers its
-full-panel ranking from roughly a third of a typical panel, and that it is
+None of the four definitions assessed satisfies all four properties, but we show
+that a gated, smooth-hinge effective-target number does. We demonstrate that it
+recovers its full-panel ranking from roughly a third of a typical panel, and from
+roughly a quarter once the reliability gate is applied, and that it is
 part of a whole family of candidate definitions satisfying the four properties.
-However, our featured candidate measure is close to identical to the
-entropy measure in terms of performance on the given datasets, and
-looking for a significantly better measure within the candidate family is future work,
-likely requiring additional datasets.
-Establishing additional properties that characterize a selectivity measure
-uniquely, as Shannon's axioms do for entropy, is a natural next step.
+Because the candidate is a local modification of the entropy, the two rank the
+compounds they both score almost identically (Spearman $+0.999$ on Klaeger). 
+So, our candidate measure is neither unique nor a guaranteed universal 
+improvement on existing measures. 
+
+The main goal of this work, however, is to identify criteria for judging 
+a candidate that could be considered a principled, universally adopted 
+choice of selectivity measure in the future. Such criteria must be justified 
+(which we argue they are),
+and jointly satisfiable (which we empirically demonstrate). 
+Further properties may discriminate where these four do
+not, and the candidate may separate from the entropy on panels whose active
+fractions differ from the four studied here.
+Establishing additional properties that uniquely characterize a selectivity
+measure, as Shannon's axioms do for entropy, is a natural next step, for which
+additional datasets may be required.
 
 The immediate practical implication is that selectivity assessments should
 report the sensitivity of rankings to parameter choice, and should explicitly
-flag compounds with no binding above the detection threshold as unreliable.
+flag compounds with no binding above the activity threshold as unreliable.
 The longer-term implication is that the field needs a principled basis for
 choosing among selectivity definitions.
 The need for a principled measure is not specific to selectivity. 

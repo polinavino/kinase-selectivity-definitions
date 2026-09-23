@@ -21,12 +21,15 @@ The ratio definition asks: how much more potently does the compound bind its
 primary target than a specified off-target?
 The selectivity measure discrepancy is most pronounced 
 for compounds with one clearly dominant target that also
-bind many kinases at moderate affinity (Type~3 profiles in our taxonomy).
+bind many kinases at moderate affinity (Type~3 profiles in our taxonomy),
+among compounds that clear the activity threshold. The largest
+ratio--entropy disagreements overall belong to the zero-active Type~1 compounds,
+which D1 excludes from scoring.
 For such compounds, ratio-based methods report high selectivity while
 distribution-based methods report moderate promiscuity.
-The required properties proposed in the Required Properties section are an
-attempt to express what it means for a compound to be selective in a way that is
-precise enough to assess candidate selectivity definitions formally.
+The properties proposed in the Motivated Properties section do not
+define selectivity. They state what we want any measure of it to do, with each
+property drawn from one of the failure modes above.
 
 This coexistence has a historical explanation.
 In classical pharmacology and analytical chemistry, selectivity is inherently
@@ -45,11 +48,14 @@ Pending a formal resolution, three practical recommendations follow from our
 findings.
 First, D1 (reliability threshold) should be adopted as a reporting
 standard.
-Compounds with no detected binding above the assay detection floor should not
-receive selectivity scores, or should have their scores explicitly flagged as
-unreliable.
+Compounds with no binding above the $\mathrm{p}K_d > 6$ activity threshold
+should not receive selectivity scores, or should have their scores explicitly
+flagged as unreliable.
 Of the 222 Klaeger compounds, 16 (7.2\%) fall into this category and currently
-receive scores that are indistinguishable from noise.
+receive scores that are indistinguishable from noise. Note that these compounds
+are not below the assay detection floor of $\mathrm{p}K_d = 5.0$, which none of
+the 222 is: their maximum affinities run from 5.16 to 6.00. The gate is set at the
+activity threshold, not at the detection limit.
 
 Second, selectivity assessments should report the sensitivity of rankings to
 parameter choice rather than a single score at a single parameter value.
@@ -62,7 +68,7 @@ Third, when comparing selectivity across studies that use different definitions,
 the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
 The high within-family correlations ($r > 0.72$) suggest that S-score, entropy,
-and Gini are interchangeable for most purposes when parameters are chosen
+and the Gini coefficient are interchangeable for most purposes when parameters are chosen
 consistently. This is an empirical observation rather than a preset adequacy
 bar: $r = 0.72$ is the lowest within-family correlation we observed (Klaeger
 S-score vs.\ Gini, Table~\ref{tab:correlations}), and it measures a different
@@ -76,6 +82,13 @@ S-score on the smaller panels used in practice (on Klaeger it requires roughly
 290 of 343 kinases to recover its full-panel ranking, against 110 for
 entropy and the S-score). The three measures should therefore be treated as
 interchangeable only when compared on panels of similar, near-complete coverage.
+This caveat is itself conditional on D1. When the convergence is recomputed over
+only the compounds that clear the activity threshold on both the subpanel and the
+full panel, the Gini coefficient reaches $\rho > 0.90$ at 80 kinases rather than 290, level
+with the entropy. The Gini coefficient's apparent panel-size handicap is therefore largely an
+artefact of scoring compounds that should not be scored, which is a further
+argument for adopting D1 as a reporting standard and a caution against reading
+the 290 figure as a property of the Gini coefficient itself.
 Ratio-based measures, in turn, should not be compared directly with
 distribution-based measures at any panel size without acknowledging the
 conceptual distinction.
@@ -90,9 +103,12 @@ active-compound fractions differ across datasets. As a consequence,
 our analysis
 relies on within-dataset rank comparisons rather than cross-dataset absolute
 scores.
-The consistency of the two-family structure and the instability predictors
-across all four datasets indicates that the findings are not artifacts of a
-single assay platform. However, findings should still be interpreted in light of
+The two-family structure replicates across all four datasets, and the
+instability predictors across three of the four, which indicates that the
+findings are not artifacts of a single assay platform. The exception is the
+top$_1$--top$_2$ dependence on Anastassiadis ($r = -0.104$, $p = 0.23$), the one
+percent-inhibition dataset, so we cannot exclude that this predictor is specific
+to affinity readouts. However, findings should still be interpreted in light of
 these technological differences.
 Our comparison is also restricted to four widely used, historically
 established definitions. Bosc et al.'s window score and ranking
@@ -105,21 +121,26 @@ normalizes each target's binding reduction by the sum of reductions across the
 entire panel rather than comparing to a single off-target, a construction it
 shares with the distribution-based family rather than with $R(k)$. A proxy
 computed from our baseline-subtracted affinity profiles, in place of the raw
-concentration-response data CATDS requires, correlates more strongly with Gini
-and entropy than with $R(k)$ on Klaeger, consistent with this structural
-reading. We did not add it as a fifth measure: the distribution family is
+concentration-response data CATDS requires, correlates far more strongly with
+Gini and entropy than with $R(k)$ on all four datasets (Spearman correlation $0.91$--$0.99$
+against Gini and $0.85$--$0.96$ against entropy, versus $0.45$--$0.70$ against
+$R(k)$), consistent with this structural reading. On our data CATDS does
+not behave like a ratio measure, and assigning it to that family would have
+misdescribed the cross-family correlations reported above. 
+We did not add it as a fifth measure: the distribution family is
 already represented by three members, and CATDS appears to be an additional
-instance of the same underlying construct rather than an independent
-perspective (see repository for results).
+instance of the same underlying construct rather (see repository for results).
 
 A further axis of platform dependence that this analysis does not examine is
 cell-based versus cell-free profiling. Recent work shows that selectivity
 classifications for the same compounds can differ substantially between
 biochemical binding panels and cellular target-engagement assays. For example, several
 type II (DFG-out-binding) inhibitors show cellular interactions that
-cell-free assays miss\cite{Binder2026}. A plausible contributor, not established
-by that work, is that cell-free panels often use truncated or constitutively
-active kinase-domain constructs, which cannot adopt the DFG-out state.
+cell-free assays miss\cite{Binder2026,Binder2026correction}.
+A plausible contributor, not established by that work, is that the cellular
+assays report occupancy of full-length kinase in intact cells, with regulatory
+domains, binding partners and intracellular ATP present, whereas the cell-free
+panels score isolated kinase-domain constructs under defined conditions.
 
 We also examined whether in vitro selectivity predicts clinical toxicity,
 correlating the selectivity rankings of the FDA-approved Klaeger compounds with
@@ -139,7 +160,6 @@ A proper test would require indication-stratified, treatment-related
 adverse-event rates from controlled trials with matched comparators, which are
 not available in standardized form across these drugs.
 
-The assessments of D1-D4 satisfaction in Table~\ref{tab:desiderata} are based on
-analysis of the functional forms of each definition together with the empirical
-checks of this study. A formal proof of satisfaction or violation for each
-property--definition pair is left for future work.
+Finally, a formal proof of each of the D1-- D4 properties for each 
+definition (for which informal assessments given in Table~\ref{tab:desiderata}) 
+is left for future work.

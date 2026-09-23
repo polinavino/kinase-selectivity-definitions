@@ -1,4 +1,4 @@
-\section{Required Properties for a Well-Formed Selectivity Measure}
+\section{Motivated Properties for a Well-Formed Selectivity Measure}
 \label{sec:desiderata}
 
 The empirical findings of the Results section motivate four properties that any
@@ -21,16 +21,23 @@ There exists a threshold $\tau^* > 0$ such that $f(\mathbf{x})$ is undefined,
 or explicitly flagged as unreliable, when $\max_i x_i \leq \tau^*$.
 
 \textit{Motivation.}
-Compounds with no detected binding above the assay detection floor receive
-arbitrary selectivity scores under all four definitions studied here, producing
-rank instability with mean $\sigma \approx 73$ compared with $\sigma \approx
-31$ for active compounds (Type~1 instability, above; Figure~\ref{fig:failure_modes}, left).
+Compounds with no binding above the $\mathrm{p}K_d > 6$ activity threshold receive
+arbitrary selectivity scores, producing rank instability with mean $\sigma = 72.9$
+pooled across the four definitions' parameter sweeps, compared with $\sigma = 31.3$
+for active compounds ($p < 0.001$, Mann--Whitney $U$ test; Type~1 instability,
+above; Figure~\ref{fig:failure_modes}, left).
+The pooled figure is not uniform across the four definitions, and we report the
+decomposition rather than claim that it holds for each. It is driven by Gini
+($\sigma = 86.1$ versus $15.9$) and by entropy ($17.1$ versus $12.5$), is marginal
+for the ratio ($24.0$ versus $20.7$), and reverses for the S-score ($18.5$ versus
+$24.3$), whose score is exactly $0$ for every one of these compounds and whose
+ranks are therefore stable by degeneracy rather than by reliability.
 A compound that does not bind cannot be
 meaningfully ranked relative to compounds that do.
-No existing definition incorporates an explicit reliability condition.
-In fact, both
+None of the four definitions assessed here incorporate an explicit reliability
+condition. In fact, both
 the S-score and selectivity entropy assign scores to compounds with no
-sub-micromolar binding, treating detection floor values as informative.
+sub-micromolar binding, treating sub-threshold values as informative.
 
 \paragraph{D2: Bounded gap sensitivity.}
 For any compound profile $\mathbf{x}$ satisfying D1, a small perturbation to
@@ -46,8 +53,10 @@ which one is chosen as the reference off-target must shrink to zero as well''.
 \textit{Motivation.}
 Ratio-based definitions violate this property when $x_{(1)} \approx x_{(2)}$.
 A compound with near-identical affinities for its top two kinases receives a
-large ratio score when $k=1$ (the gap to the next off-target may be large) but
-a near-zero score when $k=2$ (the gap between the tied targets is negligible).
+near-zero ratio score when $k=1$ (the reference off-target is the tied second
+target, so the gap is negligible) but a large score when $k=2$ (the reference
+skips past the tie). On the 17 Klaeger compounds with a top$_1$--top$_2$ gap
+below $0.05$, mean $R(1) = 0.02$ against mean $R(2) = 0.42$.
 This produces the Type~2 instability identified in
 the instability taxonomy above, where top$_1$--top$_2$ gap is the
 strongest predictor of ratio instability ($r = -0.341$, $p < 0.001$).
@@ -79,8 +88,10 @@ $\epsilon > 0$, there exists $\delta > 0$ such that if $|\beta_1 - \beta_2|
 $f(\cdot; \beta_1)$ agrees with that under $f(\cdot; \beta_2)$.
 
 \textit{Motivation.}
-The entropy and Gini definitions are parameterized by a baseline $\beta$ that
-determines which affinities contribute to the binding distribution.
+As we implement them, the entropy and Gini definitions are parameterized by a
+baseline $\beta$ that determines which affinities contribute to the binding
+distribution. Our $\beta$ is derived from the published forms' own (implicit) choice of
+reference points, $K_a \to 0$ for the entropy and $0\%$ inhibition for the Gini.
 Compounds with few active kinases are sensitive to this choice because small
 changes in $\beta$ can move individual kinases in or out of the active set,
 substantially altering the distribution.
@@ -133,12 +144,16 @@ ratio's reference off-target, so neither score increases.
 
 \bigskip
 Table~\ref{tab:desiderata} summarizes which definitions satisfy each property.
-No existing definition satisfies all four simultaneously, but the candidate measure
-introduced next does.
+The D1, D2 and D4 verdicts follow from the functional forms set out above. The
+D3 verdicts for the entropy and the Gini are empirical, and apply to the
+parameterized forms implemented here rather than to the published definitions,
+which leave the reference point implicit.
+None of the four definitions assessed satisfies all four properties, but the
+candidate measure introduced next does.
 
 \begin{table}[h]
   \centering
-  \caption{Satisfaction of the four required properties by existing selectivity
+  \caption{Satisfaction of the four motivated properties by existing selectivity
            definitions and by the candidate measure introduced below.
            $\checkmark$: satisfied (by construction, or verified empirically for
            the candidate).
@@ -174,6 +189,7 @@ The D3 failure comes from the hard active/inactive cutoff $\max(x_i - \beta, 0)$
 which ties the boundary between active and inactive kinases to the baseline
 $\beta$. As $\beta$ moves, kinases enter or leave the active set and the ranking
 shifts.
+
 The cutoff plays two roles: it excludes non-binders, which keeps the measure
 correctly oriented, and it sets the emphasis among the active kinases.
 The candidate separates these roles. It excludes non-binders with a gate fixed at
@@ -187,17 +203,28 @@ normalized weights, where a zero-weight addition drops out without changing the
 score. The entropy is
 therefore the one existing measure that can reach all four properties through
 local changes.
-The candidate differs from entropy in the following ways: 
+The candidate differs from entropy in the following ways:
 (1) it adds the D1 reliability gate, (2) it fixes the
 non-binder gate at the assay floor, and (3) it replaces the hard cutoff above the
 floor with a smooth softplus emphasis.
+
+All three changes are deliberately local, and it follows that on the compounds
+both measures score they should rank them almost identically. They do: the
+full-panel Spearman correlation between the candidate and the entropy is $+0.999$
+on Klaeger and $+0.997$ on Metz. This is expected, since the four properties do not act by
+reordering the compounds in the body of the distribution. They act on which
+compounds receive a score at all, which is D1 and changes the status of 16 of 222
+Klaeger compounds, and on whether the score survives a shift in the analyst's
+baseline, which is D3. 
 For a profile $\mathbf{x}$ with $\max_i x_i > \tau^*$ (and undefined otherwise,
 satisfying D1), define
+
 \begin{equation}
   w_i = \mathbf{1}[x_i > x_0]\; T \log\!\big(1 + e^{(x_i - \beta)/T}\big), \qquad
   p_i = \frac{w_i}{\sum_j w_j}, \qquad
   f(\mathbf{x}) = \sum_i p_i \log_2 p_i,
 \end{equation}
+
 where $x_0$ is the fixed assay detection floor, $\beta$ is the emphasis baseline
 (set to $x_0$ in the results below), and $T$ a smoothing width in
 $\mathrm{p}K_d$ units.
@@ -243,28 +270,39 @@ in the code repository).
   \includegraphics[width=\textwidth]{figures/failure_modes}
   \caption{The two failure modes the candidate measure repairs (Klaeger).
            \emph{Left (D1):} rank instability (std across the existing
-           definitions' parameter sweeps) for compounds with no detected
-           binding above the assay floor versus compounds with at least one
-           active kinase; the candidate assigns the first group no score at
-           all rather than an unstable one.
+           definitions' parameter sweeps) for compounds with no binding
+           above the activity threshold versus compounds with at least one
+           active kinase.
            \emph{Right (D3):} per-compound rank instability under the free
            activity baseline, against the number of active kinases, for the
-           entropy and for the candidate. The entropy's instability grows as
-           $n_\mathrm{active}$ shrinks; the candidate's stays near zero
-           because it has no free activity baseline.}
+           entropy and for the candidate. }
   \label{fig:failure_modes}
 \end{figure}
 
 A usable measure must also be recoverable from realistic panels.
 Applying the panel-size subsampling analysis above to the candidate (same grid,
-50 random subpanels per size), the smallest panel reaching mean Spearman
+50 random subpanels per size), the smallest panel reaching mean Spearman correlation
 $\rho > 0.90$ with the full-panel ranking is $p^* = 110$ kinases on Klaeger
 (Figure~\ref{fig:candidate}) and $p^* = 80$ of 172 kinases on Metz, so it
 converges quickly on both datasets.
 On Klaeger, this matches the entropy and the S-score (all $p^* = 110$) and is
-well ahead of the Gini ($290$) and the ratio ($343$, the full panel).
+well ahead of both Gini ($290$) and ratio ($343$, the full panel).
 On Metz it again matches the entropy, but here the S-score converges faster
 ($p^* = 50$ vs.\ $80$).
+
+Those $p^*$ values score every compound, including ones the D1 gate would refuse
+to score, and that matters on a subpanel: a compound whose active kinases fall
+outside the drawn subset drops below $\tau^*$ and becomes undefined. On Klaeger
+this affects $42\%$ of compounds at a 50-kinase panel, $27\%$ at 110 and $7\%$ at
+the full panel; on Metz, which is densely covered, at most $2\%$. Recomputing the
+convergence over only the compounds that are D1-defined on both the full panel and
+the subpanel, the candidate reaches $\rho > 0.90$ at $p^* = 80$ on Klaeger rather
+than $110$, and Metz is unchanged. Two cautions apply. The gated and ungated
+$p^*$ are not computed on the same set of compounds, since gating removes the
+least-bound ones, which are also the hardest to rank, so part of the improvement
+is selection rather than a property of the gate. And the same recomputation moves
+the Gini from $p^* = 290$ to $p^* = 80$, which bears on the panel-size
+recommendation in the Discussion.
 Raw convergence speed is not by itself a useful criterion, however: the
 S-score fails D1 and D4 outright (Table~\ref{tab:desiderata}), so a smaller
 $p^*$ does not make it a viable alternative.

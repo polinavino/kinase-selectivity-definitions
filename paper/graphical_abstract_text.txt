@@ -1,10 +1,11 @@
 Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Required Properties for a Well-Formed Measure
+Characterization and Motivated Properties for a Well-Formed Measure
 
 Polina Vinogradova*
 
 Across four kinase profiling datasets spanning three assay technologies,
-selectivity definitions cluster into two families measuring different
-properties, and rank instability is predictable from binding-profile shape.
-We identify three instability sources and derive four properties that no
-existing selectivity measure satisfies, then propose one that does.
+selectivity definitions split three to one: the S-score, entropy and Gini
+agree closely while the fold-selectivity ratio agrees with none of them, and
+rank instability is predictable from binding-profile shape. We identify three
+instability sources and motivate four properties that none of the four
+definitions assessed satisfies, then propose a measure that does.

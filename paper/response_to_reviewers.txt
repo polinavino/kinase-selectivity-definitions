@@ -1,7 +1,7 @@
 Response to Reviewers — Manuscript 7756455
 
 "Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Required Properties for a Well-Formed Measure"
+Characterization and Motivated Properties for a Well-Formed Measure"
 (previously: "Towards a Formal Definition of Kinase Inhibitor Selectivity:
 Empirical Characterization of Definitional Instability and Proposed Desiderata")
 
@@ -18,7 +18,7 @@ paper. It has been revised on three main axes:
   (1) the language has been simplified and the speculative passages flagged by
       the reviewer have been removed, including the deletion of the entire
       "Relation to Formal Methods" section and the replacement of the term
-      "desiderata" with "required properties" throughout (including in the
+      "desiderata" with "motivated properties" throughout (including in the
       title);
 
   (2) the analysis has been extended from two datasets to four, adding the
@@ -30,16 +30,15 @@ paper. It has been revised on three main axes:
       definitions" subsection and a supporting sensitivity check (Figure 1).
 
 In addition, the revision introduces a concrete candidate measure satisfying
-all four required properties, demonstrating that the properties are jointly
+all four motivated properties, demonstrating that the properties are jointly
 satisfiable.
 
-Note on scope: after this revision was submitted, I found an error in the
-candidate measure while re-auditing it, and was asked to resubmit a corrected
-version. This response therefore covers both rounds of correction: the
-reviewer-requested changes above, and the corrections made at resubmission
-(itemized at the end of the ADDITIONAL CORRECTIONS list below). However, the
-document of corrections to the work shows only the second round, against the
-version submitted after the first round.
+Note on scope: this response covers two rounds. First, the
+reviewer-requested changes above. Second, a further self-audit 
+after I spotted an error, and asked for permission to re-submit.
+The second round of corrections are in the "Post-resubmission corrections"
+section below. The marked-up document of corrections shows the second round of 
+corrections only. 
 
 A point-by-point response follows. Reviewer text is quoted, and the location of
 each change is given by section name.
@@ -56,7 +55,7 @@ uniformly accepted selectivity measure, if there exists one."
 I thank the reviewer for this assessment and have taken the suggestion of a
 "uniformly accepted measure" seriously: the revised manuscript proposes a
 concrete candidate measure (new section "A Candidate Measure") that satisfies
-all four required properties and recovers its full-panel ranking from roughly
+all four motivated properties and recovers its full-panel ranking from roughly
 a third of a typical panel.
 
 
@@ -68,10 +67,11 @@ I agree, and have simplified the writing throughout, removing the specific
 passages identified.
 
 A.1 — Use of the word "desiderata".
-The term has been removed everywhere and replaced with "required properties"
-(or simply "properties"). The title, the section heading ("Required Properties
+The term has been removed everywhere and replaced with "motivated properties"
+(or simply "properties"). The title, the section heading ("Motivated Properties
 for a Well-Formed Selectivity Measure"), the abstract, and the running text
-have all been updated.
+have all been updated. I avoided "required", which would assert a necessity the
+manuscript does not establish.
 
 A.2 — "The desiderata proposed here are intended as the empirical foundation
 for a future formal axiomatization ... in the tradition of Shannon's
@@ -188,7 +188,7 @@ operationalization of a named metric is itself a source of instability.
 ADDITIONAL CORRECTIONS (not requested by the reviewer)
 ====================================================================
 
-While revising, I addressed ten further items:
+While revising, I addressed eighteen further items:
 
 1. Candidate-measure property arguments. The motivations for D3 and D4 of the
    candidate include a brief analytic argument alongside the empirical check.
@@ -264,7 +264,9 @@ While revising, I addressed ten further items:
    ranking for alpha != 1 (Spearman agreement with alpha = 1 is 0.997-1.000).
    The closing paragraph now cites both as concrete evidence of non-uniqueness.
 
-9. Post-resubmission correction: the candidate measure was inverted. While
+Post-resubmission corrections:
+
+9. The candidate measure was inverted. While
    re-auditing after resubmission, I found that every kinase was weighted by
    a softplus of its affinity above the assay floor, but the softplus does
    not vanish at the floor. Ass a result, the several hundred non-binding kinases kept
@@ -277,7 +279,7 @@ While revising, I addressed ten further items:
    to its full-panel ranking at 110 kinases rather than 170, i.e. recoverable
    from an even smaller panel. 
 
-10. Post-resubmission correction: the D3 justification in item 1 was
+10. The D3 justification in item 1 was
     mistaken. It credited the smooth hinge with baseline robustness, but the
     smoothing is only robust to a secondary emphasis parameter (worst-case
     pairwise Spearman rho = 0.999); D3 actually holds because the
@@ -286,6 +288,43 @@ While revising, I addressed ten further items:
     moves the ranking about as much as it does for the existing entropy
     (-0.93 versus -0.95), an instability inherent to thresholded assays, so
     I reframed the D3 argument in item 1 accordingly.
+
+11. D1 population misdescribed. No Klaeger compound sits below the pKd = 5.0
+    detection floor; the 16 counted have no binding above the pKd > 6 activity
+    threshold (maxima 5.16 to 6.00). Corrected throughout, counts unchanged.
+
+12. D2 worked example inverted. Under R(k) = pKd,(1) - pKd,(k+1) it is k=1 that
+    gives the near-zero score, not the large one: on the 17 near-tied Klaeger
+    compounds R(1) = 0.02 against R(2) = 0.42. The D2 verdict is unaffected.
+
+13. D1 statistic now decomposed per definition. The pooled 72.9/31.3 is driven
+    by Gini and entropy, marginal for the ratio and reversed for the S-score, so
+    the "all four" claim is dropped. Mann-Whitney now computed (p = 2.8e-11).
+
+14. Panel size now reported with the D1 gate applied: 27% of compounds are
+    undefined at 110 kinases, and gated the candidate converges at 80 not 110.
+    Populations differ, so part is selection. Gini moves 290 to 80 (Rec. 3).
+
+15. Candidate-entropy relation moved to where the candidate is introduced:
+    Spearman +0.999 Klaeger, +0.997 Metz. All three modifications are local, so
+    the properties govern which compounds are scored, not the order of the rest.
+
+16. CATDS is never computed as one of the four measures, though contribution (i)
+    and Methods named it as the ratio family's member; both now name R(k). Our
+    own check finds it behaves distributionally (0.91-0.99 with Gini).
+
+17. Five further corrections of fact and scope:
+    - Methods claimed invariance to monotone rescaling; Figure 1 refutes it.
+    - "Cannot adopt the DFG-out state" was false; replaced with a hedged
+      full-length-versus-domain contrast.
+    - "Panels typically profile 50-100 kinases" was miscited to Bosc et al.
+    - The top1-top2 predictor fails on Anastassiadis (r = -0.104, p = 0.23);
+      Results and Limitations now say three of four.
+    - "Most pronounced" for Type 3 restricted to above-threshold compounds.
+
+18. Register. "Derive ... show that no existing definition satisfies all four"
+    is now "motivate ... find that none of the four assessed satisfies all of
+    them", since the Limitations already state that no formal proof exists.
 
 
 I believe the manuscript is significantly improved and hope it is now suitable

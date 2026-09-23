@@ -5,10 +5,20 @@ the same Klaeger computations that produced the numbers quoted in the paper
 (paper/sections/desiderata.tex, D1 and D3 motivation paragraphs).
 
 Left panel (D1): pooled rank instability (std across all four existing
-definitions' parameter sweeps) for compounds with no detected binding above the
-assay floor vs. compounds with at least one active kinase. The candidate does
-not assign these zero-active compounds a score at all (D1 gate), rather than a
-low-instability one -- shown as a hatch pattern, not a bar height.
+definitions' parameter sweeps) for compounds with no binding above the pK_d > 6
+activity threshold vs. compounds with at least one active kinase. Note that all
+16 of these compounds do have binding above the assay detection floor of
+pK_d = 5.0 (their maxima run 5.16 to 6.00); "zero-active" is defined against the
+activity threshold, not the detection floor. The candidate does not assign these
+compounds a score at all (D1 gate), rather than a low-instability one -- shown as
+a hatch pattern, not a bar height.
+
+The pooled statistic is also decomposed per definition below, because it is not
+uniform across the four: it is driven by entropy and Gini, is marginal for the
+ratio, and reverses in sign for the S-score (whose score is exactly 0 for every
+zero-active compound, so its ranks are stable by degeneracy rather than by
+reliability). The paper reports the decomposition rather than claiming the effect
+holds "under all four definitions".
 
 Right panel (D3): per-compound rank instability under the free activity
 baseline (entropy: baseline in [5.0, 6.5]; candidate: emphasis baseline beta in
@@ -21,7 +31,7 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr, rankdata
+from scipy.stats import spearmanr, rankdata, mannwhitneyu
 import matplotlib.pyplot as plt
 
 FLOOR, TAU_STAR = 5.0, 6.0
@@ -65,8 +75,29 @@ all_ranks = np.vstack([
 ])
 rank_std = all_ranks.std(axis=0)
 sigma_zero, sigma_active = rank_std[~has_active].mean(), rank_std[has_active].mean()
+u_stat, u_p = mannwhitneyu(rank_std[~has_active], rank_std[has_active], alternative='two-sided')
 print(f"D1: rank std, zero-active = {sigma_zero:.1f}; active = {sigma_active:.1f} "
-      f"(n_zero={ (~has_active).sum() }, n_active={has_active.sum()})")
+      f"(n_zero={ (~has_active).sum() }, n_active={has_active.sum()}; "
+      f"Mann-Whitney U={u_stat:.0f}, p={u_p:.2e}, two-sided)")
+print(f"D1: max pK_d among the {(~has_active).sum()} zero-active compounds: "
+      f"{M[~has_active].max(1).min():.2f} to {M[~has_active].max(1).max():.2f} "
+      f"(all above the assay detection floor of {FLOOR})")
+
+# Per-definition decomposition: the pooled figure above is NOT uniform across the four.
+print("\nD1 decomposed per definition (mean rank std within that definition's own sweep):")
+per_def = {
+    's_score': [to_ranks(s_score(M, t)) for t in s_thresholds],
+    'entropy': [to_ranks(entropy(M, b)) for b in ent_baselines],
+    'gini':    [to_ranks(gini(M, b)) for b in gini_baselines],
+    'ratio':   [to_ranks(ratio(M, FLOOR, n)) for n in ratio_top_ns],
+}
+for name, ranks in per_def.items():
+    sd = np.array(ranks).std(axis=0)
+    z, a = sd[~has_active].mean(), sd[has_active].mean()
+    verdict = 'holds' if z > a else 'REVERSES'
+    print(f"  {name:8s} zero-active {z:6.2f}   active {a:6.2f}   {verdict}")
+print("  (pooled figure is driven by entropy and Gini; the S-score reverses because its")
+print("   score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)")
 
 # ---------------- D3: per-compound instability under the free baseline ----------------
 betas = np.arange(4.5, 6.6, 0.25)
@@ -86,7 +117,7 @@ print(f"D3: mean instability -- entropy {ent_instab[has_active].mean():.2f}; "
 # ---------------- figure ----------------
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.5))
 
-bars = axL.bar(['No detected\nbinding', 'Has an active\nkinase'],
+bars = axL.bar(['No active\nkinase', 'Has an active\nkinase'],
                 [sigma_zero, sigma_active], color=['C1', 'C0'], width=0.55)
 bars[0].set_hatch('///'); bars[0].set_edgecolor('white')
 for b, v in zip(bars, [sigma_zero, sigma_active]):

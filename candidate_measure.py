@@ -109,6 +109,44 @@ def panel_convergence(M, baseline, threshold, floor, R=50, seed=42):
     return panel, res, pstar
 
 
+def gated_panel_convergence(M, baseline, threshold, floor, tau, R=50, seed=42):
+    """Panel-size convergence with the D1 gate actually applied.
+
+    panel_convergence above scores every compound, including ones the candidate
+    would refuse to score.  That matters at small panel sizes, because a compound
+    whose only active kinases are outside the drawn subpanel falls below tau* and
+    becomes undefined.  Here the Spearman is computed only over compounds that are
+    D1-defined on BOTH the full panel and the subpanel, which is what a
+    practitioner applying the gate would actually do, and the undefined fraction is
+    reported alongside.
+
+    Caveat, stated in the paper: the gated and ungated p* are not computed on the
+    same population.  Gating removes the least-bound compounds, which are also the
+    hardest to rank, so part of any improvement is selection rather than a property
+    of the gate.  Both are reported for that reason.
+    """
+    n_drugs, n_kin = M.shape
+    meas = measures_for(baseline, threshold, floor)
+    full_def = M.max(1) > tau
+    ref = {k: f(M) for k, f in meas.items()}
+    panel = list(range(50, n_kin, 30)) + [n_kin]
+    rng = np.random.RandomState(seed)
+    res = {k: {ps: [] for ps in panel} for k in meas}
+    undef = {ps: [] for ps in panel}
+    for ps in panel:
+        for _ in range(R):
+            idx = rng.choice(n_kin, ps, replace=False); Ms = M[:, idx]
+            sub_def = Ms.max(1) > tau
+            undef[ps].append(1.0 - sub_def.mean())
+            keep = full_def & sub_def
+            if keep.sum() < 5:
+                continue
+            for k, f in meas.items():
+                res[k][ps].append(spearmanr(to_ranks(ref[k][keep]), to_ranks(f(Ms)[keep]))[0])
+    pstar = {k: next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None) for k in meas}
+    return panel, res, pstar, undef
+
+
 # Sparse-coverage datasets only (see module docstring / paper).
 DATASETS = [
     dict(name='Klaeger', file='klaeger_matrix.csv', baseline=5.0, threshold=6.0, floor=5.0),
@@ -157,9 +195,24 @@ for ax, ds in zip(axes[0], DATASETS):
     M = pd.read_csv(ds['file'], index_col=0).values
     n_drugs, n_kin = M.shape
     panel, res, pstar = panel_convergence(M, ds['baseline'], ds['threshold'], ds['floor'])
+    # D1 actually applied: Spearman over compounds defined on both full and subpanel.
+    _, _, pstar_g, undef = gated_panel_convergence(
+        M, ds['baseline'], ds['threshold'], ds['floor'], ds['threshold'])
     print(f"\nPanel-size convergence p* ({ds['name']}, {n_drugs} cpd x {n_kin} kin):")
+    print(f"  {'measure':10s} {'p* (all cpd)':>13s} {'p* (D1-gated)':>14s}")
     for k in order:
-        print(f"  {k:10s} p* = {pstar[k]}")
+        print(f"  {k:10s} {str(pstar[k]):>13s} {str(pstar_g[k]):>14s}")
+    print("  fraction of compounds UNDEFINED under the D1 gate, by panel size:")
+    print("   " + "  ".join(f"{ps}:{np.mean(undef[ps]) * 100:.0f}%" for ps in panel))
+    print("  (gated and ungated p* are computed on different populations: gating removes")
+    print("   the least-bound compounds, which are also the hardest to rank, so part of any")
+    print("   improvement is selection rather than a property of the gate)")
+
+    # Candidate vs entropy: how much do the four properties change the ranking?
+    r_ce = spearmanr(res_full_candidate := measures_for(
+        ds['baseline'], ds['threshold'], ds['floor'])['candidate'](M),
+        measures_for(ds['baseline'], ds['threshold'], ds['floor'])['entropy'](M))[0]
+    print(f"  Spearman(candidate, entropy) on the full panel = {r_ce:+.4f}")
     for k in order:
         c, ls, lw, marker, markevery = styles[k]
         ax.plot(panel, [np.mean(res[k][ps]) for ps in panel], color=c, ls=ls, lw=lw,

@@ -8,17 +8,31 @@ D3 check (worst-case rank Spearman over [4.5,6.5]):
 D4 (add a sub-threshold off-target): selectivity non-increasing for 100% of compounds; max increase = 0.0000
 
 Panel-size convergence p* (Klaeger, 222 cpd x 343 kin):
-  candidate  p* = 110
-  entropy    p* = 110
-  s_score    p* = 110
-  gini       p* = 290
-  ratio      p* = 343
+  measure     p* (all cpd)  p* (D1-gated)
+  candidate            110             80
+  entropy              110             80
+  s_score              110            110
+  gini                 290             80
+  ratio                343            320
+  fraction of compounds UNDEFINED under the D1 gate, by panel size:
+   50:42%  80:32%  110:27%  140:21%  170:18%  200:14%  230:12%  260:11%  290:9%  320:8%  343:7%
+  (gated and ungated p* are computed on different populations: gating removes
+   the least-bound compounds, which are also the hardest to rank, so part of any
+   improvement is selection rather than a property of the gate)
+  Spearman(candidate, entropy) on the full panel = +0.9986
 
 Panel-size convergence p* (Metz, 704 cpd x 172 kin):
-  candidate  p* = 80
-  entropy    p* = 80
-  s_score    p* = 50
-  gini       p* = 80
-  ratio      p* = 170
+  measure     p* (all cpd)  p* (D1-gated)
+  candidate             80             80
+  entropy               80             80
+  s_score               50             50
+  gini                  80             80
+  ratio                170            170
+  fraction of compounds UNDEFINED under the D1 gate, by panel size:
+   50:2%  80:1%  110:1%  140:1%  170:1%  172:1%
+  (gated and ungated p* are computed on different populations: gating removes
+   the least-bound compounds, which are also the hardest to rank, so part of any
+   improvement is selection rather than a property of the gate)
+  Spearman(candidate, entropy) on the full panel = +0.9969
 
 Saved candidate_panel_convergence.png
