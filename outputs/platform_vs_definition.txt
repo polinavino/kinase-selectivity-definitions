@@ -1,0 +1,28 @@
+Shared Davis/Klaeger compounds (PubChem CID match): n = 46
+(supersedes the manuscript's previous, unverified claim of 'at most 19')
+
+Platform effect: Spearman r between Davis-rank and Klaeger-rank, same definition, same 46 compounds:
+  s_score : r = +0.587 (p = 1.8e-05)
+  entropy : r = +0.682 (p = 1.8e-07)
+  gini    : r = +0.548 (p = 8.2e-05)
+  ratio   : r = -0.064 (p = 6.7e-01)
+
+Definition effect: Spearman r between definitions, within platform, same 46 compounds:
+  Davis:
+    s_score  vs entropy : r = +0.891
+    s_score  vs gini    : r = +0.905
+    s_score  vs ratio   : r = +0.438
+    entropy  vs gini    : r = +0.997
+    entropy  vs ratio   : r = +0.292
+    gini     vs ratio   : r = +0.284
+  Klaeger:
+    s_score  vs entropy : r = +0.927
+    s_score  vs gini    : r = +0.674
+    s_score  vs ratio   : r = +0.145
+    entropy  vs gini    : r = +0.791
+    entropy  vs ratio   : r = +0.389
+    gini     vs ratio   : r = +0.589
+
+Summary: platform-effect r range = -0.06-0.68 (mean 0.44)
+         definition-effect r range = 0.14-1.00 (mean 0.61)
+Lower r = more disagreement. Comparing the two ranges shows which source of ranking disagreement -- assay platform or scoring definition -- is larger on this shared-compound set.

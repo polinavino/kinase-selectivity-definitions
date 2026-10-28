@@ -1,0 +1,16 @@
+Zero-active compounds (pKd>6 threshold): 16 of 222
+Current convention -- entropy: zero-active mean sigma=17.1  active mean sigma=12.5  (Mann-Whitney p=4.20e-03)
+Current convention -- gini: zero-active mean sigma=86.1  active mean sigma=15.9  (Mann-Whitney p=6.15e-11)
+
+Pooled convention (degenerate configs scored as entropy=Gini=0, included in every sweep):
+  mean rank sigma, zero-active: 78.5  active: 16.1  (Mann-Whitney p=3.20e-11)
+
+Per-compound number of DEFINED configurations (of 7 baselines swept): min=1, max=7
+  Zero-active (pKd>6) compounds have a defined score at 1-4 of 7 baselines (mean 3.2)
+
+Alternative convention (rank sigma computed only over each compound's own DEFINED configs):
+  entropy: 220 of 222 compounds have >=2 defined configs (2 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=14)=9.8  active mean sigma (n=206)=12.1  (p=8.53e-02)
+  gini: 220 of 222 compounds have >=2 defined configs (2 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=14)=9.5  active mean sigma (n=206)=13.0  (p=2.77e-02)
+  pooled (entropy+gini): 220 of 222 computable; mean rank sigma, zero-active (n=14): 9.7  active (n=206): 14.1  (Mann-Whitney p=8.07e-03)
+
+Done.

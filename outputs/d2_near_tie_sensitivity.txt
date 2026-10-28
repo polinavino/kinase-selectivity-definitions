@@ -1,0 +1,5 @@
+Klaeger compounds with top1-top2 affinity gap < 0.05 pKd units: 17 of 222
+Among these 17 compounds:
+  mean R(1) = 0.023  (k=1: reference is the tied second target, gap ~0)
+  mean R(2) = 0.419  (k=2: reference skips past the tie)
+  individual gaps: [0.0124, 0.0022, 0.0476, 0.0256, 0.0498, 0.0364, 0.0288, 0.0106, 0.0445, 0.0011, 0.0031, 0.039, 0.0256, 0.0007, 0.0391, 0.0015, 0.0189]

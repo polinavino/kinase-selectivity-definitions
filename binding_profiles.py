@@ -118,7 +118,7 @@ for ax, (idx, title, note, color) in zip(axes, panels):
     sorted_desc = np.sort(profile)[::-1]
     ax.bar(range(len(sorted_desc)), sorted_desc, color=color, width=1.0)
     ax.axhline(ACTIVE_THRESHOLD, ls='--', color='black', lw=1, label='pKd=6 threshold')
-    ax.axhline(BASELINE, ls=':', color='gray', lw=1, label='baseline')
+    ax.axhline(BASELINE, ls=':', color='gray', lw=1, label='assay floor')
     ax.set_ylim(4.8, 11)
     ax.set_title(f"Drug {idx} — {title}\n({n_active} active kinases, {note})")
     ax.set_xlabel("Kinases (sorted by affinity)")

@@ -1,0 +1,30 @@
+Raw Klaeger Kinobeads sheet: 5916 drug-target pairs with an Apparent Kd
+  High confidence (kept in the manuscript matrix): 5123
+  Low confidence (dropped by the filter):          793 (13.4% of all measured pairs)
+  Dropping 1 row(s) with a missing/non-numeric Apparent Kd before aggregation (all Low confidence)
+
+High-confidence-only matrix: (222, 343)
+Relaxed (High+Low confidence) matrix: (222, 343)
+Cells changed by relaxing the filter: 561 of 76146 (0.74%)
+
+Cross-definition Spearman correlation matrix (median ranks), High-confidence only:
+        s_score entropy gini    ratio   
+s_score    1.000   0.901   0.722   0.223
+entropy    0.901   1.000   0.866   0.483
+gini       0.722   0.866   1.000   0.616
+ratio      0.223   0.483   0.616   1.000
+
+Same, relaxed filter (High+Low confidence):
+        s_score entropy gini    ratio   
+s_score    1.000   0.915   0.758   0.273
+entropy    0.915   1.000   0.868   0.472
+gini       0.758   0.868   1.000   0.598
+ratio      0.273   0.472   0.598   1.000
+
+Max absolute change in any off-diagonal cell: 0.050
+
+Panel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:
+  entropy : 110 vs. 110
+  gini    : 290 vs. 290
+  s_score : 110 vs. 110
+  ratio   : 343 vs. 343

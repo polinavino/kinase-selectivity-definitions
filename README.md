@@ -168,8 +168,20 @@ from these files and cited in the Discussion/Limitations sections.
 | panel_size_analysis.py | Panel-size subsampling on Klaeger (Figure 4) |
 | candidate_measure.py | Candidate measure satisfying D1–D4; verifies D3/D4 and panel-size convergence (`candidate_panel_convergence.png`) |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical SI analysis) |
-| bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion) |
+| bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion, SI Table S2) |
 | clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations (Discussion, Limitations) |
+| klaeger_filter_sensitivity.py | Klaeger high-confidence filter: entries removed, and sensitivity of Table 1 / panel-size p* to relaxing it (Methods) |
+| metz_coverage.py | Per-compound kinase-coverage distribution among the 704 retained Metz compounds (Methods) |
+| dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis stricter-cutoff (pKd>=7) robustness check |
+| d2_near_tie_sensitivity.py | Verifies the D2 near-tie example: Klaeger compounds with top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Motivated Properties) |
+| original_operationalization_robustness.py | Cross-definition correlations under the original (association-constant entropy, native %inhibition Gini) operationalizations (Methods, SI Table S3) |
+| undefined_score_convention.py | States the entropy/Gini 0/0 convention for zero-active compounds and the alternative defined-configs-only rank-sigma contrast (Motivated Properties, D1) |
+| pstar_bar_sensitivity.py | Panel-size p* sensitivity to the r > 0.90 recoverability bar (Results, SI Table S1) |
+| candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D3 (emphasis- and gate-swept), D4 (Motivated Properties, SI Table S4) |
+| davis_klaeger_overlap.py | Resolves Davis/Klaeger compound overlap via PubChem CID matching (46 compounds; Discussion) |
+| platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds (Discussion) |
+| failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability) |
+| toc_graphic.py | Rebuilds the graphical-abstract/TOC image from the Davis correlation matrix and Klaeger panel-size curves |
 
 ### Replication steps
 

@@ -20,11 +20,27 @@ zero-active compound, so its ranks are stable by degeneracy rather than by
 reliability). The paper reports the decomposition rather than claiming the effect
 holds "under all four definitions".
 
-Right panel (D3): per-compound rank instability under the free activity
-baseline (entropy: baseline in [5.0, 6.5]; candidate: emphasis baseline beta in
-[4.5, 6.5] with the D1 gate pinned at the assay floor) vs. n_active, for active
-compounds. Entropy's instability falls off with n_active; the candidate's stays
-flat near zero because it has no free activity baseline.
+Right panel (D3): per-compound rank instability vs. n_active, for active
+compounds, under three different sweeps (Reviewer 1, Molecular Informatics
+revision: the original version of this panel compared entropy's sensitivity to
+its gate/baseline against only the candidate's emphasis parameter, which does
+not touch the gate -- an apples-to-oranges comparison the reviewer correctly
+flagged). The three series swept here are:
+  (1) entropy, baseline in [5.0, 6.5] -- this baseline is BOTH the entropy's
+      gate (active/inactive cutoff) AND its emphasis weighting, left fully
+      free in existing practice;
+  (2) candidate, floor x0 in [4.5, 6.5] (with emphasis beta pinned to x0 at
+      each point) -- the TRUE equivalent comparison, sweeping the candidate's
+      own gate exactly as entropy's gate is swept in (1). This is comparably,
+      if not more, sensitive than entropy, because gate placement always
+      moves kinases in and out of the active set;
+  (3) candidate, emphasis beta in [4.5, 6.5] with the gate FIXED at the assay
+      floor (x0 = 5.0, as used throughout the rest of this paper) -- the
+      candidate's only remaining free parameter once x0 is fixed by
+      declaration rather than left free. This is the comparison that
+      motivates D3: not that the candidate is insensitive to its gate, but
+      that its gate is removed from the free-parameter space entirely, and
+      what remains is empirically robust.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -99,20 +115,30 @@ for name, ranks in per_def.items():
 print("  (pooled figure is driven by entropy and Gini; the S-score reverses because its")
 print("   score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)")
 
-# ---------------- D3: per-compound instability under the free baseline ----------------
-betas = np.arange(4.5, 6.6, 0.25)
+# ---------------- D3: per-compound instability under three different sweeps ----------------
+sweep = np.arange(4.5, 6.6, 0.25)
 ent_ranks_b = np.array([to_ranks(entropy(M, b)) for b in np.arange(5.0, 6.6, 0.25)])
 ent_instab = ent_ranks_b.std(axis=0)
-cand_ranks_b = np.array([to_ranks(candidate(M, baseline=b, floor=FLOOR)) for b in betas])
-cand_instab = cand_ranks_b.std(axis=0)
+# true equivalent: sweep the candidate's own gate (floor x0), beta pinned to x0 at each point
+cand_floor_ranks = np.array([to_ranks(candidate(M, baseline=f, floor=f)) for f in sweep])
+cand_floor_instab = cand_floor_ranks.std(axis=0)
+# the candidate's remaining free parameter once the gate is fixed by declaration (x0 = FLOOR)
+cand_emph_ranks = np.array([to_ranks(candidate(M, baseline=b, floor=FLOOR)) for b in sweep])
+cand_emph_instab = cand_emph_ranks.std(axis=0)
 
 r_ent, p_ent = spearmanr(n_active[has_active], ent_instab[has_active])
-r_cand, p_cand = spearmanr(n_active[has_active], cand_instab[has_active])
+r_cand_floor, p_cf = spearmanr(n_active[has_active], cand_floor_instab[has_active])
+r_cand_emph, p_ce = spearmanr(n_active[has_active], cand_emph_instab[has_active])
 print(f"D3: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}); "
-      f"candidate r={r_cand:+.3f} (p={p_cand:.1e})")
-print(f"D3: mean instability -- entropy {ent_instab[has_active].mean():.2f}; "
-      f"candidate {cand_instab[has_active].mean():.2f} "
-      f"({ent_instab[has_active].mean() / cand_instab[has_active].mean():.0f}x smaller)")
+      f"candidate-floor-swept r={r_cand_floor:+.3f} (p={p_cf:.1e}); "
+      f"candidate-emphasis-swept (gate fixed) r={r_cand_emph:+.3f} (p={p_ce:.1e})")
+print(f"D3: mean instability -- entropy (gate swept) {ent_instab[has_active].mean():.2f}; "
+      f"candidate (gate/floor swept, true equivalent) {cand_floor_instab[has_active].mean():.2f} "
+      f"({cand_floor_instab[has_active].mean() / ent_instab[has_active].mean():.1f}x LARGER than entropy, "
+      f"i.e. no more robust to its gate than entropy is to its own); "
+      f"candidate (emphasis swept, gate fixed by declaration) {cand_emph_instab[has_active].mean():.2f} "
+      f"({ent_instab[has_active].mean() / cand_emph_instab[has_active].mean():.0f}x smaller than entropy "
+      f"-- but only because the gate itself is no longer a free parameter being compared)")
 
 # ---------------- figure ----------------
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.5))
@@ -129,15 +155,18 @@ axL.text(0, sigma_zero + 9, 'candidate: undefined\n(D1 gate), not scored',
 axL.set_ylim(0, max(sigma_zero, sigma_active) * 1.35)
 
 axR.scatter(n_active[has_active], ent_instab[has_active], s=16, color='C1', alpha=0.6,
-            label=f'entropy (r={r_ent:+.2f})')
-axR.scatter(n_active[has_active], cand_instab[has_active], s=16, color='C3', alpha=0.6,
-            label=f'candidate (r={r_cand:+.2f})')
-axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across free baseline')
-axR.set_title('D3: baseline instability vs. active-set size (Klaeger)')
-axR.legend(fontsize=9); axR.set_ylim(bottom=-2)
-ratio = ent_instab[has_active].mean() / cand_instab[has_active].mean()
-axR.text(0.97, 0.95, f"mean instability\n{ratio:.0f}$\\times$ smaller\nfor candidate",
-          ha='right', va='top', fontsize=8.5, transform=axR.transAxes)
+            label=f'entropy, gate swept (r={r_ent:+.2f})')
+axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2', alpha=0.6,
+            label=f'candidate, gate swept -- true equivalent (r={r_cand_floor:+.2f})')
+axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
+            label=f'candidate, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
+axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
+axR.set_title('D3: gate vs. emphasis-parameter instability (Klaeger)')
+axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2, top=105)
+ratio_emph = ent_instab[has_active].mean() / cand_emph_instab[has_active].mean()
+axR.text(0.97, 0.55, f"gate swept: candidate is no more\nrobust than entropy ({cand_floor_instab[has_active].mean()/ent_instab[has_active].mean():.1f}$\\times$)\n"
+          f"gate fixed instead: remaining\nparameter is {ratio_emph:.0f}$\\times$ more robust",
+          ha='right', va='top', fontsize=7.5, transform=axR.transAxes)
 
 fig.suptitle('The two failure modes the candidate measure repairs', fontsize=12)
 plt.tight_layout(rect=[0, 0, 1, 0.94])

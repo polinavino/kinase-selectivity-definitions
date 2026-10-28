@@ -6,6 +6,6 @@ Polina Vinogradova*
 Across four kinase profiling datasets spanning three assay technologies,
 selectivity definitions split three to one: the S-score, entropy and Gini
 agree closely while the fold-selectivity ratio agrees with none of them, and
-rank instability is predictable from binding-profile shape. We identify three
+rank instability is associated with binding-profile shape. We identify three
 instability sources and motivate four properties that none of the four
 definitions assessed satisfies, then propose a measure that does.

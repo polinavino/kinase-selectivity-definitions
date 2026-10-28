@@ -8,7 +8,7 @@ D1 decomposed per definition (mean rank std within that definition's own sweep):
   ratio    zero-active  24.04   active  20.66   holds
   (pooled figure is driven by entropy and Gini; the S-score reverses because its
    score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)
-D3: corr(n_active, instability) -- entropy r=-0.409 (p=1.0e-09); candidate r=+0.195 (p=5.0e-03)
-D3: mean instability -- entropy 12.48; candidate 0.73 (17x smaller)
+D3: corr(n_active, instability) -- entropy r=-0.409 (p=1.0e-09); candidate-floor-swept r=+0.173 (p=1.3e-02); candidate-emphasis-swept (gate fixed) r=+0.195 (p=5.0e-03)
+D3: mean instability -- entropy (gate swept) 12.48; candidate (gate/floor swept, true equivalent) 46.33 (3.7x LARGER than entropy, i.e. no more robust to its gate than entropy is to its own); candidate (emphasis swept, gate fixed by declaration) 0.73 (17x smaller than entropy -- but only because the gate itself is no longer a free parameter being compared)
 
 Saved failure_modes.png

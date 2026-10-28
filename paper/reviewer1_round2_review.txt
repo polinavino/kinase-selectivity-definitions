@@ -1,0 +1,207 @@
+Reviewer 1 — Round 2 Review
+Manuscript: "Definitional Instability in Kinase Inhibitor Selectivity: An
+Empirical Characterization and Motivated Properties for a Well-Formed Measure"
+
+
+====================================================================
+BRIEF SUMMARY (as initially provided)
+====================================================================
+
+Reviewer 1 Comments to the Author
+
+In the manuscript "Definitional Instability in Kinase Inhibitor Selectivity: An
+Empirical Characterization and Motivated Properties for a Well-Formed Measure,"
+the author uses four public kinase profiling datasets, spanning competition
+binding, chemoproteomic, and functional activity assays, to examine whether
+four common selectivity definitions rank compounds consistently. Varying the
+unstandardized parameter of each definition, the author shows that S-score,
+entropy, and Gini coefficient cluster closely, while fold-selectivity ratio
+agrees with none. The author then relates rank instability to binding profile
+features and identifies three sources of instability. These sources motivate
+four properties that a well-formed selectivity measure should satisfy. While
+none of the four definitions assessed satisfies all four properties, the
+author proposes a gated, smooth-hinge effective target number and reports that
+it recovers its full-panel ranking from roughly a third of the kinase panel.
+
+The manuscript addresses a question of practical importance, since
+practitioners routinely apply these definitions interchangeably, and the
+expansion to 4 datasets and the transparent reporting of limitations,
+including a null clinical outcome analysis, have strengthened it
+considerably. However, the manuscript would benefit from significant
+consolidation, as its principal findings are currently difficult to follow
+through repeated results and accumulated qualifications. I recommend major
+revision, with the main requests concerning the faithfulness of the entropy
+and Gini implementations, the treatment of filtered, imputed, and undefined
+entries, the formalization of the proposed properties, and evidence that the
+candidate measure improves on selectivity entropy.
+
+
+====================================================================
+FULL REVIEW (as subsequently provided)
+====================================================================
+
+Manuscript title: Definitional Instability in Kinase Inhibitor Selectivity: An
+Empirical Characterization and Motivated Properties for a Well-Formed Measure
+
+Summary:
+In the manuscript "Definitional Instability in Kinase Inhibitor Selectivity: An
+Empirical Characterization and Motivated Properties for a Well-Formed Measure,"
+the author uses four public kinase profiling datasets, spanning competition
+binding, chemoproteomic, and functional activity assays, to examine whether
+four common selectivity definitions rank compounds consistently. Varying the
+unstandardized parameter of each definition, the author shows that S-score,
+entropy, and Gini coefficient cluster closely, while fold-selectivity ratio
+agrees with none. The author then relates rank instability to binding profile
+features and identifies three sources of instability. These sources motivate
+four properties that a well-formed selectivity measure should satisfy. While
+none of the four definitions assessed satisfies all four properties, the
+author proposes a gated, smooth-hinge effective target number and reports that
+it recovers its full-panel ranking from roughly a third of the kinase panel.
+
+The manuscript addresses a question of practical importance, since
+practitioners routinely apply these definitions interchangeably, and the
+expansion to 4 datasets and the transparent reporting of limitations,
+including a null clinical outcome analysis, have strengthened it
+considerably. However, the manuscript would benefit from significant
+consolidation, as its principal findings are currently difficult to follow
+through repeated results and accumulated qualifications. I recommend major
+revision, with the main requests concerning the faithfulness of the entropy
+and Gini implementations, the treatment of filtered, imputed, and undefined
+entries, the formalization of the proposed properties, and evidence that the
+candidate measure improves on selectivity entropy.
+
+Major comments:
+
+I recommend more clearly stating that the analysis concerns re-operationalized
+forms of entropy and Gini, and to show the correlation matrix under the
+published forms where it is computable.
+
+On Davis, Klaeger, and Metz, entropy and Gini are computed on baseline
+subtracted log-affinities rather than on association constants and
+%inhibition, and Figure 1 shows that these operationalizations rank compounds
+differently from the published forms (entropy 0.42 and Gini 0.11 on Davis,
+-0.32 and -0.45 on Klaeger). The common scale is reasonable and is disclosed in
+Methods. However, results involving entropy and Gini pertain to these
+implementations rather than to the published definitions, and the central
+claims would benefit from a clearer statement of this distinction.
+Additionally, the author should also report the correlation matrix under the
+original operationalizations as a robustness check, using the association
+constant entropy on Davis, Klaeger, and Metz, computed on measured entries
+only, and the native %inhibition Gini on Anastassiadis.
+
+On Klaeger, entries failing the original authors' high-confidence annotation
+were assigned pKd = 5.0; a true binding interaction removed by that filter is
+excluded from the active set and alters the entropy, Gini, and S-score. The
+author should report how many entries the filter removed, and the sensitivity
+of Table 1 and the subsampling results to relaxing this filter. The Metz
+inclusion rule is justified as retaining "profiles in which most entries
+reflect a real measurement," but 50 of 172 kinases is 29%. Please restate the
+threshold or report the coverage distribution across the retained Metz
+compounds.
+
+Entropy and Gini are undefined for any compound with no kinase above the
+baseline beta, yet R(k) is computed for the zero-active compounds and
+contributes to their pooled instability. The convention by which these
+undefined scores were ranked across the parameter sweep is not stated. Please
+state the convention and report the per-definition contrast under an
+alternative, such as rank sigma computed only over configurations in which
+score is defined.
+
+The candidate measure satisfies D3 because its boundary between active and
+inactive kinases is fixed at the assay detection floor, rather than by its
+functional form. This rationale treats the floor as a fixed property of the
+assay, which does not hold for every dataset, since the Metz floor is the
+lowest measurement reported in the released data and the Davis and Klaeger
+floors are values imputed for non-binding. When the floor itself is varied
+across [4.5, 6.5], the author reports a comparable change in ranking for the
+candidate measure and entropy, which suggests that the candidate measure
+remains as sensitive to the placement of the activity boundary as entropy. The
+author should define the quantity reported as rho ~ -0.93 and address whether
+the floor can be regarded as fixed across the four datasets.
+
+The right panel of Figure 6 appears to compare entropy's sensitivity to its
+activity boundary with the candidate measure's sensitivity to its emphasis
+baseline, which does not alter the active set. The 17-fold reduction annotated
+on the panel may therefore reflect the parameter chosen rather than a property
+of the measure. Please state which parameter was varied for the candidate
+measure and present the floor sweep as the equivalent comparison.
+
+The D3 verdicts for entropy and Gini rest on an empirical sweep over a finite
+range of beta rather than on the formal definition, which is ambiguous as
+written and, under its local reading, is satisfied by both measures for any
+pair with distinct scores. The author should restate D3 so that the verdicts
+follow from its definition and distinguish empirical verdicts in the
+properties table from those derived from the functional form.
+
+D1 is the only property that all four existing selectivity definitions
+violate, and for entropy it is the only violation once D3 is read as formally
+stated (see #6 above). The conclusion that none of the four satisfies all four
+properties therefore depends largely on the absence of a reliability gate,
+which is also the principal difference between the candidate measure and
+entropy. Table 2 further records vacuous and substantive satisfaction with the
+same symbol, although the text identifies the D2 verdicts for entropy and Gini
+and D3 verdicts for the ratio and the candidate measure as vacuous or
+dependent on a fixed parameter. Please state the conclusion more directly, and
+I would suggest giving vacuous satisfaction its own symbol in Table 2.
+
+The 5 most unstable Klaeger compounds (pg. 16) are described as having no
+meaningful binding to any profiled kinase, yet AZD-8055, BMS-911543,
+vatalanib, filgotinib, and ARRY-380 are selective inhibitors of mTOR, JAK2,
+VEGFR2, JAK1, and HER2, respectively. Their zero-active status more plausibly
+reflects poor expression or capture of these targets. Please revise the Type 1
+description accordingly.
+
+The manuscript would benefit from benchmarking definitional instability
+against the ranking variability introduced by assay platform. Without new
+data, compounds profiled in both Davis and Klaeger would allow the author to
+report whether definitional choice changes relative rankings more or less than
+platform choice, provided the overlap is sufficient to support the comparison.
+
+All selectivity definitions considered, including the candidate measure, are
+symmetric functions of the binding profile, so two compounds with identical
+affinity distributions receive identical scores whether or not their
+off-targets carry known clinical liabilities. None accounts for exposure,
+although pg. 7 briefly acknowledges that occupancy at physiological
+concentrations determines whether an interaction is pharmacologically
+relevant. The author should discuss how these properties limit the use of any
+single selectivity measure in the drug discovery decisions the Discussion
+describes.
+
+The motivated properties and candidate measure are introduced in standalone
+sections after the Results, without a corresponding description in Methods,
+and combine definitions, empirical verification, and variant measures. Several
+Results paragraphs also retain layered qualifications from earlier revisions.
+The author should introduce the properties and candidate measure in Methods,
+report their evaluation in Results, and consolidate the qualifications so that
+the principal findings are stated plainly.
+
+Minor comments:
+
+Unresolved cross-references remain in the rendered PDF. "Table
+[tab:predictors]" appears several times, "Section sec:results:instability]"
+appears on pg. 7, and "Section 4.2" on pg. 16 points to a numbered section in
+an otherwise unnumbered manuscript.
+
+The skewness and range of affinities across active kinases are undefined or
+degenerate for compounds with fewer than three and fewer than two active
+kinases, respectively, and Figure 3 shows vertical clusters at exactly zero
+for both features. Please state how these compounds were handled and confirm
+that the association between Gini instability and skewness does not depend on
+that choice.
+
+Figure 4 presents Davis compounds, whereas the accompanying text introduces
+the instability taxonomy from Klaeger. The text on pg. 17 states that the most
+stable compounds in both datasets are highly promiscuous, but the most stable
+Davis compound in Figure 4 has two active kinases. The figure legend also
+labels as "baseline" the line the caption describes as the assay floor. Please
+reconcile the figure, caption, and text.
+
+The word "predictable" in the Abstract, Conclusion, and graphical abstract
+overstates in-sample correlations of 0.27 to 0.44 in magnitude. "Associated
+with binding profile shape" would more accurately describe the evidence.
+
+Several results, including the correlation-cutoff sensitivity, the CATDS and
+Bosc et al. comparisons, and the candidate measure checks on Davis,
+Anastassiadis, and Metz, are reported only in the code repository. Given that
+the candidate measure was corrected after resubmission, these results should
+appear in Supporting Information.

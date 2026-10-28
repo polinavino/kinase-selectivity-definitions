@@ -39,6 +39,14 @@ GRAPHICAL ABSTRACT / TOC
   Image:  figures/toc_graphic.png
   Text:   graphical_abstract_text.txt   (<= 80 words / 3 sentences)
 
+SUPPORTING INFORMATION
+  supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
+  Tables S1-S4: panel-size p* sensitivity to the correlation-cutoff bar;
+  Bosc et al./CATDS comparison; cross-definition correlations under the
+  original metric operationalizations; candidate-measure cross-dataset
+  validation. Referenced from Methods, Results, Discussion, and the
+  Motivated Properties section as "Supporting Information, Table S<n>".
+
 LATEX SOURCE (optional — "Production"/"Supplementary for review" slot)
   kinase-selectivity-latex-source.zip   (compiles main.pdf with: latexmk -pdf main.tex)
 

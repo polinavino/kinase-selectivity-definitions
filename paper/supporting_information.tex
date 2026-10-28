@@ -1,0 +1,221 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Supporting Information\\[0.3em]
+  \large Definitional Instability in Kinase Inhibitor Selectivity:
+  An Empirical Characterization and Motivated Properties
+  for a Well-Formed Measure}
+\author{Polina Vinogradova}
+\date{}
+
+\begin{document}
+\maketitle
+
+This document reports, in full, four robustness checks summarized in the main
+text. All numbers are reproducible from the code repository
+(\url{https://github.com/polinavino/kinase-selectivity-definitions}); the
+script generating each table is named in its caption.
+
+\section*{Table S1: Panel-size recoverability under alternative correlation
+bars}
+
+The main text calls a panel size ``recovering'' the full-panel ranking once
+mean Spearman $\rho$ against the full panel exceeds $0.90$, a convention
+borrowed from reliability research's ``excellent agreement'' bar rather than
+derived from the data (Methods, Results). Table~S1 reports $p^*$ (the
+smallest panel size reaching the bar) at four alternative bars, for both
+sparse-coverage datasets.
+
+\begin{table}[h]
+\centering
+\caption{Panel-size $p^*$ (kinases) at four correlation bars.
+(\texttt{pstar\_bar\_sensitivity.py})}
+\begin{tabular}{lcccc}
+\toprule
+Klaeger (343 kinases) & entropy & gini & s\_score & ratio \\
+\midrule
+bar = 0.80 & 80  & 260 & 50  & 320 \\
+bar = 0.85 & 80  & 260 & 80  & 320 \\
+bar = 0.90 & 110 & 290 & 110 & 343 \\
+bar = 0.95 & 140 & 320 & 200 & 343 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1em}
+\begin{tabular}{lcccc}
+\toprule
+Metz (172 kinases) & entropy & gini & s\_score & ratio \\
+\midrule
+bar = 0.80 & 50  & 50  & 50 & 170 \\
+bar = 0.85 & 50  & 50  & 50 & 170 \\
+bar = 0.90 & 80  & 80  & 50 & 170 \\
+bar = 0.95 & 110 & 110 & 80 & 170 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The ratio remains the slowest to recover and the Gini coefficient the
+second-slowest for every bar tested; only the relative order of entropy and
+the S-score is bar-dependent, and only within $[0.80, 0.95]$.
+
+\clearpage
+\section*{Table S2: Bosc et al.\ window/ranking score and the CATDS proxy}
+
+Bosc et al.'s window score (WS) and ranking score (RS) and a CATDS-style
+proxy (Discussion) were computed on all four datasets to check whether they
+behave as additional members of the ratio family (WS, RS) or the
+distribution-based family (CATDS), as claimed in the Discussion.
+(\texttt{bosc\_catds\_comparison.py})
+
+\begin{table}[h]
+\centering
+\caption{Spearman correlation of WS/RS against the ratio family, and of the
+CATDS proxy against the ratio, entropy, and Gini families.}
+\begin{tabular}{lccccc}
+\toprule
+Dataset & $n_\mathrm{cpd}$ & WS vs.\ ratio & RS vs.\ ratio & CATDS vs.\ ratio &
+CATDS vs.\ entropy / Gini \\
+\midrule
+Davis         & 68  & 0.804 & 0.878 & 0.509 & 0.955 / 0.960 \\
+Klaeger       & 222 & 0.909 & 0.892 & 0.681 & 0.850 / 0.985 \\
+Anastassiadis & 178 & 0.959 & 0.891 & 0.696 & 0.948 / 0.965 \\
+Metz          & 704 & 0.910 & 0.899 & 0.447 & 0.883 / 0.906 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+WS and RS correlate strongly with the ratio family on every dataset ($r =
+0.80$--$0.96$), supporting their classification alongside $R(k)$. The CATDS
+proxy instead correlates more strongly with entropy and Gini than with the
+ratio on every dataset, supporting the Discussion's claim that CATDS is a
+distributional construction despite its historical classification as a ratio
+measure.
+
+\clearpage
+\section*{Table S3: Cross-definition correlations under the original metric
+operationalizations}
+
+Methods reports summary statistics for this check; the full $4\times4$
+correlation matrices are given here.
+(\texttt{original\_operationalization\_robustness.py})
+
+\begin{table}[h]
+\centering
+\caption{Davis ($n=68$): manuscript S-score/Gini/ratio vs.\ literal
+Ka-weighted entropy (complete matrix).}
+\begin{tabular}{lcccc}
+\toprule
+ & S-score & entropy(literal) & Gini & ratio \\
+\midrule
+S-score & 1.000 & 0.417 & 0.952 & 0.456 \\
+entropy(literal) & 0.417 & 1.000 & 0.424 & 0.336 \\
+Gini & 0.952 & 0.424 & 1.000 & 0.343 \\
+ratio & 0.456 & 0.336 & 0.343 & 1.000 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1em}
+\caption*{Klaeger ($n=222$): manuscript S-score/Gini/ratio vs.\ literal
+Ka-weighted entropy (measured high-confidence entries only, per compound).}
+\begin{tabular}{lcccc}
+\toprule
+ & S-score & entropy(literal) & Gini & ratio \\
+\midrule
+S-score & 1.000 & 0.570 & 0.722 & 0.223 \\
+entropy(literal) & 0.570 & 1.000 & 0.688 & 0.789 \\
+Gini & 0.722 & 0.688 & 1.000 & 0.616 \\
+ratio & 0.223 & 0.789 & 0.616 & 1.000 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1em}
+\caption*{Metz ($n=704$): manuscript S-score/Gini/ratio vs.\ literal
+Ka-weighted entropy (measured entries only, per compound).}
+\begin{tabular}{lcccc}
+\toprule
+ & S-score & entropy(literal) & Gini & ratio \\
+\midrule
+S-score & 1.000 & 0.239 & 0.879 & 0.211 \\
+entropy(literal) & 0.239 & 1.000 & 0.416 & 0.758 \\
+Gini & 0.879 & 0.416 & 1.000 & 0.229 \\
+ratio & 0.211 & 0.758 & 0.229 & 1.000 \\
+\bottomrule
+\end{tabular}
+
+\vspace{1em}
+\caption*{Anastassiadis ($n=178$): manuscript S-score/entropy/ratio vs.\
+native \%inhibition Gini (no baseline subtraction).}
+\begin{tabular}{lcccc}
+\toprule
+ & S-score & entropy & Gini(native) & ratio \\
+\midrule
+S-score & 1.000 & 0.880 & 0.345 & 0.489 \\
+entropy & 0.880 & 1.000 & 0.632 & 0.529 \\
+Gini(native) & 0.345 & 0.632 & 1.000 & 0.314 \\
+ratio & 0.489 & 0.529 & 0.314 & 1.000 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On Klaeger and Metz, literal entropy correlates more strongly with the ratio
+than with either S-score or Gini -- under this operationalization, entropy
+would not be classified in the distribution-based family at all on either
+sparse-coverage dataset. On Davis, literal entropy decouples from both
+families (consistent with Figure~1 of the main text). The native-Gini check on
+Anastassiadis is the one case that preserves the qualitative two-family
+pattern, albeit more weakly than the manuscript's baseline-swept form.
+
+\clearpage
+\section*{Table S4: Candidate measure cross-dataset validation}
+
+Orientation (correlation with the number of active kinases, more negative is
+more correctly oriented toward ``fewer active targets = more selective''), D3
+robustness under the emphasis parameter $\beta$ with the gate $x_0$ fixed
+(worst-case pairwise Spearman $\rho$), D3 robustness when $x_0$ itself is
+swept as a free parameter (``gate swept'', the equivalent comparison to the
+entropy's baseline sensitivity; see Figure~6 of the main text), and the
+percentage of compounds for which D4 (monotonicity under a weak additional
+interaction) holds exactly.
+(\texttt{candidate\_validation.py})
+
+\begin{table}[h]
+\centering
+\caption{Candidate measure: orientation, D3 (two variants), and D4, across
+all four datasets.}
+\begin{tabular}{lccccc}
+\toprule
+Dataset & $n_\mathrm{cpd}$ & orientation $r$ & D3, gate fixed & D3, gate swept
+& D4 (\% compounds) \\
+\midrule
+Davis         & 68  & $-0.969$ & $0.998$ & $-0.838$ & 100.0 \\
+Klaeger       & 222 & $-0.936$ & $0.999$ & $-0.932$ & 100.0 \\
+Anastassiadis & 178 & $-0.936$ & $0.997$ & $+0.913$ & 100.0 \\
+Metz          & 704 & $-0.791$ & $0.991$ & $-0.330$ & 100.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The ``gate swept'' column confirms, on three of four datasets, that the
+candidate's D3 satisfaction rests on fixing the gate $x_0$ by declaration
+rather than on the measure being inherently insensitive to its placement
+(worst-case $\rho$ is far from $1$, and on Klaeger and Davis is strongly
+negative). Anastassiadis is an exception ($\rho = +0.913$): on that dataset
+the candidate's ranking happens to be comparatively insensitive to the gate's
+placement as well, for reasons we do not have a mechanistic account of.
+
+Smoothing-width $T$ was also swept on Klaeger ($T \in \{0.5, 0.75, 1.0, 1.5,
+2.0\}$): orientation and D3-emphasis-robustness are essentially unchanged
+across this range ($r \approx -0.94$, $\rho \geq 0.989$), and the worst-case
+pairwise ranking agreement across all five values of $T$ is $\rho = 0.999$.
+Removing the gate inverts the measure's orientation entirely (gated $r =
+-0.936$ vs.\ ungated $r = +0.943$ against $n_\mathrm{active}$ on Klaeger),
+which is why the gate, not merely the smooth emphasis, is required for D1 and
+correct orientation jointly.
+
+\end{document}

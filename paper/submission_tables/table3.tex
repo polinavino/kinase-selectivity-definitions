@@ -6,19 +6,26 @@
 \begin{table}
   \caption{Table 3. Satisfaction of the four motivated properties by existing
            selectivity definitions and by the candidate measure.
-           $\checkmark$: satisfied (by construction, or verified empirically for
-           the candidate). $\sim$: partially satisfied or satisfied under
+           $\checkmark$: satisfied substantively (by construction, or verified
+           empirically for the candidate). $(\checkmark)$: satisfied only
+           vacuously, because the property's antecedent is never triggered
+           (entropy's and Gini's D2, which score no $k$-th ranked affinity;
+           the ratio's D3, which has no baseline $\beta$ to be sensitive to),
+           not because the measure does the substantive work the property is
+           meant to verify. $\sim$: partially satisfied or satisfied under
            additional assumptions. $\times$: violated in general.
-           The D1, D2 and D4 verdicts follow from the functional forms. The D3
-           verdicts for the entropy and the Gini are empirical.}
+           The D1, D2 and D4 verdicts follow from the functional forms set out
+           in Methods. The D3 verdicts follow from the interval-wide
+           definition of D3 (Methods), evaluated on the parameterized forms
+           implemented here.}
   \begin{tabular}{lccccc}
     \toprule
     Property & S-score & Entropy & Gini & Ratio & Candidate \\
     \midrule
-    D1 (reliability threshold)         & $\times$ & $\times$     & $\times$     & $\times$     & $\checkmark$ \\
-    D2 (bounded gap sensitivity)       & $\sim$   & $\checkmark$ & $\checkmark$ & $\times$     & $\checkmark$ \\
-    D3 (distributional consistency)    & $\sim$   & $\times$     & $\times$     & $\checkmark$ & $\checkmark$ \\
-    D4 (monotonicity, weak off-target) & $\times$ & $\checkmark$ & $\times$     & $\checkmark$ & $\checkmark$ \\
+    D1 (reliability threshold)         & $\times$ & $\times$       & $\times$       & $\times$       & $\checkmark$ \\
+    D2 (bounded gap sensitivity)       & $\sim$   & $(\checkmark)$ & $(\checkmark)$ & $\times$       & $\checkmark$ \\
+    D3 (distributional consistency)    & $\sim$   & $\times$       & $\times$       & $(\checkmark)$ & $\checkmark$ \\
+    D4 (monotonicity, weak off-target) & $\times$ & $\checkmark$   & $\times$       & $\checkmark$   & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}

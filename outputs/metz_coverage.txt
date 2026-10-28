@@ -1,0 +1,7 @@
+Metz: 3858 total compounds, 172 kinase columns
+Compounds with >= 50 of 172 kinases measured (retained): 704
+
+Coverage among the 704 retained compounds:
+  count (kinases): min=50, max=143, mean=70.3, median=64
+  percent of 172: min=29.1%, max=83.1%, mean=40.9%, median=37.2%
+  deciles (10/25/50/75/90): [30.2, 32.6, 37.2, 47.1, 57.6]

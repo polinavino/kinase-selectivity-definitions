@@ -31,6 +31,14 @@ certain compounds cannot be scored under some definitions when threshold
 conditions are not satisfied. For example, ratio-based scores are undefined
 for a compound with no kinase above the activity threshold, since there is then
 no primary target or off-target to compare.
+Our own implementation of $R(k)$ (Methods) does not follow this convention: it
+returns a numerical value for every compound by falling back to the assay
+floor when fewer than $k+1$ kinases are active, rather than leaving the score
+undefined. We flag this difference explicitly because it means $R(k)$'s
+D1 violation (Table~\ref{tab:desiderata}) is a property of our implementation
+choice, not of the definition as Bosc et al.\ state it; an implementation that
+followed their convention would instead satisfy D1 by construction, the same
+way the candidate measure does.
 
 Reconciliation attempts have remained limited in scope.
 Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
@@ -41,7 +49,7 @@ multiple existing metrics yield conflicting results for the same compound, but
 addressed this by introducing its own composite score (combining on-target
 inhibition with an off-target inhibition penalty) rather than reconciling the
 disagreement among the existing definitions.
-More recently, the same group's built a KIRHub resource\cite{Gujral2026}
+More recently, the same group built a KIRHub resource\cite{Gujral2026}
 on a
 new profiling campaign of 86 approved kinase inhibitors against 758 kinases
 and disease-associated mutant variants. This resource offers users a choice 
@@ -49,10 +57,10 @@ between a further
 named metric (the KISS score, an on-target/off-target balance) and a separate
 Gini-based score, thus proliferating named, ad hoc definitions.
 
-Two further notable gaps surface in existing work. The first is that
-is that each metric is evaluated at fixed
+Two further notable gaps surface in existing work. The first is that each
+metric is evaluated at fixed
 parameter values. Thus, the sensitivity of rankings to parameter choice has not
-been systematically characterized. The second i that
+been systematically characterized. The second is that
 the structural properties of binding profiles that determine when definitions
 agree or disagree have not been identified.
 The present work addresses both gaps.

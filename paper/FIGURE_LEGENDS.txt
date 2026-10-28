@@ -6,8 +6,9 @@ For each dataset, the compound selectivity ranking computed in a form close to
 the original publication (association-constant weighting) is plotted against the
 baseline-subtracted log-affinity form used in the main text. Top row: selectivity
 entropy; bottom row: Gini coefficient. The two operationalizations of the same
-named metric differ substantially, and the entropy ranking even reverses on
-Klaeger (entropy r = 0.42 Davis, -0.32 Klaeger; Gini r = 0.11, -0.45), confirming
+named metric differ substantially, and for entropy the relationship between
+them even changes sign on Klaeger (entropy r = 0.42 Davis, -0.32 Klaeger; Gini
+r = 0.11, -0.45), confirming
 that the operationalization of a named metric is itself a source of the
 definitional instability we report.
 
@@ -51,11 +52,17 @@ rather than an unstable one. All 16 compounds in the first group do bind above
 the assay detection floor of pKd = 5.0, with maxima from 5.16 to 6.00; the
 pooled sigma is driven by Gini and entropy and reverses for the S-score, and
 the per-definition decomposition is reported in the text. Right (D3):
-per-compound rank instability under the free activity baseline, plotted
-against the number of active kinases, for the entropy (r = -0.41) and for the
-candidate (r = +0.20); the entropy's instability grows sharply as the active
-set shrinks, while the candidate's stays near zero (17x smaller mean
-instability) because it has no free activity baseline.
+per-compound rank instability plotted against the number of active kinases,
+under three sweeps: the entropy's activity baseline, which is simultaneously
+its gate and its emphasis weighting, left fully free (r = -0.41); the
+candidate's gate x0 swept over the same range as the true equivalent
+comparison (r = +0.17), which is, if anything, more destabilizing than
+sweeping the entropy's baseline (mean instability 3.7x larger); and the
+candidate's emphasis baseline swept with x0 fixed at the assay floor, as used
+throughout this paper (r = +0.20), which is 17x more stable than the entropy.
+The candidate's D3 advantage therefore rests on removing the gate from the
+free-parameter space by declaration, not on being inherently more robust to
+gate placement than the entropy is.
 
 Figure 7. Panel-size convergence of the candidate measure compared with the four
 existing definitions, on the Klaeger and Metz datasets (50 random subpanels per

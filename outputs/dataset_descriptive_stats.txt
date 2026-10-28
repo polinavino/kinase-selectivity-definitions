@@ -1,0 +1,30 @@
+Davis: active (pKd>6) fraction = 17.90% of 29444 entries
+
+Davis stricter-cutoff robustness check (S-score tau sweep shifted up by 1.0, from [5.5,8.0] to [6.5,9.0], i.e. a pKd>=7-centered window):
+Cross-definition correlation matrix, original tau sweep [5.5, 8.0]:
+  s_score    1.000   0.946   0.952   0.456
+  entropy    0.946   1.000   0.999   0.343
+  gini       0.952   0.999   1.000   0.343
+  ratio      0.456   0.343   0.343   1.000
+Cross-definition correlation matrix, stricter tau sweep [6.5, 9.0]:
+  s_score    1.000   0.829   0.836   0.574
+  entropy    0.829   1.000   0.999   0.343
+  gini       0.836   0.999   1.000   0.343
+  ratio      0.574   0.343   0.343   1.000
+Max absolute change in any off-diagonal cell: 0.118
+
+Davis active fraction at pKd>6: 17.90%; at pKd>=7: 7.95%
+Davis per-compound active-kinase count, mean at pKd>6: 77.5; at pKd>=7: 34.4 (shrinkage factor 2.25x)
+Davis compounds pushed to zero active kinases by the stricter cutoff: 2 of 68 (0 at pKd>6 cutoff: 0)
+
+Klaeger: active (pKd>6) fraction = 3.63% of 76146 entries
+Klaeger: median active kinases per compound (pKd>6) = 5.5; 45.0% of compounds have fewer than 5
+Klaeger: 7.2% of compounds have zero kinases above pKd = 6.0
+Klaeger: 26.6% of compounds have zero kinases above pKd = 7.0
+Klaeger: 55.0% of compounds have zero kinases above pKd = 8.0
+
+Anastassiadis: 566 of 53400 entries missing in the raw matrix (1.06%)
+Metz: 175 of 103919 measured entries are exactly pKi = 4.0 (0.168%)
+Metz: median per-compound coverage across all 3858 profiled compounds (before the >=50-kinase restriction) = 21 of 172 kinases
+
+Done.
