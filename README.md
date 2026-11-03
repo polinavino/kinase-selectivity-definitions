@@ -59,7 +59,7 @@ We confirmed this across **four datasets spanning three assay technologies**
 not an artifact of one dataset or one assay. We also found that the disagreements
 are associated with the shape of a drug's binding profile, and that ratio-based
 scores become unreliable on the small (50–100 kinase) panels used in practice,
-while entropy-based scores stabilize above ~110 kinases.
+while entropy-based scores recover the full-panel ranking from 50–80 kinases.
 
 ### What we proposed
 
@@ -77,8 +77,7 @@ Four **required properties** that any good selectivity formula should satisfy:
 No existing formula satisfies all four at once. We then propose a **candidate
 measure** that does: the selectivity entropy with two fixes — a reliability gate
 (property 1) and a smooth rather than hard activity cutoff (property 3). It
-recovers its full-panel ranking from roughly half a typical panel, so it stays
-practical.
+recovers its full-panel ranking from 50–80 kinases, so it stays practical.
 
 ### The bigger picture
 
@@ -162,27 +161,34 @@ from these files and cited in the Discussion/Limitations sections.
 | Script | Description |
 |--------|-------------|
 | selectivity_analysis.py | Main Davis selectivity analysis (two-family correlations, instability) |
-| klaeger_analysis.py | Klaeger analysis (reproduces Table 1 lower triangle and Table 2) |
-| additional_datasets_analysis.py | Anastassiadis + Metz; reproduces the four-dataset two-family result (Figure 1) and `cross_dataset_summary.csv` |
-| metric_fidelity_robustness.py | Operationalization-sensitivity check; original vs. log-affinity entropy/Gini (Figure S1) |
-| panel_size_analysis.py | Panel-size subsampling on Klaeger (Figure 4) |
-| candidate_measure.py | Candidate measure satisfying D1–D4; verifies D3/D4 and panel-size convergence (`candidate_panel_convergence.png`) |
+| klaeger_analysis.py | Klaeger analysis (reproduces the Table 1 Klaeger triangle and the zero-active instability) |
+| additional_datasets_analysis.py | Anastassiadis + Metz; reproduces the four-dataset two-family result (Figure 2) and `cross_dataset_summary.csv` |
+| instability_by_family.py | Instability predictors per definition family (Figure 3, Table 2) |
+| binding_profiles.py | Most stable, most unstable, and most ratio-sensitive Davis profiles (Figure 4) |
+| metric_fidelity_robustness.py | Operationalization-sensitivity check; original vs. log-affinity entropy/Gini (Figure 1) |
+| panel_size_analysis.py | Panel-size subsampling on all four datasets (Figure 5) |
+| candidate_measure.py | Candidate measure satisfying D1–D4; D3/D4 checks on Klaeger and panel-size convergence on all four datasets (Figure 7) |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical SI analysis) |
 | bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion, SI Table S2) |
-| clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations (Discussion, Limitations) |
+| clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations, using the frozen FAERS counts and the current Klaeger median ranks (Discussion, Limitations) |
 | klaeger_filter_sensitivity.py | Klaeger high-confidence filter: entries removed, and sensitivity of Table 1 / panel-size p* to relaxing it (Methods) |
 | metz_coverage.py | Per-compound kinase-coverage distribution among the 704 retained Metz compounds (Methods) |
-| dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis stricter-cutoff (pKd>=7) robustness check |
-| d2_near_tie_sensitivity.py | Verifies the D2 near-tie example: Klaeger compounds with top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Motivated Properties) |
+| dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis stricter-cutoff (pKd>7) robustness check |
+| d2_near_tie_sensitivity.py | Verifies the D2 near-tie example: Klaeger compounds with top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Results, D2) |
 | original_operationalization_robustness.py | Cross-definition correlations under the original (association-constant entropy, native %inhibition Gini) operationalizations (Methods, SI Table S3) |
-| undefined_score_convention.py | States the entropy/Gini 0/0 convention for zero-active compounds and the alternative defined-configs-only rank-sigma contrast (Motivated Properties, D1) |
+| undefined_score_convention.py | States the entropy/Gini 0/0 convention for zero-active compounds and the alternative defined-configs-only rank-sigma contrast (Results, D1) |
 | pstar_bar_sensitivity.py | Panel-size p* sensitivity to the r > 0.90 recoverability bar (Results, SI Table S1) |
-| candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D3 (emphasis- and gate-swept), D4 (Motivated Properties, SI Table S4) |
+| candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D3 (emphasis- and gate-swept), D4 (Results, SI Table S4) |
+| d3_pair_reversals.py | D3 verdicts for every measure on all four datasets: share of pairs reversing over B = [x0, tau*] (Results, Table 3) |
 | davis_klaeger_overlap.py | Resolves Davis/Klaeger compound overlap via PubChem CID matching (46 compounds; Discussion) |
 | platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds (Discussion) |
-| failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability, all over B = [5.0, 6.5]) |
-| d4_entropy_vs_candidate.py | D4 for the entropy vs. the candidate: the condition on T and its sharpness, the entropy counterexample, real-data frequency, and the effect of setting T = tau* - x0 (Motivated Properties, "Why the Smooth Hinge Matters") |
+| failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability, all over B = [5.0, 6.0]) |
+| d4_entropy_vs_candidate.py | D4 for the entropy vs. the candidate: the condition on T and its sharpness, the entropy counterexample, real-data frequency, and the effect of setting T = tau* - x0 (Methods proposition; Results, "Why the Smooth Hinge Matters") |
 | feature_placeholder_sensitivity.py | Table 2 predictors recomputed without the 0 placeholder for undefined skewness/std/range (Results) |
+| claim_checks.py | Numbers for specific claims: Type 1 target capture, Klaeger correlations without zero-active compounds and bootstrap, mean vs. median ranks, the Anastassiadis ceiling, Type 3 and stability patterns, Davis/Klaeger and Klaeger/Anastassiadis overlap, the Metz coverage dependence, the zero-active contrast per definition on every dataset, and the Klaeger Gini panel size with undefined compounds excluded |
+| instability_predictor_candidates.py | Five further candidate predictors of rank instability (CR1, HHI, top1 pKd, near-tie count, active-affinity CV) against Table 2's features (Results) |
+| family_construction.py | Variants of the candidate: quantile floor, Rényi order, smoothing width; D1–D4 checks on Davis and Klaeger (SI Section S5, Table S5) |
+| family_panelsize.py | Panel-size p* of the candidate by Rényi order on Klaeger and Metz (SI Section S5, Table S5) |
 | toc_graphic.py | Rebuilds the graphical-abstract/TOC image from the Davis correlation matrix and Klaeger panel-size curves |
 
 ### Replication steps
@@ -202,11 +208,12 @@ from these files and cited in the Discussion/Limitations sections.
 **Run the analyses:**
 
     python3 selectivity_analysis.py         # Davis
-    python3 klaeger_analysis.py             # Klaeger (Table 1 / Table 2 values)
-    python3 additional_datasets_analysis.py # Anastassiadis + Metz (Figure 1, summary)
-    python3 metric_fidelity_robustness.py   # Figure S1
-    python3 panel_size_analysis.py          # Figure 4
-    python3 candidate_measure.py            # candidate measure (Figure 5, D3/D4 checks)
+    python3 klaeger_analysis.py             # Klaeger (Table 1 values)
+    python3 instability_by_family.py        # Figure 3, Table 2
+    python3 additional_datasets_analysis.py # Anastassiadis + Metz (Figure 2, summary)
+    python3 metric_fidelity_robustness.py   # Figure 1
+    python3 panel_size_analysis.py          # Figure 5
+    python3 candidate_measure.py            # candidate measure (Figure 7, D3/D4 checks)
     python3 faers_pull.py                    # clinical SI data (needs internet)
     python3 bosc_catds_comparison.py         # Bosc/CATDS comparison (Discussion)
     python3 clinical_outcomes_correlation.py # FAERS/discontinuation correlations (Discussion, Limitations)
@@ -223,14 +230,14 @@ and already committed — it does not need internet access.
 |--------|-------|
 | Two-family: ratio vs. distribution family | r = 0.34–0.46 (Davis), 0.22–0.62 (Klaeger), 0.49–0.56 (Anastassiadis), 0.14–0.19 (Metz) |
 | Within-distribution-family correlation (all datasets) | r = 0.72–1.00 |
-| Ratio vs. entropy correlation (Davis / Klaeger) | r = 0.343 / 0.483 |
+| Ratio vs. entropy correlation (Davis / Klaeger) | r = 0.343 / 0.455 |
 | top1–top2 gap vs. ratio instability (Klaeger) | r = −0.341, p < 0.001 |
-| n_active vs. entropy instability (Klaeger) | r = −0.409, p < 0.001 |
-| Zero-active vs. active rank std (Klaeger) | 72.9 vs. 31.3 |
+| n_active vs. entropy instability (Klaeger) | r = −0.381, p < 0.001 |
+| Zero-active vs. active rank std (Klaeger) | 74.0 vs. 31.2 |
 | Zero-active vs. active rank std (Anastassiadis / Metz) | 36.8 vs. 21.7 / 178.5 vs. 108.1 |
-| Entropy panel-size stability threshold | 110 kinases (Klaeger), 80 (Metz) |
-| Ratio panel-size stability threshold | 343 kinases, the full Klaeger panel (170 on Metz) |
-| Entropy operationalization sensitivity (literal vs. log-affinity) | r = 0.42 (Davis), −0.32 (Klaeger) |
+| Entropy panel-size stability threshold | 50 kinases (Davis, Anastassiadis), 80 (Klaeger, Metz) |
+| Ratio panel-size stability threshold | 410 of 433 (Davis), 343 of 343 (Klaeger), 290 of 300 (Anastassiadis), 170 of 172 (Metz) |
+| Entropy operationalization sensitivity (literal vs. log-affinity) | r = 0.42 (Davis), −0.34 (Klaeger) |
 
 ### Repository structure
 

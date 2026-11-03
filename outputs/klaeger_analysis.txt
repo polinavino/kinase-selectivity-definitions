@@ -1,46 +1,46 @@
 Klaeger matrix: 222 drugs x 343 kinases
 
 Rank stability:
-  Mean rank std: 34.30
+  Mean rank std: 34.25
   Most stable:   XL-228 (7.01)
-  Most unstable: AZD-8055 (90.69)
+  Most unstable: AZD-8055 (92.63)
 
 Within-definition stability:
   s_score     : mean=23.90, max=56.98 (BI-847325)
-  entropy     : mean=12.81, max=42.42 (BGT-226)
+  entropy     : mean=12.06, max=37.64 (BGT-226)
   gini        : mean=20.93, max=100.82 (RAF-265)
   ratio       : mean=20.90, max=79.16 (PD-325901)
 
 Spearman correlations between definitions:
             s_score     entropy     gini        ratio       
-s_score            1.000       0.901       0.722       0.223
-entropy            0.901       1.000       0.866       0.483
-gini               0.722       0.866       1.000       0.616
-ratio              0.223       0.483       0.616       1.000
+s_score            1.000       0.910       0.722       0.223
+entropy            0.910       1.000       0.840       0.455
+gini               0.722       0.840       1.000       0.616
+ratio              0.223       0.455       0.616       1.000
 
 Zero-active drugs: 16
-Rank std zero-active: 72.9
-Rank std active:      31.3
+Rank std zero-active: 74.0
+Rank std active:      31.2
 
 Correlations with per-definition instability (active drugs only):
 Feature                 s_score    entropy       gini      ratio
-n_active              -0.272***  -0.409***  -0.093     -0.040   
+n_active              -0.272***  -0.381***  -0.093     -0.040   
 top1_top2_gap         +0.039     +0.082     +0.031     -0.341***
-active_std            -0.281***  -0.170*    -0.117     -0.107   
-active_range          -0.354***  -0.273***  -0.102     -0.116   
-top2_pkd              -0.314***  -0.234***  -0.192**   +0.186** 
+active_std            -0.281***  -0.174*    -0.117     -0.107   
+active_range          -0.354***  -0.271***  -0.102     -0.116   
+top2_pkd              -0.314***  -0.200**   -0.192**   +0.186** 
 
 Top 10 ratio-entropy disagreement drugs:
 Drug                     Disagree   n_active   top1_top2_gap
-AZD-8055                    183.0          0           0.161
-BMS-911543                  176.0          0           0.232
-Vatalanib                   167.0          0           0.357
+AZD-8055                    197.0          0           0.161
+BMS-911543                  190.0          0           0.232
+Vatalanib                   181.0          0           0.357
+Filgotinib                  173.0          0           0.026
 Dovitinib                   158.0         26           1.935
-Filgotinib                  151.5          0           0.026
+ARRY-380                    154.0          0           0.012
 BMS-690514                  147.0         20           1.985
-ARRY-380                    144.0          0           0.012
+Seliciclib                  147.0          0           0.260
+RAF-265                     145.0          0           0.615
 Defactinib                  141.0         14           1.649
-MK-5108                     137.0         20           1.668
-Momelotinib                 134.0         31           0.057
 
 Saved klaeger_selectivity_results.csv

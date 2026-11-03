@@ -4,31 +4,28 @@
 \pagestyle{empty}
 \begin{document}
 \begin{table}
-  \caption{Table 3. Satisfaction of the four motivated properties by existing
-           selectivity definitions and by the candidate measure.
-           $\checkmark$: satisfied substantively (by construction, or verified
-           empirically for the candidate). $(\checkmark)$: satisfied only
-           vacuously, because the property's antecedent is never triggered
-           (entropy's and Gini's D2, which score no $k$-th ranked affinity;
-           the ratio's D3, which has no baseline $\beta$ to be sensitive to),
-           not because the measure does the substantive work the property is
-           meant to verify. $\sim$: partially satisfied or satisfied under
-           additional assumptions. $\times$: violated in general.
+  \centering
+  \caption{Table 3. Satisfaction of the four motivated properties by existing selectivity
+           definitions and by the candidate measure.
+           $\checkmark$: satisfied substantively.
+           $(\checkmark)$: satisfied vacuously, because the measure has no
+           parameter of the kind the property constrains (no reference
+           off-target for D2; no baseline for the ratio's D3).
            $\checkmark^{\dagger}$: satisfied only with the activity boundary
-           fixed at the assay floor $x_0$; sweeping $x_0$ itself over $B$ moves
+           fixed at the assay floor $x_0$. Sweeping $x_0$ itself over $B$ moves
            the ranking as much as the entropy's baseline does.
-           The D1, D2 and D4 verdicts follow from the functional forms set out
-           in Methods. The D3 verdicts follow from the interval-wide
-           definition of D3 (Methods), evaluated on the parameterized forms
-           implemented here.}
+           $\times$: violated.
+           Entries in the D3 row are determined empirically, on all four
+           datasets; the D1 row from each measure's reporting rule; and the
+           D2 and D4 rows from each measure's functional form.}
   \begin{tabular}{lccccc}
     \toprule
     Property & S-score & Entropy & Gini & Ratio & Candidate \\
     \midrule
-    D1 (reliability threshold)         & $\times$ & $\times$       & $\times$       & $\times$       & $\checkmark$ \\
-    D2 (bounded gap sensitivity)       & $\sim$   & $(\checkmark)$ & $(\checkmark)$ & $\times$       & $\checkmark$ \\
-    D3 (distributional consistency)    & $\sim$   & $\times$       & $\times$       & $(\checkmark)$ & $\checkmark^{\dagger}$ \\
-    D4 (monotonicity, weak off-target) & $\times$ & $\times$       & $\times$       & $\checkmark$   & $\checkmark$ \\
+    D1 (reliability threshold)        & $\times$        & $\times$        & $\times$        & $\times$        & $\checkmark$ \\
+    D2 (bounded gap sensitivity)      & $(\checkmark)$  & $(\checkmark)$  & $(\checkmark)$  & $\times$        & $(\checkmark)$ \\
+    D3 (distributional consistency)   & $\times$        & $\times$        & $\times$        & $(\checkmark)$  & $\checkmark^{\dagger}$ \\
+    D4 (monotonicity, weak off-target)& $\times$        & $\times$        & $\times$        & $\checkmark$    & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}

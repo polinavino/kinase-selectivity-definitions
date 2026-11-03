@@ -38,7 +38,7 @@ def selectivity_entropy(profiles, baseline=BASELINE, epsilon=1e-10):
     row_sums = shifted.sum(axis=1, keepdims=True)
     row_sums = np.where(row_sums == 0, epsilon, row_sums)
     p = shifted / row_sums
-    log_p = np.where(p > 0, np.log2(p + epsilon), 0)
+    log_p = np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)
     return -(p * log_p).sum(axis=1)
 
 

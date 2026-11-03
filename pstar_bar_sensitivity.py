@@ -23,7 +23,7 @@ def selectivity_entropy(profiles, baseline, epsilon=1e-10):
     row_sums = np.where(shifted.sum(axis=1, keepdims=True) == 0, epsilon,
                          shifted.sum(axis=1, keepdims=True))
     p = shifted / row_sums
-    return -(p * np.where(p > 0, np.log2(p + epsilon), 0)).sum(axis=1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1)
 
 
 def gini_selectivity(profiles, baseline):
@@ -57,7 +57,7 @@ def to_ranks(scores):
 
 def scores_at(M, baseline, threshold, floor):
     return {
-        'entropy': to_ranks(selectivity_entropy(M, baseline)),
+        'entropy': to_ranks(-selectivity_entropy(M, baseline)),
         'gini':    to_ranks(gini_selectivity(M, baseline)),
         's_score': to_ranks(s_score(M, threshold)),
         'ratio':   to_ranks(ratio_selectivity(M, floor)),
@@ -83,15 +83,27 @@ def pstar_at(panel_sizes, results, d, bar):
     return next((ps for ps in panel_sizes if np.mean(results[d][ps]) > bar), None)
 
 
+# All four datasets. Every measure uses the dataset's floor x0 as its baseline
+# (entropy, Gini) or fallback (ratio, k = 1), the activity threshold tau* as the
+# S-score cutoff, and, for the candidate, x0 and T = tau* - x0 (Methods).
 DATASETS = [
-    dict(name='Klaeger', file='klaeger_matrix.csv', baseline=5.0, threshold=6.0, floor=5.0),
-    dict(name='Metz',    file='metz_matrix.csv',    baseline=4.0, threshold=6.0, floor=4.0),
+    dict(name='Davis',         file='davis_affinity.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
+    dict(name='Klaeger',       file='klaeger_matrix.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
+    dict(name='Anastassiadis', file='anastassiadis_matrix.csv', baseline=20.0, threshold=50.0, floor=20.0),
+    dict(name='Metz',          file='metz_matrix.csv',          baseline=4.0,  threshold=6.0,  floor=4.0),
 ]
+
+
+def load_matrix(ds):
+    if ds['name'] == 'Davis':
+        aff = pd.read_csv(ds['file'])
+        return aff.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(5.0).values
+    return pd.read_csv(ds['file'], index_col=0).values
 BARS = [0.80, 0.85, 0.90, 0.95]
 order = ['entropy', 'gini', 's_score', 'ratio']
 
 for ds in DATASETS:
-    M = pd.read_csv(ds['file'], index_col=0).values
+    M = load_matrix(ds)
     panel_sizes, results = panel_curves(M, ds['baseline'], ds['threshold'], ds['floor'])
     print(f"\n=== {ds['name']} ({M.shape[0]} drugs x {M.shape[1]} kinases) ===")
     print(f"{'bar':>6s}" + "".join(f"{d:>10s}" for d in order))

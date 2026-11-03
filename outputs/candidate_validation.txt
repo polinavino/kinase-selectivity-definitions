@@ -1,23 +1,23 @@
 Cross-dataset validation (orientation must be negative; D3 = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D4 = 100):
       dataset  n_cpd  n_kin  orient_r  d3_emphasis_rev  d3_boundary_rev  d3_entropy_rev  d4_pct
         Davis     68    433    -0.969           0.0048           0.0852          0.0882   100.0
-      Klaeger    222    343    -0.936           0.0054           0.1057          0.1120   100.0
-Anastassiadis    178    300    -0.940           0.0043           0.1249          0.1027   100.0
-         Metz    704    172    -0.785           0.0072           0.2245          0.2260   100.0
+      Klaeger    222    343    -0.951           0.0054           0.1057          0.1120   100.0
+Anastassiadis    178    300    -0.936           0.0043           0.1249          0.1027   100.0
+         Metz    704    172    -0.783           0.0072           0.2245          0.2260   100.0
 
 Smoothing-width T sweep on Klaeger:
    T  orient_r  d3_emphasis_rev
-0.50    -0.937           0.0194
-0.75    -0.936           0.0093
-1.00    -0.936           0.0054
-1.50    -0.936           0.0017
-2.00    -0.935           0.0004
+0.50    -0.953           0.0194
+0.75    -0.951           0.0093
+1.00    -0.951           0.0054
+1.50    -0.950           0.0017
+2.00    -0.950           0.0004
 worst-case cross-T ranking agreement (Spearman) = 0.999
 
 Why the gate is needed (Klaeger):
-  gated   selectivity vs n_active = -0.936  (correct: negative)
-  ungated selectivity vs n_active = +0.943  (inverted: positive)
-  ungated selectivity vs distribution family = -0.943  (anti-correlated)
-  gated   selectivity vs distribution family = +0.936
+  gated   selectivity vs n_active = -0.951  (correct: negative)
+  ungated selectivity vs n_active = +0.93  (inverted: positive)
+  ungated selectivity vs distribution family = -0.93  (anti-correlated)
+  gated   selectivity vs distribution family = +0.951
 
 Saved candidate_validation.csv

@@ -26,7 +26,7 @@ def negH(w):
     tot = w.sum(1, keepdims=True)
     tot = np.where(tot <= 0, 1e-12, tot)
     p = w / tot
-    return np.where(p > 0, p * np.log2(p + 1e-12), 0.0).sum(1)
+    return np.where(p > 0, p * np.log2(np.where(p > 0, p, 1.0)), 0.0).sum(1)
 
 
 def candidate(P, floor, T, baseline=None, gate=True):
@@ -74,7 +74,7 @@ def entropy_sel(P, b, eps=1e-10):
     sh = np.maximum(P - b, 0)
     rs = np.where(sh.sum(1, keepdims=True) == 0, eps, sh.sum(1, keepdims=True))
     p = sh / rs
-    return (p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)
+    return (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)
 
 
 def validate():
@@ -82,8 +82,8 @@ def validate():
     for name, (M, floor, active, T, bsweep) in load().items():
         nact = (M > active).sum(1)
         sel = candidate(M, floor, T)
-        orient = spearmanr(sel, nact)[0]                       # want strongly negative
         keep = nact > 0                                        # compounds D1 allows to be scored
+        orient = spearmanr(sel[keep], nact[keep])[0]           # want strongly negative
         d3_emph = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, keep)  # gate pinned
         # boundary varied: gate and emphasis move together (floor = b)
         d3_bound = rev_frac(lambda b: candidate(M, b, T, baseline=b), bsweep, keep)
@@ -106,17 +106,18 @@ def t_sweep():
     rows = []
     for T in [0.5, 0.75, 1.0, 1.5, 2.0]:
         sel = candidate(M, floor, T)
-        orient = spearmanr(sel, nact)[0]
+        orient = spearmanr(sel[nact > 0], nact[nact > 0])[0]
         d3 = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, nact > 0)
         rows.append(dict(T=T, orient_r=round(orient, 3), d3_emphasis_rev=round(d3, 4)))
     # cross-T ranking agreement (are rankings stable as T varies?)
-    rk = [to_ranks(candidate(M, floor, T)) for T in [0.5, 0.75, 1.0, 1.5, 2.0]]
+    rk = [to_ranks(candidate(M, floor, T)[nact > 0]) for T in [0.5, 0.75, 1.0, 1.5, 2.0]]
     worstT = min(spearmanr(rk[i], rk[j])[0] for i in range(len(rk)) for j in range(i + 1, len(rk)))
     return pd.DataFrame(rows), round(worstT, 3)
 
 
 def inversion_demo():
     M, floor, active, T, _ = load()["Klaeger"]
+    M = M[(M > active).sum(1) > 0]                             # compounds D1 allows to be scored
     nact = (M > active).sum(1)
     gated = candidate(M, floor, T)
     ungated = candidate(M, floor, T, gate=False)

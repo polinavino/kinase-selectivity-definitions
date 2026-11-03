@@ -1,14 +1,14 @@
-D1: rank std, zero-active = 72.9; active = 31.3 (n_zero=16, n_active=206; Mann-Whitney U=3296, p=2.80e-11, two-sided)
+D1: rank std, zero-active = 74.0; active = 31.2 (n_zero=16, n_active=206; Mann-Whitney U=3296, p=2.80e-11, two-sided)
 D1: max pK_d among the 16 zero-active compounds: 5.16 to 6.00 (all above the assay detection floor of 5.0)
 
 D1 decomposed per definition (mean rank std within that definition's own sweep):
-  s_score  zero-active  18.54   active  24.31   REVERSES
-  entropy  zero-active  17.08   active  12.48   holds
-  gini     zero-active  86.08   active  15.87   holds
-  ratio    zero-active  24.04   active  20.66   holds
-  (pooled figure is driven by entropy and Gini; the S-score reverses because its
-   score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)
-D3: corr(n_active, instability) -- entropy r=-0.297 (p=1.5e-05); candidate-floor-swept r=-0.330 (p=1.3e-06); candidate-emphasis-swept (gate fixed) r=+0.065 (p=3.5e-01)
-D3: mean instability over B=[5.0,6.0] -- entropy (baseline swept) 7.47; candidate (gate/floor swept, true equivalent) 7.23 (0.97x the entropy's); candidate (emphasis swept, gate fixed by declaration) 0.43 (17x smaller than entropy -- but only because the gate itself is no longer a free parameter being compared)
+  s_score  zero-active  18.54   active  24.31   REVERSES   (Mann-Whitney p=0.074)
+  entropy  zero-active  14.12   active  11.90   holds   (Mann-Whitney p=0.25)
+  gini     zero-active  86.08   active  15.87   holds   (Mann-Whitney p=6.2e-11)
+  ratio    zero-active  24.04   active  20.66   holds   (Mann-Whitney p=0.08)
+  (the S-score reverses because its score is exactly 0 for every zero-active
+   compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)
+D3: corr(n_active, instability) -- entropy r=-0.345 (p=3.8e-07); candidate-floor-swept r=-0.410 (p=9.7e-10); candidate-emphasis-swept (gate fixed) r=+0.065 (p=3.5e-01)
+D3: mean instability over B=[5.0,6.0] -- entropy (baseline swept) 7.48; candidate (gate/floor swept, true equivalent) 7.24 (0.97x the entropy's); candidate (emphasis swept, gate fixed by declaration) 0.43 (17x smaller than entropy -- but only because the gate itself is no longer a free parameter being compared)
 
 Saved failure_modes.png

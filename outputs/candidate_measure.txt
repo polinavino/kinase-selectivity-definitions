@@ -1,16 +1,30 @@
-Orientation check (Klaeger): corr(candidate selectivity, n_active) = -0.936 (must be negative)
+Orientation check (Klaeger): corr(candidate selectivity, n_active) = -0.951 (must be negative)
 
 D3 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):
   candidate, vary emphasis baseline (gate pinned at floor): +1.000
-  candidate, vary active-set boundary (gate = floor)       : +0.941
+  candidate, vary active-set boundary (gate = floor)       : +0.940
   existing entropy, vary baseline                          : +0.928
 
 D4 (add a sub-threshold off-target): selectivity non-increasing for 100% of compounds; max increase = 0.0000
 
+Panel-size convergence p* (Davis, 68 cpd x 433 kin):
+  measure     p* (all cpd)  p* (D1-gated)
+  candidate             50             50
+  entropy               50             50
+  s_score               50             50
+  gini                 110             50
+  ratio                410            410
+  fraction of compounds UNDEFINED under the D1 gate, by panel size:
+   50:9%  80:6%  110:4%  140:3%  170:3%  200:1%  230:1%  260:1%  290:0%  320:0%  350:0%  380:0%  410:0%  433:0%
+  (gated and ungated p* are computed on different populations: gating removes
+   the least-bound compounds, which are also the hardest to rank, so part of any
+   improvement is selection rather than a property of the gate)
+  Spearman(candidate, entropy) on the full panel, 68 scored compounds = +0.9986
+
 Panel-size convergence p* (Klaeger, 222 cpd x 343 kin):
   measure     p* (all cpd)  p* (D1-gated)
-  candidate            110             80
-  entropy              110             80
+  candidate             80             80
+  entropy               80             80
   s_score              110            110
   gini                 290             80
   ratio                343            320
@@ -19,7 +33,21 @@ Panel-size convergence p* (Klaeger, 222 cpd x 343 kin):
   (gated and ungated p* are computed on different populations: gating removes
    the least-bound compounds, which are also the hardest to rank, so part of any
    improvement is selection rather than a property of the gate)
-  Spearman(candidate, entropy) on the full panel = +0.9986
+  Spearman(candidate, entropy) on the full panel, 206 scored compounds = +0.9984
+
+Panel-size convergence p* (Anastassiadis, 178 cpd x 300 kin):
+  measure     p* (all cpd)  p* (D1-gated)
+  candidate             50             50
+  entropy               50             50
+  s_score               50             50
+  gini                 200             50
+  ratio                290            260
+  fraction of compounds UNDEFINED under the D1 gate, by panel size:
+   50:43%  80:36%  110:33%  140:30%  170:28%  200:27%  230:26%  260:25%  290:25%  300:25%
+  (gated and ungated p* are computed on different populations: gating removes
+   the least-bound compounds, which are also the hardest to rank, so part of any
+   improvement is selection rather than a property of the gate)
+  Spearman(candidate, entropy) on the full panel, 134 scored compounds = +0.9943
 
 Panel-size convergence p* (Metz, 704 cpd x 172 kin):
   measure     p* (all cpd)  p* (D1-gated)
@@ -33,6 +61,6 @@ Panel-size convergence p* (Metz, 704 cpd x 172 kin):
   (gated and ungated p* are computed on different populations: gating removes
    the least-bound compounds, which are also the hardest to rank, so part of any
    improvement is selection rather than a property of the gate)
-  Spearman(candidate, entropy) on the full panel = +0.9947
+  Spearman(candidate, entropy) on the full panel, 699 scored compounds = +0.9952
 
 Saved candidate_panel_convergence.png

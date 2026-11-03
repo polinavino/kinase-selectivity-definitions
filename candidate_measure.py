@@ -36,12 +36,10 @@ Why this satisfies D1-D4:
       adding a sub-threshold off-target adds zero weight and never raises S.
       (Verified below.)
 
-The design choice is the smoothing width T (in pK_d units).  T ~ 1 places the
-candidate's panel-size convergence in the fast class (entropy, S-score).  The
-active/inactive boundary is fixed at the assay floor rather than tuned.  The
-panel-size convergence is checked on the two sparse-coverage datasets (Klaeger,
-Metz); the dense complete-matrix screens (Davis, Anastassiadis) are unsuitable
-for kinase subsampling, as explained in the paper.
+The smoothing width is T = tau* - x0 on every dataset (the D4 guarantee needs
+T >= 0.58 (tau* - x0); d4_entropy_vs_candidate.py).  The active/inactive
+boundary is fixed at the assay floor rather than tuned.  Panel-size convergence
+is checked on all four datasets.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -66,12 +64,12 @@ def candidate(P, baseline, floor, T=T, eps=1e-10):
     w = gate * (T * np.logaddexp(0.0, (P - baseline) / T))
     rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
     p = w / rs
-    return -(-(p * np.where(p > 0, np.log2(p + eps), 0)).sum(1))   # -Shannon entropy
+    return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1))   # -Shannon entropy
 
 # ---------------- existing measures (match panel_size_analysis.py) ----------------
 def entropy(P, b, e=1e-10):
     s = np.maximum(P - b, 0); rs = np.where(s.sum(1, keepdims=True) == 0, e, s.sum(1, keepdims=True))
-    p = s / rs; return -(-(p * np.where(p > 0, np.log2(p + e), 0)).sum(1))
+    p = s / rs; return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1))
 def gini(P, b):
     s = np.maximum(P - b, 0); out = []
     for r in s:
@@ -148,11 +146,22 @@ def gated_panel_convergence(M, baseline, threshold, floor, tau, R=50, seed=42):
     return panel, res, pstar, undef
 
 
-# Sparse-coverage datasets only (see module docstring / paper).
+# All four datasets. Every measure uses the dataset's floor x0 as its baseline
+# (entropy, Gini) or fallback (ratio, k = 1), the activity threshold tau* as the
+# S-score cutoff, and, for the candidate, x0 and T = tau* - x0 (Methods).
 DATASETS = [
-    dict(name='Klaeger', file='klaeger_matrix.csv', baseline=5.0, threshold=6.0, floor=5.0),
-    dict(name='Metz',    file='metz_matrix.csv',    baseline=4.0, threshold=6.0, floor=4.0),
+    dict(name='Davis',         file='davis_affinity.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
+    dict(name='Klaeger',       file='klaeger_matrix.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
+    dict(name='Anastassiadis', file='anastassiadis_matrix.csv', baseline=20.0, threshold=50.0, floor=20.0),
+    dict(name='Metz',          file='metz_matrix.csv',          baseline=4.0,  threshold=6.0,  floor=4.0),
 ]
+
+
+def load_matrix(ds):
+    if ds['name'] == 'Davis':
+        aff = pd.read_csv(ds['file'])
+        return aff.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(5.0).values
+    return pd.read_csv(ds['file'], index_col=0).values
 order = ['candidate', 'entropy', 's_score', 'gini', 'ratio']
 # marker/dash pairs differ per curve so near-identical p* curves (e.g. candidate,
 # entropy, and gini all converge at the same panel size on Metz) stay visually
@@ -170,7 +179,8 @@ n_drugs_k = Mk.shape[0]
 
 # orientation guard
 n_active = (Mk > TAU_STAR).sum(1)
-orient_r = spearmanr(candidate(Mk, FLOOR, FLOOR), n_active)[0]
+scored = n_active > 0                      # compounds D1 allows to be scored
+orient_r = spearmanr(candidate(Mk, FLOOR, FLOOR)[scored], n_active[scored])[0]
 assert orient_r < -0.3, f"candidate is inverted: corr(selectivity, n_active) = {orient_r:+.3f}"
 print(f"Orientation check (Klaeger): corr(candidate selectivity, n_active) = {orient_r:+.3f} (must be negative)")
 
@@ -190,10 +200,10 @@ new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR)]), FLOOR, FLOOR
 print(f"\nD4 (add a sub-threshold off-target): selectivity non-increasing for "
       f"{(new <= base + 1e-9).mean() * 100:.0f}% of compounds; max increase = {max(0.0, (new - base).max()):.4f}")
 
-# ---------------- panel-size convergence (Klaeger + Metz) ----------------
-fig, axes = plt.subplots(1, len(DATASETS), figsize=(7 * len(DATASETS), 5), squeeze=False)
-for ax, ds in zip(axes[0], DATASETS):
-    M = pd.read_csv(ds['file'], index_col=0).values
+# ---------------- panel-size convergence (all four datasets) ----------------
+fig, axes = plt.subplots(2, 2, figsize=(14, 10), squeeze=False)
+for ax, ds in zip(axes.ravel(), DATASETS):
+    M = load_matrix(ds)
     n_drugs, n_kin = M.shape
     panel, res, pstar = panel_convergence(M, ds['baseline'], ds['threshold'], ds['floor'])
     # D1 actually applied: Spearman over compounds defined on both full and subpanel.
@@ -210,10 +220,12 @@ for ax, ds in zip(axes[0], DATASETS):
     print("   improvement is selection rather than a property of the gate)")
 
     # Candidate vs entropy: how much do the four properties change the ranking?
-    r_ce = spearmanr(res_full_candidate := measures_for(
-        ds['baseline'], ds['threshold'], ds['floor'])['candidate'](M),
-        measures_for(ds['baseline'], ds['threshold'], ds['floor'])['entropy'](M))[0]
-    print(f"  Spearman(candidate, entropy) on the full panel = {r_ce:+.4f}")
+    # Over the compounds both score: the candidate (D1) scores those with a kinase
+    # above tau*, all of which the entropy at beta = x0 also scores.
+    scored = (M > ds['threshold']).sum(1) > 0
+    fns = measures_for(ds['baseline'], ds['threshold'], ds['floor'])
+    r_ce = spearmanr(fns['candidate'](M)[scored], fns['entropy'](M)[scored])[0]
+    print(f"  Spearman(candidate, entropy) on the full panel, {scored.sum()} scored compounds = {r_ce:+.4f}")
     for k in order:
         c, ls, lw, marker, markevery = styles[k]
         ax.plot(panel, [np.mean(res[k][ps]) for ps in panel], color=c, ls=ls, lw=lw,
@@ -223,7 +235,7 @@ for ax, ds in zip(axes[0], DATASETS):
     ax.axhline(0.90, color='black', ls=':', lw=1)
     ax.set_xlabel('Panel size (kinases)'); ax.set_ylabel('Spearman rho vs full-panel ranking')
     ax.set_title(f"{ds['name']} ({n_drugs} cpd $\\times$ {n_kin} kin)")
-    ax.legend(fontsize=8); ax.set_ylim(0, 1.01)
+    ax.legend(fontsize=8); ax.set_ylim(-0.2, 1.01)
 
 fig.suptitle('Panel-size convergence: candidate (gated, smooth-hinge effective-target number) '
              'vs existing measures (50 subsamples per size)', fontsize=12)

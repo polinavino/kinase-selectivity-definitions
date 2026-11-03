@@ -35,13 +35,13 @@ def to_ranks(s):
 def entropy_literal(M, eps=1e-12):                  # Uitdehaag: p ~ Ka = 1/Kd
     Ka = np.power(10.0, M - 9.0)
     p = Ka / Ka.sum(1, keepdims=True)
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)   # low entropy = selective
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)   # low entropy = selective
 
 def entropy_manuscript(M, b, eps=1e-10):            # manuscript: p ~ max(pKd - b, 0)
     sh = np.maximum(M - b, 0)
     rs = np.where(sh.sum(1, keepdims=True) == 0, eps, sh.sum(1, keepdims=True))
     p = sh / rs
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)
 
 def gini(x):
     out = []

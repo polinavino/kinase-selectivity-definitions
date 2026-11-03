@@ -35,30 +35,27 @@ no primary target or off-target to compare.
 Our own implementation of $R(k)$ does not follow this convention (see Methods,
 ``Ratio''), which bears on $R(k)$'s D1 grading in Table~\ref{tab:desiderata}.
 
-Reconciliation attempts have remained limited in scope.
+To our knowledge, attempts to reconcile the definitions have been limited.
 Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
 assessments from Klaeger et al.\ with activity data mined from ChEMBL for the
 same compounds, finding broad consistency between the two sources.
 The KInhibition platform\cite{KInhibition2018} explicitly acknowledged that
-multiple existing metrics yield conflicting results for the same compound, but
+multiple existing metrics yield conflicting results for the same compound, and
 addressed this by introducing its own composite score (combining on-target
-inhibition with an off-target inhibition penalty) rather than reconciling the
-disagreement among the existing definitions.
+inhibition with an off-target inhibition penalty).
 More recently, the same group built a KIRHub resource\cite{Gujral2026}
 on a
 new profiling campaign of 86 approved kinase inhibitors against 758 kinases
 and disease-associated mutant variants. This resource offers users a choice 
 between a further
 named metric (the KISS score, an on-target/off-target balance) and a separate
-Gini-based score, thus proliferating named, ad hoc definitions.
+Gini-based score.
 
-Two further notable gaps surface in existing work. The first is that each
-metric is evaluated at fixed
-parameter values. Thus, the sensitivity of rankings to parameter choice has not
-been systematically characterized. The second is that
-the structural properties of binding profiles that determine when definitions
-agree or disagree have not been identified.
-The present work addresses both gaps.
+Published comparisons evaluate each metric at fixed parameter values, so, to
+our knowledge, the sensitivity of rankings to parameter choice has not been
+characterized systematically. The present work addresses this, together with
+the question raised in the Introduction of which profile properties determine
+when the definitions agree.
 
 \subsection{Axiomatic Approaches to Ranking and Measurement}
 \label{sec:related:axiomatic}
@@ -68,7 +65,7 @@ axiomatic characterization of measurement functions is established.
 Shannon\cite{Shannon1948} demonstrated that the entropy of a probability
 distribution is uniquely determined, up to a multiplicative constant, by three
 requirements: continuity in the probabilities, monotonic growth with the
-number of equally likely outcomes, and consistency when outcomes are grouped.
+number of equally likely outcomes, and consistency under grouping of outcomes.
 Khinchin\cite{Khinchin1957} subsequently gave an alternative axiomatization
 (continuity, maximality on the uniform distribution, expansibility, and
 additivity over independent subsystems).
@@ -76,15 +73,15 @@ The selectivity entropy of Uitdehaag and Zaman applies the Shannon formula to
 normalized binding profiles but provides no analogous axiomatic justification.
 The axioms that single out Shannon entropy, such as maximality on the uniform
 distribution and additivity over independent subsystems, characterize a measure
-of uncertainty rather than a measure of selectivity.
+of uncertainty, and none of them was chosen with selectivity in mind.
 
 Arrow\cite{Arrow1951} established that no social welfare function satisfies
 simultaneously the requirements of unrestricted domain, Pareto efficiency,
 independence of irrelevant alternatives, and non-dictatorship.
-The theorem is relevant here in two respects: it demonstrates that axiomatic
-analysis of a ranking concept can yield impossibility,
-and it shows that competing ranking functions reflect genuine tradeoffs between
-properties that cannot all be achieved simultaneously.
+The theorem is relevant here in two respects: it shows that axiomatic analysis
+of a ranking concept can yield impossibility, and that competing ranking
+functions can reflect trade-offs between properties that cannot all be met at
+once.
 Singleton and Booth\cite{Singleton2022} applied this methodology to truth
 discovery, i.e. the problem of identifying true facts from conflicting reports of
 unknown reliability, posing it as a social choice problem, formulating

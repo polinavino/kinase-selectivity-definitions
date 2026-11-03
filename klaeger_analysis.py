@@ -19,7 +19,7 @@ def selectivity_entropy(profiles, baseline=5.0, epsilon=1e-10):
     shifted = np.maximum(profiles - baseline, 0)
     row_sums = np.where(shifted.sum(axis=1, keepdims=True)==0, epsilon, shifted.sum(axis=1, keepdims=True))
     p = shifted / row_sums
-    return -(-(p * np.where(p>0, np.log2(p+epsilon), 0)).sum(axis=1))
+    return -(-(p * np.where(p>0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1))
 
 def gini_selectivity(profiles, baseline=5.0):
     shifted = np.maximum(profiles - baseline, 0)

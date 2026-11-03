@@ -1,12 +1,13 @@
 """
-Figure 3 and the instability-predictor tables (Klaeger = Table 2, Davis = Table 3).
+Figure 3 and the instability-predictor tables (Klaeger = Table 2; Davis, printed
+for comparison).
 
 For each definition family (S-score, entropy, Gini, ratio) we sweep the
 definition's parameter, compute each active compound's rank standard deviation
 across the sweep (its "instability"), and correlate that instability against a
 set of binding-profile features. The single best-predicting feature per family
 is plotted for Klaeger (Figure 3). The full feature x family correlation table
-is printed for both Klaeger (Table 2) and Davis (Table 3), so the predictor
+is printed for both Klaeger (Table 2) and Davis, so the predictor
 structure can be seen to replicate on the second pK_d dataset.
 """
 import script_logging; script_logging.capture(__file__)
@@ -31,7 +32,7 @@ def selectivity_entropy(profiles, baseline=BASELINE, epsilon=1e-10):
     row_sums = np.where(shifted.sum(axis=1, keepdims=True) == 0, epsilon,
                         shifted.sum(axis=1, keepdims=True))
     p = shifted / row_sums
-    return -(-(p * np.where(p > 0, np.log2(p + epsilon), 0)).sum(axis=1))
+    return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1))
 
 
 def gini_selectivity(profiles, baseline=BASELINE):

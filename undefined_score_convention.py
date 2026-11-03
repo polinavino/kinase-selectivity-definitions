@@ -6,7 +6,8 @@ Entropy and Gini are undefined when no kinase in a compound's profile exceeds
 the baseline beta (the normalized weights are 0/0). The current pipeline
 resolves this by substituting a small epsilon in the denominator, which drives
 the score to exactly 0 for both entropy and Gini and lets the compound be
-ranked (tied with every other degenerate compound) rather than excluded. This
+ranked (for entropy, tied with single-target profiles, whose entropy is also 0)
+rather than excluded. This
 script states that convention explicitly and reports the alternative Reviewer
 1 asked for: the zero-active vs. active rank-sigma contrast recomputed using,
 for every compound, only the baseline sweep configurations in which its
@@ -32,7 +33,7 @@ def selectivity_entropy(M, b, eps=1e-10):
     rs = sh.sum(axis=1, keepdims=True)
     rs = np.where(rs == 0, eps, rs)
     p = sh / rs
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(axis=1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1)
 
 
 def gini_selectivity(M, b):
@@ -76,8 +77,21 @@ print(f"  Zero-active (pKd>6) compounds have a defined score at {n_defined_per_c
       f"-{n_defined_per_compound[~active_6].max()} of 7 baselines "
       f"(mean {n_defined_per_compound[~active_6].mean():.1f})")
 
-print(f"\nAlternative convention (rank sigma computed only over each compound's own DEFINED configs):")
-for name, ranks in [('entropy', ent_ranks_pooled), ('gini', gini_ranks_pooled)]:
+# At each beta, rank only the compounds whose score is defined at that beta, so the
+# alternative does not depend on where undefined compounds would have been placed.
+def ranks_among_defined(score_fn):
+    out = np.full((len(baselines), n_drugs), np.nan)
+    for j, b in enumerate(baselines):
+        d = defined[j]
+        out[j, d] = to_ranks(score_fn(M[d], b))
+    return out
+
+ent_ranks_def = ranks_among_defined(lambda X, b: -selectivity_entropy(X, b))
+gini_ranks_def = ranks_among_defined(gini_selectivity)
+
+print(f"\nAlternative convention (compounds ranked only among those defined at each beta;")
+print(f"rank sigma computed only over each compound's own DEFINED configs):")
+for name, ranks in [('entropy', ent_ranks_def), ('gini', gini_ranks_def)]:
     sigma_defined = np.full(n_drugs, np.nan)
     for i in range(n_drugs):
         rows = np.where(defined[:, i])[0]
@@ -98,7 +112,7 @@ for i in range(n_drugs):
     rows = np.where(defined[:, i])[0]
     if len(rows) < 2:
         continue  # cannot compute a within-compound std across <2 defined configs
-    vals = np.concatenate([ent_ranks_pooled[rows, i], gini_ranks_pooled[rows, i]])
+    vals = np.concatenate([ent_ranks_def[rows, i], gini_ranks_def[rows, i]])
     sigma_defined[i] = vals.std()
 
 valid = ~np.isnan(sigma_defined)

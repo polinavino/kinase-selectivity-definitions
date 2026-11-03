@@ -63,14 +63,14 @@ def selectivity_entropy(M, b, eps=1e-10):
     rs = sh.sum(axis=1, keepdims=True)
     rs = np.where(rs == 0, eps, rs)
     p = sh / rs
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(axis=1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1)
 
 
 def entropy_literal_dense(M, eps=1e-12):
     """Ka-weighted entropy over the full (complete) matrix -- Davis."""
     Ka = np.power(10.0, M - 9.0)
     p = Ka / Ka.sum(1, keepdims=True)
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)
 
 
 def entropy_literal_sparse(pkd_rows, eps=1e-12):
@@ -80,7 +80,7 @@ def entropy_literal_sparse(pkd_rows, eps=1e-12):
     for pkds in pkd_rows:
         Ka = np.power(10.0, np.asarray(pkds) - 9.0)
         p = Ka / Ka.sum()
-        out.append(-(p * np.where(p > 0, np.log2(p + eps), 0)).sum())
+        out.append(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum())
     return np.array(out)
 
 
@@ -89,10 +89,12 @@ S_THR = np.arange(5.5, 8.25, .25)
 BASELINES = np.arange(5.0, 6.75, .25)
 
 
-def corr_with_literal_entropy(M, ent_lit_scores, ratio_floor=5.0):
+def corr_with_literal_entropy(M, ent_lit_scores, ratio_floor=5.0, s_thr=S_THR, baselines=BASELINES):
+    # s_thr/baselines default to the pKd grids; Metz passes its own grids, as in
+    # additional_datasets_analysis.py, so its S-score/Gini match the main analysis.
     ranks = {
-        's_score': np.array([to_ranks(s_score(M, t)) for t in S_THR]),
-        'gini':    np.array([to_ranks(gini_selectivity(M, b)) for b in BASELINES]),
+        's_score': np.array([to_ranks(s_score(M, t)) for t in s_thr]),
+        'gini':    np.array([to_ranks(gini_selectivity(M, b)) for b in baselines]),
         'ratio':   np.array([to_ranks(ratio_selectivity(M, k, ratio_floor)) for k in range(1, 6)]),
     }
     med = {d: np.median(ranks[d], axis=0) for d in ['s_score', 'gini', 'ratio']}
@@ -142,7 +144,9 @@ keep = coverage >= 50
 sub_kept = sub.values[keep]
 M_metz = np.nan_to_num(sub_kept, nan=4.0)
 ent_lit_metz = entropy_literal_sparse([row[~np.isnan(row)] for row in sub_kept])
-corr_metz = corr_with_literal_entropy(M_metz, ent_lit_metz, ratio_floor=4.0)
+corr_metz = corr_with_literal_entropy(M_metz, ent_lit_metz, ratio_floor=4.0,
+                                      s_thr=np.arange(5.0, 7.75, .25),
+                                      baselines=np.arange(4.0, 5.75, .25))
 print_matrix("Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
              "(measured entries only, per compound)", corr_metz)
 

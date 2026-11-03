@@ -13,7 +13,7 @@ def selectivity_entropy(profiles, baseline, epsilon=1e-10):
     row_sums = np.where(shifted.sum(axis=1, keepdims=True) == 0, epsilon,
                         shifted.sum(axis=1, keepdims=True))
     p = shifted / row_sums
-    return -(p * np.where(p > 0, np.log2(p + epsilon), 0)).sum(axis=1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1)
 
 
 def gini_selectivity(profiles, baseline):
@@ -74,22 +74,29 @@ def pstar(panel_sizes, results, d):
     return next((ps for ps in panel_sizes if np.mean(results[d][ps]) > 0.90), None)
 
 
-# Two sparse-coverage datasets (each compound profiled against a subset of the
-# kinome), the appropriate substrate for a panel-size question. Davis and
-# Anastassiadis are dense complete-matrix screens, so subsampling their kinases
-# confounds panel size with apparent-active-count changes (see paper), and they
-# are excluded here.
+# All four datasets. Every measure uses the dataset's floor x0 as its baseline
+# (entropy, Gini) or fallback (ratio, k = 1), the activity threshold tau* as the
+# S-score cutoff, and, for the candidate, x0 and T = tau* - x0 (Methods).
 DATASETS = [
-    dict(name='Klaeger', file='klaeger_matrix.csv', baseline=5.0, threshold=6.0, floor=5.0),
-    dict(name='Metz',    file='metz_matrix.csv',    baseline=4.0, threshold=6.0, floor=4.0),
+    dict(name='Davis',         file='davis_affinity.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
+    dict(name='Klaeger',       file='klaeger_matrix.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
+    dict(name='Anastassiadis', file='anastassiadis_matrix.csv', baseline=20.0, threshold=50.0, floor=20.0),
+    dict(name='Metz',          file='metz_matrix.csv',          baseline=4.0,  threshold=6.0,  floor=4.0),
 ]
+
+
+def load_matrix(ds):
+    if ds['name'] == 'Davis':
+        aff = pd.read_csv(ds['file'])
+        return aff.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(5.0).values
+    return pd.read_csv(ds['file'], index_col=0).values
 
 order = ['entropy', 'gini', 's_score', 'ratio']
 colors = {'entropy': 'darkorange', 'gini': 'green', 's_score': 'steelblue', 'ratio': 'crimson'}
 
-fig, axes = plt.subplots(1, len(DATASETS), figsize=(7 * len(DATASETS), 5), squeeze=False)
-for ax, ds in zip(axes[0], DATASETS):
-    M = pd.read_csv(ds['file'], index_col=0).values
+fig, axes = plt.subplots(2, 2, figsize=(14, 10), squeeze=False)
+for ax, ds in zip(axes.ravel(), DATASETS):
+    M = load_matrix(ds)
     n_drugs, n_kinases = M.shape
     panel_sizes, results = panel_curves(M, ds['baseline'], ds['threshold'], ds['floor'])
 

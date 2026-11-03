@@ -1,9 +1,9 @@
 """
 Does the Renyi order (family_construction.py's first axis) affect how quickly the
 ranking converges to the full-panel ranking? candidate_measure.py's panel_convergence
-established p*=110 (Klaeger) / 80 (Metz) for the alpha=1 (Shannon) candidate. This
-script repeats that check across alpha and asks two follow-up questions before
-treating any difference as a usable finding:
+gives p* for the alpha=1 (Shannon) candidate. This script repeats that check across
+alpha and asks two follow-up questions before treating any difference as a usable
+finding:
 
   1. Convergence table. p* by Renyi order, same panel grid and resampling scheme
      as candidate_measure.py's panel_convergence (R=50, seed=42), plus full
@@ -36,17 +36,22 @@ def neg_renyi_H(w, alpha, eps=1e-12):
     numerical limit proxies for alpha -> 0 (richness) and alpha -> inf
     (min-entropy, dominated by the single largest p_i)."""
     tot = w.sum(1, keepdims=True)
+    undefined = tot.ravel() <= 0
     tot = np.where(tot <= 0, eps, tot)
     p = w / tot
     if abs(alpha - 1.0) < 1e-9:
-        return (p * np.where(p > 0, np.log2(p + eps), 0.0)).sum(1)
-    if alpha > 30:
-        return np.log2(np.maximum(p.max(1), eps))
-    if alpha < 1e-3:
-        return -np.log2(np.maximum((p > 0).sum(1), 1))
-    s = np.where(p > 0, p ** alpha, 0.0).sum(1)
-    s = np.maximum(s, eps)
-    return (1.0 / (alpha - 1.0)) * np.log2(s)
+        out = (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0.0)).sum(1)
+    elif alpha > 30:
+        out = np.log2(np.maximum(p.max(1), eps))
+    elif alpha < 1e-3:
+        out = -np.log2(np.maximum((p > 0).sum(1), 1))
+    else:
+        s = np.where(p > 0, p ** alpha, 0.0).sum(1)
+        s = np.maximum(s, eps)
+        out = (1.0 / (alpha - 1.0)) * np.log2(s)
+    # Undefined (no gated weight) scores 0, tied with a single-target profile at
+    # every order, as in the main analysis (Methods).
+    return np.where(undefined, 0.0, out)
 
 
 def candidate_alpha(P, floor, T, alpha):

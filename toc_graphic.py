@@ -28,7 +28,7 @@ def selectivity_entropy(M, baseline, eps=1e-10):
     rs = sh.sum(axis=1, keepdims=True)
     rs = np.where(rs == 0, eps, rs)
     p = sh / rs
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(axis=1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1)
 
 
 def gini_selectivity(M, baseline):

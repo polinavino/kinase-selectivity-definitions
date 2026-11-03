@@ -32,7 +32,7 @@ def candidate(P, floor, T=1.0, eps=1e-12):
     w = g * (T * np.logaddexp(0.0, (P - floor) / T))
     tot = np.where(w.sum(1, keepdims=True) <= 0, eps, w.sum(1, keepdims=True))
     p = w / tot
-    return (p * np.where(p > 0, np.log2(p + eps), 0.0)).sum(1)
+    return (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0.0)).sum(1)
 
 
 def candidate_softgate(P, floor, T, T_gate, eps=1e-12):
@@ -40,7 +40,7 @@ def candidate_softgate(P, floor, T, T_gate, eps=1e-12):
     w = g * (T * np.logaddexp(0.0, (P - floor) / T))
     tot = np.where(w.sum(1, keepdims=True) <= 0, eps, w.sum(1, keepdims=True))
     p = w / tot
-    return (p * np.where(p > 0, np.log2(p + eps), 0.0)).sum(1)
+    return (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0.0)).sum(1)
 
 
 def candidate_rankweight(P, floor, decay):
@@ -52,7 +52,7 @@ def candidate_rankweight(P, floor, decay):
             continue
         w = decay ** np.arange(len(active_vals))
         p = w / w.sum()
-        out[i] = (p * np.log2(p + 1e-12)).sum()
+        out[i] = (p * np.log2(np.where(p > 0, p, 1.0))).sum()
     return out
 
 

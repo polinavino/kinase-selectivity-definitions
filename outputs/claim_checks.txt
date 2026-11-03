@@ -1,0 +1,82 @@
+1. Type 1 compounds: were their known targets quantified for any Klaeger compound?
+   (229 compounds in the Kinobeads table)
+   AZD-8055    -> MTOR : fitted for  0 compounds (0 high-confidence rows, max pKd nan); for AZD-8055: no
+   BMS-911543  -> JAK2 : fitted for  7 compounds (7 high-confidence rows, max pKd 8.31); for BMS-911543: no
+   Vatalanib   -> KDR  : fitted for  0 compounds (0 high-confidence rows, max pKd nan); for Vatalanib: no
+   Filgotinib  -> JAK1 : fitted for 12 compounds (12 high-confidence rows, max pKd 7.59); for Filgotinib: no
+   ARRY-380    -> ERBB2: fitted for  0 compounds (0 high-confidence rows, max pKd nan); for ARRY-380: no
+
+2. Klaeger within-family correlations, all compounds vs compounds with an active kinase
+   all 222           : S-E 0.910  S-G 0.722  E-G 0.840  | S-R 0.223  E-R 0.455  G-R 0.616
+   active only (206) : S-E 0.913  S-G 0.911  E-G 0.998  | S-R 0.418  E-R 0.621  G-R 0.634
+   all 222           : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI [-0.058246, +0.255957]
+   active only (206) : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI [+0.194550, +0.374986]
+
+3. Table 1 cells with mean instead of median ranks: largest change per dataset
+   Davis        : max |median-based - mean-based| = 0.037
+   Klaeger      : max |median-based - mean-based| = 0.032
+   Anastassiadis: max |median-based - mean-based| = 0.075
+   Metz         : max |median-based - mean-based| = 0.052
+
+4. Anastassiadis: top1-top2 gap vs ratio instability
+   active compounds 134; top two both >= 99.5% inhibition: 8
+   all active: r = -0.104 (p = 0.23);  excluding ceiling-saturated: r = -0.275 (p = 0.0018, n = 126)
+
+5. Klaeger: ten largest entropy-ratio disagreements among active compounds
+   Dovitinib      n_active =  26  top1-top2 gap = 1.93
+   BMS-690514     n_active =  20  top1-top2 gap = 1.98
+   Defactinib     n_active =  14  top1-top2 gap = 1.65
+   MK-5108        n_active =  20  top1-top2 gap = 1.67
+   Momelotinib    n_active =  31  top1-top2 gap = 0.06
+   PF-562271      n_active =  24  top1-top2 gap = 1.71
+   SB-1317        n_active =  19  top1-top2 gap = 0.77
+   Cerdulatinib   n_active =  30  top1-top2 gap = 0.06
+   PF-477736      n_active =  33  top1-top2 gap = 0.90
+   Sunitinib      n_active =  26  top1-top2 gap = 0.23
+   n_active range among them: 14-33; with gap >= 1: 5 of 10
+
+6. Klaeger: the 20 most unstable compounds (overall rank sigma) by type
+   Type 1 (no active kinase): 16; Type 3 (>= 10 active, gap >= 1): 2; Type 2 (top1-top2 gap < 0.1): 2
+
+7. Mean overall rank sigma by number of active kinases
+   Klaeger : 1-2: 33.1 (n=45); 3-5: 32.6 (n=50); 6-10: 32.4 (n=29); 11-20: 32.2 (n=40); 21-40: 30.8 (n=27); 41-+: 16.1 (n=15)
+   Davis   : 1-2: 3.1 (n=3); 3-5: 4.4 (n=4); 6-10: 9.0 (n=1); 11-20: 7.5 (n=3); 21-40: 10.0 (n=20); 41-+: 8.6 (n=37)
+
+8. Klaeger: entropy instability vs the share of above-floor kinases crossing the baseline sweep
+   active compounds: r = +0.188 (p = 0.0067)
+
+9. The 46 compounds profiled in both Davis and Klaeger
+   mean active fraction of the panel: Davis 16.5%, Klaeger 3.2%; paired Spearman of n_active +0.66
+   s_score : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.02, Klaeger -0.18
+   entropy : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.25, Klaeger -0.17
+   gini    : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.22, Klaeger -0.02
+   ratio   : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis +0.10, Klaeger +0.04
+
+10. Metz: dependence on per-compound coverage (untested pairs set to the floor)
+   measured entries above the 4.0 floor: 99.9%
+   Spearman(coverage, median s_score  rank; rank 1 = most selective) = +0.761
+   Spearman(coverage, median entropy  rank; rank 1 = most selective) = +0.975
+   Spearman(coverage, median gini     rank; rank 1 = most selective) = +0.952
+   Spearman(coverage, median ratio    rank; rank 1 = most selective) = +0.106
+   Spearman(coverage, active fraction among measured kinases) = +0.330
+   kinases measured for >= 80% of compounds: 7
+   kinases measured for >= 90% of compounds: 0
+
+11. Within-family (S-score, entropy, Gini) correlations of median ranks, per dataset
+   Davis        : 0.946-0.999
+   Klaeger      : 0.722-0.910
+   Anastassiadis: 0.860-0.988
+   Metz         : 0.810-0.994
+   across all four datasets: 0.722-0.999
+
+12. Compounds shared by Klaeger and Anastassiadis (names, whitespace-trimmed)
+   19 shared: ['Bosutinib', 'Dasatinib', 'Dovitinib', 'Erlotinib', 'Gefitinib', 'Imatinib', 'Lapatinib', 'Masitinib', 'Mubritinib', 'Nilotinib', 'Pazopanib', 'Sorafenib', 'Sunitinib', 'Tandutinib', 'Tofacitinib', 'Tozasertib', 'VX-702', 'Vandetanib', 'Vatalanib']
+
+13. Zero-active vs active mean rank sigma within each definition's own sweep
+   Davis        : no zero-active compounds
+   Klaeger       (16 zero-active): s_score 18.5 vs 24.3 (p=0.074); entropy 14.1 vs 11.9 (p=0.25); gini 86.1 vs 15.9 (p=6.2e-11); ratio 24.0 vs 20.7 (p=0.08)
+   Anastassiadis (44 zero-active): s_score 7.0 vs 9.5 (p=0.46); entropy 21.4 vs 12.8 (p=2.6e-05); gini 43.6 vs 15.7 (p=4.9e-17); ratio 14.3 vs 13.2 (p=0.016)
+   Metz          (5 zero-active): s_score 7.8 vs 71.2 (p=1.2e-06); entropy 11.0 vs 24.5 (p=0.037); gini 5.4 vs 24.2 (p=0.0094); ratio 58.3 vs 63.7 (p=0.93)
+
+14. Klaeger Gini p* (beta = x0 = 5.0), excluding only compounds whose Gini is undefined
+   p* = 80; 50:0.854 80:0.912 110:0.942 140:0.961 170:0.970

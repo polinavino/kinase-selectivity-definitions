@@ -4,28 +4,38 @@ Raw Klaeger Kinobeads sheet: 5916 drug-target pairs with an Apparent Kd
   Dropping 1 row(s) with a missing/non-numeric Apparent Kd before aggregation (all Low confidence)
 
 High-confidence-only matrix: (222, 343)
-Relaxed (High+Low confidence) matrix: (222, 343)
+Relaxed (High+Low confidence) matrix on the same grid: (222, 343)
+Low-confidence pairs inside the high-confidence grid: 561 of 792 (the rest involve 7 drugs and 177 kinases with no high-confidence measurement)
+Full relaxed matrix, all low-confidence pairs retained: (229, 520)
 Cells changed by relaxing the filter: 561 of 76146 (0.74%)
 
 Cross-definition Spearman correlation matrix (median ranks), High-confidence only:
         s_score entropy gini    ratio   
-s_score    1.000   0.901   0.722   0.223
-entropy    0.901   1.000   0.866   0.483
-gini       0.722   0.866   1.000   0.616
-ratio      0.223   0.483   0.616   1.000
+s_score    1.000   0.910   0.722   0.223
+entropy    0.910   1.000   0.840   0.455
+gini       0.722   0.840   1.000   0.616
+ratio      0.223   0.455   0.616   1.000
 
 Same, relaxed filter (High+Low confidence):
         s_score entropy gini    ratio   
-s_score    1.000   0.915   0.758   0.273
-entropy    0.915   1.000   0.868   0.472
-gini       0.758   0.868   1.000   0.598
-ratio      0.273   0.472   0.598   1.000
+s_score    1.000   0.920   0.758   0.273
+entropy    0.920   1.000   0.850   0.452
+gini       0.758   0.850   1.000   0.598
+ratio      0.273   0.452   0.598   1.000
 
 Max absolute change in any off-diagonal cell: 0.050
 
+Same, all low-confidence pairs retained (adds drugs and kinases, so the panel changes too):
+        s_score entropy gini    ratio   
+s_score    1.000   0.922   0.767   0.343
+entropy    0.922   1.000   0.857   0.494
+gini       0.767   0.857   1.000   0.627
+ratio      0.343   0.494   0.627   1.000
+Max absolute change vs high-confidence only: 0.120
+
 Panel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:
-  entropy  : 110 vs. 110
+  entropy  : 80 vs. 80
   gini     : 290 vs. 290
   s_score  : 110 vs. 110
   ratio    : 343 vs. 343
-  candidate: 110 vs. 110
+  candidate: 80 vs. 80

@@ -39,13 +39,17 @@ def neg_renyi_H(w, alpha, eps=1e-12):
     """-H_alpha(p): the correctly-oriented candidate score (matches -Shannon-entropy
     at alpha=1, i.e. candidate_measure.py's `candidate`)."""
     tot = w.sum(1, keepdims=True)
+    undefined = tot.ravel() <= 0
     tot = np.where(tot <= 0, eps, tot)
     p = w / tot
     if abs(alpha - 1.0) < 1e-9:
-        return (p * np.where(p > 0, np.log2(p + eps), 0.0)).sum(1)   # = -H(p)
-    s = np.where(p > 0, p ** alpha, 0.0).sum(1)
-    s = np.maximum(s, eps)
-    return (1.0 / (alpha - 1.0)) * np.log2(s)                        # = -H_alpha(p)
+        out = (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0.0)).sum(1)   # = -H(p)
+    else:
+        s = np.where(p > 0, p ** alpha, 0.0).sum(1)
+        s = np.maximum(s, eps)
+        out = (1.0 / (alpha - 1.0)) * np.log2(s)                     # = -H_alpha(p)
+    # Undefined (no gated weight) scores 0, tied with a single-target profile.
+    return np.where(undefined, 0.0, out)
 
 
 def candidate_alpha(P, floor, T, alpha, baseline=None):

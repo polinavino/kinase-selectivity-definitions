@@ -32,6 +32,12 @@ RATE_COLS = ['serious_rate', 'death_rate', 'hosp_rate', 'discontinuation_rate']
 
 def analyze():
     so = pd.read_csv(f"{HERE}/selectivity_outcomes_merged.csv")
+    # The FAERS counts in the merged file are a frozen snapshot, but its rank
+    # columns are not: take each drug's median ranks from the current Klaeger
+    # analysis (klaeger_analysis.py) so the correlations track the paper.
+    ranks = pd.read_csv(f"{HERE}/klaeger_selectivity_results.csv")[['drug'] + RANK_COLS]
+    so = so.drop(columns=RANK_COLS).merge(ranks, on='drug', how='left')
+    assert so[RANK_COLS].notna().all().all(), "a FAERS drug is missing from klaeger_selectivity_results.csv"
     cs = pd.read_csv(f"{HERE}/clinical_safety_data.csv")
     merged = so.merge(cs[['drug', 'discontinuation_rate', 'grade34_rate']], on='drug', how='left')
 

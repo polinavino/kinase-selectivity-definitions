@@ -2,23 +2,22 @@ Figure legends (place together at the end of the manuscript, after the
 references, per Molecular Informatics style; figures upload as separate files).
 
 Figure 1. Operationalization sensitivity of the entropy and Gini coefficient.
-For each dataset, the compound selectivity ranking computed in a form close to
-the original publication (association-constant weighting) is plotted against the
-baseline-subtracted log-affinity form used in the main text. Top row: selectivity
-entropy; bottom row: Gini coefficient. The two operationalizations of the same
-named metric differ substantially, and for entropy the relationship between
-them even changes sign on Klaeger (entropy r = 0.42 Davis, -0.32 Klaeger; Gini
-r = 0.11, -0.45), confirming
-that the operationalization of a named metric is itself a source of the
-definitional instability we report.
+For Davis and Klaeger, the compound selectivity ranking computed in a form close
+to the original publication (association-constant weighting) is plotted against
+the baseline-subtracted log-affinity form used in the main text. Top row:
+selectivity entropy; bottom row: Gini coefficient. The two operationalizations
+of the same named metric differ substantially, and for entropy the relationship
+between them even changes sign on Klaeger (r = 0.42 Davis, -0.34 Klaeger),
+confirming that the operationalization of a named metric is a source of the
+definitional instability.
 
 Figure 2. Spearman correlations between the median rankings of the four
 selectivity definitions, computed independently on each of the four datasets
-(compound x kinase panel sizes shown). In every dataset the S-score (S),
-entropy (Ent), and Gini cluster together while the ratio is the consistent
-outlier (the ratio row and column are the least green throughout), confirming
-the two-family structure across competition-binding, chemoproteomic, and
-functional-activity assays.
+(compound x kinase panel sizes shown). In every dataset the S-score (S), entropy
+(Ent), and Gini cluster together while the ratio is the consistent outlier (the
+ratio row and column are the least green throughout), confirming the two-family
+structure across competition-binding, chemoproteomic, and functional-activity
+assays.
 
 Figure 3. Best predictor of rank instability within each definition family
 (Klaeger dataset, active compounds, n = 206). Ratio instability is best
@@ -34,45 +33,28 @@ active kinases including two near-tied top targets (delta pKd = 0.023). Dashed
 line: pKd = 6 activity threshold; dotted line: pKd = 5 assay floor.
 
 Figure 5. Mean Spearman correlation between rankings computed on random kinase
-subpanels and rankings on the full panel, as a function of subpanel size, for
-the Klaeger (343 kinases) and Metz (172 kinases) datasets. Shaded bands
-indicate +/-1 standard deviation across 50 subsamples. The dashed line marks
-r = 0.90. On Klaeger, entropy and S-score rankings stabilize at approximately
-110 kinases, Gini requires approximately 290 kinases, and ratio does not
-reach r = 0.90 within the practical panel range. On Metz, entropy, Gini, and
-S-score all stabilize by 50-80 kinases, while ratio requires approximately 170
-kinases, close to the full panel.
+subpanels and rankings on the full panel, as a function of subpanel size, on
+all four datasets. Shaded bands indicate +/-1 standard deviation across 50
+subsamples; the dashed line marks r = 0.90, and p* (legend) is the smallest
+panel reaching mean r > 0.90.
 
-Figure 6. The two failure modes that motivate D1 and D3 (Klaeger
-dataset). Left (D1): rank standard deviation, pooled across the four existing
-definitions' parameter sweeps, for compounds with no binding above the
-pKd > 6 activity threshold (sigma = 72.9, n = 16) versus compounds with at
-least one active kinase (sigma = 31.3, n = 206; p = 2.8e-11, Mann-Whitney U,
-two-sided); the candidate assigns the first group no score at all (D1 gate)
-rather than an unstable one. All 16 compounds in the first group do bind above
-the assay detection floor of pKd = 5.0, with maxima from 5.16 to 6.00; the
-pooled sigma is driven by Gini and entropy and reverses for the S-score, and
-the per-definition decomposition is reported in the text. The contrast is
-driven by the convention used for undefined entropy and Gini scores; computed
+Figure 6. The two failure modes that motivate D1 and D3 (Klaeger). Left (D1):
+rank instability (std across the existing definitions' parameter sweeps) for
+compounds with no binding above the activity threshold versus compounds with at
+least one active kinase. The contrast comes mostly from the Gini and depends on
+the convention used for undefined scores (Methods). When instability is computed
 only over the configurations in which each compound's score is defined,
-zero-active compounds are not less stable. Right (D3): per-compound rank
-instability plotted against the number of active kinases, with each parameter
-swept over the same interval B = [5.0, 6.5]: the entropy's activity baseline,
-which is simultaneously its gate and its emphasis weighting (r = -0.41); the
-candidate's gate x0, the true equivalent comparison (r = -0.44), which is
-exactly as destabilizing as sweeping the entropy's baseline (mean instability
-12.5 for both); and the candidate's emphasis baseline swept with x0 fixed at
-the assay floor, as used throughout this paper (r = +0.17; mean instability
-0.6). The candidate's D3 advantage therefore rests on removing the gate from
-the free-parameter space by declaration, not on being more robust to gate
-placement than the entropy is.
+zero-active compounds are more stable than active ones (text). Right (D3): per-compound rank instability
+against the number of active kinases, with each parameter swept over
+B = [5.0, 6.0]: the entropy's activity baseline (orange); the candidate's gate
+x0, with its emphasis baseline pinned to x0 at each point (green); and the
+candidate's emphasis baseline with x0 fixed at the assay floor (red). The
+candidate's gate and the entropy's baseline produce nearly the same mean
+instability (7.2 and 7.5). Only the emphasis sweep, with the gate held fixed,
+is stable (0.4).
 
 Figure 7. Panel-size convergence of the candidate measure compared with the four
-existing definitions, on the Klaeger and Metz datasets (50 random subpanels per
-size). Curves show the mean Spearman correlation between the ranking computed
-on a random subpanel and the full-panel ranking; p* (legend) is the smallest
-panel reaching mean rho > 0.90. On Klaeger the candidate converges in the fast
-regime (p* = 110), matching entropy and the S-score (both p* = 110), and well
-ahead of Gini (p* = 290) and ratio (p* = 343). On Metz the candidate converges
-at p* = 80, matching entropy and Gini and close behind the S-score (p* = 50),
-well ahead of ratio (p* = 170).
+existing definitions, on all four datasets (50 random subpanels per size).
+Curves show the mean Spearman correlation between the ranking computed on a
+random subpanel and the full-panel ranking; p* (legend) is the smallest panel
+reaching mean rho > 0.90.

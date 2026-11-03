@@ -6,7 +6,7 @@ Gini       0.952   0.999   1.000   0.343
 Ratio      0.456   0.343   0.343   1.000
 
 Klaeger (222 drugs x 343 kinases) minimum panel size for mean r > 0.90:
-  entropy: 110 kinases
+  entropy: 80 kinases
   gini: 290 kinases
   s_score: 110 kinases
   ratio: 343 kinases

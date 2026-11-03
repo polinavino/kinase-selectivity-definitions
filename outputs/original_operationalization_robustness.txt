@@ -15,16 +15,16 @@ ratio      0.223   0.789   0.616   1.000
 
 Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (measured entries only, per compound)
         s_score entropy gini    ratio   
-s_score    1.000   0.239   0.879   0.211
-entropy    0.239   1.000   0.416   0.758
-gini       0.879   0.416   1.000   0.229
-ratio      0.211   0.758   0.229   1.000
+s_score    1.000   0.291   0.821   0.193
+entropy    0.291   1.000   0.385   0.758
+gini       0.821   0.385   1.000   0.155
+ratio      0.193   0.758   0.155   1.000
 
 Anastassiadis (n=178): manuscript S/entropy/ratio vs. native %inhibition Gini (no baseline subtraction)
         s_score entropy gini    ratio   
-s_score    1.000   0.880   0.345   0.489
-entropy    0.880   1.000   0.632   0.529
-gini       0.345   0.632   1.000   0.314
-ratio      0.489   0.529   0.314   1.000
+s_score    1.000   0.881   0.345   0.489
+entropy    0.881   1.000   0.631   0.526
+gini       0.345   0.631   1.000   0.314
+ratio      0.489   0.526   0.314   1.000
 
 Done: original-operationalization robustness check complete for all four datasets.

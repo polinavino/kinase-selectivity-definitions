@@ -51,7 +51,7 @@ def selectivity_entropy(profiles, baseline=5.0, epsilon=1e-10):
     row_sums = np.where(row_sums == 0, epsilon, row_sums)
     p = shifted / row_sums
     # Shannon entropy: H = -sum(p * log(p)), with 0*log(0) = 0
-    log_p = np.where(p > 0, np.log2(p + epsilon), 0)
+    log_p = np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)
     entropy = -(p * log_p).sum(axis=1)
     return entropy  # higher entropy = less selective
 

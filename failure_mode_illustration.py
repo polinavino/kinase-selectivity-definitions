@@ -14,10 +14,10 @@ compounds a score at all (D1 gate), rather than a low-instability one -- shown a
 a hatch pattern, not a bar height.
 
 The pooled statistic is also decomposed per definition below, because it is not
-uniform across the four: it is driven by entropy and Gini, is marginal for the
-ratio, and reverses in sign for the S-score (whose score is exactly 0 for every
-zero-active compound, so its ranks are stable by degeneracy rather than by
-reliability). The paper reports the decomposition rather than claiming the effect
+uniform across the four: it is driven by the Gini, is small for the entropy and
+the ratio, and reverses in sign for the S-score (whose score is exactly 0 for every
+zero-active compound at thresholds of pK_d 6 or above, so its ranks are stable
+by degeneracy rather than by reliability). The paper reports the decomposition rather than claiming the effect
 holds "under all four definitions".
 
 Right panel (D3): per-compound rank instability vs. n_active, for active
@@ -25,16 +25,16 @@ compounds, under three different sweeps (Reviewer 1, Molecular Informatics
 revision: the original version of this panel compared entropy's sensitivity to
 its gate/baseline against only the candidate's emphasis parameter, which does
 not touch the gate -- an apples-to-oranges comparison the reviewer correctly
-flagged). The three series swept here are:
-  (1) entropy, baseline in [5.0, 6.5] -- this baseline is BOTH the entropy's
+flagged). All three series are swept over B = [x0, tau*] = [5.0, 6.0]:
+  (1) entropy, baseline in B -- this baseline is BOTH the entropy's
       gate (active/inactive cutoff) AND its emphasis weighting, left fully
       free in existing practice;
-  (2) candidate, floor x0 in [4.5, 6.5] (with emphasis beta pinned to x0 at
+  (2) candidate, floor x0 in B (with emphasis beta pinned to x0 at
       each point) -- the TRUE equivalent comparison, sweeping the candidate's
       own gate exactly as entropy's gate is swept in (1). This is comparably,
       if not more, sensitive than entropy, because gate placement always
       moves kinases in and out of the active set;
-  (3) candidate, emphasis beta in [4.5, 6.5] with the gate FIXED at the assay
+  (3) candidate, emphasis beta in B with the gate FIXED at the assay
       floor (x0 = 5.0, as used throughout the rest of this paper) -- the
       candidate's only remaining free parameter once x0 is fixed by
       declaration rather than left free. This is the comparison that
@@ -57,7 +57,7 @@ def to_ranks(s):
 
 def entropy(P, b, e=1e-10):
     s = np.maximum(P - b, 0); rs = np.where(s.sum(1, keepdims=True) == 0, e, s.sum(1, keepdims=True))
-    p = s / rs; return -(-(p * np.where(p > 0, np.log2(p + e), 0)).sum(1))
+    p = s / rs; return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1))
 def gini(P, b):
     s = np.maximum(P - b, 0); out = []
     for r in s:
@@ -72,7 +72,7 @@ def candidate(P, baseline, floor, T=1.0, eps=1e-10):
     w = gate * (T * np.logaddexp(0.0, (P - baseline) / T))
     rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
     p = w / rs
-    return -(-(p * np.where(p > 0, np.log2(p + eps), 0)).sum(1))
+    return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1))
 
 M = pd.read_csv('klaeger_matrix.csv', index_col=0).values
 n_drugs, n_kin = M.shape
@@ -111,9 +111,10 @@ for name, ranks in per_def.items():
     sd = np.array(ranks).std(axis=0)
     z, a = sd[~has_active].mean(), sd[has_active].mean()
     verdict = 'holds' if z > a else 'REVERSES'
-    print(f"  {name:8s} zero-active {z:6.2f}   active {a:6.2f}   {verdict}")
-print("  (pooled figure is driven by entropy and Gini; the S-score reverses because its")
-print("   score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)")
+    p_def = mannwhitneyu(sd[~has_active], sd[has_active]).pvalue
+    print(f"  {name:8s} zero-active {z:6.2f}   active {a:6.2f}   {verdict}   (Mann-Whitney p={p_def:.2g})")
+print("  (the S-score reverses because its score is exactly 0 for every zero-active")
+print("   compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)")
 
 # ---------------- D3: per-compound instability under three different sweeps ----------------
 # one grid for all three sweeps: B = [x0, tau*] = [5.0, 6.0] (Methods, D3), so the

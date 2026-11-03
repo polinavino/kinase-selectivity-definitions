@@ -37,7 +37,7 @@ def selectivity_entropy(M, b, eps=1e-10):
     rs = sh.sum(axis=1, keepdims=True)
     rs = np.where(rs == 0, eps, rs)
     p = sh / rs
-    return -(p * np.where(p > 0, np.log2(p + eps), 0)).sum(axis=1)
+    return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(axis=1)
 
 
 def gini_selectivity(M, b):
@@ -79,7 +79,7 @@ def candidate(M, floor, T=1.0, eps=1e-10):
     w = (M > floor) * (T * np.logaddexp(0.0, (M - floor) / T))
     rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
     p = w / rs
-    return (p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)
+    return (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)
 
 
 def scores_at(M, baseline, threshold, floor):
@@ -129,11 +129,20 @@ if n_nan_kd:
 
 high_only = raw[raw['Target Classification'] == 'High confidence']
 M_high = high_only.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack(fill_value=5.0)
-M_relaxed = raw.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack(fill_value=5.0)
-# Align to the same drug/kinase index (relaxed can only add, never remove, rows/cols)
-M_relaxed = M_relaxed.reindex(index=M_high.index, columns=M_high.columns)
+M_full = raw.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack(fill_value=5.0)
+# Main variant: relax the filter on the same drug/kinase grid, so only the filter
+# changes, not the panel. Low-confidence pairs for drugs or kinases with no
+# high-confidence measurement fall outside this grid.
+M_relaxed = M_full.reindex(index=M_high.index, columns=M_high.columns)
+low = raw[raw['Target Classification'] != 'High confidence']
+low_pairs = low.groupby(['Drug', 'Gene Name']).size().index
+in_grid = [(d, g) for d, g in low_pairs if d in M_high.index and g in M_high.columns]
 print(f"\nHigh-confidence-only matrix: {M_high.shape}")
-print(f"Relaxed (High+Low confidence) matrix: {M_relaxed.shape}")
+print(f"Relaxed (High+Low confidence) matrix on the same grid: {M_relaxed.shape}")
+print(f"Low-confidence pairs inside the high-confidence grid: {len(in_grid)} of {len(low_pairs)} "
+      f"(the rest involve {len(set(M_full.index) - set(M_high.index))} drugs and "
+      f"{len(set(M_full.columns) - set(M_high.columns))} kinases with no high-confidence measurement)")
+print(f"Full relaxed matrix, all low-confidence pairs retained: {M_full.shape}")
 n_changed = int((np.abs(M_high.values - M_relaxed.values) > 1e-9).sum())
 print(f"Cells changed by relaxing the filter: {n_changed} of {M_high.size} "
       f"({100 * n_changed / M_high.size:.2f}%)")
@@ -150,6 +159,13 @@ for i, d in enumerate(DEFNS):
     print(f"{d:8s}" + "".join(f"{corr_relaxed[i, j]:8.3f}" for j in range(4)))
 print("\nMax absolute change in any off-diagonal cell: "
       f"{np.max(np.abs(corr_high - corr_relaxed)[~np.eye(4, dtype=bool)]):.3f}")
+corr_full = correlations(M_full.values)
+print("\nSame, all low-confidence pairs retained (adds drugs and kinases, so the panel changes too):")
+print(f"{'':8s}" + "".join(f"{d:8s}" for d in DEFNS))
+for i, d in enumerate(DEFNS):
+    print(f"{d:8s}" + "".join(f"{corr_full[i, j]:8.3f}" for j in range(4)))
+print("Max absolute change vs high-confidence only: "
+      f"{np.max(np.abs(corr_high - corr_full)[~np.eye(4, dtype=bool)]):.3f}")
 
 panel_sizes_h, results_h = panel_curves(M_high.values, baseline=5.0, threshold=6.0, floor=5.0)
 panel_sizes_r, results_r = panel_curves(M_relaxed.values, baseline=5.0, threshold=6.0, floor=5.0)
