@@ -3,12 +3,13 @@
 
 The empirical findings of the Results section motivate the four properties
 D1--D4 formally defined in Methods (``Motivated Properties and a Candidate
-Measure''), repeated here only as short reminders.
-Each property is discussed below together with the observed failure mode that
-motivates it and the evidence for or against each of the five measures.
+Measure'').
+We restate each property and specify the observed failure mode that
+motivates it, along with the evidence demonstrating whether each of the 
+five measures satisfies it.
 
 \paragraph{D1: Reliability threshold.}
-Recall (Methods) that $f(\mathbf{x})$ must be undefined or flagged unreliable
+The value of $f(\mathbf{x})$ must be undefined or flagged unreliable
 once $\max_i x_i \leq \tau^*$.
 
 \textit{Motivation.}
@@ -29,45 +30,36 @@ None of the four definitions assessed here incorporate an explicit reliability
 condition. In fact, both
 the S-score and selectivity entropy assign scores to compounds with no
 sub-micromolar binding, treating sub-threshold values as informative.
-D1 is best understood as a property of \emph{reporting convention} rather than
-of functional form: a one-line gate (do not report a score, or flag it as
-unreliable, when $\max_i x_i \leq \tau^*$) could be bolted onto any of the four
-existing definitions without altering their formulas elsewhere, and any of
-them would then satisfy D1 trivially. D1 is nonetheless the one property all
-four existing definitions, as conventionally used, violate, and it is also the
-principal difference between the candidate measure and the entropy, the one
-existing definition it is otherwise closest to (Table~\ref{tab:desiderata}).
 
-The entropy and Gini coefficient are additionally undefined, by their formula,
-for a compound with no kinase above $\beta$: the normalizing sum in the
-denominator is zero. The pipeline underlying the instability numbers above
-resolves this with a small-epsilon substitution that forces the score to
-exactly $0$ for every such compound at every baseline where it is degenerate,
-and includes these forced-zero configurations in the rank sweep on equal
-footing with genuinely computed ones; this convention, not stated explicitly
-before this revision, is what lets these compounds be ranked (and penalized by
-instability) at all rather than being dropped from the analysis. It is also
-largely responsible for the magnitude of the contrast reported: of the 7
-baselines swept, a zero-active (at $\mathrm{p}K_d > 6$) compound's entropy and
-Gini are only genuinely defined (its maximum affinity exceeds $\beta$) at 1--4
-of them (mean 3.2), so its reported rank mixes forced-zero values, tied with
-every other degenerate compound, against the occasional real value. Recomputing
-the zero-active vs.\ active contrast using, for each compound, only its own
-defined configurations reverses the direction of the effect: zero-active
-compounds become slightly \emph{more} stable than active ones (entropy:
-$\sigma = 9.8$ vs.\ $12.1$, $p = 0.085$; Gini: $\sigma = 9.5$ vs.\ $13.0$,
-$p = 0.028$), rather than less. We read this as reinforcing D1 on different
-grounds than the raw instability contrast: it is not that these compounds
-receive unstable scores when they are scored, but that there is no single
-non-arbitrary convention for scoring them at all. Forcing a value (as the main
-analysis does) and restricting to the rare defined configurations (as this
-check does) are both defensible choices, and they disagree even on the
-direction of the resulting instability contrast, which is itself the symptom
-D1 is meant to flag.
+D1 is a property of \emph{reporting convention} rather than functional form.
+It is possible to satisfy it trivially by changing the reporting convention
+of any of the existing four definitions: withhold the score, or flag it as
+unreliable, whenever $\max_i x_i \leq \tau^*$. It is nonetheless violated 
+by all existing measures, and introducing this fix is the principal difference 
+between the candidate measure and the entropy (Table~\ref{tab:desiderata}).
+
+The entropy and Gini coefficient are also undefined for a
+compound with no kinase above $\beta$ (the normalizing sum is zero). Our
+implementation of these two existing definitions resolves this with a small-epsilon
+substitution that forces the
+score to exactly $0$ for every such compound. As a consequence, these forced-zero
+configurations are pooled with computed ones in the rank sweep,
+increasing the reported contrast. On Klaeger, of the 7
+$\beta$ values swept, a zero-active compound's entropy and Gini are
+defined (i.e. its maximum affinity exceeds $\beta$) at only 1--4 of them (mean
+3.2), so its reported rank mixes forced-zero ties with measured
+values. Restricting the comparison to each compound's own defined
+configurations reverses the effect: zero-active compounds become slightly
+\emph{more} stable than active ones (entropy: $\sigma = 9.8$ vs.\ $12.1$,
+$p = 0.085$; Gini: $\sigma = 9.5$ vs.\ $13.0$, $p = 0.028$). This reinforces D1
+on the additional grounds that it eliminates the need to choose between
+arbitrary, disagreeing
+(even if individually defensible) conventions
+for scoring compounds that have no principled score to begin with.
 
 \paragraph{D2: Bounded gap sensitivity.}
-Recall (Methods) that a small perturbation to the identity of the reference
-off-target must produce a boundedly small change in $f(\mathbf{x})$: as the
+A small perturbation to the identity of the reference
+off-target must produce a small, bounded change in $f(\mathbf{x})$. That is, as the
 gap between two ranked affinities shrinks to zero, the score's dependence on
 which one is the reference off-target must shrink to zero as well.
 
@@ -90,11 +82,10 @@ satisfied.
 However, they also satisfy the intent of D2.
 That is, both are symmetric, continuous functions of
 the full normalized profile, so swapping two exactly tied affinities leaves the
-score unchanged, and a near-tie changes it only by a vanishing amount. We grade
-this vacuous satisfaction with the same ``$(\checkmark)$'' symbol used below for the
-ratio's D3 entry, distinct from the unqualified $\checkmark$ earned by a
-property that does substantive work, so that Table~\ref{tab:desiderata} does
-not read as though four unrelated properties were satisfied by construction.
+score unchanged, and a near-tie changes it only by a vanishing amount. We mark
+this vacuous satisfaction with a parenthesized $(\checkmark)$ in
+Table~\ref{tab:desiderata}, distinct from an unqualified $\checkmark$, which
+indicates the property does substantive work.
 The S-score also has no $k$-th ranked term, but it is not continuous in the
 same way: it counts kinases against a fixed threshold $\tau$, so whichever
 kinase's affinity happens to sit nearest $\tau$ plays the role of a reference
@@ -106,23 +97,23 @@ is why it is graded $\sim$ rather than $\checkmark$ in
 Table~\ref{tab:desiderata}.
 
 \paragraph{D3: Distributional consistency.}
-Recall (Methods) that the ranking induced by $f$ must be stable across the
-full practical interval $B$ of defensible baseline choices, not merely
-infinitesimally. We state it this way, rather than as a local/infinitesimal
+The ranking induced by $f$ must be stable across the
+full practical interval $B$ of defensible baseline choices
+(i.e. those between the assay's detection floor and the conventional activity
+threshold). We state it this way, rather than as a local/infinitesimal
 condition, because the local reading is nearly vacuous: any $f$ continuous in
-$\beta$, as both the entropy and the Gini coefficient are away from the
-active/inactive boundary, trivially preserves any given pair's ranking over a
+$\beta$ (as both the entropy and the Gini coefficient are away from the
+active/inactive boundary) \emph{by definition}
+preserves any given pair's ranking over a
 small enough neighborhood, except at the measure-zero set of $\beta$ where
-the two compounds' scores exactly cross. A local D3 would therefore be
-satisfied by construction by any continuous $f$ for almost every pair, which
-is not the property the instability findings below motivate. The interval
+the two compounds' scores exactly cross. The interval
 $B = [5.0, 6.5]$ used below is the same swept range used throughout this
 paper (Methods), and the D3 verdicts follow from this interval-wide
-definition rather than from an unquantified ``small perturbation.''
+definition rather than from the vacuous local reading just described.
 
 \textit{Motivation.}
-As we implement them, the entropy and Gini definitions are parameterized by a
-baseline $\beta$ that determines which affinities contribute to the binding
+Our entropy and Gini definitions are parameterized by an explicit baseline
+$\beta$ that determines which affinities contribute to the binding
 distribution. Our $\beta$ is derived from the published forms' own (implicit) choice of
 reference points, $K_a \to 0$ for the entropy and $0\%$ inhibition for the Gini.
 Compounds with few active kinases are sensitive to this choice because small
@@ -133,23 +124,23 @@ instability ($r = -0.409$ on Klaeger, $p < 0.001$; weaker for Gini, see
 Table~\ref{tab:predictors}) reflects this sensitivity
 (Figure~\ref{fig:failure_modes}, right).
 D3 requires that the ranking be robust to the choice of $\beta$ across the
-interval $B$, which the entropy and Gini coefficient, as we implement them, do
-not guarantee: their rankings do reverse within $[5.0, 6.5]$ for compounds
-whose active status depends on where exactly the baseline falls, which is
-precisely the $n_\mathrm{active}$--instability relationship reported above.
+interval $B$. Making $\beta$ explicit does not guarantee this for the entropy
+and Gini coefficient: their rankings do reverse within $[5.0, 6.5]$ for compounds
+whose active status depends on where exactly the baseline falls, as observed in the
+the $n_\mathrm{active}$--instability relationship reported above.
 The ratio $R(k)$ compares two specific ranked
-affinities directly, so $f$ does not depend on $\beta$ at all: it has no
-activity baseline to vary in the first place. D3's antecedent (``if there
+affinities directly, so $f$ does not depend on $\beta$ at all. 
+D3's antecedent (``if there
 exists $\beta_0 \in B$ with $f(\mathbf{x};\beta_0) \neq f(\mathbf{y};\beta_0)$'')
 can still be true for the ratio, since $R(k)$ differs between most pairs of
-compounds, but because $f$ is constant in $\beta$, that difference holds at
+compounds. However, because $f$ is constant in $\beta$, that difference holds at
 every $\beta \in B$ identically, so the ranking trivially cannot reverse
-anywhere in the interval. This is a different, weaker form of satisfaction
-than the candidate measure's (below), which is $\beta$-independent only after
-D1's reliability gate and D3's own fixed-floor construction do substantive
-work; we therefore grade the ratio's D3 satisfaction as vacuous, a distinct
-``$(\checkmark)$'' entry in Table~\ref{tab:desiderata} rather than the
-unqualified $\checkmark$ awarded to the candidate measure.
+anywhere in the interval. This is a vacuous form of satisfaction
+than that of the candidate measure (below), which is $\beta$-independent only after
+D1's reliability gate and D3's own fixed-floor construction are applied. 
+To indicate this, we grade the ratio's D3 satisfaction with a
+``$(\checkmark)$'' entry in Table~\ref{tab:desiderata} rather than 
+$\checkmark$ (used to indicate non-vacuous satisfaction).
 
 The S-score's threshold $\tau$ plays the same
 active/inactive gating role as $\beta$.
@@ -163,7 +154,7 @@ This inconsistent sensitivity is why the S-score is
 graded $\sim$ rather than $\times$ or $\checkmark$.
 
 \paragraph{D4: Monotonicity under weak off-target addition.}
-Recall (Methods) that adding a sub-threshold binding interaction must not
+Adding a sub-threshold binding interaction must not
 increase a compound's score.
 
 \textit{Motivation.}
@@ -179,37 +170,32 @@ The entropy and the ratio satisfy D4. This can be explained by
 the fact that a sub-threshold target adds negligible
 weight to the entropy's normalized distribution and falls at or below the
 ratio's reference off-target, so neither score increases.
+Recall here the sign convention (Methods),
+and that these D4 arguments refer to this selectivity-oriented
+$f$, not to the raw entropy or S-score value, which run the opposite way.
 
-\bigskip
-A note on sign conventions: $f$ is defined above so that higher values always
-indicate greater selectivity. The raw S-score and the raw Shannon entropy both
-run the opposite way (more promiscuous compounds score higher), so both are
-negated before ranking throughout this paper; the Gini coefficient and $R(k)$
-already increase with selectivity and are used unnegated. This matters for the
-D4 arguments above: ``the score does not increase'' refers to this
-selectivity-oriented $f$, not to the raw entropy or S-score value.
-
-Table~\ref{tab:desiderata} summarizes which definitions satisfy each property.
-The D1, D2 and D4 verdicts follow from the functional forms set out above, and
-the D3 verdicts follow from the interval-wide definition restated above,
-evaluated on the parameterized forms implemented here (which leave the
-reference point implicit in the published definitions explicit as $\beta$).
-Three of the five $\checkmark$/$(\checkmark)$ entries among the existing
-definitions are vacuous rather than substantive, as discussed above (entropy's
-and Gini's D2, because neither depends on a $k$-th ranked affinity at all; the
-ratio's D3, because it has no $\beta$ to be sensitive to); the remaining two
-(entropy's and the ratio's D4) do substantive work. Table~\ref{tab:desiderata}
-marks the vacuous ones accordingly. Stated plainly: D1 is the only property that all four
+\paragraph{Summary.}
+Table~\ref{tab:desiderata} summarizes which (conventionally implemented)
+definitions satisfy each property, and none satisfy all four.
+The D1, D2, and D4 verdicts follow directly from each definition's formula and
+hold for any parameter value, with no data needed to check them. The D3
+verdicts require actually computing rankings across the swept $\beta$
+values described above. This is made possible by making $\beta$ an explicit,
+independently variable parameter in the entropy and Gini definitions.
+The published originals leave it implicit ($K_a \to 0$ for the
+entropy, $0\%$ inhibition for the Gini) and expose nothing to sweep.
+Three entries among the existing
+definitions are vacuous (marked $(\checkmark)$): entropy's
+and Gini's D2, because neither depends on a $k$-th ranked affinity at all, and the
+ratio's D3, because it has no $\beta$ to be sensitive to. 
+D1 is the only property that all four
 existing definitions violate as conventionally used. Entropy is the existing
-definition closest to satisfying every property: it already satisfies D2 and
-D4 (D2 vacuously), and fails only D1 and D3. The candidate measure is a local
+definition closest to satisfying every property: it already satisfies D2 (vacuously) and
+D4, and fails only D1 and D3. The candidate measure is a local
 modification of the entropy built specifically to repair those two remaining
 failures (Methods, ``A Candidate Measure''), which is why D1 and D3 are also
 the two properties on which the candidate differs from the plain entropy in
-the table below. None of the
-four definitions assessed satisfies all four properties as conventionally
-implemented, but the candidate measure introduced next does, substantively
-rather than vacuously, on every one of them.
+the table below. The candidate measure thus substantively satisfies all four properties.
 
 \begin{table}[h]
   \centering
@@ -217,11 +203,10 @@ rather than vacuously, on every one of them.
            definitions and by the candidate measure introduced below.
            $\checkmark$: satisfied substantively (by construction, or verified
            empirically for the candidate).
-           $(\checkmark)$: satisfied only vacuously, because the property's
+           $(\checkmark)$: satisfied vacuously, because the property's
            antecedent is never triggered (entropy's and Gini's D2, which score
            no $k$-th ranked affinity; the ratio's D3, which has no baseline
-           $\beta$ to be sensitive to), not because the measure does the
-           substantive work the property is meant to verify.
+           $\beta$ to be sensitive to).
            $\sim$: partially satisfied or satisfied under additional assumptions.
            $\times$: violated in general.}
   \label{tab:desiderata}
@@ -283,10 +268,10 @@ Klaeger compounds, and on whether the score survives a shift in the analyst's
 baseline, which is D3. 
 The full definition is given in Methods (``Motivated Properties and a
 Candidate Measure'').
-The gate is not a cosmetic addition: without it, the non-binding kinases at
+Without the weight gate added in the candidate measure, the non-binding kinases at
 the floor dominate the profile and the score inverts, rising with the number
 of active kinases ($r = +0.94$ on Klaeger) instead of falling with it.
-The weight gate sits at the detection floor $x_0$, while the D1 reliability gate
+The gate sits at the detection floor $x_0$, while the D1 reliability gate
 sits at $\tau^* > x_0$. A kinase with affinity between $x_0$ and $\tau^*$ therefore
 contributes to the binding distribution. However, a compound whose strongest binding
 falls in that range is flagged unreliable by D1.
@@ -305,32 +290,36 @@ emphasis baseline $\beta$, and the ranking is essentially invariant to it over
 $[4.5, 6.5]$ (worst-case pairwise Spearman $\rho = 0.999$).
 Moving the floor across the same range shifts the ranking sensitively
 ($\rho \approx -0.93$), as it does for any threshold-based activity
-call, including the entropy's ($\rho \approx -0.95$). Figure~\ref{fig:failure_modes}
-(right) makes this explicit: sweeping the candidate's gate $x_0$ over the same
-range as the entropy's baseline is, if anything, \emph{more} destabilizing than
-sweeping the entropy's (mean rank instability $46.3$ vs.\ $12.5$); the
-candidate's D3 advantage comes specifically from declaring $x_0$ a fixed
-constant rather than sweeping it as a free parameter, after which the one
-remaining free parameter, $\beta$, is the part that is empirically robust.
+call, including the entropy's ($\rho \approx -0.95$). In Figure~\ref{fig:failure_modes}
+(right), sweeping the candidate's gate $x_0$ over the same
+range as the entropy's baseline is more destabilizing than
+sweeping the entropy's baseline itself (mean rank instability $46.3$ vs.\
+$12.5$). The
+candidate's D3 advantage comes from declaring $x_0$ a fixed
+constant, making the ranking empirically robust to
+the one remaining free parameter, the emphasis baseline $\beta$.
 D4 holds because the gated weight is zero at and below the floor and is monotone
 above it, so adding a sub-threshold target never raises the score (verified for
 $100\%$ of Klaeger compounds).
+
 The orientation, D3, and D4 checks were repeated on the other three datasets.
 The candidate stays correctly oriented and satisfies D3 and D4 on Davis,
-Anastassiadis, and Metz, with orientation between selectivity and the
-active-kinase count ranging from $-0.79$ to $-0.97$, D3 emphasis-robustness
-$\rho \geq 0.99$, and D4 for $100\%$ of compounds in every dataset.
+Anastassiadis, and Metz. The correlation between the
+candidate's score and the active-kinase count ranges from $-0.79$ to
+$-0.97$. D3 robustness (to the emphasis baseline $\beta$) is $\rho \geq 0.99$ in
+each case, and D4
+holds for $100\%$ of compounds in every dataset.
 We also repeated the gate-swept (floor-as-free-parameter) check behind
-Figure~\ref{fig:failure_modes} on all four datasets, to confirm the gate's
-fixed-by-declaration role, rather than inherent robustness, explains D3
-generally and not only on Klaeger. The worst-case pairwise Spearman $\rho$
+Figure~\ref{fig:failure_modes} on all four datasets to confirm that the gate's
+fixed-by-declaration role (rather than inherent robustness) explains D3.
+The worst-case pairwise Spearman correlation $\rho$
 under a floor sweep is $-0.838$ on Davis, $-0.932$ on Klaeger, and $-0.330$ on
-Metz: all far from the emphasis-parameter's $\rho \geq 0.99$, confirming the
-gate is not something the measure is robust to on these three. Anastassiadis
+Metz. All three are far from the emphasis-parameter's $\rho \geq 0.99$, confirming that the
+measure is not robust on the gate on these. Anastassiadis
 is a partial exception ($\rho = +0.913$): on that dataset the candidate's
 ranking happens to be comparatively insensitive to where the floor is set,
-which we do not have a mechanistic explanation for and report rather than
-explain away. Full per-dataset numbers are in Supporting Information
+for which we do not have a mechanistic explanation. Full per-dataset 
+numbers are in Supporting Information
 (Table~S4) and \texttt{candidate\_validation.py} in the code repository.
 
 \begin{figure}[h]
@@ -343,16 +332,11 @@ explain away. Full per-dataset numbers are in Supporting Information
            active kinase.
            \emph{Right (D3):} per-compound rank instability against the
            number of active kinases, under three sweeps: the entropy's
-           activity baseline, which is simultaneously its active/inactive
-           gate and its emphasis weighting, left fully free (orange); the
-           candidate's gate $x_0$ swept over the same range as an equivalent
-           comparison, with its emphasis baseline pinned to $x_0$ at each
+           activity baseline left fully free (orange); the
+           candidate's gate $x_0$ swept over the same range, with its
+           emphasis baseline pinned to $x_0$ at each
            point (green); and the candidate's emphasis baseline swept with
-           $x_0$ fixed at the assay floor, as used throughout this paper (red).
-           Sweeping the candidate's gate (green) is, if anything, more
-           destabilizing than sweeping the entropy's; only once the gate is
-           removed from the free-parameter space by declaration (red) does the
-           candidate's remaining parameter prove robust.}
+           $x_0$ fixed at the assay floor (red).}
   \label{fig:failure_modes}
 \end{figure}
 

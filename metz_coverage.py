@@ -35,3 +35,11 @@ print(f"  percent of {n_kin}: min={pct.min():.1f}%, max={pct.max():.1f}%, "
       f"mean={pct.mean():.1f}%, median={np.median(pct):.1f}%")
 qs = np.percentile(pct, [10, 25, 50, 75, 90])
 print(f"  deciles (10/25/50/75/90): {np.round(qs, 1).tolist()}")
+
+n_at_floor = int((cov_kept == 50).sum())
+n_near_floor = int((cov_kept <= 55).sum())
+print(f"\nProximity to the 50-kinase inclusion floor:")
+print(f"  exactly 50 of {n_kin} kinases: {n_at_floor} of {keep.sum()} "
+      f"({100 * n_at_floor / keep.sum():.1f}%)")
+print(f"  55 or fewer of {n_kin} kinases (within 5 of the floor): {n_near_floor} of {keep.sum()} "
+      f"({100 * n_near_floor / keep.sum():.1f}%)")

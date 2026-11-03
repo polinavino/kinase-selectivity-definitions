@@ -15,23 +15,22 @@ selectivity assessments without a principled choice of selectivity definition.
 
 The clustering of definitions into two families
 reflects a difference in what is being measured.
-Distribution-based definitions ask: how concentrated is the compound's binding
-activity across the full profiled kinome?
-The ratio definition asks: how much more potently does the compound bind its
-primary target than a specified off-target?
-The selectivity measure discrepancy is most pronounced
-for compounds with one clearly dominant target that also
-bind many kinases at moderate affinity (Type~3 profiles in our taxonomy,
-e.g.\ Dovitinib and BMS-690514), among compounds that clear the activity
-threshold: ratio-based methods report these as highly selective (large gap to
-the next-best target), while distribution-based methods report them as
-moderately promiscuous (activity spread across many targets). Zero-active
-(Type~1) compounds pose a different problem. They have no primary target to
-begin with, so no definition can score them meaningfully; this is why D1
-excludes them from scoring entirely, rather than their posing a case of two
-definitions disagreeing about a well-defined profile.
-The properties proposed in the Motivated Properties section do not
-define selectivity. They state what we want any measure of it to do, with each
+Distribution-based definitions measure the concentration of the compound's binding
+activity across the full profiled kinome.
+The ratio definition measure how much more potently the compound binds its
+primary target than a specified off-target.
+Among compounds that clear the activity threshold, the selectivity measure
+discrepancy is most pronounced for those with one clearly dominant target
+that also bind many kinases at moderate affinity (Type~3 profiles in our
+taxonomy, e.g.\ Dovitinib and BMS-690514). Ratio-based methods report these
+compounds as highly selective, because of the large gap to the next-best
+target. Distribution-based methods instead report them as moderately
+promiscuous, because activity is spread across many targets. Zero-active
+(Type~1) compounds have no primary target to
+begin with. Because of this, no definition can score them meaningfully, so D1
+excludes them from scoring entirely.
+The properties proposed in the Motivated Properties section 
+specify what we want any selectivity measure to do, with each
 property drawn from one of the failure modes above.
 
 This coexistence has a historical explanation.
@@ -132,8 +131,8 @@ not behave like a ratio measure, and assigning it to that family would have
 misdescribed the cross-family correlations reported above. 
 We did not add it as a fifth measure: the distribution family is
 already represented by three members, and CATDS appears to be an additional
-instance of the same underlying construct rather than a genuinely distinct
-fifth measure (full comparison numbers in Supporting Information, Table~S2,
+instance of the same underlying construct
+(full comparison numbers in Supporting Information, Table~S2,
 and in the code repository).
 
 A further axis of platform dependence that this analysis does not examine is
@@ -141,19 +140,23 @@ cell-based versus cell-free profiling. Recent work shows that selectivity
 classifications for the same compounds can differ substantially between
 biochemical binding panels and cellular target-engagement assays. For example, several
 type II (DFG-out-binding) inhibitors show cellular interactions that
-cell-free assays miss\cite{Binder2026,Binder2026correction}.
+cell-free assays miss~\cite{Binder2026,Binder2026correction}.
 A plausible contributor, not established by that work, is that the cellular
 assays report occupancy of full-length kinase in intact cells, with regulatory
-domains, binding partners and intracellular ATP present, whereas the cell-free
-panels score isolated kinase-domain constructs under defined conditions.
+domains, binding partners, and intracellular ATP present. Many
+cell-free binding panels, instead, score isolated, recombinantly expressed
+kinase-domain constructs. This specific contrast does not map cleanly onto the
+two cell-free datasets used here: Davis follows the isolated-domain
+convention, while Klaeger's Kinobeads approach instead captures endogenous,
+full-length kinases directly from cell lysate.
 
-This raises a direct question: for compounds profiled on more than one
+This raises the following question: for compounds profiled on more than one
 platform, does the choice of assay technology move a compound's selectivity
 ranking more or less than the choice of selectivity definition does? We
 resolved 46 compounds profiled in both Davis (competition binding) and
 Klaeger (chemoproteomics) by matching PubChem CIDs against Klaeger's drug
 names (\texttt{davis\_klaeger\_overlap.py}), and computed each definition's
-median rank on this fixed set of 46 compounds separately on each platform. The
+median rank on this fixed set of 46 compounds (separately on each platform). The
 \emph{platform effect} (same definition, Davis rank vs.\ Klaeger rank) is
 weaker on average than the \emph{definition effect} (different definitions,
 within one platform): Spearman $r = -0.06$ to $0.68$ across the four
@@ -161,30 +164,28 @@ definitions for the platform comparison (mean $0.44$), against $r = 0.14$ to
 $1.00$ for the within-platform, cross-definition comparison (mean $0.61$).
 The ratio definition is the extreme case: its Davis ranking and its Klaeger
 ranking for the same 46 compounds are statistically indistinguishable from
-uncorrelated ($r = -0.06$, $p = 0.67$), so for the ratio, which assay a
+uncorrelated ($r = -0.06$, $p = 0.67$). That is, which assay a
 compound happened to be profiled on matters at least as much as which
-selectivity definition is applied to it, and arguably more. On this
-shared-compound set, assay platform is, on average, a larger source of
-ranking disagreement than scoring definition, which should temper any
+selectivity definition is applied to it. This should temper any
 cross-study comparison of selectivity rankings regardless of which definition
 is used.
 
 All four existing definitions and the candidate measure introduced below are
 symmetric functions of the binding profile: each treats a compound's affinity
-vector as an unordered multiset, so two compounds with identical affinity
+vector as an unordered multiset. Thus, two compounds with identical affinity
 distributions receive identical scores regardless of which specific kinases
 carry the off-target activity. A compound whose off-targets are
-pharmacologically silent and one whose off-targets are known safety-relevant
+pharmacologically inert and one whose off-targets are known safety-relevant
 kinases (e.g.\ hERG, or a kinase implicated in a class toxicity) are therefore
 scored identically if their affinity distributions match. None of the measures
-discussed here incorporates target identity, and none accounts for exposure:
-pg.~7 above notes that whether a given affinity translates into occupancy at
-physiologically achievable concentrations is a question these $\mathrm{p}K_d$
-and $\mathrm{p}K_i$ values alone cannot answer. A selectivity score is
-consequently, at best, a summary of \emph{binding breadth}, not of clinical
-risk, and the go/no-go decisions discussed throughout this paper should weight
-it alongside target-specific liability knowledge and exposure modeling rather
-than treating it as a sufficient statistic on its own.
+discussed here incorporates target identity, and none accounts for exposure.
+A measured affinity says nothing about whether a target is actually occupied
+in a patient, since that depends on the drug concentration achievable at a
+tolerated dose, not on the $\mathrm{p}K_d$ or $\mathrm{p}K_i$ value alone. A
+selectivity score is
+consequently, at best, a summary of \emph{binding breadth}.
+The go/no-go decisions should necessarily weigh
+it alongside target-specific liability knowledge and exposure modeling.
 
 We also examined whether in vitro selectivity predicts clinical toxicity,
 correlating the selectivity rankings of the FDA-approved Klaeger compounds with
@@ -215,16 +216,15 @@ number of active kinases, since a measure can satisfy D2 to D4 and still rank
 promiscuous compounds as selective. A measure should declare its scale type,
 because the four definitions report on incomparable scales and Figure~\ref{fig:fidelity}
 shows that leaving the operationalization undeclared can reverse a ranking.
-The panel-size behaviour reported above could itself be stated as a property
-rather than as a description. A further candidate, stability under measurement
+The panel-size behaviour reported above could itself be stated as a property.
+A further candidate, stability under measurement
 error in the affinities, is not testable on the present data. Agreement across
 datasets profiling the same compounds \emph{is} testable, and is reported
 above as the platform-vs-definition comparison on the 46 compounds shared
 between Davis and Klaeger (by PubChem CID). By compound name, Klaeger and
-Anastassiadis share 19 compounds, though a platform comparison between an
+Anastassiadis share 19 compounds. However, a platform comparison between an
 affinity assay and a single-concentration percent-inhibition assay is less
 directly interpretable than the pKd-to-pKd Davis/Klaeger comparison above.
 Metz identifies compounds only by internal ID and PubChem SID rather than by
 name, and we did not resolve those against the other three datasets, so its
-overlap with Davis, Klaeger, or Anastassiadis remains unquantified here rather
-than assumed to be small.
+overlap with Davis, Klaeger, or Anastassiadis remains unquantified here.

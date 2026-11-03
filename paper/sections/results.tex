@@ -131,7 +131,7 @@ active kinases are sensitive to the baseline because small changes can move
 targets in or out of the active set, altering the distribution substantially.
 The active affinity range is also a significant predictor for the S-score and
 entropy on Klaeger ($r = -0.35$ and $-0.27$, both $p < 0.001$). Gini is not
-significantly predicted by this feature ($r = -0.10$, $p = 0.15$). It is consistent with the interpretation that heterogeneous
+significantly predicted by this feature ($r = -0.10$, $p = 0.14$). It is consistent with the interpretation that heterogeneous
 profiles (whose affinities span a wide range) yield more reproducible rankings
 across parameter choices than flat profiles (in which many near-equal affinities
 reshuffle as the parameter changes).
@@ -159,26 +159,25 @@ by every profile-shape feature except the top$_1$--top$_2$ gap
 affinities. Compounds whose active affinities cluster near the threshold gain or
 lose panel hits under small shifts in $\tau$, whereas those with a wide affinity
 range retain a stable hit count regardless of the exact cutoff.
-This S-score pattern is specific to Klaeger, however, on Davis, no profile feature
+This S-score pattern is specific to Klaeger: on Davis, however, no profile feature
 significantly predicts S-score instability (all $|r| \le 0.16$;
 Table~\ref{tab:predictors}, right). A possible explanation is that a threshold
 count's instability is governed by where each assay's detection window falls
 relative to the cutoff, and the two assays place
 that window very differently: 3.6\% of the Klaeger matrix is active versus
 17.9\% of Davis (Methods). 
-Two pairings in Table~\ref{tab:predictors} hold with $p < 0.001$ on both
-pK$_d$ datasets: the ratio family's dependence on the top$_1$--top$_2$ gap
-(which compares two affinities directly rather than counting how many pass a
-cutoff), and the entropy's dependence on the number of active kinases. The
+Two relations in Table~\ref{tab:predictors} hold with $p < 0.001$ on both
+pK$_d$ datasets: the ratio family's dependence on the top$_1$--top$_2$ gap, 
+and the entropy's dependence on the number of active kinases. The
 ratio-gap pairing is the more consistent of the two in magnitude ($r = -0.444$
-Davis, $-0.341$ Klaeger); the entropy pairing holds on both but is
+Davis, $-0.341$ Klaeger), while the entropy pairing holds on both but is
 considerably weaker on the smaller Davis panel ($r = -0.409$ on Klaeger vs.\
-$-0.279$ on Davis, which only reaches $p < 0.05$). As reported above, the
-ratio-gap dependence also holds on Metz but fails on
-Anastassiadis, so it replicates on three of the four datasets and specifically
+$-0.279$ on Davis, which only reaches $p < 0.05$). The
+ratio-gap dependence, which holds on Metz but fails on
+Anastassiadis, replicates on three of the four datasets, and specifically
 not on the percent-inhibition readout. Gini shows the reverse pattern in
 strength to the entropy, reaching significance on
-Davis ($r = -0.300$) but not on Klaeger ($r = -0.093$).
+Davis ($r = -0.300$), but not on Klaeger ($r = -0.093$).
 
 \begin{table}[h]
   \centering
@@ -192,11 +191,11 @@ Davis ($r = -0.300$) but not on Klaeger ($r = -0.093$).
            active-affinity skew. Significance:
            * $p<0.05$, ** $p<0.01$, *** $p<0.001$.}
   \label{tab:predictors}
-  \resizebox{\textwidth}{!}{%
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
   \begin{tabular}{lcccc@{\hskip 1.4em}cccc}
     \toprule
     & \multicolumn{4}{c}{Klaeger ($n=206$)} & \multicolumn{4}{c}{Davis ($n=68$)} \\
-    \cmidrule(lr){2-5}\cmidrule(lr){6-9}
     Feature & S & E & G & R & S & E & G & R \\
     \midrule
     $n_\mathrm{active}$      & $-0.272^{***}$ & $-0.409^{***}$ & $-0.093$       & $-0.040$       & $-0.153$ & $-0.279^{*}$ & $-0.300^{*}$ & $+0.294^{*}$ \\
@@ -206,8 +205,7 @@ Davis ($r = -0.300$) but not on Klaeger ($r = -0.093$).
     top$_2$ $\mathrm{p}K_d$  & $-0.314^{***}$ & $-0.234^{***}$ & $-0.192^{**}$  & $+0.186^{**}$  & $-0.055$ & $-0.203$     & $-0.187$     & $+0.296^{*}$ \\
     Active affinity skew     & $-0.162^{*}$   & $-0.045$       & $+0.346^{***}$ & $-0.108$       & $+0.026$ & $+0.066$     & $+0.043$     & $+0.069$ \\
     \bottomrule
-  \end{tabular}%
-  }
+  \end{tabular}
 \end{table}
 
 Five additional candidate features were tested:
@@ -220,11 +218,10 @@ primary-target affinity (top$_1$ $\mathrm{p}K_d$), (4) a near-tie count
 generalizing the top$_1$--top$_2$ gap, and (5) the active-affinity coefficient of
 variation. CR$_1$ and HHI turned out to be near-collinear with
 $n_\mathrm{active}$, which is already in the table ($r = -0.98$ to $-0.99$ and $-0.998$,
-respectively, on both datasets), so carry essentially the same information
-rather than being independently weaker or stronger. The
+respectively, on both datasets), and thus they carry essentially 
+the same information. The
 remaining three were weaker predictors than the features already
-included, in every family and both datasets, with a few differences small
-enough to be statistically indistinguishable (full numbers in the code
+included, in every family and both datasets (full numbers in the code
 repository).
 
 \subsection{Three Mechanistically Distinct Sources of Instability}
@@ -253,26 +250,27 @@ implicating a different aspect of how the definitions are constructed.
 \textbf{Type~1: Zero-active compounds.}
 The five most unstable Klaeger compounds (AZD-8055, BMS-911543, Vatalanib,
 Filgotinib, ARRY-380; rank $\sigma > 76$) all have zero active kinases at the
-$\mathrm{p}K_d > 6$ threshold \emph{in this profiling panel}.
+$\mathrm{p}K_d > 6$ threshold in the Klaeger panel.
 This is a property of the assay result, not of the compounds' known
 pharmacology: all five are established, potent inhibitors of specific kinase
-targets (mTOR, JAK2, VEGFR2, JAK1, and HER2, respectively) that simply were not
+targets (mTOR, JAK2, VEGFR2, JAK1, and HER2, respectively), none of which were
 captured as high-confidence sub-micromolar hits in the Klaeger chemoproteomic
-screen. A plausible explanation, which we cannot verify from the affinity
-matrix alone, is low expression or poor capture of those
-targets in the profiled cell lysates rather than a genuine absence of binding;
-we do not have expression or capture data to confirm this and report it as a
-plausible interpretation, not an established cause.
-Whatever the cause, within this dataset all four definitions still assign
+screen. A plausible explanation (which would require additional  
+data to confirm) is low expression or poor capture of those
+targets in the profiled cell lysates.
+
+Within the Klaeger dataset, all four definitions assign
 these compounds numerical selectivity scores based only on sub-threshold
 values, with no primary target on which to ground a selectivity judgment.
 For entropy, Gini, and the ratio, the resulting rankings are arbitrary:
 different parameterizations produce different orderings of compounds that
 are, in practice, indistinguishable from one another. The S-score is the
-exception: it evaluates to exactly $0$ for every zero-active compound
+exception because it evaluates to exactly $0$ for every zero-active compound
 regardless of threshold, so these compounds are tied rather than reordered
-under the S-score specifically, a stable degenerate ranking rather than an
-arbitrary one (Motivated Properties, D1).
+under the S-score, giving a stable but degenerate ranking
+(it is graded $\times$ for all four of the existing measures in
+Table~\ref{tab:desiderata} in Motivated Properties).
+
 Mean rank instability for zero-active compounds is $\sigma \approx 73$,
 compared with $\sigma \approx 31$ for compounds with at least one active
 kinase ($p < 0.001$, Mann--Whitney $U$ test).
@@ -280,8 +278,8 @@ Davis has no such compounds at all: every Davis compound
 has at least one active kinase, consistent with Davis's fixed-concentration
 screening design, which reports a $K_d$ only when activity is first detected
 at 10~$\mu$M. The same zero-active instability contrast reported here for
-Klaeger also holds on the two further datasets in
-Section~\ref{sec:results:replication}.
+Klaeger also holds on Anastassiadis and Metz (see the replication across
+assay technologies above).
 
 \textbf{Type~2: Near-tied top targets.}
 When an active compound's two best-bound kinases have near-identical affinities, the
@@ -307,7 +305,7 @@ questions about selectivity.
 
 Conversely, the most stable Klaeger compounds (XL-228, $\sigma = 7.0$;
 PF-03814735, $\sigma = 7.8$) are highly promiscuous, with 55--57 active
-kinases: when a compound binds nearly the entire profiled kinome, all
+kinases. This is because when a compound binds nearly the entire profiled kinome, all
 definitions rank it as non-selective regardless of parameterization, producing
 low instability.
 Stability can also arise from the opposite extreme. The most stable Davis
@@ -316,8 +314,8 @@ two active kinases, but its affinity for them sits far enough above every
 other kinase's that no parameter choice in our sweep moves it off the top of
 the ranking. Both routes to stability, near-complete promiscuity and a
 sharply decisive, narrow profile, leave little room for parameter choice to
-change the outcome; it is the intermediate, ambiguous profiles described above
-that are unstable.
+change the outcome. The intermediate, ambiguous profiles described above
+are, on the other hand, consistently reported as unstable.
 
 \subsection{Panel Size Dependence of Selectivity Rankings}
 \label{sec:results:panelsize}
@@ -380,8 +378,8 @@ while the ratio again lags, reaching $r = 0.90$ only at 170 of the 172 kinases.
 The ratio's poor recoverability is therefore universal across both sparse
 datasets, strengthening the case that it measures a distinct,
 panel-composition-dependent property, whereas the Gini coefficient's slow
-Klaeger recovery above is dataset-specific rather than a general property of
-the definition: entropy and the S-score are fast on both datasets.
+Klaeger recovery above is dataset-specific. 
+Entropy and the S-score are fast on both datasets.
 
 \begin{figure}[h]
   \centering

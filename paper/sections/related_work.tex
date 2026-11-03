@@ -22,6 +22,7 @@ target-dependent selectivity (CATDS) score, which quantifies the reduction in
 binding to a given target relative to the summed reduction across all detected
 targets at a specified inhibitor concentration (see Discussion for why we
 did not implement it as a fifth measure).
+
 Bosc et al.\cite{Bosc2017} subsequently proposed two further metrics, the
 window score and ranking score, and compared them against four previously
 published metrics (the S-score, Gini coefficient, selectivity entropy, and a
@@ -31,14 +32,8 @@ certain compounds cannot be scored under some definitions when threshold
 conditions are not satisfied. For example, ratio-based scores are undefined
 for a compound with no kinase above the activity threshold, since there is then
 no primary target or off-target to compare.
-Our own implementation of $R(k)$ (Methods) does not follow this convention: it
-returns a numerical value for every compound by falling back to the assay
-floor when fewer than $k+1$ kinases are active, rather than leaving the score
-undefined. We flag this difference explicitly because it means $R(k)$'s
-D1 violation (Table~\ref{tab:desiderata}) is a property of our implementation
-choice, not of the definition as Bosc et al.\ state it; an implementation that
-followed their convention would instead satisfy D1 by construction, the same
-way the candidate measure does.
+Our own implementation of $R(k)$ does not follow this convention (see Methods,
+``Ratio''), which bears on $R(k)$'s D1 grading in Table~\ref{tab:desiderata}.
 
 Reconciliation attempts have remained limited in scope.
 Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
