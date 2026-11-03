@@ -42,18 +42,39 @@ def worst_pair(fn, grid):
                for i in range(len(grid)) for j in range(i + 1, len(grid)))
 
 
-# per-dataset: (matrix, detection floor, active threshold, T, D3 baseline sweep)
+def rev_frac(fn, grid, keep):
+    """D3 as stated in Methods: fraction of pairs of scored compounds whose order
+    reverses somewhere in the grid (see d3_pair_reversals.py)."""
+    S = np.array([fn(v) for v in grid])[:, keep]
+    iu = np.triu_indices(S.shape[1], 1)
+    sign = np.sign(S[:, iu[0]] - S[:, iu[1]])
+    return ((sign.max(0) > 0) & (sign.min(0) < 0)).mean()
+
+
+# per-dataset: (matrix, detection floor, active threshold, T, D3 sweep).
+# The D3 sweep is B = [x0, tau*] (Methods), the same for the candidate's gate and
+# emphasis and for the entropy's baseline, as in d3_pair_reversals.py.
 def load():
     aff = pd.read_csv(f"{HERE}/davis_affinity.csv")
     davis = aff.pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0).values
     return {
-        "Davis":         (davis, 5.0, 6.0, 1.0, np.arange(4.5, 6.6, 0.25)),
-        "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.arange(4.5, 6.6, 0.25)),
+        # T = active threshold - floor in every dataset (1, 1, 30, 2): below 0.58 x that
+        # distance the candidate can violate D4 (d4_entropy_vs_candidate.py).
+        "Davis":         (davis, 5.0, 6.0, 1.0, np.arange(5.0, 6.01, 0.25)),
+        "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.arange(5.0, 6.01, 0.25)),
         # percent-inhibition assay: detection floor set to the 20% noise level
         # (median value is ~4%), the analog of the pKd = 5 background floor.
-        "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0, 10.0, np.arange(15.0, 36.0, 5.0)),
-        "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0, 1.0, np.arange(3.5, 6.1, 0.25)),
+        "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0, 30.0, np.arange(20.0, 50.1, 5.0)),
+        "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0, 2.0, np.arange(4.0, 6.01, 0.25)),
     }
+
+
+def entropy_sel(P, b, eps=1e-10):
+    """Baseline-subtracted entropy (selectivity orientation), as in the main analysis."""
+    sh = np.maximum(P - b, 0)
+    rs = np.where(sh.sum(1, keepdims=True) == 0, eps, sh.sum(1, keepdims=True))
+    p = sh / rs
+    return (p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)
 
 
 def validate():
@@ -62,16 +83,20 @@ def validate():
         nact = (M > active).sum(1)
         sel = candidate(M, floor, T)
         orient = spearmanr(sel, nact)[0]                       # want strongly negative
-        d3_emph = worst_pair(lambda b: candidate(M, floor, T, baseline=b), bsweep)  # gate pinned
+        keep = nact > 0                                        # compounds D1 allows to be scored
+        d3_emph = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, keep)  # gate pinned
         # boundary varied: gate and emphasis move together (floor = b)
-        d3_bound = worst_pair(lambda b: candidate(M, b, T, baseline=b), bsweep)
-        sub = floor + 0.5 * (active - floor)                   # a detected but sub-threshold value
+        d3_bound = rev_frac(lambda b: candidate(M, b, T, baseline=b), bsweep, keep)
+        # the entropy's own baseline swept over the same grid, for comparison
+        d3_ent = rev_frac(lambda b: entropy_sel(M, b), bsweep, keep)
+        sub = active                                           # worst case for D4: an addition exactly at tau*
         base = candidate(M, floor, T)
         new = candidate(np.hstack([M, np.full((M.shape[0], 1), sub)]), floor, T)
         d4 = (new <= base + 1e-9).mean() * 100
         rows.append(dict(dataset=name, n_cpd=M.shape[0], n_kin=M.shape[1],
-                         orient_r=round(orient, 3), d3_emphasis=round(d3_emph, 3),
-                         d3_boundary=round(d3_bound, 3), d4_pct=round(d4, 1)))
+                         orient_r=round(orient, 3), d3_emphasis_rev=round(d3_emph, 4),
+                         d3_boundary_rev=round(d3_bound, 4), d3_entropy_rev=round(d3_ent, 4),
+                         d4_pct=round(d4, 1)))
     return pd.DataFrame(rows)
 
 
@@ -82,8 +107,8 @@ def t_sweep():
     for T in [0.5, 0.75, 1.0, 1.5, 2.0]:
         sel = candidate(M, floor, T)
         orient = spearmanr(sel, nact)[0]
-        d3 = worst_pair(lambda b: candidate(M, floor, T, baseline=b), bsweep)
-        rows.append(dict(T=T, orient_r=round(orient, 3), d3_emphasis=round(d3, 3)))
+        d3 = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, nact > 0)
+        rows.append(dict(T=T, orient_r=round(orient, 3), d3_emphasis_rev=round(d3, 4)))
     # cross-T ranking agreement (are rankings stable as T varies?)
     rk = [to_ranks(candidate(M, floor, T)) for T in [0.5, 0.75, 1.0, 1.5, 2.0]]
     worstT = min(spearmanr(rk[i], rk[j])[0] for i in range(len(rk)) for j in range(i + 1, len(rk)))
@@ -106,7 +131,7 @@ def inversion_demo():
 if __name__ == "__main__":
     df = validate()
     df.to_csv(f"{HERE}/candidate_validation.csv", index=False)
-    print("Cross-dataset validation (orientation must be negative, D3 emphasis high, D4 = 100):")
+    print("Cross-dataset validation (orientation must be negative; D3 = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D4 = 100):")
     print(df.to_string(index=False))
     ts, worstT = t_sweep()
     print("\nSmoothing-width T sweep on Klaeger:")

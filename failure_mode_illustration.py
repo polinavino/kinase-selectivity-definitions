@@ -116,8 +116,10 @@ print("  (pooled figure is driven by entropy and Gini; the S-score reverses beca
 print("   score is exactly 0 for every zero-active compound, i.e. stable by degeneracy)")
 
 # ---------------- D3: per-compound instability under three different sweeps ----------------
-sweep = np.arange(4.5, 6.6, 0.25)
-ent_ranks_b = np.array([to_ranks(entropy(M, b)) for b in np.arange(5.0, 6.6, 0.25)])
+# one grid for all three sweeps: B = [x0, tau*] = [5.0, 6.0] (Methods, D3), so the
+# candidate's gate is swept over exactly the entropy's range
+sweep = np.arange(5.0, 6.01, 0.25)
+ent_ranks_b = np.array([to_ranks(entropy(M, b)) for b in sweep])
 ent_instab = ent_ranks_b.std(axis=0)
 # true equivalent: sweep the candidate's own gate (floor x0), beta pinned to x0 at each point
 cand_floor_ranks = np.array([to_ranks(candidate(M, baseline=f, floor=f)) for f in sweep])
@@ -132,13 +134,14 @@ r_cand_emph, p_ce = spearmanr(n_active[has_active], cand_emph_instab[has_active]
 print(f"D3: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}); "
       f"candidate-floor-swept r={r_cand_floor:+.3f} (p={p_cf:.1e}); "
       f"candidate-emphasis-swept (gate fixed) r={r_cand_emph:+.3f} (p={p_ce:.1e})")
-print(f"D3: mean instability -- entropy (gate swept) {ent_instab[has_active].mean():.2f}; "
+ratio_gate = cand_floor_instab[has_active].mean() / ent_instab[has_active].mean()
+ratio_emph = ent_instab[has_active].mean() / cand_emph_instab[has_active].mean()
+print(f"D3: mean instability over B=[5.0,6.0] -- entropy (baseline swept) {ent_instab[has_active].mean():.2f}; "
       f"candidate (gate/floor swept, true equivalent) {cand_floor_instab[has_active].mean():.2f} "
-      f"({cand_floor_instab[has_active].mean() / ent_instab[has_active].mean():.1f}x LARGER than entropy, "
-      f"i.e. no more robust to its gate than entropy is to its own); "
+      f"({ratio_gate:.2f}x the entropy's); "
       f"candidate (emphasis swept, gate fixed by declaration) {cand_emph_instab[has_active].mean():.2f} "
-      f"({ent_instab[has_active].mean() / cand_emph_instab[has_active].mean():.0f}x smaller than entropy "
-      f"-- but only because the gate itself is no longer a free parameter being compared)")
+      f"({ratio_emph:.0f}x smaller than entropy -- but only because the gate itself is no longer "
+      f"a free parameter being compared)")
 
 # ---------------- figure ----------------
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.5))
@@ -155,20 +158,20 @@ axL.text(0, sigma_zero + 9, 'candidate: undefined\n(D1 gate), not scored',
 axL.set_ylim(0, max(sigma_zero, sigma_active) * 1.35)
 
 axR.scatter(n_active[has_active], ent_instab[has_active], s=16, color='C1', alpha=0.6,
-            label=f'entropy, gate swept (r={r_ent:+.2f})')
+            label=f'entropy, baseline swept (r={r_ent:+.2f})')
 axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2', alpha=0.6,
             label=f'candidate, gate swept -- true equivalent (r={r_cand_floor:+.2f})')
 axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
             label=f'candidate, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
 axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
 axR.set_title('D3: gate vs. emphasis-parameter instability (Klaeger)')
-axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2, top=105)
-ratio_emph = ent_instab[has_active].mean() / cand_emph_instab[has_active].mean()
-axR.text(0.97, 0.55, f"gate swept: candidate is no more\nrobust than entropy ({cand_floor_instab[has_active].mean()/ent_instab[has_active].mean():.1f}$\\times$)\n"
-          f"gate fixed instead: remaining\nparameter is {ratio_emph:.0f}$\\times$ more robust",
+axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)
+axR.text(0.97, 0.55, f"gate swept: candidate {cand_floor_instab[has_active].mean():.1f} vs. "
+          f"entropy {ent_instab[has_active].mean():.1f}\n"
+          f"gate fixed: emphasis sweep {cand_emph_instab[has_active].mean():.1f}",
           ha='right', va='top', fontsize=7.5, transform=axR.transAxes)
 
-fig.suptitle('The two failure modes the candidate measure repairs', fontsize=12)
+fig.suptitle('The two failure modes that motivate D1 and D3', fontsize=12)
 plt.tight_layout(rect=[0, 0, 1, 0.94])
 plt.savefig('failure_modes.png', dpi=150, bbox_inches='tight')
 print("\nSaved failure_modes.png")

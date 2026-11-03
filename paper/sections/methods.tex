@@ -32,14 +32,13 @@ concentration) that neither dataset provides. A stricter cutoff
 substantially (mean active kinases per compound falls from 77.5 to 34.4, a
 2.25-fold reduction) and pushes two of the 68 Davis compounds, which have at
 least one active kinase at $\mathrm{p}K_d > 6$, to zero active kinases at the
-stricter cutoff (into the zero-active regime that Results identifies as
-least rank-stable). The two-family structure is preserved under
-this stricter cutoff (entropy--Gini remains $r = 0.999$, and the S-score
-remains substantially closer to entropy/Gini than to the ratio). However, 
-individual pairwise correlations shift by up to $0.12$ (S-score--ratio rises
-from $0.456$ to $0.574$, and S-score's correlation with entropy/Gini falls
-from $\approx 0.95$ to $\approx 0.83$), which is considered ``preserved'',
-but is not numerically identical (\texttt{dataset\_descriptive\_stats.py}).
+stricter cutoff (into the zero-active regime discussed in Results).
+Shifting the S-score's threshold sweep up by one log unit to match this cutoff
+(from $[5.5, 8.0]$ to $[6.5, 9.0]$; the entropy, Gini, and ratio sweeps are
+unchanged by this check) lowers the S-score's correlation with entropy and Gini
+from $\approx 0.95$ to $\approx 0.83$ and raises its correlation with the ratio
+from $0.456$ to $0.574$. The S-score therefore stays much closer to entropy and
+Gini than to the ratio (\texttt{dataset\_descriptive\_stats.py}).
 
 The Klaeger dataset\cite{Klaeger2017} is comprised of binding affinities for 243
 clinical kinase inhibitors profiled against the human kinome using
@@ -91,31 +90,35 @@ the Davis $\mathrm{p}K_d = 5.0$ floor above). Coverage per compound is highly
 skewed (a median compound is measured against only 21 of the 172 kinases;
 \texttt{dataset\_descriptive\_stats.py}). Because of this,
 we restricted the dataset to the 704 compounds profiled against at least 50 of
-the 172 kinases ($\geq 29\%$ coverage), keeping profiles in which most entries
-reflect a real
-measurement rather than floor imputation while retaining a large enough
-compound set for the panel-size and instability analyses.
-The $50$-kinase threshold is a lower bound: across
+the 172 kinases ($\geq 29\%$ coverage). The threshold excludes the most
+sparsely profiled compounds while retaining a large enough compound set for
+the panel-size and instability analyses. It does not make most entries real
+measurements: across
 the 704 retained compounds, coverage ranges from $29.1\%$ to $83.1\%$ of the
-172 kinases (mean $40.9\%$, median $37.2\%$). Most retained compounds clear
-the cutoff well above the minimum (median 64 of 172 kinases), but a sizable
-minority sit close to it: 23 of 704 ($3.3\%$) have exactly 50, and 170
-($24.1\%$) have 55 or fewer (\texttt{metz\_coverage.py}).
+172 kinases (mean $40.9\%$, median $37.2\%$, i.e.\ 64 of 172 kinases), so for
+the median retained compound most entries are floor-imputed, and fewer than a
+quarter of compounds have more than half of their entries measured
+(75th percentile $47.1\%$). A sizable minority sit close to the threshold: 23
+of 704 ($3.3\%$) have exactly 50 measured kinases, and 170 ($24.1\%$) have 55
+or fewer (\texttt{metz\_coverage.py}).
 
 The four datasets span three assay technologies (competition binding,
 chemoproteomics, and functional activity) and two readout types (affinity and
 single-concentration inhibition).
 Each selectivity definition is computed on the native readout of its
 dataset, and our analyses concern rank correlations between definitions and rank
-instability. Figure~\ref{fig:fidelity} shows the definitions are not 
-invariant to the choice of readout. In fact, two defensible
+instability. Figure~\ref{fig:fidelity} shows the definitions are not
+invariant to how they are operationalized on a given readout: two defensible
 operationalizations of the entropy rank compounds differently, and on Klaeger
 the relationship between them changes sign ($r = -0.32$, a weak negative
 association, not a near-complete inversion of the ranking). Cross-dataset
 comparison here is based on rank correlations computed within
 each dataset.
 For the percent-inhibition and $\mathrm{p}K_i$ datasets, the S-score threshold, and
-entropy/Gini baseline grids were shifted to span each dataset's active range,
+entropy/Gini baseline grids were shifted to span each dataset's active range
+(entropy/Gini baselines over $[0, 30]\%$ inhibition on Anastassiadis and
+$\mathrm{p}K_i \in [4.0, 5.5]$ on Metz, against $[5.0, 6.5]$ on the
+$\mathrm{p}K_d$ datasets),
 while the ratio off-target index $k \in \{1,\ldots,5\}$ was left unchanged
 (it is an index of off-targets and so needs no rescaling).
 
@@ -141,19 +144,18 @@ $\mathrm{p}K_{d}$ denoting tighter binding.
 
 \paragraph{S-score.}
 Karaman et al.\cite{Karaman2008} defined the selectivity score as the fraction
-of the panel that a compound inhibits: the number of kinases ``bound'' divided
-by the number tested, where a kinase counts as bound when the compound reduces
-its activity below a fixed cutoff at a single screening concentration (the
-original work reports $S(35)$, $S(10)$ and $S(1)$ for cutoffs of $35\%$, $10\%$
-and $1\%$ of control activity).
-We implemented the same fraction, expressing the bound criterion as an affinity
-threshold $\tau$ on $\mathrm{p}K_d$:
+of the panel that a compound binds: the number of kinases bound with a
+dissociation constant below a cutoff, divided by the number of distinct kinases
+tested. They reported $S(3~\mu\mathrm{M})$ and $S(100~\mathrm{nM})$, for $K_d$
+cutoffs of $3~\mu$M and $100$~nM.
+We implemented the same fraction, with the cutoff expressed as a threshold
+$\tau$ on $\mathrm{p}K_d$:
 \begin{equation}
   S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[\mathrm{p}K_{d,i} > \tau].
 \end{equation}
-Sweeping $\tau$ reproduces their family of cutoffs. We used
-$\tau \in \{5.5, 5.75, \ldots, 8.0\}$ (11 values), spanning $K_d$ cutoffs from
-approximately 3~$\mu$M to 10~nM.
+We used $\tau \in \{5.5, 5.75, \ldots, 8.0\}$ (11 values), spanning $K_d$
+cutoffs from approximately 3~$\mu$M to 10~nM, which includes both of Karaman
+et al.'s cutoffs ($\tau \approx 5.5$ and $\tau = 7$).
 
 \paragraph{Selectivity entropy.}
 Uitdehaag and Zaman\cite{Uitdehaag2011} treat the compound's binding across the
@@ -179,9 +181,9 @@ of compounds at $\mathrm{p}K_d = 6.0$ versus 55\% at $\mathrm{p}K_d = 8.0$,
 \texttt{dataset\_descriptive\_stats.py}),
 degenerating the S-score toward an uninformative 0 and the entropy and Gini
 weights toward an undefined 0/0 alike. The $\tau$ range 
-(whose S-score is not necessarily immune to this) is wider because it was 
-chosen to reproduce Karaman
-et al.'s published cutoffs (approximately 3~$\mu$M to 10~nM). $\beta$ has no
+(whose S-score is not necessarily immune to this) is wider because it was
+chosen to include Karaman et al.'s published cutoffs ($3~\mu$M and $100$~nM)
+and extend to 10~nM. $\beta$ has no
 equivalent published reference points and was kept closer to the
 $\mathrm{p}K_d = 6$ active threshold used elsewhere in this work.
 The association-constant and log-affinity weightings are distinct reasonable
@@ -213,7 +215,16 @@ $G$ near 0. Higher values therefore indicate greater selectivity.
 \paragraph{Ratio.}
 Classical pharmacological selectivity is pairwise. It quantifies how much more tightly a
 compound binds its primary target than an off-target.
-We implemented this as the fold-selectivity, in log units, between the primary
+Karaman et al.\cite{Karaman2008} also reported a score of this kind alongside
+the S-score: the fraction of tested kinases bound within tenfold of the
+affinity for the compound's intended primary target, which combines a ratio
+cutoff with an S-score-style count. Because it anchors on the intended primary
+target rather than on the highest-affinity kinase, it does not depend on which
+of two near-tied top kinases is designated the primary target, the ambiguity
+behind the ratio's near-tie instability (Type~2, Results) and property D2
+(below). It does, however, require an annotated primary target for every
+compound, whereas $R(k)$ needs only the profile itself.
+We implemented the pairwise comparison directly, as the fold-selectivity, in log units, between the primary
 target and the $k$-th ranked off-target:
 \begin{equation}
   R(k) = \mathrm{p}K_{d,(1)} - \mathrm{p}K_{d,(k+1)}
@@ -270,10 +281,14 @@ form, not to the association-constant or percent-inhibition forms of the
 original publications. The two operationalizations
 rank compounds differently enough to change which family entropy appears to
 belong to.
-To confirm that this choice does not implicitly determine our conclusions, we
-recomputed the entropy and Gini in forms closer to the originals
-(association-constant weighting) and compared the resulting rankings with the
-log-affinity forms.
+To test whether this choice determines our conclusions, we
+recomputed the entropy and Gini with association-constant weighting and
+compared the resulting rankings with the log-affinity forms. For the entropy
+this is the original form; for the Gini, whose original input is percent
+inhibition, it is an affinity-scale analogue. In Figure~\ref{fig:fidelity} the
+association-constant forms are computed over every entry of the matrix,
+floor-imputed ones included; the robustness check below instead restricts them
+to measured entries.
 The two operationalizations differ substantially: for entropy, Spearman
 $r = 0.42$ (Davis) and $-0.32$ (Klaeger), while for Gini, $r = 0.11$ and $-0.45$
 (Figure~\ref{fig:fidelity}).
@@ -297,10 +312,10 @@ ratio ($r = 0.79$ and $0.76$) than with the S-score ($r = 0.57$ and $0.24$) or
 the manuscript's own log-affinity Gini ($r = 0.69$ and $0.42$). Under this
 operationalization entropy does not cluster with the distribution family at
 all on either sparse-coverage dataset. The native percent-inhibition Gini on
-Anastassiadis is the one case that stays qualitatively consistent with the
-log-affinity form: it correlates more with entropy ($r = 0.63$) than with the
-ratio ($r = 0.31$), preserving the two-family pattern, though more weakly than
-the manuscript's baseline-swept version. 
+Anastassiadis stays only partly consistent with the log-affinity form: it
+correlates with the entropy ($r = 0.63$), but weakly and about equally with the
+S-score ($r = 0.35$) and the ratio ($r = 0.31$), so the two-family pattern is
+not clearly preserved there either.
 
 We draw two conclusions from this. First,
 the two-family structure we report throughout is a property of the
@@ -343,6 +358,16 @@ or a higher raw entropy, indicates a \emph{more} promiscuous compound), so
 both are negated before ranking throughout this paper. The Gini coefficient
 and $R(k)$ already increase with selectivity and are used unnegated.
 Ties were broken by average rank.
+The entropy and Gini are undefined for a compound with no kinase above the
+baseline $\beta$, because the normalizing sum is zero. Our implementation sets
+both scores to $0$ in that case, which ranks the compound as maximally selective
+under the (negated) entropy, tied with single-target profiles, and as minimally
+selective under the Gini. A compound can be undefined at some baselines of the
+sweep and defined at others, so this convention enters its rank instability
+directly; Results reports the contrast under the
+alternative of computing instability only over configurations in which the
+score is defined. The ratio substitutes the assay floor for a missing
+off-target (above), and the S-score is defined ($0$) for every compound.
 This yielded 30 rank vectors per dataset for Davis, Klaeger, and Metz (11 for
 the S-score, 7 for entropy, 7 for Gini, and 5 for ratio), and 28 for
 Anastassiadis, whose coarser native percent-inhibition scale supports only 9
@@ -380,71 +405,121 @@ FDA-approved Klaeger compounds) is summarized in the Limitations section.
 The analysis code and full per-definition results are available in the code
 repository (see Data and Software Availability).
 
-\subsection{Motivated Properties and a Candidate Measure}
+\subsection{Motivated Properties}
 \label{sec:methods:properties}
 
-The instability patterns above motivate four properties, defined here. Their
-empirical motivation and the evaluation of all five measures against them are
-given in the Motivated Properties section below.
+The instability patterns reported in Results motivate four properties. Each is
+stated formally below, together with the failure mode it targets and how a
+measure is assessed against it; Results evaluates the four definitions and a
+candidate measure against them (Table~\ref{tab:desiderata}).
 Let $\mathbf{x} = (x_1, \ldots, x_N) \in \mathbb{R}^N$ denote a compound's
 binding profile across $N$ kinases, where $x_i = \mathrm{p}K_{d,i}$ and $N$ is
 the panel size, which varies across compounds within a dataset
 (Anastassiadis, Metz) and across datasets. A selectivity measure is a
 function $f : \mathbb{R}^N \to \mathbb{R}$, defined for every panel size $N$,
 where higher values indicate greater selectivity. A ranking over a set of
-compounds is defined by ordering their $f$-scores.
+compounds is defined by ordering their $f$-scores. We write $x_0$ for the
+assay's detection floor and $\tau^*$ for the activity threshold
+($\mathrm{p}K_d = 6$ on the $\mathrm{p}K_d$ datasets).
 
 \textbf{D1 (reliability threshold).} There exists $\tau^* > 0$ such that
 $f(\mathbf{x})$ is undefined, or explicitly flagged as unreliable, when
 $\max_i x_i \leq \tau^*$.
+A compound with no binding above the activity threshold has no target on which
+to ground a selectivity judgment, and its rank is otherwise set by whatever
+convention a measure uses for such profiles (Type~1, Results). D1 is a
+reporting rule, not a property of a functional form, and is assessed as such.
 
 \textbf{D2 (bounded gap sensitivity).} For any $\mathbf{x}$ satisfying D1, if
-$f$ depends on the $k$-th ranked affinity $x_{(k)}$, there must exist $g$ with
-$g(0) = 0$ such that $|f(\mathbf{x}; k) - f(\mathbf{x}; k+1)| \le g(x_{(k)} -
-x_{(k+1)})$: as the gap between two ranked affinities shrinks to zero, the
-score's dependence on which one is the reference off-target must shrink to
-zero as well.
+$f$ depends on a choice of reference off-target indexed by $k$, there must
+exist $g$ with $g(0) = 0$ such that
+$|f(\mathbf{x}; k) - f(\mathbf{x}; k+1)| \le g(x_{(k)} - x_{(k+1)})$.
+When the $k$-th and $(k+1)$-th ranked affinities are nearly equal, it is
+ambiguous whether the $(k+1)$-th kinase is a target or the first off-target;
+moving the reference off-target past it (from $k$ to $k+1$) must then change
+the score by only a small amount.
+This targets the ratio's near-tie instability (Type~2, Results) and is assessed
+from each measure's functional form. A measure with no reference-off-target
+parameter satisfies D2 vacuously.
 
-\textbf{D3 (distributional consistency).} The ranking induced by $f$ must be
-stable across the full practical interval $B = [\beta_{\min}, \beta_{\max}]$
-of defensible choices for the activity baseline $\beta$.
-A \emph{defensible} choice is any $\beta$ between the assay's own detection floor,
-below which no additional signal is present, and the conventional activity
-threshold used elsewhere in this paper: the same range an analyst would
-consider when setting a profiling panel's activity cutoff.
-Formally, for compounds $\mathbf{x}, \mathbf{y}$, if $f(\mathbf{x};\beta_0)
-\neq f(\mathbf{y};\beta_0)$ for some $\beta_0 \in B$, then the sign of
-$f(\mathbf{x};\beta) - f(\mathbf{y};\beta)$ must be the same for every $\beta
-\in B$.
+\textbf{D3 (distributional consistency).} Let $B = [x_0, \tau^*]$, the interval
+between the assay's detection floor and the activity threshold, which contains
+every defensible placement of an activity boundary. Let $\theta$ be a parameter
+of $f$ that an analyst must choose on the affinity scale (the S-score's $\tau$,
+the entropy's and Gini's $\beta$). A pair of compounds $\mathbf{x}, \mathbf{y}$
+\emph{reverses in $B$} if $f(\mathbf{x}; \theta) - f(\mathbf{y}; \theta)$ is
+positive at some $\theta \in B$ and negative at another. D3 requires that at
+most a fraction $\varepsilon$ of the pairs of compounds that D1 allows to be
+scored reverse in $B$. We use $\varepsilon = 0.01$; every verdict in
+Table~\ref{tab:desiderata} is the same for any $\varepsilon$ from $1\%$ to
+$7\%$ (Results).
+This targets the baseline sensitivity of compounds with few active kinases
+(Results) and is assessed empirically, by computing the rankings across $B$ on
+each dataset. A measure with no such parameter satisfies D3 vacuously.
 
 \textbf{D4 (monotonicity under weak off-target addition).} If
 $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ with $x_{N+1} \leq \tau^*$, then
 $f(\mathbf{x}') \leq f(\mathbf{x})$. That is, adding a sub-threshold binding
-interaction must not increase a compound's score.
+interaction must not increase a compound's score; otherwise a compound can be
+made to look more selective by profiling it against more kinases it barely
+binds, which matters whenever panels differ in size or composition. D4 is
+assessed from each measure's functional form.
 
-\textbf{A candidate measure satisfying D1--D4.} For a profile $\mathbf{x}$
-with $\max_i x_i > \tau^*$ (undefined otherwise, satisfying D1), define
+\subsection{A Candidate Measure}
+\label{sec:methods:candidate}
+
+The candidate measure is introduced to show that the four properties can be
+met together, not to outperform existing measures on these data. For a profile
+$\mathbf{x}$ with $\max_i x_i > \tau^*$ (undefined otherwise, satisfying D1),
+define
 \begin{equation}
   w_i = \mathbf{1}[x_i > x_0]\; T \log\!\big(1 + e^{(x_i - \beta)/T}\big), \qquad
   p_i = \frac{w_i}{\sum_j w_j}, \qquad
   f(\mathbf{x}) = \sum_i p_i \log_2 p_i,
 \end{equation}
-where $x_0$ is a constant representing the assay detection floor,
+where $x_0$ is a constant representing the assay detection floor
+($\mathrm{p}K_d = 5.0$ on Davis and Klaeger, $\mathrm{p}K_i = 4.0$ on Metz,
+and a $20\%$ inhibition noise level on Anastassiadis),
 $\beta$ is a smooth emphasis baseline (set to
 $x_0$ in the results below), and $T$ is a smoothing width in the native
-units of the profile. For the Davis, Klaeger, and Metz datasets, we have
-$T \approx 1$ $\mathrm{p}K_d$/$\mathrm{p}K_i$ unit. For
-the Anastassiadis dataset, whose
-native scale is $0$--$100\%$ inhibition rather than log-affinity, we have
-$T = 10$ percentage points. The
-indicator gates out kinases at or below $x_0$, so non-binders
-carry no weight. The function $f$ is the negative Shannon entropy of the resulting
-smoothed, normalized profile, i.e. it is the negative logarithm of the
-effective number of targets the compound binds. This is a gated,
-smooth-hinge variant of the selectivity entropy. It differs from 
-ordinary selectivity entropy in that it has (1) an explicit D1 reliability gate, 
-(2) a non-binder gate fixed at $x_0$, and (3) a
-smooth softplus hinge above $x_0$ in place of the entropy's hard cutoff. Why
-each of these three changes is necessary, and empirical evidence that
-the resulting measure satisfies all four properties on four datasets, are
-given in the Motivated Properties section below.
+units of the profile. We set $T = \tau^* - x_0$, the distance from the floor
+to the reliability threshold: $1$ $\mathrm{p}K_d$ unit on Davis and Klaeger,
+$2$ $\mathrm{p}K_i$ units on Metz, and $30$ percentage points on
+Anastassiadis, whose native scale is $0$--$100\%$ inhibition rather than
+log-affinity. With $\beta = x_0$ the measure then depends on a profile only
+through $(x_i - x_0)/(\tau^* - x_0)$, so it does not depend on the units of
+the readout. The function $f$ is the negative Shannon entropy of the
+smoothed, normalized profile, i.e.\ the negative logarithm of the
+effective number of targets the compound binds.
+
+The candidate is a gated, smooth-hinge variant of the selectivity entropy and
+differs from it in three ways, one for each property the entropy fails:
+(1) an explicit reliability gate, for D1; (2) a non-binder gate fixed at the
+floor $x_0$, so that no free parameter sets the activity boundary, for D3; and
+(3) a smooth softplus hinge above $x_0$ in place of the entropy's hard cutoff
+$\max(x_i - \beta, 0)$, for D4. The hard cutoff gives a kinase just above $\beta$
+an arbitrarily small weight, which is what lets a sub-threshold addition raise
+the entropy's score; the softplus gives every gated kinase a weight of at least
+$T \ln 2$, which rules this out:
+
+\textbf{Proposition.} With $\beta = x_0$ and
+$T \geq (\tau^* - x_0)/\ln(2^e - 1) \approx 0.58\,(\tau^* - x_0)$, adding a
+kinase with affinity at most $\tau^*$ never raises the candidate's score.
+
+\textit{Proof.} A kinase at or below $x_0$ has zero weight and leaves the score
+unchanged. Otherwise every gated kinase, the added one included, has weight
+above $m = T\ln 2$, and the added one has weight
+$a \leq T\ln(1 + e^{(\tau^* - x_0)/T}) \leq e\,m$, the last step by the
+condition on $T$. Let the original profile have $n$ gated kinases with total
+weight $W > nm$ and entropy $H$ (in nats), and let $q = a/(W + a)$. After the
+addition the entropy is $(1 - q)H + h(q)$, where $h$ is the binary entropy, so
+it does not decrease if and only if $H \leq h(q)/q$. Because $h$ is concave with
+$h(0) = 0$, $h(q)/q$ decreases in $q$. Since $q < r/(n + r)$ with
+$r = a/m \leq e$, this gives
+$h(q)/q > \ln\frac{n + r}{r} + \frac{n}{r}\ln\frac{n + r}{n}$. As $H \leq \ln n$,
+it suffices that $\ln n$ is at most this bound, which rearranges to
+$\ln r \leq (1 + \frac{n}{r})\ln(1 + \frac{r}{n})$. The right-hand side is at
+least $1$ for all $n, r > 0$, because $\ln(1 + t) \geq t/(1 + t)$, and
+$\ln r \leq 1$. $\square$
+
+The choice $T = \tau^* - x_0$ satisfies this condition on every dataset.

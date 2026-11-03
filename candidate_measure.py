@@ -28,9 +28,9 @@ Why this satisfies D1-D4:
       is the fixed assay detection floor, a constant of the assay rather than an
       analyst's choice, so the arbitrary-baseline instability D3 targets does not
       arise.  The remaining softplus emphasis parameter beta is one the ranking is
-      robust to (verified below: ~invariant to beta over [4.5, 6.5], gate fixed).
+      robust to (verified below: ~invariant to beta over B = [5.0, 6.0], gate fixed).
       The boundary itself, if varied, moves the ranking like any threshold measure
-      (verified below: about -0.93, comparable to entropy).  That is why it is
+      (verified below: comparable to entropy over the same interval).  That is why it is
       pinned to the assay floor rather than left free.
   D4  the gated weight is zero at and below the floor and monotone above it, so
       adding a sub-threshold off-target adds zero weight and never raises S.
@@ -85,7 +85,8 @@ def ratio(P, floor, k=1):
 
 def measures_for(baseline, threshold, floor):
     return {
-        'candidate': lambda P: candidate(P, baseline=floor, floor=floor),
+        # T = tau* - floor: the D4 guarantee needs T >= 0.58 (tau* - floor) (d4_entropy_vs_candidate.py)
+        'candidate': lambda P: candidate(P, baseline=floor, floor=floor, T=threshold - floor),
         'entropy':   lambda P: entropy(P, b=baseline),
         'gini':      lambda P: gini(P, b=baseline),
         's_score':   lambda P: s_score(P, thr=threshold),
@@ -174,18 +175,18 @@ assert orient_r < -0.3, f"candidate is inverted: corr(selectivity, n_active) = {
 print(f"Orientation check (Klaeger): corr(candidate selectivity, n_active) = {orient_r:+.3f} (must be negative)")
 
 # D3: baseline robustness
-betas = np.arange(4.5, 6.6, 0.25)
+betas = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] = [5.0, 6.0] (Methods, D3)
 def worst_pair(fn):
     rr = np.array([to_ranks(fn(b)) for b in betas])
     return min(spearmanr(rr[i], rr[j])[0] for i in range(len(betas)) for j in range(i + 1, len(betas)))
-print("\nD3 check (worst-case rank Spearman over [4.5,6.5]):")
+print("\nD3 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):")
 print(f"  candidate, vary emphasis baseline (gate pinned at floor): {worst_pair(lambda b: candidate(Mk, baseline=b, floor=FLOOR)):+.3f}")
 print(f"  candidate, vary active-set boundary (gate = floor)       : {worst_pair(lambda b: candidate(Mk, baseline=b, floor=b)):+.3f}")
 print(f"  existing entropy, vary baseline                          : {worst_pair(lambda b: entropy(Mk, b=b)):+.3f}")
 
 # D4: monotonicity under weak off-target addition
 base = candidate(Mk, FLOOR, FLOOR)
-new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR - 0.7)]), FLOOR, FLOOR)
+new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR)]), FLOOR, FLOOR)   # worst case: at tau*
 print(f"\nD4 (add a sub-threshold off-target): selectivity non-increasing for "
       f"{(new <= base + 1e-9).mean() * 100:.0f}% of compounds; max increase = {max(0.0, (new - base).max()):.4f}")
 

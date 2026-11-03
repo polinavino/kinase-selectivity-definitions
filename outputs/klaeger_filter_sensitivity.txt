@@ -24,7 +24,8 @@ ratio      0.273   0.472   0.598   1.000
 Max absolute change in any off-diagonal cell: 0.050
 
 Panel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:
-  entropy : 110 vs. 110
-  gini    : 290 vs. 290
-  s_score : 110 vs. 110
-  ratio   : 343 vs. 343
+  entropy  : 110 vs. 110
+  gini     : 290 vs. 290
+  s_score  : 110 vs. 110
+  ratio    : 343 vs. 343
+  candidate: 110 vs. 110

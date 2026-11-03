@@ -4,7 +4,8 @@ Characterization and Motivated Properties for a Well-Formed Measure
 Polina Vinogradova*
 
 Across four kinase profiling datasets spanning three assay technologies,
-selectivity definitions split three to one: the S-score, entropy and Gini
+selectivity definitions (entropy and Gini on a common log-affinity scale)
+split three to one: the S-score, entropy and Gini
 agree closely while the fold-selectivity ratio agrees with none of them, and
 rank instability is associated with binding-profile shape. We identify three
 instability sources and motivate four properties that none of the four

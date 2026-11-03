@@ -74,12 +74,21 @@ def correlations(M):
     return np.array([[spearmanr(med[a], med[b])[0] for b in DEFNS] for a in DEFNS])
 
 
+def candidate(M, floor, T=1.0, eps=1e-10):
+    # gated smooth-hinge effective-target number (candidate_measure.py), selectivity orientation
+    w = (M > floor) * (T * np.logaddexp(0.0, (M - floor) / T))
+    rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
+    p = w / rs
+    return (p * np.where(p > 0, np.log2(p + eps), 0)).sum(1)
+
+
 def scores_at(M, baseline, threshold, floor):
     return {
-        'entropy': to_ranks(-selectivity_entropy(M, baseline)),
-        'gini':    to_ranks(gini_selectivity(M, baseline)),
-        's_score': to_ranks(s_score(M, threshold)),
-        'ratio':   to_ranks(ratio_selectivity(M, 1, floor)),
+        'entropy':   to_ranks(-selectivity_entropy(M, baseline)),
+        'gini':      to_ranks(gini_selectivity(M, baseline)),
+        's_score':   to_ranks(s_score(M, threshold)),
+        'ratio':     to_ranks(ratio_selectivity(M, 1, floor)),
+        'candidate': to_ranks(candidate(M, floor)),
     }
 
 
@@ -145,5 +154,5 @@ print("\nMax absolute change in any off-diagonal cell: "
 panel_sizes_h, results_h = panel_curves(M_high.values, baseline=5.0, threshold=6.0, floor=5.0)
 panel_sizes_r, results_r = panel_curves(M_relaxed.values, baseline=5.0, threshold=6.0, floor=5.0)
 print("\nPanel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:")
-for d in ['entropy', 'gini', 's_score', 'ratio']:
-    print(f"  {d:8s}: {pstar(panel_sizes_h, results_h, d)} vs. {pstar(panel_sizes_r, results_r, d)}")
+for d in ['entropy', 'gini', 's_score', 'ratio', 'candidate']:
+    print(f"  {d:9s}: {pstar(panel_sizes_h, results_h, d)} vs. {pstar(panel_sizes_r, results_r, d)}")

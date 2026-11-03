@@ -1,0 +1,46 @@
+1. Condition for the candidate's D4 guarantee: T >= 0.5816 (tau* - x0)
+   dataset         tau*-x0  T now  T before  r=a/m now  r before  (need r <= e = 2.718)
+   Davis               1.0    1.0       1.0      1.895     1.895
+   Klaeger             1.0    1.0       1.0      1.895     1.895
+   Anastassiadis      30.0   30.0      10.0      1.895     4.398
+   Metz                2.0    2.0       1.0      1.895     3.069
+
+2. Sharpness on profiles with one strong target and n kinases just above the floor
+   Klaeger        T = tau*-x0          T =   1.000: D4 holds
+   Klaeger        T before             T =   1.000: D4 holds
+   Klaeger        T just above bound   T =   0.587: D4 holds
+   Klaeger        T just below bound   T =   0.564: D4 VIOLATED (max rise +3.1e-05 bits at n = 1473)
+   Metz           T = tau*-x0          T =   2.000: D4 holds
+   Metz           T before             T =   1.000: D4 VIOLATED (max rise +1.4e-03 bits at n = 190)
+   Metz           T just above bound   T =   1.175: D4 holds
+   Metz           T just below bound   T =   1.128: D4 VIOLATED (max rise +5.4e-05 bits at n = 850)
+   Anastassiadis  T = tau*-x0          T =  30.000: D4 holds
+   Anastassiadis  T before             T =  10.000: D4 VIOLATED (max rise +1.4e-02 bits at n = 98)
+   Anastassiadis  T just above bound   T =  17.623: D4 holds
+   Anastassiadis  T just below bound   T =  16.925: D4 VIOLATED (max rise +4.4e-05 bits at n = 1046)
+
+3. Worked counterexample for the entropy (beta = floor = 5.0, tau* = 6.0)
+   profile: one kinase at pKd 7.0 and fifty at 5.1; add one kinase at pKd 6.0
+   entropy selectivity  -4.8944 -> -4.8262  (RISES: D4 violated)
+   candidate (T = 1)    -5.6422 -> -5.6657  (does not rise)
+
+4. Real data: add one kinase at tau* to every compound with an active kinase
+   Davis          n=  68  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+                  entropy rises, by baseline: 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%, 5.75: 0.0%, 6: 0.0%, 6.25: 0.0%, 6.5: 0.0%
+   Klaeger        n= 206  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+                  entropy rises, by baseline: 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%, 5.75: 0.0%, 6: 0.0%, 6.25: 0.0%, 6.5: 0.0%
+   Anastassiadis  n= 134  entropy rises:   0.0% at beta = floor,  34.3% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+                  entropy rises, by baseline: 0: 34.3%, 5: 15.7%, 10: 1.5%, 15: 0.0%, 20: 0.0%, 25: 0.0%, 30: 0.0%
+   Metz           n= 699  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+                  entropy rises, by baseline: 4: 0.0%, 4.25: 0.0%, 4.5: 0.0%, 4.75: 0.0%, 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%
+
+5. Random adversarial search, candidate with T = tau* - x0 (additions anywhere in (x0, tau*])
+   Klaeger        20000 random profiles: max rise = +0.00e+00 bits
+   Metz           20000 random profiles: max rise = +0.00e+00 bits
+   Anastassiadis  20000 random profiles: max rise = +0.00e+00 bits
+
+6. Effect of the change of T on the rankings (Spearman, all compounds)
+   Davis          T unchanged (1)
+   Klaeger        T unchanged (1)
+   Anastassiadis  T = 10 -> 30: Spearman = 0.999
+   Metz           T = 1 -> 2: Spearman = 0.999

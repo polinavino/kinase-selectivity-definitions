@@ -69,6 +69,15 @@ def worst_pair(fn, grid):
                for i in range(len(grid)) for j in range(i + 1, len(grid)))
 
 
+def rev_frac(fn, grid, keep):
+    """D3 as stated in Methods: fraction of pairs of scored compounds whose order
+    reverses somewhere in the grid (see d3_pair_reversals.py)."""
+    S = np.array([fn(v) for v in grid])[:, keep]
+    iu = np.triu_indices(S.shape[1], 1)
+    sign = np.sign(S[:, iu[0]] - S[:, iu[1]])
+    return ((sign.max(0) > 0) & (sign.min(0) < 0)).mean()
+
+
 def load():
     aff = pd.read_csv(f"{HERE}/davis_affinity.csv")
     davis = aff.pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0).values
@@ -79,7 +88,7 @@ def load():
 
 
 datasets = load()
-BSWEEP = np.arange(4.5, 6.6, 0.25)
+BSWEEP = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] (Methods, D3)
 QSWEEP = [0.05, 0.075, 0.10, 0.125, 0.15]
 ALPHAS = [0.5, 1.0, 2.0, 3.0]
 
@@ -90,16 +99,16 @@ for name, (M, floor, active, T) in datasets.items():
     nact = (M > active).sum(1)
     base_rank = to_ranks(candidate_alpha(M, floor, T, alpha=1.0))
     print(f"\n{name} ({M.shape[0]} cpd x {M.shape[1]} kin):")
-    sub = floor + 0.5 * (active - floor)
+    sub = active   # worst case for D4: an addition exactly at tau*
     for alpha in ALPHAS:
         sel = candidate_alpha(M, floor, T, alpha=alpha)
         orient = spearmanr(sel, nact)[0]
-        d3 = worst_pair(lambda b: candidate_alpha(M, floor, T, alpha=alpha, baseline=b), BSWEEP)
+        d3 = rev_frac(lambda b: candidate_alpha(M, floor, T, alpha=alpha, baseline=b), BSWEEP, nact > 0)
         base = sel
         new = candidate_alpha(np.hstack([M, np.full((M.shape[0], 1), sub)]), floor, T, alpha=alpha)
         d4 = (new <= base + 1e-9).mean() * 100
         agree = spearmanr(to_ranks(sel), base_rank)[0]
-        print(f"  alpha={alpha:<4} orient_r={orient:+.3f}  D3(worst-case)={d3:+.3f}  "
+        print(f"  alpha={alpha:<4} orient_r={orient:+.3f}  D3(pairs reversing in B)={100 * d3:.2f}%  "
               f"D4(%% non-increasing)={d4:5.1f}  Spearman-vs-alpha=1={agree:.3f}")
 
 print()
@@ -115,14 +124,15 @@ for name, (M, floor, active, T) in datasets.items():
     orient_q = spearmanr(sel_q, nact)[0]
     agree = spearmanr(to_ranks(sel_q), fixed_rank)[0]
     d3_q = worst_pair(lambda q: candidate_quantile(M, q, T), QSWEEP)
-    sub = floor + 0.5 * (active - floor)
+    d3_q_rev = rev_frac(lambda q: candidate_quantile(M, q, T), QSWEEP, nact > 0)
+    sub = active   # worst case for D4: an addition exactly at tau*
     base_q = sel_q
     new_q = candidate_quantile(np.hstack([M, np.full((M.shape[0], 1), sub)]), q_ref, T)
     d4_q = (new_q <= base_q + 1e-9).mean() * 100
     max_increase = max(0.0, (new_q - base_q).max())
     print(f"  q={q_ref}: orient_r={orient_q:+.3f}  "
           f"Spearman vs fixed-floor candidate = {agree:.3f}")
-    print(f"  D3 (worst-case rank Spearman over q in {QSWEEP}) = {d3_q:+.3f}")
+    print(f"  D3 over q in {QSWEEP}: pairs reversing = {100 * d3_q_rev:.2f}%, worst-case rank Spearman = {d3_q:+.3f}")
     print(f"  D4 (add a sub-threshold off-target): non-increasing for {d4_q:.1f}% of "
           f"compounds; max increase = {max_increase:.4f}")
 

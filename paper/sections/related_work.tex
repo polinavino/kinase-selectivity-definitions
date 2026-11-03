@@ -7,8 +7,8 @@
 Several metrics have been proposed to quantify kinase inhibitor selectivity
 from profiling panel data.
 Karaman et al.\cite{Karaman2008} introduced the selectivity score (S-score),
-defined as the fraction of panel kinases inhibited above a fixed concentration
-threshold.
+defined as the fraction of tested kinases bound with a dissociation constant
+below a fixed cutoff.
 Uitdehaag and Zaman\cite{Uitdehaag2011} proposed the selectivity entropy,
 which treats the normalized binding profile as a probability distribution and
 computes its Shannon entropy. Low entropy indicates activity concentrated on
@@ -66,10 +66,12 @@ The present work addresses both gaps.
 Precedent for an
 axiomatic characterization of measurement functions is established.
 Shannon\cite{Shannon1948} demonstrated that the entropy of a probability
-distribution is uniquely determined, up to a multiplicative constant, by four
-requirements: continuity, maximality on the uniform distribution,
-expansibility, and additivity over independent subsystems.
-Khinchin\cite{Khinchin1957} subsequently strengthened this uniqueness result.
+distribution is uniquely determined, up to a multiplicative constant, by three
+requirements: continuity in the probabilities, monotonic growth with the
+number of equally likely outcomes, and consistency when outcomes are grouped.
+Khinchin\cite{Khinchin1957} subsequently gave an alternative axiomatization
+(continuity, maximality on the uniform distribution, expansibility, and
+additivity over independent subsystems).
 The selectivity entropy of Uitdehaag and Zaman applies the Shannon formula to
 normalized binding profiles but provides no analogous axiomatic justification.
 The axioms that single out Shannon entropy, such as maximality on the uniform

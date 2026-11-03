@@ -44,8 +44,8 @@ measuring entirely different qualities of binding profiles, and therefore
 cannot be easily converted from one to another. 
 In information theory, Shannon\cite{Shannon1948} settled which function should
 measure entropy by writing down a few properties a sensible measure must
-have (e.g., that it should be maximal when all outcomes are equally
-likely) and showing that only one formula satisfies them. In this work, 
+have (e.g., that it should grow as the number of equally likely outcomes
+grows) and showing that only one formula satisfies them. In this work, 
 we follow this precedent, characterizing how the
 competing measures actually behave, stating the properties a good measure
 should have, and proposing a satisfactory formula. 
@@ -62,22 +62,29 @@ datasets (Spearman $0.72$--$1.00$), while the fold-selectivity ratio $R(k)$
 agrees with none of them ($0.14$--$0.62$). We call the first group the
 distribution-based family, and $R(k)$ the ratio-based family. The split
 follows what each quantifies: how concentrated a compound's activity is across
-the whole panel, against how large the gap is to one chosen off-target;
+the whole panel, against how large the gap is to one chosen off-target. This
+grouping holds for entropy and Gini computed on a common baseline-subtracted
+log-affinity scale; under the association-constant form of the original
+publication, the entropy does not cluster with the S-score and Gini on any of
+the three affinity datasets (Methods);
 
-    \item[(ii)] we identify three sources of instability: definitional noise for
-compounds with no binding above the activity threshold, ratio-specific instability
+    \item[(ii)] we identify three sources of instability: scores set by an
+arbitrary convention for compounds with no binding above the activity threshold,
+ratio-specific instability
 driven by near-tied top targets, and distribution-ratio disagreement for
 compounds with one dominant target and broad moderate off-target activity;
 
     \item[(iii)] we propose four motivated properties: (D1) a reliability threshold condition,
 (D2) bounded gap sensitivity, (D3) distributional consistency, and (D4) monotonicity under
 weak off-target addition. We then find that none of the four definitions
-assessed satisfies all four simultaneously;
+assessed satisfies all four simultaneously. The one property all four violate
+is D1, a reporting convention;
 
-    \item[(iv)] we propose a candidate measure: a gated, smooth-hinge
-effective-target number that satisfies all four properties and recovers its
-full-panel ranking from roughly a third to a half of a typical panel, depending
-on the dataset.
+    \item[(iv)] we propose a candidate measure, a gated, smooth-hinge
+effective-target number, to show that the four properties can be met together.
+It recovers its full-panel ranking from roughly a third to a half of a typical
+panel, depending on the dataset, and we prove that, unlike the entropy, it
+cannot be made to look more selective by adding a weakly bound kinase.
 \end{itemize}
 
 We note that the candidate measure we propose is neither unique as a measure

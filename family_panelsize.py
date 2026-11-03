@@ -55,16 +55,16 @@ def candidate_alpha(P, floor, T, alpha):
     return neg_renyi_H(w, alpha)
 
 
-def panel_convergence(M, floor, alpha, R=50, seed=42):
+def panel_convergence(M, floor, alpha, R=50, seed=42, T=1.0):
     n_drugs, n_kin = M.shape
-    ref = to_ranks(candidate_alpha(M, floor, 1.0, alpha))
+    ref = to_ranks(candidate_alpha(M, floor, T, alpha))
     panel = list(range(50, n_kin, 30)) + [n_kin]
     rng = np.random.RandomState(seed)
     res = {ps: [] for ps in panel}
     for ps in panel:
         for _ in range(R):
             idx = rng.choice(n_kin, ps, replace=False)
-            res[ps].append(spearmanr(ref, to_ranks(candidate_alpha(M[:, idx], floor, 1.0, alpha)))[0])
+            res[ps].append(spearmanr(ref, to_ranks(candidate_alpha(M[:, idx], floor, T, alpha)))[0])
     pstar = next((ps for ps in panel if np.mean(res[ps]) > 0.90), None)
     return panel, res, pstar
 
@@ -83,7 +83,7 @@ for ds in DATASETS:
     M = pd.read_csv(f"{HERE}/{ds['file']}", index_col=0).values
     print(f"\n{ds['name']} ({M.shape[0]} cpd x {M.shape[1]} kin):")
     for alpha in ALPHAS:
-        _, res, pstar = panel_convergence(M, ds['floor'], alpha)
+        _, res, pstar = panel_convergence(M, ds['floor'], alpha, T=ds['active'] - ds['floor'])
         curves[(ds['name'], alpha)] = res
         print(f"  alpha={alpha:<5} p* = {pstar}")
 
@@ -94,7 +94,7 @@ for ds in DATASETS:
     M = pd.read_csv(f"{HERE}/{ds['file']}", index_col=0).values
     print(f"\n{ds['name']}:")
     for alpha in ALPHAS:
-        seed_curves = [panel_convergence(M, ds['floor'], alpha, R=100, seed=s)[1] for s in (1, 2, 3)]
+        seed_curves = [panel_convergence(M, ds['floor'], alpha, R=100, seed=s, T=ds['active'] - ds['floor'])[1] for s in (1, 2, 3)]
         panel = sorted(seed_curves[0].keys())
         line = f"  alpha={alpha:<5}"
         for ps in panel:
@@ -111,7 +111,7 @@ for ds in DATASETS:
     n_zero_active = int(((M > ds['active']).sum(1) == 0).sum())
     print(f"\n{ds['name']} ({M.shape[0]} compounds, {n_zero_active} with zero active kinases):")
     for alpha in ALPHAS + [50.0]:
-        sel = candidate_alpha(M, ds['floor'], 1.0, alpha)
+        sel = candidate_alpha(M, ds['floor'], ds['active'] - ds['floor'], alpha)
         _, counts = np.unique(np.round(sel, 8), return_counts=True)
         print(f"  alpha={alpha:<5} distinct scores = {len(counts):4d} / {M.shape[0]}   largest tie group = {counts.max()}")
 
@@ -123,11 +123,11 @@ for ds in DATASETS:
     M = pd.read_csv(f"{HERE}/{ds['file']}", index_col=0).values
     nact = (M > ds['active']).sum(1)
     sparse = nact < 5
-    shannon_rank = to_ranks(candidate_alpha(M, ds['floor'], 1.0, 1.0))
+    shannon_rank = to_ranks(candidate_alpha(M, ds['floor'], ds['active'] - ds['floor'], 1.0))
     print(f"\n{ds['name']}: {sparse.sum()} compounds with n_active<5 (sparse), "
           f"{(~sparse).sum()} with n_active>=5 (dense):")
     for alpha in [0.01, 0.5, 2.0, 50.0]:
-        sel_rank = to_ranks(candidate_alpha(M, ds['floor'], 1.0, alpha))
+        sel_rank = to_ranks(candidate_alpha(M, ds['floor'], ds['active'] - ds['floor'], alpha))
         agree_sparse = spearmanr(sel_rank[sparse], shannon_rank[sparse])[0]
         agree_dense = spearmanr(sel_rank[~sparse], shannon_rank[~sparse])[0]
         print(f"  alpha={alpha:<5} sparse={agree_sparse:.3f}  dense={agree_dense:.3f}")

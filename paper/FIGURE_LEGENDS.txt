@@ -25,10 +25,11 @@ Figure 3. Best predictor of rank instability within each definition family
 predicted by the top1-top2 affinity gap; entropy, Gini, and S-score instability
 are best predicted by features of the active affinity distribution.
 
-Figure 4. Representative binding profiles illustrating the three instability
-types. Left: Drug 64 (Davis), most stable (sigma = 1.8), two active kinases.
-Center: Drug 42 (Davis), most unstable (sigma = 19.3), 22 active kinases with
-no dominant target. Right: Drug 23 (Davis), most ratio-sensitive, five
+Figure 4. Binding profiles of the most stable, most unstable, and most
+ratio-sensitive Davis compounds. Davis has no zero-active (Type 1) compounds;
+the right panel illustrates Type 2. Left: Drug 64, most stable (sigma = 1.8),
+two active kinases. Center: Drug 42, most unstable (sigma = 19.3), 22 active
+kinases with no dominant target. Right: Drug 23, most ratio-sensitive, five
 active kinases including two near-tied top targets (delta pKd = 0.023). Dashed
 line: pKd = 6 activity threshold; dotted line: pKd = 5 assay floor.
 
@@ -42,7 +43,7 @@ reach r = 0.90 within the practical panel range. On Metz, entropy, Gini, and
 S-score all stabilize by 50-80 kinases, while ratio requires approximately 170
 kinases, close to the full panel.
 
-Figure 6. The two failure modes the candidate measure repairs (Klaeger
+Figure 6. The two failure modes that motivate D1 and D3 (Klaeger
 dataset). Left (D1): rank standard deviation, pooled across the four existing
 definitions' parameter sweeps, for compounds with no binding above the
 pKd > 6 activity threshold (sigma = 72.9, n = 16) versus compounds with at
@@ -51,18 +52,20 @@ two-sided); the candidate assigns the first group no score at all (D1 gate)
 rather than an unstable one. All 16 compounds in the first group do bind above
 the assay detection floor of pKd = 5.0, with maxima from 5.16 to 6.00; the
 pooled sigma is driven by Gini and entropy and reverses for the S-score, and
-the per-definition decomposition is reported in the text. Right (D3):
-per-compound rank instability plotted against the number of active kinases,
-under three sweeps: the entropy's activity baseline, which is simultaneously
-its gate and its emphasis weighting, left fully free (r = -0.41); the
-candidate's gate x0 swept over the same range as the true equivalent
-comparison (r = +0.17), which is, if anything, more destabilizing than
-sweeping the entropy's baseline (mean instability 3.7x larger); and the
-candidate's emphasis baseline swept with x0 fixed at the assay floor, as used
-throughout this paper (r = +0.20), which is 17x more stable than the entropy.
-The candidate's D3 advantage therefore rests on removing the gate from the
-free-parameter space by declaration, not on being inherently more robust to
-gate placement than the entropy is.
+the per-definition decomposition is reported in the text. The contrast is
+driven by the convention used for undefined entropy and Gini scores; computed
+only over the configurations in which each compound's score is defined,
+zero-active compounds are not less stable. Right (D3): per-compound rank
+instability plotted against the number of active kinases, with each parameter
+swept over the same interval B = [5.0, 6.5]: the entropy's activity baseline,
+which is simultaneously its gate and its emphasis weighting (r = -0.41); the
+candidate's gate x0, the true equivalent comparison (r = -0.44), which is
+exactly as destabilizing as sweeping the entropy's baseline (mean instability
+12.5 for both); and the candidate's emphasis baseline swept with x0 fixed at
+the assay floor, as used throughout this paper (r = +0.17; mean instability
+0.6). The candidate's D3 advantage therefore rests on removing the gate from
+the free-parameter space by declaration, not on being more robust to gate
+placement than the entropy is.
 
 Figure 7. Panel-size convergence of the candidate measure compared with the four
 existing definitions, on the Klaeger and Metz datasets (50 random subpanels per

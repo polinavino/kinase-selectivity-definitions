@@ -1,0 +1,31 @@
+D3 over B = [x0, tau*]: fraction of pairs reversing (rev) and worst-case pairwise Spearman (rho); pass if rev <= 1%
+
+Davis: B = [5, 6] (5 values), 68 scored compounds
+  S-score (tau)               rev =   7.95%   rho = 0.968   fail
+  entropy (beta)              rev =   8.82%   rho = 0.954   fail
+  Gini (beta)                 rev =   9.09%   rho = 0.950   fail
+  candidate (emphasis beta)   rev =   0.48%   rho = 0.999   PASS
+  candidate (gate x0)         rev =   8.52%   rho = 0.966   fail
+
+Klaeger: B = [5, 6] (5 values), 206 scored compounds
+  S-score (tau)               rev =   8.31%   rho = 0.950   fail
+  entropy (beta)              rev =  11.20%   rho = 0.933   fail
+  Gini (beta)                 rev =  11.54%   rho = 0.928   fail
+  candidate (emphasis beta)   rev =   0.54%   rho = 1.000   PASS
+  candidate (gate x0)         rev =  10.57%   rho = 0.949   fail
+
+Anastassiadis: B = [20, 50] (7 values), 134 scored compounds
+  S-score (tau)               rev =  10.72%   rho = 0.940   fail
+  entropy (beta)              rev =  10.27%   rho = 0.946   fail
+  Gini (beta)                 rev =  10.17%   rho = 0.946   fail
+  candidate (emphasis beta)   rev =   0.43%   rho = 1.000   PASS
+  candidate (gate x0)         rev =  12.49%   rho = 0.935   fail
+
+Metz: B = [4, 6] (9 values), 699 scored compounds
+  S-score (tau)               rev =  20.64%   rho = 0.784   fail
+  entropy (beta)              rev =  22.60%   rho = 0.766   fail
+  Gini (beta)                 rev =  22.41%   rho = 0.763   fail
+  candidate (emphasis beta)   rev =   0.72%   rho = 1.000   PASS
+  candidate (gate x0)         rev =  22.45%   rho = 0.784   fail
+
+Largest passing fraction: 0.72%; smallest failing fraction: 7.95%. Every verdict is the same for any eps in between.

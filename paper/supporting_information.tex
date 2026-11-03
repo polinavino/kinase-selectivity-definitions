@@ -20,7 +20,7 @@
 \maketitle
 
 This document reports, in full, four robustness checks summarized in the main
-text. All numbers are reproducible from the code repository
+text, and the variants of the candidate measure (Section~S5). All numbers are reproducible from the code repository
 (\url{https://github.com/polinavino/kinase-selectivity-definitions}); the
 script generating each table is named in its caption.
 
@@ -62,9 +62,10 @@ bar = 0.95 & 110 & 110 & 80 & 170 \\
 \end{tabular}
 \end{table}
 
-The ratio remains the slowest to recover and the Gini coefficient the
-second-slowest for every bar tested; only the relative order of entropy and
-the S-score is bar-dependent, and only within $[0.80, 0.95]$.
+The ratio remains the slowest to recover for every bar tested, and the Gini
+coefficient the second-slowest on Klaeger (on Metz it ties the entropy at every
+bar); only the relative order of entropy and the S-score is bar-dependent, and
+only within $[0.80, 0.95]$.
 
 \clearpage
 \section*{Table S2: Bosc et al.\ window/ranking score and the CATDS proxy}
@@ -170,54 +171,137 @@ than with either S-score or Gini -- under this operationalization, entropy
 would not be classified in the distribution-based family at all on either
 sparse-coverage dataset. On Davis, literal entropy decouples from both
 families (consistent with Figure~1 of the main text). The native-Gini check on
-Anastassiadis is the one case that preserves the qualitative two-family
-pattern, albeit more weakly than the manuscript's baseline-swept form.
+Anastassiadis preserves the pattern only partly: the native Gini correlates with
+the entropy ($0.63$) but weakly and about equally with the S-score ($0.35$) and
+the ratio ($0.31$).
 
 \clearpage
 \section*{Table S4: Candidate measure cross-dataset validation}
 
-Orientation (correlation with the number of active kinases, more negative is
-more correctly oriented toward ``fewer active targets = more selective''), D3
-robustness under the emphasis parameter $\beta$ with the gate $x_0$ fixed
-(worst-case pairwise Spearman $\rho$), D3 robustness when $x_0$ itself is
-swept as a free parameter (``gate swept'', the equivalent comparison to the
-entropy's baseline sensitivity; see Figure~6 of the main text), and the
-percentage of compounds for which D4 (monotonicity under a weak additional
-interaction) holds exactly.
-(\texttt{candidate\_validation.py})
+Orientation (correlation with the number of active kinases; more negative is
+more correctly oriented toward ``fewer active targets = more selective''); D3
+as defined in Methods, i.e.\ the percentage of pairs of scored compounds whose
+order reverses somewhere in $B = [x_0, \tau^*]$, for the emphasis parameter
+$\beta$ with the gate $x_0$ fixed (the featured measure), for the gate $x_0$
+itself swept as a free parameter (the like-for-like comparison with the
+entropy's baseline; Figure~6 of the main text), and for the entropy's own
+baseline; and the percentage of compounds for which D4 holds when one kinase is
+added at the reliability threshold $\tau^*$, the hardest case. $B$ is
+$[5.0, 6.0]$ on Davis and Klaeger, $[4.0, 6.0]$ on Metz, and $[20, 50]\%$
+inhibition on Anastassiadis; the smoothing width is $T = \tau^* - x_0$ on every
+dataset (Methods). D3 passes at $\varepsilon = 1\%$.
+(\texttt{candidate\_validation.py}, \texttt{d3\_pair\_reversals.py})
 
 \begin{table}[h]
 \centering
-\caption{Candidate measure: orientation, D3 (two variants), and D4, across
-all four datasets.}
-\begin{tabular}{lccccc}
+\caption{Candidate measure: orientation, D3 (pairs reversing in $B$, \%), and
+D4, across all four datasets.}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccc}
 \toprule
 Dataset & $n_\mathrm{cpd}$ & orientation $r$ & D3, gate fixed & D3, gate swept
-& D4 (\% compounds) \\
+& D3, entropy & D4 (\%) \\
 \midrule
-Davis         & 68  & $-0.969$ & $0.998$ & $-0.838$ & 100.0 \\
-Klaeger       & 222 & $-0.936$ & $0.999$ & $-0.932$ & 100.0 \\
-Anastassiadis & 178 & $-0.936$ & $0.997$ & $+0.913$ & 100.0 \\
-Metz          & 704 & $-0.791$ & $0.991$ & $-0.330$ & 100.0 \\
+Davis         & 68  & $-0.969$ & $0.48$ & $8.52$  & $8.82$  & 100.0 \\
+Klaeger       & 222 & $-0.936$ & $0.54$ & $10.57$ & $11.20$ & 100.0 \\
+Anastassiadis & 178 & $-0.940$ & $0.43$ & $12.49$ & $10.27$ & 100.0 \\
+Metz          & 704 & $-0.785$ & $0.72$ & $22.45$ & $22.60$ & 100.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The ``gate swept'' column confirms, on three of four datasets, that the
+The ``gate swept'' and ``entropy'' columns confirm, on every dataset, that the
 candidate's D3 satisfaction rests on fixing the gate $x_0$ by declaration
-rather than on the measure being inherently insensitive to its placement
-(worst-case $\rho$ is far from $1$, and on Klaeger and Davis is strongly
-negative). Anastassiadis is an exception ($\rho = +0.913$): on that dataset
-the candidate's ranking happens to be comparatively insensitive to the gate's
-placement as well, for reasons we do not have a mechanistic account of.
-
-Smoothing-width $T$ was also swept on Klaeger ($T \in \{0.5, 0.75, 1.0, 1.5,
-2.0\}$): orientation and D3-emphasis-robustness are essentially unchanged
-across this range ($r \approx -0.94$, $\rho \geq 0.989$), and the worst-case
-pairwise ranking agreement across all five values of $T$ is $\rho = 0.999$.
+rather than on the measure being inherently insensitive to its placement: swept
+over the same interval, the candidate's gate reverses about as many pairs as
+the entropy's baseline does, while the emphasis parameter, with the gate fixed,
+reverses fewer than one pair in a hundred.
 Removing the gate inverts the measure's orientation entirely (gated $r =
 -0.936$ vs.\ ungated $r = +0.943$ against $n_\mathrm{active}$ on Klaeger),
 which is why the gate, not merely the smooth emphasis, is required for D1 and
 correct orientation jointly.
+
+\clearpage
+\section*{S5: Variants of the candidate measure}
+
+The featured candidate is one member of a family of measures. Three axes of
+variation are reported here: the floor, the R\'enyi order, and the smoothing
+width $T$. Each variant is checked against D1--D4 as in the main text; D4 is
+proved only for the featured measure (Shannon order, $\beta = x_0$,
+$T \geq 0.58\,(\tau^* - x_0)$), and is otherwise checked by adding one kinase at
+$\tau^*$ to every compound. (\texttt{family\_construction.py},
+\texttt{family\_panelsize.py}, \texttt{candidate\_validation.py})
+
+\paragraph{Quantile floor.} Replacing the fixed floor $x_0$ with a per-compound
+low quantile of the profile (the 10th percentile) gives a variant that is
+invariant to shifts of the readout. On Davis and Klaeger it ranks compounds
+exactly as the featured measure does (Spearman $1.000$), no pair of scored
+compounds reverses as the quantile is varied from the 5th to the 15th
+percentile, and D4 holds for every compound.
+
+\paragraph{R\'enyi order.} Generalizing the Shannon functional to R\'enyi order
+$\alpha > 0$,
+\[
+  -H_\alpha(p) = \frac{1}{\alpha - 1}\log_2 \sum_i p_i^\alpha,
+\]
+gives a family that recovers the featured measure at $\alpha = 1$. D1 holds for every
+order, since the gate is applied before the entropy is computed, and D2 holds
+vacuously. D4 holds for additions at or below the floor, because
+$p_i^\alpha = 0$ whenever $p_i = 0$, and holds on every compound with one kinase
+added at $\tau^*$ for each order tested. D3 separates the orders
+(Table~S5): $\alpha \leq 1$ passes on both datasets, $\alpha = 2$ is borderline
+(it passes on Davis and narrowly fails on Klaeger), and $\alpha = 3$ fails on
+both.
+
+\begin{table}[h]
+\centering
+\caption{R\'enyi-order variants on Davis and Klaeger: D3 (pairs reversing in
+$B$, \%), agreement with the Shannon ranking (Spearman), and panel size $p^*$
+on Klaeger (smallest panel reaching mean $\rho > 0.90$; on Metz every order
+reaches $p^* = 80$). (\texttt{family\_construction.py},
+\texttt{family\_panelsize.py})}
+\small
+\begin{tabular}{lccccc}
+\toprule
+Order & D3, Davis & D3, Klaeger & Spearman vs.\ $\alpha = 1$ & $p^*$, Klaeger \\
+\midrule
+$\alpha = 0.5$ & $0.61$ & $0.13$ & $0.999$--$1.000$ & 80 \\
+$\alpha = 1$   & $0.48$ & $0.54$ & ---              & 110 \\
+$\alpha = 2$   & $0.92$ & $1.09$ & $0.999$          & 290 \\
+$\alpha = 3$   & $1.80$ & $1.68$ & $0.997$--$0.998$ & 290 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The order affects panel recoverability on the sparser Klaeger panel. Every
+order below $1$ tested ($0.01$, $0.25$, $0.5$, $0.75$) reaches $p^* = 80$, ahead
+of the Shannon order's $110$, while $\alpha \in \{2, 3\}$ needs $290$, matching
+the Gini. On Metz every order from $0.01$ to $3$ reaches $p^* = 80$. This
+speed does not come from discarding information: the number of distinct scores
+and the size of the largest tied group are identical across every order tested,
+including $\alpha \to \infty$, and the only tied compounds are those with at
+most one active kinase. It reflects how each limit behaves under subsampling.
+As $\alpha \to 0$ the score approaches a count of the active set, which a random
+subpanel estimates with low variance; as $\alpha \to \infty$ it depends on the
+single largest weight, and the estimate is far off whenever the subpanel misses
+the kinase carrying it. Agreement with the Shannon ranking is as high on the
+sparsest compounds ($n_\mathrm{active} < 5$) as on the rest for
+$\alpha \leq 0.5$ ($\geq 0.98$ in both subsets, on Klaeger and Metz), whereas
+$\alpha \to \infty$ loses agreement most sharply among the sparsest Metz
+compounds ($0.62$, against $0.92$ for the rest; on Klaeger, $0.98$ and $0.95$).
+We feature $\alpha = 1$ because it is the Shannon entropy, for which D4 is
+proved; a lower order is a documented alternative with faster panel
+recoverability on Klaeger.
+
+\paragraph{Smoothing width.} The featured measure uses $T = \tau^* - x_0$. On
+Klaeger, over $T = 0.5$, $0.75$, $1$, $1.5$, and $2$ (in units of
+$\tau^* - x_0 = 1$), orientation is unchanged ($r \approx -0.94$) and the
+rankings agree closely across all five values (worst-case pairwise Spearman
+$0.999$). D3 passes for $T \geq 0.75$ (pairs reversing as the emphasis baseline
+is swept: $0.93\%$, $0.54\%$, $0.17\%$, $0.04\%$ for $T = 0.75$, $1$, $1.5$, $2$)
+and narrowly fails at $T = 0.5$ ($1.94\%$), which also falls below the D4 bound
+$T \geq 0.58$. As $T \to 0$ the softplus converges to the hard cutoff,
+recovering the entropy together with its D3 and D4 failures.
 
 \end{document}

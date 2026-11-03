@@ -2,7 +2,8 @@
 \label{sec:discussion}
 
 The central finding of this work is that existing kinase inhibitor selectivity
-definitions do not measure the same quantity.
+definitions, placed on a common log-affinity scale, do not measure the same
+quantity.
 The ratio definition and the distribution-based family (S-score, entropy, Gini)
 produce substantially different compound rankings (cross-family
 $r = 0.14$--$0.62$ across four datasets, versus within-family $r > 0.72$), and
@@ -17,7 +18,7 @@ The clustering of definitions into two families
 reflects a difference in what is being measured.
 Distribution-based definitions measure the concentration of the compound's binding
 activity across the full profiled kinome.
-The ratio definition measure how much more potently the compound binds its
+The ratio definition measures how much more potently the compound binds its
 primary target than a specified off-target.
 Among compounds that clear the activity threshold, the selectivity measure
 discrepancy is most pronounced for those with one clearly dominant target
@@ -26,10 +27,10 @@ taxonomy, e.g.\ Dovitinib and BMS-690514). Ratio-based methods report these
 compounds as highly selective, because of the large gap to the next-best
 target. Distribution-based methods instead report them as moderately
 promiscuous, because activity is spread across many targets. Zero-active
-(Type~1) compounds have no primary target to
-begin with. Because of this, no definition can score them meaningfully, so D1
+(Type~1) compounds have no target captured above the activity threshold on the
+profiled panel, so no definition can score them on measured binding, and D1
 excludes them from scoring entirely.
-The properties proposed in the Motivated Properties section 
+The properties D1--D4 (Methods)
 specify what we want any selectivity measure to do, with each
 property drawn from one of the failure modes above.
 
@@ -54,7 +55,8 @@ Compounds with no binding above the $\mathrm{p}K_d > 6$ activity threshold
 should not receive selectivity scores, or should have their scores explicitly
 flagged as unreliable.
 Of the 222 Klaeger compounds, 16 (7.2\%) fall into this category and currently
-receive scores that are indistinguishable from noise. Note that these compounds
+receive scores whose ranks are set by an arbitrary convention for undefined
+values rather than by measured binding. Note that these compounds
 are not below the assay detection floor of $\mathrm{p}K_d = 5.0$, which none of
 the 222 is: their maximum affinities run from 5.16 to 6.00. The gate is set at the
 activity threshold, not at the detection limit.
@@ -69,28 +71,18 @@ This is analogous to reporting confidence intervals in statistical estimation.
 Third, when comparing selectivity across studies that use different definitions,
 the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
-The high within-family correlations ($r > 0.72$) suggest that S-score, entropy,
-and the Gini coefficient are interchangeable for most purposes when parameters are chosen
-consistently. This is an empirical observation rather than a preset adequacy
-bar: $r = 0.72$ is the lowest within-family correlation we observed (Klaeger
-S-score vs.\ Gini, Table~\ref{tab:correlations}), and it measures a different
-property than the $\rho > 0.90$ criterion used in the panel-size analysis
-below. The former measures how similarly two distinct definitions rank compounds
-on the full panel; the latter measures how similarly the same definition ranks
-compounds on a subpanel versus the full panel. The
-within-family agreement is measured on the complete kinome, and the panel-size
-analysis shows that the Gini coefficient can diverge from the entropy and
-S-score on the smaller panels used in practice (on Klaeger it requires roughly
-290 of 343 kinases to recover its full-panel ranking, against 110 for
-entropy and the S-score). The three measures should therefore be treated as
-interchangeable only when compared on panels of similar, near-complete coverage.
-This caveat is itself conditional on D1. When the convergence is recomputed over
-only the compounds that clear the activity threshold on both the subpanel and the
-full panel, the Gini coefficient reaches $\rho > 0.90$ at 80 kinases rather than 290, level
-with the entropy. The Gini coefficient's apparent panel-size handicap is therefore largely an
-artefact of scoring compounds that should not be scored, which is a further
-argument for adopting D1 as a reporting standard and a caution against reading
-the 290 figure as a property of the Gini coefficient itself.
+Within the distribution-based family, the S-score, entropy, and Gini agree
+closely on the full panel ($r \geq 0.72$, the lowest being Klaeger S-score
+vs.\ Gini; Table~\ref{tab:correlations}; an observed value, not a preset bar,
+and distinct from the $\rho > 0.90$ panel-size criterion, which compares a
+definition with itself on a subpanel). They can be treated as interchangeable
+when parameters are chosen consistently and panels have similar, near-complete
+coverage. On smaller panels the Gini diverges: on Klaeger it needs 290 of 343
+kinases to recover its full-panel ranking, against 110 for the entropy and the
+S-score. Much of that gap comes from scoring compounds that D1 would not score.
+Restricted to compounds that clear the activity threshold on both panels, the
+Gini recovers at 80 kinases, as does the entropy, though part of this gain is
+selection of the easier-to-rank compounds.
 Ratio-based measures, in turn, should not be compared directly with
 distribution-based measures at any panel size without acknowledging the
 conceptual distinction.
@@ -105,7 +97,8 @@ active-compound fractions differ across datasets. As a consequence,
 our analysis
 relies on within-dataset rank comparisons rather than cross-dataset absolute
 scores.
-The two-family structure replicates across all four datasets, and the
+The two-family structure (in our common log-affinity operationalization)
+replicates across all four datasets, and the
 instability predictors across three of the four, which indicates that the
 findings are not artifacts of a single assay platform. The exception is the
 top$_1$--top$_2$ dependence on Anastassiadis ($r = -0.104$, $p = 0.23$), the one
@@ -156,10 +149,10 @@ ranking more or less than the choice of selectivity definition does? We
 resolved 46 compounds profiled in both Davis (competition binding) and
 Klaeger (chemoproteomics) by matching PubChem CIDs against Klaeger's drug
 names (\texttt{davis\_klaeger\_overlap.py}), and computed each definition's
-median rank on this fixed set of 46 compounds (separately on each platform). The
+median rank on this fixed set of 46 compounds (separately on each platform).
+Rankings agree less across platforms than across definitions, so the
 \emph{platform effect} (same definition, Davis rank vs.\ Klaeger rank) is
-weaker on average than the \emph{definition effect} (different definitions,
-within one platform): Spearman $r = -0.06$ to $0.68$ across the four
+on average the larger of the two: Spearman $r = -0.06$ to $0.68$ across the four
 definitions for the platform comparison (mean $0.44$), against $r = 0.14$ to
 $1.00$ for the within-platform, cross-definition comparison (mean $0.61$).
 The ratio definition is the extreme case: its Davis ranking and its Klaeger
@@ -170,13 +163,13 @@ selectivity definition is applied to it. This should temper any
 cross-study comparison of selectivity rankings regardless of which definition
 is used.
 
-All four existing definitions and the candidate measure introduced below are
+All four existing definitions and the candidate measure introduced above are
 symmetric functions of the binding profile: each treats a compound's affinity
 vector as an unordered multiset. Thus, two compounds with identical affinity
 distributions receive identical scores regardless of which specific kinases
 carry the off-target activity. A compound whose off-targets are
 pharmacologically inert and one whose off-targets are known safety-relevant
-kinases (e.g.\ hERG, or a kinase implicated in a class toxicity) are therefore
+kinases (e.g.\ a kinase implicated in a class toxicity) are therefore
 scored identically if their affinity distributions match. None of the measures
 discussed here incorporates target identity, and none accounts for exposure.
 A measured affinity says nothing about whether a target is actually occupied
@@ -205,9 +198,25 @@ A proper test would require indication-stratified, treatment-related
 adverse-event rates from controlled trials with matched comparators, which are
 not available in standardized form across these drugs.
 
-Finally, a formal proof of each of the D1-- D4 properties for each
-definition (for which informal assessments given in Table~\ref{tab:desiderata})
-is left for future work.
+The candidate's distributional consistency rests on fixing its activity
+boundary at the assay floor $x_0$, and in none of the four datasets is $x_0$ a
+measured detection limit. On Davis and Klaeger it is the value assigned to
+pairs with no detected binding ($\mathrm{p}K_d = 5.0$), on Metz the lowest value
+reported in the released data ($\mathrm{p}K_i = 4.0$), and on Anastassiadis a
+$20\%$ inhibition noise level that we set, above the $0\%$ to which missing and
+negative values are clipped. Fixing $x_0$ therefore removes the analyst's choice
+only to the extent that each dataset's encoding of non-detection is accepted as
+given. Where that encoding is itself uncertain, the candidate's standing on D3
+is no better than the entropy's.
+
+Finally, apart from the candidate's D4, which we prove, a formal proof of
+whether each definition satisfies each of D1--D4 (Table~\ref{tab:desiderata}
+gives the assessments) is left for future work. So is the question of whether
+the properties are jointly satisfiable only by measures within the candidate's
+family (Supporting Information, Section~S5), and whether a uniqueness result
+analogous to Shannon's holds. A complementary direction is a consensus ranking
+that does not commit to any single measure, that is, a partial order on which
+all existing measures agree.
 
 The four properties are also unlikely to be the complete set, and this work
 suggests three further candidates that we do not assess here. A measure should be

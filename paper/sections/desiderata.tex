@@ -1,445 +1,182 @@
-\section{Motivated Properties for a Well-Formed Selectivity Measure}
+\subsection{Existing Definitions Against the Properties}
 \label{sec:desiderata}
 
-The empirical findings of the Results section motivate the four properties
-D1--D4 formally defined in Methods (``Motivated Properties and a Candidate
-Measure'').
-We restate each property and specify the observed failure mode that
-motivates it, along with the evidence demonstrating whether each of the 
-five measures satisfies it.
-
-\paragraph{D1: Reliability threshold.}
-The value of $f(\mathbf{x})$ must be undefined or flagged unreliable
-once $\max_i x_i \leq \tau^*$.
-
-\textit{Motivation.}
-Compounds with no binding above the $\mathrm{p}K_d > 6$ activity threshold receive
-arbitrary selectivity scores, producing rank instability with mean $\sigma = 72.9$
-pooled across the four definitions' parameter sweeps, compared with $\sigma = 31.3$
-for active compounds ($p < 0.001$, Mann--Whitney $U$ test; Type~1 instability,
-above; Figure~\ref{fig:failure_modes}, left).
-The pooled figure is not uniform across the four definitions, and we report the
-decomposition rather than claim that it holds for each. It is driven by Gini
-($\sigma = 86.1$ versus $15.9$) and by entropy ($17.1$ versus $12.5$), is marginal
-for the ratio ($24.0$ versus $20.7$), and reverses for the S-score ($18.5$ versus
-$24.3$), whose score is exactly $0$ for every one of these compounds and whose
-ranks are therefore stable by degeneracy rather than by reliability.
-A compound that does not bind cannot be
-meaningfully ranked relative to compounds that do.
-None of the four definitions assessed here incorporate an explicit reliability
-condition. In fact, both
-the S-score and selectivity entropy assign scores to compounds with no
-sub-micromolar binding, treating sub-threshold values as informative.
-
-D1 is a property of \emph{reporting convention} rather than functional form.
-It is possible to satisfy it trivially by changing the reporting convention
-of any of the existing four definitions: withhold the score, or flag it as
-unreliable, whenever $\max_i x_i \leq \tau^*$. It is nonetheless violated 
-by all existing measures, and introducing this fix is the principal difference 
-between the candidate measure and the entropy (Table~\ref{tab:desiderata}).
-
-The entropy and Gini coefficient are also undefined for a
-compound with no kinase above $\beta$ (the normalizing sum is zero). Our
-implementation of these two existing definitions resolves this with a small-epsilon
-substitution that forces the
-score to exactly $0$ for every such compound. As a consequence, these forced-zero
-configurations are pooled with computed ones in the rank sweep,
-increasing the reported contrast. On Klaeger, of the 7
-$\beta$ values swept, a zero-active compound's entropy and Gini are
-defined (i.e. its maximum affinity exceeds $\beta$) at only 1--4 of them (mean
-3.2), so its reported rank mixes forced-zero ties with measured
-values. Restricting the comparison to each compound's own defined
-configurations reverses the effect: zero-active compounds become slightly
-\emph{more} stable than active ones (entropy: $\sigma = 9.8$ vs.\ $12.1$,
-$p = 0.085$; Gini: $\sigma = 9.5$ vs.\ $13.0$, $p = 0.028$). This reinforces D1
-on the additional grounds that it eliminates the need to choose between
-arbitrary, disagreeing
-(even if individually defensible) conventions
-for scoring compounds that have no principled score to begin with.
-
-\paragraph{D2: Bounded gap sensitivity.}
-A small perturbation to the identity of the reference
-off-target must produce a small, bounded change in $f(\mathbf{x})$. That is, as the
-gap between two ranked affinities shrinks to zero, the score's dependence on
-which one is the reference off-target must shrink to zero as well.
-
-\textit{Motivation.}
-Ratio-based definitions violate this property when $x_{(1)} \approx x_{(2)}$.
-A compound with near-identical affinities for its top two kinases receives a
-near-zero ratio score when $k=1$ (the reference off-target is the tied second
-target, so the gap is negligible) but a large score when $k=2$ (the reference
-skips past the tie). On the 17 Klaeger compounds with a top$_1$--top$_2$ gap
-below $0.05$, mean $R(1) = 0.02$ against mean $R(2) = 0.42$
-(\texttt{d2\_near\_tie\_sensitivity.py}).
-This produces the Type~2 instability identified in
-the instability taxonomy above, where top$_1$--top$_2$ gap is the
-strongest predictor of ratio instability ($r = -0.341$, $p < 0.001$).
-Entropy and Gini satisfy D2 vacuously. 
-Neither scores a specific ranked affinity $x_{(k)}$, so the \emph{if} 
-condition of D2's formal statement
-(``if $f$ depends on the $k$-th ranked affinity, then \ldots'') is never
-satisfied.
-However, they also satisfy the intent of D2.
-That is, both are symmetric, continuous functions of
-the full normalized profile, so swapping two exactly tied affinities leaves the
-score unchanged, and a near-tie changes it only by a vanishing amount. We mark
-this vacuous satisfaction with a parenthesized $(\checkmark)$ in
-Table~\ref{tab:desiderata}, distinct from an unqualified $\checkmark$, which
-indicates the property does substantive work.
-The S-score also has no $k$-th ranked term, but it is not continuous in the
-same way: it counts kinases against a fixed threshold $\tau$, so whichever
-kinase's affinity happens to sit nearest $\tau$ plays the role of a reference
-off-target, and an infinitesimal perturbation that moves that affinity across
-$\tau$ changes the score by a full $1/N$. This is a bounded, single-kinase
-version of the same instability, smaller in magnitude than the ratio's
-unbounded swing but not the vanishing sensitivity entropy and Gini show, which
-is why it is graded $\sim$ rather than $\checkmark$ in
-Table~\ref{tab:desiderata}.
-
-\paragraph{D3: Distributional consistency.}
-The ranking induced by $f$ must be stable across the
-full practical interval $B$ of defensible baseline choices
-(i.e. those between the assay's detection floor and the conventional activity
-threshold). We state it this way, rather than as a local/infinitesimal
-condition, because the local reading is nearly vacuous: any $f$ continuous in
-$\beta$ (as both the entropy and the Gini coefficient are away from the
-active/inactive boundary) \emph{by definition}
-preserves any given pair's ranking over a
-small enough neighborhood, except at the measure-zero set of $\beta$ where
-the two compounds' scores exactly cross. The interval
-$B = [5.0, 6.5]$ used below is the same swept range used throughout this
-paper (Methods), and the D3 verdicts follow from this interval-wide
-definition rather than from the vacuous local reading just described.
-
-\textit{Motivation.}
-Our entropy and Gini definitions are parameterized by an explicit baseline
-$\beta$ that determines which affinities contribute to the binding
-distribution. Our $\beta$ is derived from the published forms' own (implicit) choice of
-reference points, $K_a \to 0$ for the entropy and $0\%$ inhibition for the Gini.
-Compounds with few active kinases are sensitive to this choice because small
-changes in $\beta$ can move individual kinases in or out of the active set,
-substantially altering the distribution.
-The negative correlation between $n_\mathrm{active}$ and entropy
-instability ($r = -0.409$ on Klaeger, $p < 0.001$; weaker for Gini, see
-Table~\ref{tab:predictors}) reflects this sensitivity
-(Figure~\ref{fig:failure_modes}, right).
-D3 requires that the ranking be robust to the choice of $\beta$ across the
-interval $B$. Making $\beta$ explicit does not guarantee this for the entropy
-and Gini coefficient: their rankings do reverse within $[5.0, 6.5]$ for compounds
-whose active status depends on where exactly the baseline falls, as observed in the
-the $n_\mathrm{active}$--instability relationship reported above.
-The ratio $R(k)$ compares two specific ranked
-affinities directly, so $f$ does not depend on $\beta$ at all. 
-D3's antecedent (``if there
-exists $\beta_0 \in B$ with $f(\mathbf{x};\beta_0) \neq f(\mathbf{y};\beta_0)$'')
-can still be true for the ratio, since $R(k)$ differs between most pairs of
-compounds. However, because $f$ is constant in $\beta$, that difference holds at
-every $\beta \in B$ identically, so the ranking trivially cannot reverse
-anywhere in the interval. This is a vacuous form of satisfaction
-than that of the candidate measure (below), which is $\beta$-independent only after
-D1's reliability gate and D3's own fixed-floor construction are applied. 
-To indicate this, we grade the ratio's D3 satisfaction with a
-``$(\checkmark)$'' entry in Table~\ref{tab:desiderata} rather than 
-$\checkmark$ (used to indicate non-vacuous satisfaction).
-
-The S-score's threshold $\tau$ plays the same
-active/inactive gating role as $\beta$.
-Its instability under $\tau$ is, however,
-weaker and less consistent than entropy and Gini's under $\beta$. This instability is
-predicted by every profile-shape feature except the top$_1$--top$_2$ gap on
-Klaeger, but by none of them on Davis (all $|r| \le 0.16$;
-Table~\ref{tab:predictors}). The entropy's $n_\mathrm{active}$
-dependence, on the other hand, replicates on both datasets. 
-This inconsistent sensitivity is why the S-score is
-graded $\sim$ rather than $\times$ or $\checkmark$.
-
-\paragraph{D4: Monotonicity under weak off-target addition.}
-Adding a sub-threshold binding interaction must not
-increase a compound's score.
-
-\textit{Motivation.}
-The S-score and the Gini coefficient violate this property.
-Adding a kinase that the compound does not meaningfully bind increases the panel
-size without adding activity. This lowers the S-score's fraction of hit kinases
-and raises the Gini coefficient's inequality, in both cases inflating the
-apparent selectivity.
-A compound can therefore be made to look more selective simply by profiling it
-against more inactive kinases. This is a serious problem when panels differ in size or
-composition across experiments, as between Davis and Klaeger.
-The entropy and the ratio satisfy D4. This can be explained by 
-the fact that a sub-threshold target adds negligible
-weight to the entropy's normalized distribution and falls at or below the
-ratio's reference off-target, so neither score increases.
-Recall here the sign convention (Methods),
-and that these D4 arguments refer to this selectivity-oriented
-$f$, not to the raw entropy or S-score value, which run the opposite way.
-
-\paragraph{Summary.}
-Table~\ref{tab:desiderata} summarizes which (conventionally implemented)
-definitions satisfy each property, and none satisfy all four.
-The D1, D2, and D4 verdicts follow directly from each definition's formula and
-hold for any parameter value, with no data needed to check them. The D3
-verdicts require actually computing rankings across the swept $\beta$
-values described above. This is made possible by making $\beta$ an explicit,
-independently variable parameter in the entropy and Gini definitions.
-The published originals leave it implicit ($K_a \to 0$ for the
-entropy, $0\%$ inhibition for the Gini) and expose nothing to sweep.
-Three entries among the existing
-definitions are vacuous (marked $(\checkmark)$): entropy's
-and Gini's D2, because neither depends on a $k$-th ranked affinity at all, and the
-ratio's D3, because it has no $\beta$ to be sensitive to. 
-D1 is the only property that all four
-existing definitions violate as conventionally used. Entropy is the existing
-definition closest to satisfying every property: it already satisfies D2 (vacuously) and
-D4, and fails only D1 and D3. The candidate measure is a local
-modification of the entropy built specifically to repair those two remaining
-failures (Methods, ``A Candidate Measure''), which is why D1 and D3 are also
-the two properties on which the candidate differs from the plain entropy in
-the table below. The candidate measure thus substantively satisfies all four properties.
+Table~\ref{tab:desiderata} summarizes how the four definitions and the candidate
+measure fare against the properties D1--D4 defined in Methods. None of the four
+definitions satisfies all four. D1 is the only property all four violate, and
+the entropy comes closest overall: it satisfies D2 (vacuously) and fails D1,
+D3, and D4.
 
 \begin{table}[h]
   \centering
   \caption{Satisfaction of the four motivated properties by existing selectivity
-           definitions and by the candidate measure introduced below.
-           $\checkmark$: satisfied substantively (by construction, or verified
-           empirically for the candidate).
-           $(\checkmark)$: satisfied vacuously, because the property's
-           antecedent is never triggered (entropy's and Gini's D2, which score
-           no $k$-th ranked affinity; the ratio's D3, which has no baseline
-           $\beta$ to be sensitive to).
-           $\sim$: partially satisfied or satisfied under additional assumptions.
-           $\times$: violated in general.}
+           definitions and by the candidate measure.
+           $\checkmark$: satisfied substantively.
+           $(\checkmark)$: satisfied vacuously, because the measure has no
+           parameter of the kind the property constrains (no reference
+           off-target for D2; no baseline for the ratio's D3).
+           $\checkmark^{\dagger}$: satisfied only with the activity boundary
+           fixed at the assay floor $x_0$; sweeping $x_0$ itself over $B$ moves
+           the ranking as much as the entropy's baseline does.
+           $\times$: violated.
+           Entries in the D3 row are determined empirically, on all four
+           datasets; the other rows are assessed from each measure's
+           functional form.}
   \label{tab:desiderata}
   \begin{tabular}{lccccc}
     \toprule
     Property & S-score & Entropy & Gini & Ratio & Candidate \\
     \midrule
-    D1 (reliability threshold)        & $\times$ & $\times$        & $\times$        & $\times$        & $\checkmark$ \\
-    D2 (bounded gap sensitivity)      & $\sim$   & $(\checkmark)$  & $(\checkmark)$  & $\times$        & $\checkmark$ \\
-    D3 (distributional consistency)   & $\sim$   & $\times$        & $\times$        & $(\checkmark)$  & $\checkmark$ \\
-    D4 (monotonicity, weak off-target)& $\times$ & $\checkmark$    & $\times$        & $\checkmark$    & $\checkmark$ \\
+    D1 (reliability threshold)        & $\times$        & $\times$        & $\times$        & $\times$        & $\checkmark$ \\
+    D2 (bounded gap sensitivity)      & $(\checkmark)$  & $(\checkmark)$  & $(\checkmark)$  & $\times$        & $(\checkmark)$ \\
+    D3 (distributional consistency)   & $\times$        & $\times$        & $\times$        & $(\checkmark)$  & $\checkmark^{\dagger}$ \\
+    D4 (monotonicity, weak off-target)& $\times$        & $\times$        & $\times$        & $\checkmark$    & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{A Candidate Measure}
+\textit{D1.} None of the four definitions has a reliability condition, so each
+assigns a score to the 16 Klaeger compounds with no binding above the activity
+threshold. Their ranks are set by convention rather than by measured binding.
+Pooled across the four definitions' parameter sweeps, their rank instability is
+$\sigma = 72.9$ against $31.3$ for active compounds ($p < 0.001$, Mann--Whitney
+$U$ test; Figure~\ref{fig:failure_modes}, left). The contrast is driven by Gini
+($\sigma = 86.1$ versus $15.9$) and entropy ($17.1$ versus $12.5$), is marginal
+for the ratio ($24.0$ versus $20.7$), and reverses for the S-score ($18.5$
+versus $24.3$), whose score is exactly $0$ for every such compound. It is
+largely a product of the convention for undefined entropy and Gini scores
+(Methods): a zero-active compound's entropy and Gini are defined at only 1--4
+of the 7 baselines swept (mean 3.2), and computed only over each compound's
+defined configurations, zero-active compounds are slightly \emph{more} stable
+than active ones (entropy: $\sigma = 9.8$ vs.\ $12.1$, $p = 0.085$; Gini:
+$\sigma = 9.5$ vs.\ $13.0$, $p = 0.028$; 14 of the 16 compounds, the other two
+being defined at fewer than two baselines;
+\texttt{undefined\_score\_convention.py}). The case for D1 is therefore not that
+these scores are noisier, but that they rest on an arbitrary choice that D1
+removes. Any of the four definitions could satisfy D1 by withholding or
+flagging such scores; for the ratio, our implementation's floor fallback is what
+violates it (Methods, ``Ratio'').
+
+\textit{D2.} The ratio violates D2 when its top two affinities are nearly tied.
+On the 17 Klaeger compounds with a top$_1$--top$_2$ gap below $0.05$, mean
+$R(1) = 0.02$ (the near-tied second kinase is treated as the off-target) against
+mean $R(2) = 0.42$ (it is treated as a co-target;
+\texttt{d2\_near\_tie\_sensitivity.py}). This is the Type~2 instability above,
+where the top$_1$--top$_2$ gap is the strongest predictor of ratio instability
+($r = -0.341$, $p < 0.001$). The S-score, entropy, Gini, and candidate have no
+reference off-target and satisfy D2 vacuously; the S-score's sensitivity to
+kinases near its threshold is a D3 matter.
+
+\textit{D3.} Swept over $B = [x_0, \tau^*]$, the S-score, entropy, and Gini
+each reverse the order of $8$--$23\%$ of pairs of scored compounds, on every
+dataset (S-score $8.0$--$20.6\%$, entropy $8.8$--$22.6\%$, Gini
+$9.1$--$22.4\%$; highest on Metz; \texttt{d3\_pair\_reversals.py}), far above
+$\varepsilon = 1\%$. The candidate's emphasis baseline reverses at most
+$0.72\%$, so every verdict in Table~\ref{tab:desiderata} is the same for any
+$\varepsilon$ from $1\%$ to $7\%$. This is consistent with the
+$n_\mathrm{active}$--instability correlation of Table~\ref{tab:predictors}:
+compounds with few active kinases change their active sets as the boundary
+moves.
+Making $\beta$ an explicit parameter is what makes this testable: the published
+originals leave it implicit ($K_a \to 0$ for the entropy, $0\%$ inhibition for
+the Gini). The ratio has no baseline and satisfies D3 vacuously.
+
+\textit{D4.} The S-score and Gini violate D4 by construction: both are computed
+over the full panel of size $N$, so adding a kinase the compound does not bind
+lowers the S-score's hit fraction and raises the Gini's inequality, inflating
+the apparent selectivity. A compound can therefore be made to look more
+selective simply by profiling it against more inactive kinases, which matters
+whenever panels differ in size or composition, as between Davis and Klaeger.
+The ratio satisfies D4, because a sub-threshold kinase falls at or below its
+reference off-target. The entropy satisfies D4 only for additions at or below
+its baseline $\beta$, which carry zero weight; a kinase between $\beta$ and
+$\tau^*$ carries positive weight and can raise its score (``Why the Smooth
+Hinge Matters'', below). These arguments refer to the selectivity-oriented $f$
+(Methods), not to the raw entropy or S-score, which run the opposite way.
+
+\subsection{The Candidate Measure}
 \label{sec:candidate}
 
-The four properties can indeed be satisfied, and the selectivity entropy is the
-natural starting point.
-The goal is not to outrank the entropy, but to repair the two failure modes
-documented above (D1's arbitrary scores for non-binders and D3's
-baseline-driven instability) without giving up what it already gets right.
-Of the existing definitions it is the only one that already satisfies both D2 and
-D4 (Table~\ref{tab:desiderata}). Because it scores the whole normalized profile
-rather than a single pairwise gap, it neither privileges a reference off-target
-(D2) nor rewards the addition of non-binders (D4).
-It, however, fails D1 and D3. It fails D1 due to having no reliability gate.
-The D3 failure comes from the hard active/inactive cutoff $\max(x_i - \beta, 0)$,
-which ties the boundary between active and inactive kinases to the baseline
-$\beta$. As $\beta$ moves, kinases enter or leave the active set and the ranking
-shifts.
+The candidate measure (Methods) is evaluated here to show that the four
+properties can be met together. It is correctly oriented: its score falls with
+the number of active kinases on every dataset (Spearman $-0.785$ to $-0.969$).
+The non-binder gate is what makes this so. Without it, the non-binding kinases
+at the floor dominate the profile and the score inverts, rising with the number
+of active kinases ($r = +0.94$ on Klaeger).
 
-The cutoff plays two roles: it excludes non-binders, which keeps the measure
-correctly oriented, and it sets the emphasis among the active kinases.
-The candidate separates these roles. It excludes non-binders with a gate fixed at
-the assay detection floor (a specified constant). 
-It then applies a smooth softplus emphasis above the floor.
-The ratio cannot be repaired this way, as it fails D2 by construction. The
-S-score and Gini violate D4 by construction, as both are computed as a fraction or
-rank-weighted sum over the full panel of size $N$. A sub-threshold addition
-still shifts $N$ and moves the score. This differs from the entropy's
-normalized weights, where a zero-weight addition drops out without changing the
-score. The entropy is
-therefore the one existing measure that can reach all four properties through
-local changes.
-The candidate differs from entropy in the following ways:
-(1) it adds the D1 reliability gate, (2) it fixes the
-non-binder gate at the assay floor, and (3) it replaces the hard cutoff above the
-floor with a smooth softplus emphasis.
+Because the candidate is a local modification of the entropy, the two rank the
+compounds they both score almost identically (full-panel Spearman $+0.999$ on
+Klaeger and $+0.995$ on Metz). The properties do not act by reordering
+compounds in the body of the distribution. They act on which compounds receive
+a score at all (D1, which flags 16 of 222 Klaeger compounds), on whether the
+ranking survives a shift in an analyst's parameter (D3), and on profiles that
+these datasets rarely or never contain (D4). The case for the properties
+therefore does not rest on these data. They are requirements on every binding
+profile, not only on the profiles four datasets happen to contain, and we
+propose them as checks that any new selectivity measure should pass. ``Why the
+Smooth Hinge Matters'', below, gives a concrete case in which the entropy fails
+one of them on a real dataset and the candidate provably does not.
 
-All three changes are deliberately local, and it follows that on the compounds
-both measures score they should rank them almost identically. They do: the
-full-panel Spearman correlation between the candidate and the entropy is $+0.999$
-on Klaeger and $+0.997$ on Metz. This is expected, since the four properties do not act by
-reordering the compounds in the body of the distribution. They act on which
-compounds receive a score at all, which is D1 and changes the status of 16 of 222
-Klaeger compounds, and on whether the score survives a shift in the analyst's
-baseline, which is D3. 
-The full definition is given in Methods (``Motivated Properties and a
-Candidate Measure'').
-Without the weight gate added in the candidate measure, the non-binding kinases at
-the floor dominate the profile and the score inverts, rising with the number
-of active kinases ($r = +0.94$ on Klaeger) instead of falling with it.
-The gate sits at the detection floor $x_0$, while the D1 reliability gate
-sits at $\tau^* > x_0$. A kinase with affinity between $x_0$ and $\tau^*$ therefore
-contributes to the binding distribution. However, a compound whose strongest binding
-falls in that range is flagged unreliable by D1.
-
-This measure satisfies all four properties.
-D1 holds by the explicit reliability gate.
-D2 holds because $f$ is a symmetric function of the full normalized profile and
-references no particular off-target.
-D3 holds because the candidate has no free activity baseline: the boundary
-between active and inactive kinases is fixed at the assay detection floor $x_0$.
-Entropy and Gini, as used in practice, leave
-this baseline free, so their rankings move as it is varied (the
-$n_\mathrm{active}$ instability correlation of Table~\ref{tab:predictors}).
-Once $x_0$ is fixed, the sole free parameter left in the score is the softplus
-emphasis baseline $\beta$, and the ranking is essentially invariant to it over
-$[4.5, 6.5]$ (worst-case pairwise Spearman $\rho = 0.999$).
-Moving the floor across the same range shifts the ranking sensitively
-($\rho \approx -0.93$), as it does for any threshold-based activity
-call, including the entropy's ($\rho \approx -0.95$). In Figure~\ref{fig:failure_modes}
-(right), sweeping the candidate's gate $x_0$ over the same
-range as the entropy's baseline is more destabilizing than
-sweeping the entropy's baseline itself (mean rank instability $46.3$ vs.\
-$12.5$). The
-candidate's D3 advantage comes from declaring $x_0$ a fixed
-constant, making the ranking empirically robust to
-the one remaining free parameter, the emphasis baseline $\beta$.
-D4 holds because the gated weight is zero at and below the floor and is monotone
-above it, so adding a sub-threshold target never raises the score (verified for
-$100\%$ of Klaeger compounds).
-
-The orientation, D3, and D4 checks were repeated on the other three datasets.
-The candidate stays correctly oriented and satisfies D3 and D4 on Davis,
-Anastassiadis, and Metz. The correlation between the
-candidate's score and the active-kinase count ranges from $-0.79$ to
-$-0.97$. D3 robustness (to the emphasis baseline $\beta$) is $\rho \geq 0.99$ in
-each case, and D4
-holds for $100\%$ of compounds in every dataset.
-We also repeated the gate-swept (floor-as-free-parameter) check behind
-Figure~\ref{fig:failure_modes} on all four datasets to confirm that the gate's
-fixed-by-declaration role (rather than inherent robustness) explains D3.
-The worst-case pairwise Spearman correlation $\rho$
-under a floor sweep is $-0.838$ on Davis, $-0.932$ on Klaeger, and $-0.330$ on
-Metz. All three are far from the emphasis-parameter's $\rho \geq 0.99$, confirming that the
-measure is not robust on the gate on these. Anastassiadis
-is a partial exception ($\rho = +0.913$): on that dataset the candidate's
-ranking happens to be comparatively insensitive to where the floor is set,
-for which we do not have a mechanistic explanation. Full per-dataset 
-numbers are in Supporting Information
-(Table~S4) and \texttt{candidate\_validation.py} in the code repository.
+The candidate satisfies D1 by its reliability gate and D2 vacuously. For D3,
+its only free parameter is the emphasis baseline $\beta$, and sweeping it over
+$B$ reverses $0.43$--$0.72\%$ of pairs, so it passes on every dataset
+(\texttt{d3\_pair\_reversals.py}). Its activity boundary, however, is not
+robust; it is fixed. Sweeping the gate $x_0$ itself over $B$ reverses
+$8.5$--$22.5\%$ of pairs, against $8.8$--$22.6\%$ for the entropy's baseline,
+and the two sweeps produce the same per-compound instability on Klaeger (mean
+rank $\sigma = 7.2$ and $7.5$; Figure~\ref{fig:failure_modes}, right). The
+candidate's D3 standing therefore comes entirely from declaring $x_0$ a fixed
+constant, and Table~\ref{tab:desiderata} marks it $\checkmark^{\dagger}$. D4
+holds by the proposition in Methods, and also on every compound in all four
+datasets with one kinase added at $\tau^*$, the hardest case
+(\texttt{candidate\_validation.py}; Supporting Information, Table~S4).
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{figures/failure_modes}
-  \caption{The two failure modes the candidate measure repairs (Klaeger).
+  \caption{The two failure modes that motivate D1 and D3 (Klaeger).
            \emph{Left (D1):} rank instability (std across the existing
            definitions' parameter sweeps) for compounds with no binding
            above the activity threshold versus compounds with at least one
-           active kinase.
+           active kinase. The contrast is driven by the convention used for
+           undefined entropy and Gini scores (Methods); computed only over the
+           configurations in which each compound's score is defined,
+           zero-active compounds are not less stable (text).
            \emph{Right (D3):} per-compound rank instability against the
-           number of active kinases, under three sweeps: the entropy's
-           activity baseline left fully free (orange); the
-           candidate's gate $x_0$ swept over the same range, with its
-           emphasis baseline pinned to $x_0$ at each
-           point (green); and the candidate's emphasis baseline swept with
-           $x_0$ fixed at the assay floor (red).}
+           number of active kinases, with each parameter swept over
+           $B = [5.0, 6.0]$: the entropy's activity baseline (orange); the
+           candidate's gate $x_0$, with its emphasis baseline pinned to $x_0$
+           at each point (green); and the candidate's emphasis baseline with
+           $x_0$ fixed at the assay floor (red). The candidate's gate and the
+           entropy's baseline produce nearly the same mean instability ($7.2$
+           and $7.5$); only the emphasis sweep, with the gate held fixed, is
+           stable ($0.4$).}
   \label{fig:failure_modes}
 \end{figure}
 
-A usable measure must also be recoverable from realistic panels.
-Applying the panel-size subsampling analysis above to the candidate (same grid,
-50 random subpanels per size), the smallest panel reaching mean Spearman correlation
-$\rho > 0.90$ with the full-panel ranking is $p^* = 110$ kinases on Klaeger
-(Figure~\ref{fig:candidate}) and $p^* = 80$ of 172 kinases on Metz, so it
-converges quickly on both datasets.
-On Klaeger, this matches the entropy and the S-score (all $p^* = 110$) and is
-well ahead of both Gini ($290$) and ratio ($343$, the full panel).
-On Metz it again matches the entropy, but here the S-score converges faster
-($p^* = 50$ vs.\ $80$).
+A usable measure must also be recoverable from realistic panels. With the
+panel-size subsampling analysis above (same grid, 50 random subpanels per
+size), the candidate reaches mean Spearman $\rho > 0.90$ with its full-panel
+ranking at $p^* = 110$ kinases on Klaeger and $p^* = 80$ of 172 on Metz
+(Figure~\ref{fig:candidate}). This matches the entropy on both datasets; on
+Klaeger it is well ahead of the Gini ($290$) and the ratio ($343$), and on Metz
+the S-score converges faster ($50$). These $p^*$ values score every compound,
+including ones the D1 gate would refuse to score once their active kinases fall
+outside a subpanel ($42\%$ of Klaeger compounds at 50 kinases, $27\%$ at 110,
+at most $2\%$ on Metz). Restricting the comparison to compounds that D1 allows
+to be scored on both the subpanel and the full panel moves the candidate, the
+entropy, and the Gini all to $p^* = 80$ on Klaeger, with Metz unchanged. Part
+of this gain is selection, since the gate removes the least-bound compounds,
+which are also the hardest to rank. The gate and the smooth emphasis thus
+neither cost nor buy convergence speed relative to the entropy.
 
-Those $p^*$ values score every compound, including ones the D1 gate would refuse
-to score, and that matters on a subpanel: a compound whose active kinases fall
-outside the drawn subset drops below $\tau^*$ and becomes undefined. On Klaeger
-this affects $42\%$ of compounds at a 50-kinase panel, $27\%$ at 110 and $7\%$ at
-the full panel; on Metz, which is densely covered, at most $2\%$. Recomputing the
-convergence over only the compounds that are D1-defined on both the full panel and
-the subpanel, the candidate reaches $\rho > 0.90$ at $p^* = 80$ on Klaeger rather
-than $110$, and Metz is unchanged. Two cautions apply. The gated and ungated
-$p^*$ are not computed on the same set of compounds, since gating removes the
-least-bound ones, which are also the hardest to rank, so part of the improvement
-is selection rather than a property of the gate. And the same recomputation moves
-the Gini from $p^* = 290$ to $p^* = 80$, which bears on the panel-size
-recommendation in the Discussion.
-Raw convergence speed is not by itself a useful criterion, however: the
-S-score fails D1 and D4 outright (Table~\ref{tab:desiderata}), so a smaller
-$p^*$ does not make it a viable alternative.
-Matching the bare entropy's $p^*$ on both datasets, while adding the two
-properties it lacks, shows that the D1 gate and the smooth emphasis do not
-cost any convergence speed.
-
-The candidate measure above (to which we will refer as the \emph{featured} 
-candidate measure) is one member of a family of measures satisfying
-D1--D4. Next, we consider three axes of variation within this family: the
-reliability floor, the R\'enyi order, and the smoothing width $T$.
-Replacing the fixed floor with a per-compound low-quantile
-reference gives a shift-invariant variant.
-It produces nearly the same ranking
-on Davis and Klaeger (Spearman $r \approx 1.00$), is equally robust to the choice of
-quantile ($\rho \approx 1.00$ for D3), and continues to satisfy D4 exactly.
-
-Generalizing the Shannon functional to any R\'enyi order $\alpha > 0$ gives
-another way to vary the candidate solution:
-$-H_\alpha(p) = \frac{1}{\alpha-1}\log_2 \sum_i p_i^\alpha$,
-which recovers Shannon entropy as $\alpha \to 1$.
-D1 holds for every $\alpha$ since the $x_0$ gate is applied before the entropy
-is computed, independent of order. D2 and D3 hold by the same continuity and
-symmetry arguments used for Shannon entropy, applied to $H_\alpha$ instead.
-D4 holds because $p_i^\alpha = 0$ whenever $p_i = 0$, so a gated-out
-coordinate cannot raise the score.
-Although Spearman agreement with $\alpha = 1$ stays high ($0.997$--$1.000$ for
-$\alpha \in \{0.5, 2, 3\}$ on Davis and Klaeger), the orders are not redundant, and
-$\alpha$ affects panel recoverability.
-On Klaeger, $\alpha \in \{0.01, 0.25, 0.5, 0.75\}$ reaches $p^* = 80$,
-ahead of the $\alpha = 1$ candidate's $p^* = 110$, while $\alpha \in \{2, 3\}$
-falls to $p^* = 290$, matching the Gini. On Metz every order from $0.01$ to $3$
-reaches $p^* = 80$, so this gap is specific to the sparser Klaeger panel.
-
-This speed does not come from discarding information. The number of distinct
-scores and the size of the largest tied group are identical across every order
-tested, including $\alpha \to \infty$; the only tied compounds are those with at
-most one active kinase, whose normalized profile is a point mass with zero
-entropy regardless of order.
-This reflects how each limit behaves under subsampling. As $\alpha \to 0$, the
-score approaches a count of the active set, a quantity a random subpanel
-estimates with low variance. As $\alpha \to \infty$, the score
-instead depends on the single largest weight, and therefore has high variance.
-This is because if the kinase carrying that weight is left out of the subpanel,
-the estimate is far off.
-
-For $\alpha \leq 0.5$, Spearman agreement between that ranking and the
-$\alpha = 1$ ranking is just as high on the sparsest compounds
-($n_\mathrm{active} < 5$) as on the rest ($\geq 0.98$ in both subsets, both
-datasets). The limit
-$\alpha \to \infty$, on the other hand, loses agreement with $\alpha = 1$ among the sparsest
-compounds specifically ($0.69$ on Metz).
-The value $\alpha = 1$ is the unique
-point where the R\'enyi family reduces to Shannon entropy, and for this
-reason we fix it at this value for our featured candidate measure.
-The panel-size dependence on $\alpha$ is reported here
-as a property of the family. A lower order is a documented alternative
-(full figures in \texttt{family\_panelsize.py} and
-\texttt{family\_alternatives.py} in the code repository).
-
-The smoothing width $T$ is another value that can be varied within the 
-candidate measure family (we fix $T \approx 1$ for the featured measure).
-As $T \to 0$ the softplus hinge $T\log(1+e^{(x_i-\beta)/T})$
-converges to the hard cutoff $\max(x_i - \beta, 0)$, recovering the standard
-entropy and its D3 baseline sensitivity. Distributional consistency therefore
-requires a strictly positive $T$.
-The ranking is otherwise insensitive to this choice: over $T \in [0.5, 2]$ the
-Klaeger ranking is essentially unchanged (worst-case pairwise Spearman correlation
-$\rho = 0.999$).
-
-Thus, the quantile floor, the R\'enyi order, and $T$ give at least three axes of
-variation compatible with D1--D4. Whether the properties are jointly
-satisfiable only by measures within this family, and whether a uniqueness
-result analogous to Shannon's holds, is left to future work.
-A complementary direction is a consensus ranking that does not commit to any
-single measure, that is, a partial order on which all existing measures agree.
+The featured candidate is one member of a family of measures that satisfy
+D1--D4 on these data: a per-compound quantile floor in place of the fixed floor
+and R\'enyi orders up to $\alpha = 1$ do so on Davis and Klaeger, and smoothing
+widths from $0.75$ to $2$ times $\tau^* - x_0$ on Klaeger (D4 is proved only
+for the Shannon order, $\alpha = 1$). These variants, including how the R\'enyi
+order affects panel recoverability, are reported in Supporting Information
+(Section~S5).
 
 \begin{figure}[h]
   \centering
@@ -452,3 +189,45 @@ single measure, that is, a partial order on which all existing measures agree.
            smallest panel reaching mean $\rho > 0.90$.}
   \label{fig:candidate}
 \end{figure}
+
+\subsection{Why the Smooth Hinge Matters}
+\label{sec:hinge}
+
+The purpose of this subsection is to show that the candidate and the entropy
+differ in principle, although they rank these four datasets almost identically,
+and that the difference comes from the candidate's functional form rather than
+from a reporting rule (D1) or a declared constant (D3). The property at stake
+is D4.
+
+\textit{The entropy can violate D4.} Its hard cutoff gives a kinase just above
+the baseline $\beta$ an arbitrarily small weight. A profile with many such
+kinases therefore has high entropy, and adding one kinase that is bound more
+strongly, but still below $\tau^*$, concentrates the distribution and raises the
+selectivity score. For example, with $\beta = 5.0$ and $\tau^* = 6.0$, a profile
+with one kinase at $\mathrm{p}K_d = 7.0$ and fifty at $5.1$ has an
+entropy-based selectivity of $-4.89$ bits, and adding one kinase at
+$\mathrm{p}K_d = 6.0$ raises it to $-4.83$.
+On Davis, Klaeger, and Metz, adding one kinase at $\tau^*$ never raises the
+entropy's score for any compound at any baseline in their sweeps. On
+Anastassiadis it does at low baselines: weighting each kinase by its raw
+percent inhibition ($\beta = 0\%$), as the published percent-inhibition forms
+do, it raises the score for $34\%$ of the 134 compounds with an active kinase,
+and for $16\%$ at $\beta = 5\%$, although for none at $15\%$ or above
+(\texttt{d4\_entropy\_vs\_candidate.py}).
+
+\textit{The candidate cannot.} By the proposition in Methods, with
+$T \geq 0.58\,(\tau^* - x_0)$ no sub-threshold addition can raise its score.
+The condition on $T$ is sharp: just below it, a profile with one strong target
+and enough kinases just above the floor violates D4. With $T = 1$ on Metz or
+$T = 10$ on Anastassiadis, both below the bound, constructed profiles of this
+kind violate D4 (by up to $0.014$ bits on Anastassiadis), although none of the
+real compounds does. Setting $T = \tau^* - x_0$ on every dataset satisfies the
+condition with room to spare, leaves Davis and Klaeger unchanged, and changes
+the Metz and Anastassiadis rankings negligibly (Spearman $0.999$ against $T = 1$
+and $T = 10$, respectively).
+
+The two measures rank these datasets almost identically, yet they differ on a
+question the rankings do not test: whether binding one more kinase below
+threshold can make a compound look more selective. For the entropy it can, for
+a third of the Anastassiadis compounds at the published forms' own baseline;
+for the candidate it provably cannot.

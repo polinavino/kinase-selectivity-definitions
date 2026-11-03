@@ -46,7 +46,7 @@ which one you use?
 
 ### What this paper found
 
-It matters, in a structured and predictable way. The S-score, entropy, and Gini
+It matters, in a structured way. The S-score, entropy, and Gini
 all ask roughly the same question (how spread out is the binding?) and mostly
 agree. The **ratio** asks a genuinely different question (how big is the gap to
 the single nearest competitor?) and is the consistent outlier. So a drug that
@@ -57,7 +57,7 @@ different questions.
 We confirmed this across **four datasets spanning three assay technologies**
 (competition binding, chemoproteomics, and functional-activity assays), so it is
 not an artifact of one dataset or one assay. We also found that the disagreements
-are predictable from the shape of a drug's binding profile, and that ratio-based
+are associated with the shape of a drug's binding profile, and that ratio-based
 scores become unreliable on the small (50–100 kinase) panels used in practice,
 while entropy-based scores stabilize above ~110 kinases.
 
@@ -180,7 +180,9 @@ from these files and cited in the Discussion/Limitations sections.
 | candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D3 (emphasis- and gate-swept), D4 (Motivated Properties, SI Table S4) |
 | davis_klaeger_overlap.py | Resolves Davis/Klaeger compound overlap via PubChem CID matching (46 compounds; Discussion) |
 | platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds (Discussion) |
-| failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability) |
+| failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability, all over B = [5.0, 6.5]) |
+| d4_entropy_vs_candidate.py | D4 for the entropy vs. the candidate: the condition on T and its sharpness, the entropy counterexample, real-data frequency, and the effect of setting T = tau* - x0 (Motivated Properties, "Why the Smooth Hinge Matters") |
+| feature_placeholder_sensitivity.py | Table 2 predictors recomputed without the 0 placeholder for undefined skewness/std/range (Results) |
 | toc_graphic.py | Rebuilds the graphical-abstract/TOC image from the Davis correlation matrix and Klaeger panel-size curves |
 
 ### Replication steps

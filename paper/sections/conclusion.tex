@@ -1,10 +1,13 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have shown that commonly used kinase inhibitor selectivity definitions split
+We have shown that commonly used kinase inhibitor selectivity definitions,
+computed on a common log-affinity scale, split
 three to one, into a distribution-based group whose members agree closely and a
 ratio measure that agrees with none of them, and that the two measure
-fundamentally different properties of binding profiles. 
+fundamentally different properties of binding profiles. This grouping is a
+property of that common scale: under the association-constant form of the
+original publication, the entropy does not cluster with the S-score and Gini.
 We also showed that rank instability within and between families is
 associated with binding profile shape, and that three
 structurally distinct sources of instability can be identified and
@@ -14,22 +17,30 @@ should satisfy: a reliability threshold
 condition, bounded gap sensitivity, distributional consistency, and monotonicity
 under weak off-target addition.
 
-None of the four definitions assessed satisfies all four properties, but we show
-that a gated, smooth-hinge effective-target number does. We demonstrate that it
+None of the four definitions assessed satisfies all four properties. The one
+property all four violate is the reliability condition, a reporting convention
+that any of them could adopt. The candidate we propose, a gated, smooth-hinge
+effective-target number, satisfies all four: the reliability condition by a
+reporting rule; distributional consistency because its activity boundary is
+fixed at the assay floor (swept as a free parameter, that boundary moves the
+ranking as much as the entropy's baseline does); and monotonicity under weak
+off-target addition by its functional form, which we prove, and which the
+entropy fails for a third of the Anastassiadis compounds. The candidate
 recovers its full-panel ranking from roughly a third of a typical panel on
-Klaeger and roughly a half on Metz, and from roughly a quarter on Klaeger once
-the reliability gate is applied, and that it is
-part of a whole family of candidate definitions satisfying the four properties.
+Klaeger and roughly a half on Metz, as the entropy does, and it is part of a
+whole family of candidate definitions satisfying the four properties.
 Because the candidate is a local modification of the entropy, the two rank the
-compounds they both score almost identically (Spearman $+0.999$ on Klaeger). 
-So, our candidate measure is neither unique nor a guaranteed universal 
-improvement on existing measures. 
+compounds they both score almost identically (Spearman $+0.999$ on Klaeger), so
+our candidate measure is neither unique nor an improvement on the entropy on
+these data. The case for the properties therefore does not rest on these data:
+they are requirements on every binding profile, and we propose them as checks
+that any new selectivity measure should pass.
 
-The main goal of this work, however, is to identify criteria for judging 
+The main goal of this work is to identify criteria for judging 
 a candidate that could be considered a principled, universally adopted 
 choice of selectivity measure in the future. Such criteria must be justified 
 (which we argue they are),
-and jointly satisfiable (which we empirically demonstrate). 
+and jointly satisfiable (which the candidate demonstrates). 
 Further properties may discriminate where these four do
 not, and the candidate may separate from the entropy on panels whose active
 fractions differ from the four studied here.
