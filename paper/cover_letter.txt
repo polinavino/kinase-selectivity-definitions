@@ -1,32 +1,33 @@
 Dear Professor Baumann,
 
-I am pleased to submit a revised version of manuscript 7756455, now titled
+I am pleased to submit the second revision of manuscript 7756455,
 "Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Motivated Properties for a Well-Formed Measure"
-(previously "Towards a Formal Definition of Kinase Inhibitor
-Selectivity: Empirical Characterization of Definitional Instability and Proposed
-Desiderata"), as a Research Article (Full Paper).
+Characterization and Motivated Properties for a Well-Formed Measure", as a
+Research Article (Full Paper).
 
-I am grateful to the reviewer for a constructive assessment. The manuscript has
-been substantially revised in response, most notably by:
+I am grateful to the reviewer for a second constructive assessment. In
+response, the manuscript has been revised as follows:
 
-  - simplifying the language and removing the speculative passages identified,
-    including deletion of the "Relation to Formal Methods" section and replacing
-    the term "desiderata" with "motivated properties" throughout;
+  - the motivated properties and the candidate measure are now defined
+    formally in Methods and evaluated in Results, with repeated results and
+    layered qualifications consolidated;
 
-  - extending the analysis from two datasets to four (adding the Anastassiadis
-    and Metz datasets, spanning three assay technologies), and explicitly
-    motivating the exclusion of the Gao and Patricelli datasets;
+  - every robustness check the reviewer requested has been added, including
+    correlation matrices under the published forms of the entropy and Gini,
+    the Klaeger filter sensitivity, the Metz coverage distribution, the
+    convention for undefined scores, and a comparison of platform and
+    definition effects on compounds shared by Davis and Klaeger;
 
-  - deriving and explaining each selectivity definition from its original
-    publication, with a new "Faithfulness to the original definitions"
-    subsection and a supporting sensitivity check; and
+  - the candidate measure's monotonicity property is now proved, and the
+    dependence of its distributional consistency on a fixed assay floor is
+    stated plainly; and
 
-  - introducing a concrete candidate measure that satisfies all four required
-    properties, strengthening the contribution beyond the previous version.
+  - a Supporting Information file now holds the results previously available
+    only in the code repository.
 
-A detailed point-by-point response to the reviewer's comments is provided in the
-accompanying author response letter.
+Re-running every analysis during this revision also found coding errors that
+change some reported numbers. These are listed at the end of the response
+letter, which gives a point-by-point account of all changes.
 
 The manuscript has not been submitted or published elsewhere. A preprint is
 available on ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1). All data
@@ -35,14 +36,6 @@ https://github.com/polinavino/kinase-selectivity-definitions, and no
 confidential data were used. I declare no conflict of interest, and the work
 received no specific external funding. The use of a large language model
 assistant in preparing the manuscript is disclosed in the Acknowledgement.
-
-I suggest the following reviewers:
-1. Juergen Bajorath, University of Bonn (bajorath@bit.uni-bonn.de)
-2. Pascal Bonnet, University of Orleans (pascal.bonnet@univ-orleans.fr)
-3. Bernhard Kuster, Technical University of Munich (kuster@tum.de)
-4. Stefan Knapp, Goethe University Frankfurt (knapp@pharmchem.uni-frankfurt.de)
-5. John Chodera, Memorial Sloan Kettering Cancer Center
-   (john.chodera@choderalab.org)
 
 Thank you for considering this revised manuscript.
 

@@ -1,105 +1,57 @@
-# Kinase Inhibitor Selectivity: Towards a Formal Definition
+# Kinase Inhibitor Selectivity: Research Notes
 
 ## Project status
-Under major revision for Molecular Informatics (resubmission). Empirical
-analysis complete on four datasets. Manuscript revised in response to reviewer
-comments (language/terminology, additional datasets, equation derivations).
+Second revision for Molecular Informatics (manuscript 7756455), responding to
+Reviewer 1's round-2 review (`paper/reviewer1_round2_review.txt`; response in
+`paper/response_to_reviewers_round2.txt`). Analysis complete on four datasets;
+every number in the paper is printed by a script into `outputs/` (see README).
+Preprint: ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1).
 
 ## Research question
-Existing kinase inhibitor selectivity definitions (S-score, entropy, Gini, ratio)
-are used interchangeably but measure different things. This paper:
-1. Systematically characterizes where and why they disagree
-2. Identifies three mechanistic sources of instability
-3. Proposes desiderata toward a formal axiomatic definition
-4. Explores correlation with clinical outcomes (FAERS + RCT data)
+Existing kinase inhibitor selectivity definitions (S-score, entropy, Gini,
+ratio) are used interchangeably. The paper:
+1. Characterizes where and why they disagree, on four datasets
+2. Identifies three sources of rank instability
+3. Motivates four properties (D1-D4) for a well-formed measure
+4. Shows with a candidate measure that D1-D4 can be met together
 
-## Key findings so far
-- Ratio definition clusters separately from S-score/entropy/Gini in all four
-  datasets (cross-family r=0.14-0.62 vs within-distribution-family r=0.72-1.00)
-- Three instability sources identified:
-  * Type 1: Zero-active drugs (no pKd>6 binding) — definitional noise, rank_std 72.9 vs 31.3 (Klaeger)
-  * Type 2: Near-tied top targets (small top1_top2_gap) — ratio-specific instability (Klaeger r=-0.341***)
-  * Type 3: High n_active with large gap — entropy-ratio disagreement
-- n_active / active_range / active_std predict instability within entropy/Gini/S-score
-  family (Klaeger n_active~entropy r=-0.409***)
-- Replicated across four datasets / three assay technologies: Davis (68, pKd),
-  Klaeger (222, pKd), Anastassiadis (178, % inhibition), Metz (704, pKi)
-- Operationalization check: literal vs log-affinity entropy/Gini diverge
-  (entropy r=0.42 Davis, -0.32 Klaeger) — Figure S1
-- Clinical (FAERS + FDA-label) analysis: null, confounded — demoted to SI
+## Key findings
+- Two families, with entropy and Gini on a common baseline-subtracted
+  log-affinity scale: S-score/entropy/Gini agree (within-family r = 0.72-1.00),
+  the ratio agrees with none (cross-family r = 0.14-0.62). On Anastassiadis the
+  split comes mainly from the 44 zero-active compounds (without them the ratio
+  correlates 0.79-0.84 with the family). Under the published
+  association-constant entropy the grouping does not hold (SI Table S3).
+- Instability sources (Klaeger): Type 1, zero-active compounds (16 of 222;
+  pooled rank sigma 74.0 vs 31.2, driven by the definitions disagreeing about
+  them: S-score and entropy rank them near the top, the ratio in the
+  bottom third); Type 2, near-tied top targets (gap vs ratio instability
+  r = -0.341); Type 3, broad profiles, often with a dominant target.
+- Replicated relations: ratio-gap on all four datasets (Anastassiadis only
+  after excluding 8 ceiling-saturated compounds); entropy-n_active on all four
+  (r = -0.28 to -0.42).
+- Properties: no existing definition satisfies all four; D1 is the one all four
+  violate. Candidate (gated, smooth-hinge effective-target number) satisfies
+  all four, D3 only with its activity boundary fixed at the assay floor; D4 is
+  proved for T >= 0.58 (tau* - x0).
+- Candidate and entropy rank these datasets almost identically
+  (Spearman 0.994-0.999); panel-size p* = 50 (Davis, Anastassiadis), 80
+  (Klaeger, Metz) for both.
+- Operationalization check: literal vs log-affinity entropy r = 0.42 (Davis),
+  -0.34 (Klaeger) (Figure 1).
 
 ## Datasets
-- Davis 2011: davis_affinity.csv, davis_drugs.csv, davis_proteins.csv
-- Klaeger 2017: aan4368_Table_S2.xlsx -> klaeger_matrix.csv
-- Anastassiadis 2011: anastassiadis.xls -> anastassiadis_matrix.csv (% inhibition)
-- Metz 2011: metz.xls -> metz_matrix.csv (pKi, >=50-kinase subset)
-- NOT used: Gao 2013 (same modality as Anastassiadis, not redistributable),
-  Patricelli 2011 (too few inhibitors for ranking analysis)
-- FAERS / clinical: faers_counts.csv, selectivity_outcomes_merged.csv
+- Davis 2011: davis_affinity.csv, davis_drugs.csv, davis_proteins.csv (68 x 433)
+- Klaeger 2017: aan4368_Table_S2.xlsx -> klaeger_matrix.csv (222 x 343)
+- Anastassiadis 2011: anastassiadis.xls -> anastassiadis_matrix.csv (178 x 300, % inhibition)
+- Metz 2011: metz.xls -> metz_matrix.csv (704 x 172, pKi, >= 50-kinase subset)
+- Not used: Gao 2013 (same modality as Anastassiadis, not redistributable),
+  Patricelli 2011 (too few inhibitors for a ranking analysis)
 
-## Key scripts
-- selectivity_analysis.py  — main analysis on Davis
-- instability_by_family decomposition — inline in session (needs extraction to script)
-- Klaeger analysis — inline in session (needs extraction to script)
-- faers_counts pull — inline in session
-
-## Paper structure agreed
-1. Abstract
-2. Introduction (formal definition framing — Arrow, Shannon/Khinchin as precedents)
-3. Related Work
-   3.1 Existing selectivity metrics and comparisons
-       - Karaman 2008 (S-score), Uitdehaag 2011 (entropy), Graczyk 2010 (partition index)
-       - Bosc et al 2017 (WS/RS metrics, closest prior work — same datasets, fixed params)
-       - Bajorath/Klaeger reconciliation 2018 (consistency finding, different approach)
-       - KInhibition 2018 (noted conflict, practical not theoretical response)
-   3.2 Axiomatic approaches to ranking/measurement
-       - Shannon/Khinchin axioms (entropy uniqueness — the model for what we want)
-       - Arrow impossibility (ranking axioms, possible impossibility result)
-       - Truth discovery axiomatization (direct structural precedent, Pavillidis 2022)
-4. Methods
-   4.1 Datasets (Davis, Klaeger, Anastassiadis, Metz)
-   4.2 Selectivity definitions and parameterization (original -> implemented -> meaning)
-   4.3 Rank stability analysis methodology
-5. Results
-   5.1 Definitions cluster into two families
-   5.2 Two-family structure replicates across assay technologies (4 datasets, Fig 1)
-   5.3 Instability is structured and predictable
-   5.4 Three-way taxonomy of instability sources
-   5.5 Panel size dependence
-6. Required Properties for a well-formed selectivity measure (formerly "Desiderata")
-   D1: Reliability threshold (motivated by zero-active finding)
-   D2: Bounded gap sensitivity (motivated by ratio instability)
-   D3: Distributional consistency (motivated by entropy/Gini param sensitivity)
-   D4: Monotonicity under weak off-target addition
-7. Discussion (clinical/FAERS null result now in Limitations + SI)
-8. Conclusion
-
-## Target venue
-Primary: Molecular Informatics (Wiley) -- under major revision
-Preprint: ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1)
-
-## TODO
-- [ ] Extract Klaeger analysis to standalone script
-- [ ] Get RCT grade 3/4 adverse event rates (DailyMed or manual)
-- [ ] Correlate RCT data with selectivity scores
-- [ ] Draft Section 1 (Introduction)
-- [ ] Draft Section 3 (Related Work) — notes above are complete
-- [ ] Draft Section 6 (Desiderata) — this is the novel conceptual contribution
-
-## Clinical outcomes analysis (completed)
-- FDA label extraction: 33/35 drugs with discontinuation rates
-- FAERS: 46 drugs, all outcome correlations null (r<0.05, all p>0.14)
-- RCT discontinuation rates: also null (r=-0.047 to +0.002, all p>0.14)
-- Grade 3/4 rates: only 5 drugs with data — insufficient for analysis
-- Conclusion: confounded by indication severity, prescription volume, in vitro/in vivo gap
-- Framing: null result reported honestly, identifies rigorous future validation approach
-- Files: faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv
-
-## TODO (updated)
-- [x] Extract Klaeger analysis to standalone script (partial — inline scripts exist)
-- [x] Get RCT grade 3/4 adverse event rates
-- [x] Correlate RCT data with selectivity scores
-- [ ] Draft Section 3 (Related Work)
-- [ ] Draft Section 6 (Desiderata)
-- [ ] Draft Section 2 (Introduction)
-- [ ] Draft remaining sections
+## Clinical outcomes analysis (Limitations)
+- FAERS rates (n = 46) and FDA-label discontinuation rates (n = 33) vs median
+  selectivity rank: all |r| < 0.17, all p > 0.27 (clinical_outcomes_correlation.py)
+- Only nominal signal: raw FAERS report count vs ratio rank, r = 0.31, p = 0.035,
+  likely prescription volume
+- Grade 3/4 rates: too few drugs with data for analysis
+- Confounded by indication and prescription volume; reported as a null result

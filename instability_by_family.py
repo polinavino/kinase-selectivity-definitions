@@ -134,7 +134,7 @@ for ax, fam in zip(axes, families):
     col, r, p = best[fam]
     ax.scatter(feat_df[col].values[mask], instability[fam][mask],
                color=colors[fam], edgecolors='white', linewidths=0.5, alpha=0.8, s=60)
-    ax.set_title(f"{fam}\nbest feature: {col}\nr={r:.2f}, p={p:.3f}")
+    ax.set_title(f"{fam}\nbest feature: {col}\nr={r:.2f}, " + ("p<0.001" if p < 0.001 else f"p={p:.3f}"))
     ax.set_xlabel(col)
     ax.set_ylabel("Rank std")
 fig.suptitle("Best predictor of instability per definition family (Klaeger)", fontsize=14)

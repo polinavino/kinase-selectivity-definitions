@@ -2,18 +2,19 @@
 Kinase inhibitor selectivity is quantified using several competing definitions, including
 S-score, selectivity entropy, Gini coefficient, and ratio-based measures,
 which are often used interchangeably.
-Across four profiling datasets spanning three assay technologies (68-704
+Across four profiling datasets spanning three assay technologies (68--704
 compounds each), we show that, with entropy and Gini computed on a common
 log-affinity scale, these definitions split into two groups: the S-score,
-entropy and Gini agree closely while the fold-selectivity ratio agrees with
-none. Rank instability is associated with binding profile shape.
+entropy and Gini agree more with one another than with the fold-selectivity
+ratio. Rank instability is associated with binding profile shape.
 We trace instability to three sources: convention-dependent scores for
 compounds with no binding above the activity threshold, near-tied top targets,
 and distribution-ratio disagreement for promiscuous compounds, often with a
 dominant target.
 We motivate four properties that a well-formed selectivity measure should
 satisfy. None of the four assessed satisfies all of them. 
-We then propose a measure that satisfies all four, recovering its full-panel
+We then propose a measure that satisfies all four when its activity boundary
+is fixed at the assay floor, recovering its full-panel
 ranking from about a tenth to a quarter of a panel on three of the four
 datasets.
 \end{abstract}

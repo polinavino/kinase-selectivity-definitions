@@ -1,7 +1,7 @@
 # Kinase Inhibitor Selectivity: Definitional Instability and Required Properties
 
 **Paper:** Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization Across Four Datasets and Required Properties for a Well-Formed Measure
+Characterization and Motivated Properties for a Well-Formed Measure
 **Author:** Polina Vinogradova (Input Output Global, Singapore)
 **Preprint:** https://doi.org/10.26434/chemrxiv.15001618/v1
 
@@ -63,21 +63,26 @@ while entropy-based scores recover the full-panel ranking from 50–80 kinases.
 
 ### What we proposed
 
-Four **required properties** that any good selectivity formula should satisfy:
+Four **motivated properties** that any good selectivity formula should satisfy:
 
-1. A drug with no meaningful binding to any kinase should not get a selectivity
-   score — it is just noise.
+1. A drug with no binding above the activity threshold on the profiled panel
+   should not get a selectivity score (or should have it flagged) — its score
+   would rest on sub-threshold values alone, on which the formulas disagree.
 2. Small changes in which off-target you compare against should not cause large
    swings in the score.
-3. The ranking should not change completely from a small change to a background
-   parameter.
-4. Adding a very weak accidental binding interaction should not make a drug look
-   *more* selective.
+3. The ranking should not depend much on where, between the assay floor and the
+   activity threshold, an analyst places the activity cutoff.
+4. Adding a weak (below-threshold) binding interaction should not make a drug
+   look *more* selective.
 
 No existing formula satisfies all four at once. We then propose a **candidate
-measure** that does: the selectivity entropy with two fixes — a reliability gate
-(property 1) and a smooth rather than hard activity cutoff (property 3). It
-recovers its full-panel ranking from 50–80 kinases, so it stays practical.
+measure** that does once its activity cutoff is fixed at the assay floor: the
+selectivity entropy with three changes — a reliability
+gate (property 1), an activity cutoff fixed at the assay floor (property 3), and
+a smooth rather than hard weighting above that floor (property 4, which we
+prove). It recovers its full-panel ranking from 50–80 kinases, as the entropy
+does, and ranks these datasets almost identically to the entropy: its role is to
+show that the four properties can be met together.
 
 ### The bigger picture
 
@@ -139,7 +144,7 @@ Raw supplementary files (downloaded programmatically):
 | metz.xls / metz_matrix.csv | Metz raw / processed pK_i matrix (≥50-kinase coverage subset) |
 | cross_dataset_summary.csv | Cross-dataset two-family + instability summary |
 | selectivity_results.csv, klaeger_selectivity_results.csv | Per-compound analysis outputs |
-| faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv | Clinical-outcome (SI) analysis data |
+| faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv | Clinical-outcome analysis data (Limitations) |
 | label_texts.json, extended_labels.json | Raw FDA drug label text underlying clinical_safety_data.csv |
 | bosc_catds_comparison.csv | Bosc et al. window/ranking score and CATDS-proxy comparison (Discussion) |
 | clinical_outcomes_correlation.csv | FAERS/discontinuation-rate vs. selectivity-rank correlations (Discussion, Limitations) |
@@ -150,9 +155,10 @@ report counts grow over time, so re-running will not reproduce the exact
 frozen numbers in the paper). `clinical_safety_data.csv`, `label_texts.json`,
 and `extended_labels.json` are **manually curated**: discontinuation rates and
 grade 3/4 adverse-event rates were extracted by hand from FDA drug label text
-(no script performs this extraction). `selectivity_outcomes_merged.csv` merges
-FAERS counts with each drug's median selectivity rank under every definition
-family. `bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
+(no script performs this extraction). `selectivity_outcomes_merged.csv` holds
+the frozen FAERS counts and rates; its median-rank columns are superseded,
+because `clinical_outcomes_correlation.py` takes each drug's current ranks from
+`klaeger_selectivity_results.csv`. `bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
 the permanent, reproducible scripts for the two correlation analyses computed
 from these files and cited in the Discussion/Limitations sections.
 
@@ -168,7 +174,7 @@ from these files and cited in the Discussion/Limitations sections.
 | metric_fidelity_robustness.py | Operationalization-sensitivity check; original vs. log-affinity entropy/Gini (Figure 1) |
 | panel_size_analysis.py | Panel-size subsampling on all four datasets (Figure 5) |
 | candidate_measure.py | Candidate measure satisfying D1–D4; D3/D4 checks on Klaeger and panel-size convergence on all four datasets (Figure 7) |
-| faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical SI analysis) |
+| faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical analysis, Limitations) |
 | bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion, SI Table S2) |
 | clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations, using the frozen FAERS counts and the current Klaeger median ranks (Discussion, Limitations) |
 | klaeger_filter_sensitivity.py | Klaeger high-confidence filter: entries removed, and sensitivity of Table 1 / panel-size p* to relaxing it (Methods) |
@@ -189,6 +195,8 @@ from these files and cited in the Discussion/Limitations sections.
 | instability_predictor_candidates.py | Five further candidate predictors of rank instability (CR1, HHI, top1 pKd, near-tie count, active-affinity CV) against Table 2's features (Results) |
 | family_construction.py | Variants of the candidate: quantile floor, Rényi order, smoothing width; D1–D4 checks on Davis and Klaeger (SI Section S5, Table S5) |
 | family_panelsize.py | Panel-size p* of the candidate by Rényi order on Klaeger and Metz (SI Section S5, Table S5) |
+| family_alternatives.py | Two further candidate variants kept as negative results (soft gate, rank-based weights); not reported in the paper |
+| script_logging.py | Shared helper imported by every script: mirrors printed output to `outputs/<script>.txt` and copies regenerated manuscript figures into `paper/figures/` and `paper/submission_figures/` |
 | toc_graphic.py | Rebuilds the graphical-abstract/TOC image from the Davis correlation matrix and Klaeger panel-size curves |
 
 ### Replication steps
@@ -214,7 +222,7 @@ from these files and cited in the Discussion/Limitations sections.
     python3 metric_fidelity_robustness.py   # Figure 1
     python3 panel_size_analysis.py          # Figure 5
     python3 candidate_measure.py            # candidate measure (Figure 7, D3/D4 checks)
-    python3 faers_pull.py                    # clinical SI data (needs internet)
+    python3 faers_pull.py                    # clinical data, Limitations (needs internet)
     python3 bosc_catds_comparison.py         # Bosc/CATDS comparison (Discussion)
     python3 clinical_outcomes_correlation.py # FAERS/discontinuation correlations (Discussion, Limitations)
 
@@ -250,15 +258,19 @@ and already committed — it does not need internet access.
     ├── davis_*.csv, klaeger_matrix.csv, aan4368_Table_S2.xlsx
     ├── anastassiadis.xls, anastassiadis_matrix.csv
     ├── metz.xls, metz_matrix.csv
-    ├── cross_dataset_summary.csv, *_selectivity_results.csv
+    ├── cross_dataset_summary.csv, selectivity_results.csv, klaeger_selectivity_results.csv
     ├── faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv
     ├── label_texts.json, extended_labels.json (manually curated FDA label text)
     ├── bosc_catds_comparison.csv, clinical_outcomes_correlation.csv
     ├── *.png  (analysis figures)
+    ├── outputs/  (printed results of every script, one .txt per script)
     └── paper/
         ├── main.tex, references.bib, main.pdf
-        ├── figures/  (binding_profiles, instability_by_family, panel_size_stability,
-        │             cross_dataset_correlations, metric_fidelity, toc_graphic)
+        ├── supporting_information.tex, supporting_information.pdf
+        ├── figures/  (metric_fidelity, cross_dataset_correlations, instability_by_family,
+        │             binding_profiles, panel_size_stability, failure_modes,
+        │             candidate_panel_convergence, toc_graphic)
+        ├── submission_figures/, submission_tables/  (journal upload copies)
         └── sections/ (abstract, introduction, related_work, methods, results,
                        desiderata, discussion, conclusion)
 

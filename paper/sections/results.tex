@@ -14,7 +14,7 @@ On the Davis dataset, S-score, entropy, and Gini are mutually correlated
 ($r = 0.34$--$0.46$).
 On the larger Klaeger dataset, the same structure is preserved but with lower
 within-cluster correlations ($r = 0.72$--$0.91$). The lower values come from
-the 16 compounds with no active kinase, whose ranks are set by convention
+the 16 compounds with no active kinase, whose scores rest on sub-threshold values alone
 (Type~1, below). Among the 206 compounds with an active kinase, the
 within-cluster correlations are $0.91$--$0.998$, close to Davis's
 (\texttt{claim\_checks.py}).
@@ -59,19 +59,22 @@ In all four, the S-score, entropy, and Gini remain mutually correlated
 (within-family Spearman $r = 0.72$--$0.999$) while the ratio definition is the
 consistent outlier. Its correlation with the distribution-based family is
 $0.49$--$0.56$ on the Anastassiadis functional-activity dataset and only
-$0.14$--$0.19$ on the Metz $\mathrm{p}K_i$ dataset. This low agreement
-(whose degree varies with the assay)
-partly reflects coverage: the distribution-based rankings there track how many
-kinases each compound was measured against, while the ratio does not (Methods).
+$0.14$--$0.19$ on the Metz $\mathrm{p}K_i$ dataset. On Anastassiadis the
+separation comes mainly from the 44 compounds with no active kinase (Type~1,
+below): among the other 134, the ratio's correlation with the family rises to
+$0.79$--$0.84$, against $0.87$--$0.999$ within it (\texttt{claim\_checks.py}).
+On Metz the low agreement partly reflects coverage: the distribution-based
+rankings track how many kinases each compound was measured against, while the
+ratio does not (Methods).
 
 The instability findings also replicate.
 Pooled across the definitions' sweeps, compounds with no active kinase
-(Type~1, below) have higher rank instability than active compounds wherever
+have higher rank instability than active compounds wherever
 they occur (mean rank $\sigma = 36.8$ vs.\ $21.7$ on Anastassiadis, $178.5$
-vs.\ $108.1$ on Metz, and $74.0$ vs.\ $31.2$ on Klaeger; Davis has none). As
-on Klaeger, this contrast reflects the convention used for undefined entropy
-and Gini scores, which places these compounds at opposite ends of the two
-rankings (Methods, and Type~1 below). When rank instability is computed within
+vs.\ $108.1$ on Metz, and $74.0$ vs.\ $31.2$ on Klaeger; Davis has none). On
+each dataset the contrast comes mainly from the definitions disagreeing about
+these compounds: the S-score and entropy rank them among the most selective
+and the ratio far lower (Type~1, below; \texttt{claim\_checks.py}). When rank instability is computed within
 each definition's own parameter sweep, the contrast is significant for the Gini
 on Klaeger and Anastassiadis, as well as for the entropy and the ratio on
 Anastassiadis. On Metz, it reverses for the S-score, entropy, and Gini: the five
@@ -186,10 +189,7 @@ cannot be tested with these data.
 Three relations in Table~\ref{tab:predictors} are significant on both
 pK$_d$ datasets: the ratio's dependence on the top$_1$--top$_2$ gap
 ($p < 0.001$ on both) and on the second-ranked affinity, and the entropy's
-dependence on the number of active kinases. The ratio--gap pairing is the most
-consistent in magnitude ($r = -0.444$ on Davis and $-0.341$ on Klaeger). The
-entropy pairing is weaker on the smaller Davis panel ($r = -0.381$,
-$p < 0.001$, on Klaeger and $-0.279$, $p < 0.05$, on Davis). The ratio--gap
+dependence on the number of active kinases. The ratio--gap
 dependence also holds on Metz. On Anastassiadis it fails
 ($r = -0.104$, $p = 0.23$) because of eight compounds whose two best-inhibited
 kinases are both at $99.5\%$ inhibition or more: the single-concentration
@@ -292,7 +292,7 @@ extremes are easier to see on the complete matrix there).
 
 \textbf{Type~1: Zero-active compounds.}
 The five most unstable Klaeger compounds (AZD-8055, BMS-911543, Vatalanib,
-Filgotinib, ARRY-380; rank $\sigma > 76$) all have zero active kinases at the
+Filgotinib, ARRY-380; rank $\sigma > 78$) all have zero active kinases at the
 $\mathrm{p}K_d > 6$ threshold in the Klaeger panel.
 This reflects the assay result: all five are established, potent inhibitors
 of specific kinase targets (mTOR, JAK2, VEGFR2, JAK1, and HER2, respectively), none of which
@@ -305,24 +305,16 @@ For the other two, this explanation does not hold: JAK2 and JAK1 were
 quantified for 7 and 12 other compounds (up to $\mathrm{p}K_d = 8.3$), yet no
 binding was detected for BMS-911543 or filgotinib (\texttt{claim\_checks.py}).
 
-Within the Klaeger dataset, all four definitions assign
-these compounds numerical selectivity scores based only on sub-threshold
-values, with no primary target on which to ground a selectivity judgment. The
-S-score evaluates to exactly $0$ for every such compound at the nine swept
-thresholds at or above $\mathrm{p}K_d = 6$, giving a
-mostly stable but degenerate ranking. None of the
-four definitions avoid assigning a score to these compounds, so all four fail D1
-(Table~\ref{tab:desiderata}, below).
-
-Mean rank instability for zero-active compounds is $\sigma \approx 74$,
-compared with $\sigma \approx 31$ for compounds with at least one active
-kinase ($p < 0.001$, Mann--Whitney $U$ test). This contrast depends on how the
-undefined entropy and Gini scores of these compounds are ranked (Methods), and
-within a single definition it is significant only for the Gini.
-When instability is instead computed only over the configurations in which
-each compound's score is defined, zero-active compounds are more stable than
-active ones (D1, below). Their ranks are set by a convention. Davis has no such
-compounds: every Davis compound has at least one active kinase.
+All four definitions nonetheless score
+these compounds from sub-threshold values alone, with no primary target on
+which to ground a selectivity judgment, and they disagree about them. The
+S-score and entropy rank them among the most selective (median ranks 22 and 25
+of 222), the ratio in the bottom third (156), and the Gini near the top
+where its score is defined and near the bottom where the convention for
+undefined scores applies (Methods; mean ranks 35 and 214,
+\texttt{claim\_checks.py}). Their pooled rank instability is therefore high
+($\sigma \approx 74$, against $\approx 31$ for compounds with an active kinase,
+$p < 0.001$, Mann--Whitney $U$ test; D1, below). Davis has no such compounds.
 
 \textbf{Type~2: Near-tied top targets.}
 When an active compound's two best-bound kinases have near-identical
@@ -379,7 +371,7 @@ dataset's detection floor $x_0$ as its baseline (entropy, Gini) or fallback
 (ratio, $k = 1$), and the activity threshold as the S-score cutoff. On
 Anastassiadis, $x_0$ is set to the $20\%$ noise level used for the candidate (Methods).
 We call a panel size ``recovering'' the full-panel ranking once this mean
-correlation exceeds $0.90$, i.e. an ``excellent'' measurement \cite{Koo2016}.
+correlation exceeds $0.90$, the bar for ``excellent'' reliability.\cite{Koo2016}
 Changing the bar within $[0.80, 0.95]$ changes the $p^*$ values but never
 reverses the order of two definitions on any dataset. The ratio definition
 remains the slowest to recover on every dataset, and the Gini coefficient the
@@ -395,7 +387,7 @@ kinases on Davis, 290 of 300 on Anastassiadis, 170 of 172 on Metz, and the
 complete panel on Klaeger, where it reaches only $r = 0.888$ at 320 kinases.
 The Gini coefficient falls in between: it needs 110 kinases on Davis, 200 on
 Anastassiadis, and 290 on Klaeger, but matches the entropy on Metz (80). Its
-slower recovery largely disappears when the comparison is restricted to
+slower recovery disappears when the comparison is restricted to
 compounds with an active kinase on both the subpanel and the full panel (The
 Candidate Measure, below). The Metz values carry the coverage caveat of
 Methods.

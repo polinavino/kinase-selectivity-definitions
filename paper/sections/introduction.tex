@@ -4,7 +4,7 @@
 Kinase inhibitors are among the most intensely investigated compound classes
 in drug discovery, with 80 FDA-approved agents and several hundred in
 clinical development.\cite{Roskoski2024}
-Because the human kinome is comprised of more than 500 proteins sharing a
+Because the human kinome comprises more than 500 proteins sharing a
 highly conserved ATP-binding site,\cite{Manning2002} the design of inhibitors
 with controlled target profiles remains a central challenge.
 Selectivity is a primary
@@ -43,10 +43,9 @@ them. We use four profiling datasets that span three assay technologies. Our
 contributions are as follows:
 
 \begin{itemize}
-    \item[(i)] we show that the
-S-score, entropy and Gini agree closely with each other on every one of the four
-datasets (Spearman $0.72$--$1.00$), while the fold-selectivity ratio $R(k)$
-agrees with none of them ($0.14$--$0.62$). We call the first group the
+    \item[(i)] we show that on every one of the four datasets the
+S-score, entropy and Gini agree more with each other (Spearman $0.72$--$1.00$)
+than with the fold-selectivity ratio $R(k)$ ($0.14$--$0.62$). We call the first group the
 distribution-based family, and $R(k)$ the ratio-based family. The first group
 quantifies how concentrated a compound's activity is across the whole panel,
 and the ratio quantifies the gap to one chosen off-target. This
@@ -55,8 +54,8 @@ log-affinity scale. Under the association-constant form of the original
 publication, however, the entropy does not cluster with the S-score and Gini on any of
 the three affinity datasets (Methods);
 
-    \item[(ii)] we identify three sources of instability: scores set by an
-arbitrary convention for compounds with no binding above the activity threshold,
+    \item[(ii)] we identify three sources of instability: convention-dependent
+scores for compounds with no binding above the activity threshold,
 ratio-specific instability
 driven by near-tied top targets, and distribution-ratio disagreement for
 compounds with broad moderate off-target activity, often with one dominant
@@ -69,15 +68,15 @@ assessed satisfies all four simultaneously. The one property all four violate
 is D1, which can be viewed as a reporting convention;
 
     \item[(iv)] we propose a candidate measure: a gated, smooth-hinge
-effective-target number, which we use to show that the four properties can be met together.
+effective-target number, which we use to show that the four properties can be
+met together, D3 with its activity boundary fixed at the assay floor.
 It recovers its full-panel ranking from about a tenth to a quarter of the
 panel on Davis, Klaeger, and Anastassiadis.
-Unlike the entropy, it
-cannot, even in principle, be made to look more selective by adding a weakly
-bound kinase.
+Unlike the entropy, it provably
+cannot be made to look more selective by adding a weakly bound kinase.
 \end{itemize}
 
-The candidate is one of several measures that satisfy the four properties
-(Supporting Information, Section~S5), and it ranks the compounds in these
-datasets almost identically to the entropy.
+The candidate is one of several measures that satisfy the four properties on
+these data (Supporting Information, Section~S5), and ranks the compounds
+almost identically to the entropy.
 

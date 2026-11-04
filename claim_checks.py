@@ -17,7 +17,9 @@ Each section prints the numbers cited in the text for one claim:
      within-dataset rank instability predicts cross-platform rank disagreement.
  10. Metz: dependence of the rankings on how many kinases each compound was
      measured against (floor imputation of untested pairs).
- 11. Within-family correlation range on each dataset (Introduction, Results).
+ 11. Within-family correlation range on each dataset, and the ratio's range against
+     the family, for all compounds and for those with an active kinase
+     (Introduction, Results).
  12. Compounds shared by Klaeger and Anastassiadis, by name (Discussion).
  13. Zero-active vs active rank instability per definition, on every dataset with
      zero-active compounds (Results, replication).
@@ -224,9 +226,17 @@ lo, hi = 1, -1
 for ds in SETTINGS:
     c = corr_cells(R[ds])
     w = [c[('s_score', 'entropy')], c[('s_score', 'gini')], c[('entropy', 'gini')]]
+    x = [c[(f, 'ratio')] for f in FAM[:3]]
     lo, hi = min(lo, min(w)), max(hi, max(w))
-    print(f"   {ds:13s}: {min(w):.3f}-{max(w):.3f}")
+    print(f"   {ds:13s}: {min(w):.3f}-{max(w):.3f} | ratio vs family {min(x):.3f}-{max(x):.3f}")
 print(f"   across all four datasets: {lo:.3f}-{hi:.3f}")
+print("   compounds with an active kinase, re-ranked among themselves: within-family | ratio vs family")
+for ds, (M, s_thr, betas, floor, tau) in SETTINGS.items():
+    act = (M > tau).sum(1) > 0
+    c = corr_cells(sweeps(M[act], s_thr, betas, floor))
+    w = [c[('s_score', 'entropy')], c[('s_score', 'gini')], c[('entropy', 'gini')]]
+    x = [c[(f, 'ratio')] for f in FAM[:3]]
+    print(f"   {ds:13s} ({act.sum()} of {len(act)}): {min(w):.3f}-{max(w):.3f} | {min(x):.3f}-{max(x):.3f}")
 
 print("\n12. Compounds shared by Klaeger and Anastassiadis (names, whitespace-trimmed)")
 shared = set(n.strip() for n in Kl.index) & set(n.strip() for n in An.index)
@@ -435,3 +445,31 @@ for i in np.where((S > 6.0).any(1))[0]:
     c += ci; n += ni
 print(f"      adding each compound's sub-threshold variants: entropy rises for "
       + ", ".join(f"beta={b:g}: {e[b]}" for b in betas) + f" of {n} compounds; candidate rises for {c}")
+
+print("\n20. Zero-active compounds: where each definition ranks them, and the pooled rank sigma")
+print("    with the undefined entropy/Gini configurations dropped (rank 1 = most selective)")
+for ds, (M, s_thr, betas, floor, tau) in SETTINGS.items():
+    act = (M > tau).sum(1) > 0
+    if act.all():
+        continue
+    Rd = R[ds]
+    undef = np.array([np.maximum(M - b, 0).sum(1) == 0 for b in betas])     # (n_beta, n_cpd)
+    uz = undef[:, ~act]
+    med = {f: np.median(np.median(Rd[f][:, ~act], 0)) for f in FAM}
+    g_undef = f"{Rd['gini'][:, ~act][uz].mean():.0f}" if uz.any() else "n/a"
+    g_def = Rd['gini'][:, ~act][~uz].mean()
+    sig = {'all configurations': [], 'undefined entropy/Gini dropped': [], 'S-score and ratio only': []}
+    for i in range(len(M)):
+        d = ~undef[:, i]
+        sig['all configurations'].append(np.concatenate([Rd[f][:, i] for f in FAM]).std())
+        sig['undefined entropy/Gini dropped'].append(np.concatenate(
+            [Rd['s_score'][:, i], Rd['entropy'][d, i], Rd['gini'][d, i], Rd['ratio'][:, i]]).std())
+        sig['S-score and ratio only'].append(np.concatenate([Rd['s_score'][:, i], Rd['ratio'][:, i]]).std())
+    print(f"   {ds} ({(~act).sum()} zero-active of {len(M)}): median of their median ranks: "
+          + "  ".join(f"{f} {med[f]:.0f}" for f in FAM)
+          + f"; entropy/Gini undefined in {100 * uz.mean():.0f}% of their configurations"
+          + f" (mean Gini rank when undefined: {g_undef}; when defined: {g_def:.0f})")
+    for k, v in sig.items():
+        v = np.array(v)
+        print(f"      pooled sigma, {k:31s}: zero-active {v[~act].mean():5.1f}  active {v[act].mean():5.1f}"
+              f"  (Mann-Whitney p={mannwhitneyu(v[~act], v[act]).pvalue:.1g})")

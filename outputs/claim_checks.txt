@@ -63,11 +63,16 @@
    kinases measured for >= 90% of compounds: 0
 
 11. Within-family (S-score, entropy, Gini) correlations of median ranks, per dataset
-   Davis        : 0.946-0.999
-   Klaeger      : 0.722-0.910
-   Anastassiadis: 0.860-0.988
-   Metz         : 0.810-0.994
+   Davis        : 0.946-0.999 | ratio vs family 0.343-0.456
+   Klaeger      : 0.722-0.910 | ratio vs family 0.223-0.616
+   Anastassiadis: 0.860-0.988 | ratio vs family 0.489-0.556
+   Metz         : 0.810-0.994 | ratio vs family 0.138-0.193
    across all four datasets: 0.722-0.999
+   compounds with an active kinase, re-ranked among themselves: within-family | ratio vs family
+   Davis         (68 of 68): 0.946-0.999 | 0.343-0.456
+   Klaeger       (206 of 222): 0.911-0.998 | 0.418-0.634
+   Anastassiadis (134 of 178): 0.870-0.999 | 0.791-0.835
+   Metz          (699 of 704): 0.806-0.994 | 0.147-0.203
 
 12. Compounds shared by Klaeger and Anastassiadis (names, whitespace-trimmed)
    19 shared: ['Bosutinib', 'Dasatinib', 'Dovitinib', 'Erlotinib', 'Gefitinib', 'Imatinib', 'Lapatinib', 'Masitinib', 'Mubritinib', 'Nilotinib', 'Pazopanib', 'Sorafenib', 'Sunitinib', 'Tandutinib', 'Tofacitinib', 'Tozasertib', 'VX-702', 'Vandetanib', 'Vatalanib']
@@ -178,3 +183,18 @@
    Davis wild-type constructs, expanded by the mutant and phosphorylation-state constructs
       383 wild-type or domain constructs, 50 mutant/phosphorylation variants
       adding each compound's sub-threshold variants: entropy rises for beta=5: 0, beta=5.25: 0, beta=5.5: 0, beta=5.75: 0, beta=6: 0, beta=6.25: 0, beta=6.5: 0 of 68 compounds; candidate rises for 0
+
+20. Zero-active compounds: where each definition ranks them, and the pooled rank sigma
+    with the undefined entropy/Gini configurations dropped (rank 1 = most selective)
+   Klaeger (16 zero-active of 222): median of their median ranks: s_score 22  entropy 25  gini 96  ratio 156; entropy/Gini undefined in 54% of their configurations (mean Gini rank when undefined: 214; when defined: 35)
+      pooled sigma, all configurations             : zero-active  74.0  active  31.2  (Mann-Whitney p=3e-11)
+      pooled sigma, undefined entropy/Gini dropped : zero-active  59.6  active  30.6  (Mann-Whitney p=5e-10)
+      pooled sigma, S-score and ratio only         : zero-active  66.0  active  36.7  (Mann-Whitney p=4e-09)
+   Anastassiadis (44 zero-active of 178): median of their median ranks: s_score 32  entropy 28  gini 32  ratio 92; entropy/Gini undefined in 10% of their configurations (mean Gini rank when undefined: 169; when defined: 43)
+      pooled sigma, all configurations             : zero-active  36.8  active  21.7  (Mann-Whitney p=1e-11)
+      pooled sigma, undefined entropy/Gini dropped : zero-active  32.8  active  21.7  (Mann-Whitney p=2e-08)
+      pooled sigma, S-score and ratio only         : zero-active  32.0  active  19.7  (Mann-Whitney p=7e-07)
+   Metz (5 zero-active of 704): median of their median ranks: s_score 5  entropy 6  gini 6  ratio 434; entropy/Gini undefined in 0% of their configurations (mean Gini rank when undefined: n/a; when defined: 8)
+      pooled sigma, all configurations             : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
+      pooled sigma, undefined entropy/Gini dropped : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
+      pooled sigma, S-score and ratio only         : zero-active 222.2  active 123.4  (Mann-Whitney p=0.0002)

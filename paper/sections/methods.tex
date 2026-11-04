@@ -7,7 +7,7 @@
 Our primary analysis uses two publicly available kinase inhibitor profiling
 datasets, described first. Two further datasets are added below to confirm the
 findings across additional assay technologies.
-The Davis dataset\cite{Davis2011} is comprised of binding affinities ($K_d$) for 68
+The Davis dataset\cite{Davis2011} comprises binding affinities ($K_d$) for 68
 small-molecule kinase inhibitors measured against 433 recombinant human kinase
 constructs in a competition-binding assay.
 Affinity values are reported as dissociation constants and were converted to
@@ -70,8 +70,8 @@ $K_d^\mathrm{app}$, 561 fall within the $222 \times 343$ high-confidence matrix.
 The other 231 involve 7 compounds and 177 kinases with no high-confidence
 measurement. Adding the 561 pairs to the same matrix changes only 0.74\% of its
 entries, shifts every cell of Table~\ref{tab:correlations}'s Klaeger triangle
-by at most $0.05$, and leaves every Klaeger panel-size $p^*$ value in
-Figure~\ref{fig:panelsize} and Figure~\ref{fig:candidate} unchanged.
+by at most $0.05$, and leaves every Klaeger panel-size $p^*$ value (Results)
+unchanged.
 Retaining all 792 pairs also adds those compounds and kinases, which changes
 the panel itself. It shifts the Klaeger cells of
 Table~\ref{tab:correlations} by up to $0.12$ (S-score against ratio, from
@@ -252,8 +252,7 @@ This floor fallback departs from Bosc et al.'s convention, under which a
 ratio-based score is left undefined when a compound has no primary target or
 off-target to compare (Background). Our implementation returns a value for every
 compound by substituting the assay floor for a missing off-target. $R(k)$'s D1
-violation (Table~\ref{tab:desiderata}) therefore comes from this implementation
-choice. An implementation that followed Bosc et al.'s convention would satisfy
+violation therefore comes from this implementation choice. An implementation that followed Bosc et al.'s convention would satisfy
 D1 by construction, as the candidate measure does.
 
 The field also assigns the concentration- and target-dependent selectivity
@@ -385,15 +384,15 @@ than $0.04$ on Davis and Klaeger, and by at most $0.075$ on the other two datase
 (\texttt{claim\_checks.py}).
 
 Associations between rank instability and binding profile features were
-assessed using Spearman correlation, restricted to the Klaeger and Davis
-datasets. These are the two datasets on a $\mathrm{p}K_d$ scale, so the same
-activity threshold and affinity-based features apply directly, allowing the
-predictor structure to be checked for replication across a second dataset.
+assessed using Spearman correlation on the two $\mathrm{p}K_d$ datasets, Klaeger
+and Davis, where the same activity threshold and affinity-based features apply
+directly, so each relation can be checked for replication.
 Profile features computed for each compound included: the number of active
 kinases ($\mathrm{p}K_d > 6$), the gap between the top and second-ranked
 affinities, the standard deviation and range of active affinities, the
 absolute affinity of the second-ranked target, and the skewness of the active
-affinities.
+affinities. The first two were also tested on Anastassiadis and Metz, against
+entropy and ratio instability respectively (Results).
 All correlations are reported with two-tailed $p$-values. Significance
 thresholds of $p < 0.05$, $p < 0.01$, and $p < 0.001$ are denoted *, **, and
 *** respectively.
@@ -410,28 +409,27 @@ repository (see Data and Software Availability).
 
 The instability patterns reported in Results motivate four properties. Each is
 stated formally below, together with the failure mode it targets and how a
-measure is assessed against it. In Results, we evaluate the four definitions and the candidate measure against
-them (Table~\ref{tab:desiderata}).
+measure is assessed against it. Results evaluates the four definitions and the
+candidate measure against them.
 Let $\mathbf{x} = (x_1, \ldots, x_N) \in \mathbb{R}^N$ denote a compound's
 binding profile across $N$ kinases, where $x_i = \mathrm{p}K_{d,i}$ and $N$ is
-the panel size, which varies across compounds within a dataset
-(Anastassiadis, Metz) and across datasets. A selectivity measure is a
+the panel size, which varies across datasets and subpanels. A selectivity measure is a
 function $f : \mathbb{R}^N \to \mathbb{R}$, defined for every panel size $N$,
 where higher values indicate greater selectivity. A ranking over a set of
 compounds is defined by ordering their $f$-scores. We write $x_0$ for the
 assay's detection floor and $\tau^*$ for the activity threshold
-($\mathrm{p}K_d = 6$ on the $\mathrm{p}K_d$ datasets).
+($\mathrm{p}K_d$ or $\mathrm{p}K_i = 6$; $50\%$ inhibition on Anastassiadis).
 
 \textbf{D1 (reliability threshold).} There exists $\tau^* > 0$ such that
 $f(\mathbf{x})$ is undefined, or explicitly flagged as unreliable, when
 $\max_i x_i \leq \tau^*$.
 
 A compound with no binding above the activity threshold has no target on which
-to ground a selectivity judgment. Its rank is then set by whatever
-convention a measure uses for such profiles (Type~1, Results). D1 is a
+to ground a selectivity judgment. Its rank then depends on how
+each measure handles such profiles (Type~1, Results). D1 is a
 reporting rule and is assessed as such.
 
-\textbf{D2 (bounded gap sensitivity).} For any $\mathbf{x}$ satisfying D1, if
+\textbf{D2 (bounded gap sensitivity).} For any $\mathbf{x}$ with $\max_i x_i > \tau^*$, if
 $f$ depends on a choice of reference off-target indexed by $k$, there must
 exist $g$ with $g(0) = 0$ such that
 $|f(\mathbf{x}; k) - f(\mathbf{x}; k+1)| \le g(x_{(k)} - x_{(k+1)})$.
@@ -455,14 +453,14 @@ scored reverse in $B$.
 
 We use $\varepsilon = 1\%$, but 
 this choice does not drive the results, since every
-verdict in Table~\ref{tab:desiderata} is the same for any $\varepsilon$
+verdict is the same for any $\varepsilon$
 between $1\%$ and $7\%$ (Results).
 This targets the baseline sensitivity of compounds with few active kinases
 (Results) and is assessed empirically by computing the rankings across $B$ on
 each dataset. A measure with no such parameter satisfies D3 vacuously.
 
-\textbf{D4 (monotonicity under weak off-target addition).} If
-$\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ with $x_{N+1} \leq \tau^*$, then
+\textbf{D4 (monotonicity under weak off-target addition).} For any $\mathbf{x}$
+with $\max_i x_i > \tau^*$, if $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ with $x_{N+1} \leq \tau^*$, then
 $f(\mathbf{x}') \leq f(\mathbf{x})$. 
 
 That is, adding a sub-threshold binding

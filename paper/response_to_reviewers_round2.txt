@@ -9,369 +9,272 @@ polina.vino@gmail.com — ORCID 0000-0003-3271-3841
 
 Dear Editor and Reviewer 1,
 
-Thank you for a second careful reading. The reviewer's requests have changed
-the paper in four ways:
+Thank you for a second careful reading. In summary:
 
-  (1) The motivated properties and the candidate measure are now defined in
-      Methods ("Motivated Properties", "A Candidate Measure"), with a formal
-      statement of each property and how it is assessed, and they are
-      evaluated in Results ("Existing Definitions Against the Properties",
-      "The Candidate Measure", "Why the Smooth Hinge Matters"). Variants of
-      the candidate moved to Supporting Information. Repeated results and
-      layered qualifications have been consolidated.
+  - The motivated properties and the candidate measure are now defined in
+    Methods and evaluated in Results. Repeated results and layered
+    qualifications have been consolidated (Major 11).
+  - Every requested robustness check has been added. Results that were only in
+    the code repository are now in a Supporting Information file (Tables
+    S1-S4 and Section S5).
+  - D3 is restated so that each verdict follows from its definition, and
+    Table 3 gives vacuous satisfaction its own symbol (Major 6 and 7).
 
-  (2) Every robustness check the reviewer asked for has been added: the
-      correlation matrices under the published forms of the entropy and Gini,
-      the Klaeger filter sensitivity, the Metz coverage distribution, the
-      convention for undefined scores with the requested alternative, the
-      placeholder values for undefined profile features, and a comparison of
-      platform and definition effects on the compounds shared by Davis and
-      Klaeger.
-
-  (3) D3 has been restated so that each verdict follows from its definition.
-      The properties table (now Table 3) gives vacuous satisfaction its own
-      symbol, and Methods states how each property is assessed.
-
-  (4) A Supporting Information file (Tables S1-S4 and Section S5) now holds
-      the results that were previously only in the code repository.
-
-While preparing this revision I also had the code checked against Methods and
-re-ran every analysis. This found errors that change some reported numbers,
-including the candidate's panel-size result. They are listed under "Further
-corrections" at the end.
-
-A point-by-point response follows. Reviewer text is quoted in abridged form,
-and the location of each change is given by section name.
+Re-running every analysis after a review of the code against Methods also
+found errors that change some reported numbers, including the candidate's
+panel-size result. They are listed under "Further corrections" at the end.
+Reviewer text is abridged, and locations are given by section name.
 
 
 ====================================================================
 REVIEWER 1 — MAJOR COMMENTS
 ====================================================================
 
-1. "I recommend more clearly stating that the analysis concerns
-re-operationalized forms of entropy and Gini, and to show the correlation
-matrix under the published forms where it is computable."
+1. State that entropy and Gini are re-operationalized; show the correlation
+matrix under the published forms.
 
-The distinction is now stated wherever the clustering result is claimed: in
-the Abstract ("with entropy and Gini computed on a common log-affinity
-scale"), in contribution (i) of the Introduction, at the start of the
-Discussion, and in Limitations. Methods ("Faithfulness to the original
-definitions") states that every entropy and Gini result in the paper concerns
-the baseline-subtracted form.
+The qualification now appears in every summary of the clustering result: the
+Abstract, Introduction (contribution i), the opening of the Discussion,
+Limitations and the Conclusion. Methods ("Faithfulness to the original
+definitions") states that every entropy and Gini result concerns the
+baseline-subtracted form.
 
 The requested matrices are in Supporting Information Table S3 and summarized
-in Methods. They use the association-constant entropy on Davis (complete
-matrix) and on Klaeger and Metz (measured entries only, per compound), and the
-native percent-inhibition Gini on Anastassiadis. Under the published entropy
-the two-family pattern does not hold. On Klaeger and Metz the
-association-constant entropy correlates more strongly with the ratio
-(r = 0.79 and 0.76) than with the S-score (0.57 and 0.29) or the Gini (0.69
-and 0.39). On Davis it decouples from both families (0.42 with the S-score
-and with the Gini, 0.34 with the ratio). The native Gini on Anastassiadis
-correlates with the entropy (0.63) and weakly, about equally, with the S-score
-(0.35) and the ratio (0.31). The Introduction now says that the two-family
-grouping holds for the common-scale forms, and that under the
-association-constant form the entropy does not cluster with the S-score and
-Gini on any of the three affinity datasets.
-
-Figure 1's Klaeger entropy value is now -0.34 (previously -0.32), after the
-correction described in Further corrections, item 1.
+in Methods. Under the published entropy the two-family pattern does not hold.
+On Klaeger and Metz the association-constant entropy correlates more with the
+ratio (r = 0.79 and 0.76) than with the S-score (0.57 and 0.29) or the Gini
+(0.69 and 0.39). On Davis it decouples from both families (0.42 with the
+S-score and the Gini, 0.34 with the ratio). The native percent-inhibition Gini
+on Anastassiadis correlates with the entropy (0.63) and weakly, about equally,
+with the S-score (0.35) and the ratio (0.31). Figure 1's Klaeger entropy value
+is now -0.34 (previously -0.32; Further corrections, item 1).
 
 
-2. "The author should report how many entries the filter removed, and the
-sensitivity of Table 1 and the subsampling results to relaxing this filter.
-[...] Please restate the [Metz] threshold or report the coverage distribution
-across the retained Metz compounds."
+2. Report what the Klaeger filter removes and the sensitivity to relaxing it;
+restate the Metz threshold or report its coverage distribution.
 
-Klaeger. Methods ("Datasets") now reports that the high-confidence filter
-removes 793 of the 5,916 drug-target rows (13.4%), one of which has no
-numeric Kd. Of the 792 numeric low-confidence pairs, 561 fall within the
-222 x 343 high-confidence matrix. The other 231 involve 7 compounds and 177
-kinases with no high-confidence measurement. Adding the 561 pairs changes
-0.74% of the matrix, shifts every Klaeger cell of Table 1 by at most 0.05, and
-leaves every Klaeger panel-size p* unchanged. Retaining all 792 pairs also
-adds the 7 compounds and 177 kinases, which changes the panel itself. It
-shifts the Klaeger cells of Table 1 by up to 0.12 (S-score against ratio,
-0.22 to 0.34) and leaves the two-family structure intact
-(klaeger_filter_sensitivity.py).
+Klaeger (Methods, "Datasets"). The filter removes 793 of 5,916 rows (13.4%).
+Restoring the 561 numeric low-confidence pairs that fall inside the
+222 x 343 matrix changes 0.74% of its entries, moves every Klaeger cell of
+Table 1 by at most 0.05, and leaves every Klaeger panel-size p* unchanged.
+Restoring all 792 also adds 7 compounds and 177 kinases. The Klaeger cells of
+Table 1 then move by up to 0.12 (S-score against ratio, 0.22 to 0.34), and the
+two-family structure is unchanged.
 
-Metz. Both requests are met. The phrase "keeping profiles in which most
-entries reflect a real measurement" has been removed. The threshold is now
-stated as at least 50 of the 172 kinases (>= 29% coverage), chosen to exclude
-the most sparsely profiled compounds while keeping enough compounds for the
-panel-size and instability analyses. Methods reports the coverage
-distribution of the 704 retained compounds: 29.1% to 83.1% (mean 40.9%,
-median 37.2%, 75th percentile 47.1%), with 23 compounds at exactly 50 kinases
-and 170 at 55 or fewer (metz_coverage.py).
+Metz. The phrase "keeping profiles in which most entries reflect a real
+measurement" has been removed. The threshold is stated as at least 50 of 172
+kinases (>= 29% coverage), and Methods reports the coverage of the 704
+retained compounds: 29.1% to 83.1% (mean 40.9%, median 37.2%, 75th percentile
+47.1%), with 23 compounds at exactly 50 kinases and 170 at 55 or fewer.
 
-This comment also led me to test what the imputation does to the Metz
-rankings. Nearly every measured Metz value lies above the floor, so a
-compound measured against more kinases looks less selective. The Spearman
-correlation between a compound's coverage and its median rank is 0.98 for the
-entropy, 0.95 for the Gini, 0.76 for the S-score and 0.11 for the ratio
-(Methods). Results and Limitations now qualify the Metz findings accordingly.
-I also removed a claim that rested on Metz. The previous summary of the
-candidate's panel-size result, "from as little as a tenth to about a half of
-a panel", took its upper end from Metz (80 of 172 kinases). The Abstract,
-Introduction and Conclusion now give the range on the other three datasets,
-"from about a tenth to a quarter of a panel".
-The Metz value is still reported, with this caveat, in Results ("The
-Candidate Measure").
+This comment also led me to test the floor imputation on Metz. Nearly every
+measured value lies above the floor, so a compound measured against more
+kinases looks less selective: coverage correlates with median rank at 0.98
+(entropy), 0.95 (Gini), 0.76 (S-score) and 0.11 (ratio). Methods, Results and
+Limitations now qualify the Metz findings, and the candidate's panel-size
+summary in the Abstract, Introduction and Conclusion no longer draws on Metz
+(Further corrections, item 3).
 
 
-3. "The convention by which these undefined scores were ranked across the
-parameter sweep is not stated. Please state the convention and report the
-per-definition contrast under an alternative, such as rank sigma computed
-only over configurations in which score is defined."
+3. State the convention for undefined scores, and report the per-definition
+contrast under an alternative.
 
-The convention is stated in Methods ("Rank Stability Analysis"). An undefined
+Methods ("Rank Stability Analysis") states the convention. An undefined
 entropy or Gini is set to 0, which ranks the compound as maximally selective
-under the negated entropy (tied with single-target profiles) and as minimally
-selective under the Gini. The ratio substitutes the assay floor for a missing
-off-target (pKd 5.0 on Davis and Klaeger, pKi 4.0 on Metz, 0% inhibition on
-Anastassiadis), and the S-score is defined for every compound. Methods
-("Ratio") states that this fallback departs from Bosc et al.'s convention of
-leaving such ratio scores undefined, and that R(k)'s D1 violation comes from
-this implementation choice.
+under the entropy and minimally selective under the Gini. The ratio
+substitutes the assay floor for a missing off-target, and the S-score is
+always defined. Methods ("Ratio") notes that this fallback departs from Bosc et
+al.'s convention and is why R(k) violates D1.
 
-The per-definition contrast is reported in Results ("Existing Definitions
-Against the Properties", D1). Under the stated convention, the pooled Klaeger
-contrast (sigma = 74.0 for zero-active compounds against 31.2 for active ones)
-is significant within a single definition only for the Gini (86.1 against
-15.9). It is small and not significant for the entropy (14.1 against 11.9,
-p = 0.25) and the ratio (24.0 against 20.7, p = 0.08), and it reverses for the
-S-score (18.5 against 24.3, p = 0.07). Under the alternative the reviewer
-proposed (sigma computed only over the configurations in which a compound's
-score is defined, with compounds at each baseline ranked only among those
-defined there), zero-active compounds are more stable than active ones
-(entropy 9.8 against 12.8, p = 0.046; Gini 9.5 against 13.0, p = 0.028;
-undefined_score_convention.py). This uses 14 of the 16 compounds, since the
-other two are defined at fewer than two baselines. The D1 paragraph therefore
-rests the case for D1 on the arbitrariness of these scores, which D1 removes.
-The same per-definition breakdown for Anastassiadis and Metz is given in
-Results ("The Two-Family Structure Replicates Across Assay Technologies").
+The per-definition contrast is in Results ("Existing Definitions Against the
+Properties", D1). The pooled Klaeger contrast (sigma 74.0 against 31.2) is
+significant within a single definition only for the Gini (86.1 against 15.9).
+It is small and not significant for the entropy (14.1 against 11.9, p = 0.25)
+and the ratio (24.0 against 20.7, p = 0.08), and reverses for the S-score
+(18.5 against 24.3, p = 0.07). As you noted, R(k) contributes to the pooled
+contrast. The contrast comes mainly from the definitions disagreeing about these
+compounds, which the S-score and entropy rank among the most selective and
+the ratio in the bottom third (median ranks 22, 25 and 156 of 222), and it
+persists with the undefined configurations dropped (59.6 against 30.6).
+Under the alternative you proposed, zero-active compounds are more stable
+than active ones (entropy 9.8 against 12.8, p = 0.046; Gini 9.5 against 13.0,
+p = 0.028; 14 of the 16 compounds, the other two being defined at fewer than
+two baselines). The case for D1 therefore now
+rests on these scores having no binding above the threshold behind them, not
+on their instability. Results ("The Two-Family Structure Replicates Across Assay
+Technologies") gives the breakdown for Anastassiadis and Metz.
 
 
-4. "The author should define the quantity reported as rho ~ -0.93 and address
-whether the floor can be regarded as fixed across the four datasets."
+4. Define rho ~ -0.93, and address whether the floor can be regarded as
+fixed.
 
-The quantity was the lowest Spearman correlation between the rankings at any
-two points of the sweep over [4.5, 6.5]. It was negative because the rankings
-at the two ends of that range are close to inverted. It has been replaced by
-the D3 statistic itself (comment 6): the share of pairs of scored compounds
-whose order reverses somewhere in B = [x0, tau*]. Sweeping the candidate's
-gate x0 over B reverses 8.5-22.5% of pairs across the four datasets, against
-8.8-22.6% for the entropy's baseline (Results, "The Candidate Measure", and
-Supporting Information Table S4). The reviewer's reading is therefore correct.
-The candidate is as sensitive to the placement of its activity boundary as the
-entropy is to its baseline, and its D3 verdict holds only with that boundary
-fixed. Table 3 marks this verdict with its own symbol.
+It was the lowest Spearman correlation between the rankings at any two points
+of the sweep over [4.5, 6.5], negative because the two ends of that range give
+nearly inverted rankings. It has been replaced by the D3 statistic (Major 6).
+Sweeping the candidate's gate x0 over B = [x0, tau*] reverses 8.5-22.5% of
+pairs across the four datasets, against 8.8-22.6% for the entropy's baseline
+(Results, "The Candidate Measure"; Table S4). Your reading is therefore
+correct: the candidate's D3 verdict holds only with its activity boundary
+fixed. Table 3 marks it with its own symbol, and the Abstract, Introduction
+and Conclusion state the condition.
 
-On whether the floor can be regarded as fixed, Limitations now states that in
-none of the four datasets is x0 a measured detection limit. It is the value
-assigned to non-detected pairs on Davis and Klaeger (pKd 5.0), the lowest
-reported value on Metz (pKi 4.0), and a 20% inhibition noise level that I set
-on Anastassiadis. Fixing x0 removes the analyst's choice only to the extent
-that each dataset's encoding of non-detection is accepted as given. Where that
-encoding is itself uncertain, the candidate's standing on D3 is no better than
-the entropy's.
+Limitations now states that in none of the four datasets is x0 a measured
+detection limit, and that where a dataset's encoding of non-detection is
+uncertain, the candidate's standing on D3 is no better than the entropy's.
 
 
-5. "Please state which parameter was varied for the candidate measure and
-present the floor sweep as the equivalent comparison."
+5. State which parameter was varied in Figure 6, and show the floor sweep.
 
-The right panel of Figure 6 now shows three sweeps over the same interval,
-B = [5.0, 6.0] on Klaeger: the entropy's baseline, the candidate's gate x0
-with its emphasis baseline pinned to x0 at each point (the equivalent
-comparison), and the candidate's emphasis baseline with x0 fixed at the
-floor. The caption states which parameter each series varies. The 17-fold
-annotation has been removed. The panel reports the mean instability of each
-sweep: 7.2 for the candidate's gate and 7.5 for the entropy's baseline,
-against 0.4 for the emphasis baseline with the gate fixed. Results states
-that the candidate's D3 standing comes entirely from declaring x0 fixed.
+The right panel of Figure 6 now shows three sweeps over B = [5.0, 6.0] on
+Klaeger, and the caption names the parameter each varies: the entropy's
+baseline, the candidate's gate x0 (the equivalent comparison), and the
+candidate's emphasis baseline with x0 fixed. The 17-fold annotation has been
+removed. Mean instability is 7.2 for the gate and 7.5 for the entropy's
+baseline, against 0.4 for the emphasis baseline.
 
 
-6. "The author should restate D3 so that the verdicts follow from its
-definition and distinguish empirical verdicts in the properties table from
-those derived from the functional form."
+6. Restate D3 so that the verdicts follow from its definition.
 
-D3 is now defined in Methods ("Motivated Properties") as a condition on pairs
-of compounds. Let B = [x0, tau*], the interval between the assay's detection
-floor and the activity threshold. A pair of compounds reverses in B if the
-difference of their scores is positive at some value of the analyst's
-parameter in B and negative at another. D3 requires that at most a fraction
-epsilon of the pairs of scored compounds reverse in B. Under the local
-reading the reviewer identified, any pair with distinct scores satisfied the
-condition. Reversal over a whole interval removes that reading.
+D3 is now defined over an interval (Methods, "Motivated Properties"). A pair of
+compounds reverses in B = [x0, tau*] if their score difference is positive at
+some value of the analyst's parameter in B and negative at another. D3
+requires that at most a fraction epsilon of the pairs of scored compounds
+reverse. This removes the local reading you identified. Computed on each
+dataset, the S-score, entropy and Gini reverse 8-23% of pairs and the
+candidate's emphasis baseline at most 0.72%, so every verdict is the same for
+any epsilon from 1% to 7% (we use 1%). The ratio has no parameter on the
+affinity scale and satisfies D3 vacuously.
 
-The verdicts follow from this definition by computing the reversal fraction
-on each dataset (d3_pair_reversals.py). The S-score, entropy and Gini reverse
-8-23% of pairs on every dataset, and the candidate's emphasis baseline
-reverses at most 0.72%. We use epsilon = 1%, and every verdict is the same for
-any epsilon from 1% to 7%. The ratio has no parameter on the affinity scale
-and satisfies D3 vacuously.
-
-The statement of each property in Methods now says how it is assessed: D3
-empirically on all four datasets, D1 from each measure's reporting rule, and
-D2 and D4 from each measure's functional form.
+Each property's statement now says how it is assessed: D3 empirically on all
+four datasets, D1 from the measure's reporting rule, and D2 and D4 from its
+functional form. D2 and D4 are stated for profiles with a kinase above the
+activity threshold, which is how they are assessed, and the caption of
+Table 3 marks which verdicts are empirical.
 
 
-7. "The conclusion that none of the four satisfies all four properties
-therefore depends largely on the absence of a reliability gate [...] Please
-state the conclusion more directly, and I would suggest giving vacuous
-satisfaction its own symbol in Table 2."
+7. State the conclusion more directly; give vacuous satisfaction its own
+symbol.
 
-The conclusion is now stated directly in contribution (iii) of the
-Introduction ("none of the four definitions assessed satisfies all four
-simultaneously. The one property all four violate is D1") and at the start of
-"Existing Definitions Against the Properties". That section adds that any of
-the four definitions could satisfy D1 by withholding or flagging such scores.
+The conclusion is stated directly in the Introduction (contribution iii) and
+at the start of "Existing Definitions Against the Properties": none of the
+four definitions satisfies all four properties, the one property all four
+violate is D1, and any of them could satisfy D1 by withholding or flagging
+such scores.
 
-With D3 restated (comment 6), D1 is no longer the entropy's only violation.
-The entropy fails D3 (8.8-22.6% of pairs reverse over B). It also fails D4 by
-its functional form. Its hard cutoff gives a kinase just above the baseline an
-arbitrarily small weight, so adding a kinase below the activity threshold can
-raise its score. Results ("Why the Smooth Hinge Matters") gives a worked
-example. Adding one kinase at the activity threshold to the real
-Anastassiadis profiles raises the score for 34% of the compounds with an
-active kinase at a 0% baseline, although adding real kinases almost never does
-(at most 0.1% of cases). The candidate's D4 is now
-proved (Methods, "A Candidate Measure", Proposition).
+With D3 restated, D1 is no longer the entropy's only violation. The entropy
+fails D3 (8.8-22.6% of pairs reverse), and it fails D4 by its functional form:
+its hard cutoff gives a kinase just above the baseline an arbitrarily small
+weight, so adding a sub-threshold kinase can raise its score ("Why the Smooth
+Hinge Matters" gives a worked example). On Anastassiadis at a 0% baseline,
+adding one kinase at the activity threshold raises the score of 34% of the
+compounds with an active kinase. The candidate's D4 is now proved (Methods,
+Proposition).
 
-The reviewer is right that the candidate and the entropy rank these datasets
-almost identically (Spearman 0.994-0.999 on the compounds both score). The
-Introduction, Results and Conclusion say this, and the paper presents the
-candidate as a demonstration that the four properties can be met together.
-The properties themselves are the main contribution.
+You are right that the candidate and the entropy rank these datasets almost
+identically (Spearman 0.994-0.999). The Introduction, Results and Conclusion
+now say so, and present the candidate as a demonstration that the four
+properties can be met together. The properties are the main contribution.
 
-In Table 3, a check mark in parentheses now denotes vacuous satisfaction
-(D2 for the S-score, entropy, Gini and candidate, and D3 for the ratio), and a
-check mark with a dagger denotes the candidate's D3, which holds only with the
-activity boundary fixed at the floor.
+In Table 3, a check mark in parentheses denotes vacuous satisfaction (D2 for
+the S-score, entropy, Gini and candidate; D3 for the ratio), and a check mark
+with a dagger denotes the candidate's D3, which holds only with its activity
+boundary fixed at the floor.
 
 
-8. "Their zero-active status more plausibly reflects poor expression or
-capture of these targets. Please revise the Type 1 description accordingly."
+8. Revise the Type 1 description.
 
-Revised (Results, "Three Mechanistically Distinct Sources of Instability",
-Type 1). The text no longer says these compounds lack meaningful binding. It
-names their established targets (mTOR, JAK2, VEGFR2, JAK1 and HER2) and states
-that none appears as a high-confidence sub-micromolar hit in the Klaeger
-screen. I also tested the reviewer's explanation against the Kinobeads table.
-For three of the five compounds (AZD-8055, vatalanib and ARRY-380), the target
-was not quantified for any of the 229 compounds with a fitted target, which is
-consistent with poor expression or capture. For the other two the explanation
-does not hold. JAK2 and JAK1 were quantified for 7 and 12 other compounds (up
-to pKd 8.3), yet no binding was detected for BMS-911543 or filgotinib
-(claim_checks.py). The Discussion now describes Type 1 compounds as having no
-target captured above the activity threshold on the profiled panel.
+Revised (Results, Type 1). The text names the compounds' established targets
+(mTOR, JAK2, VEGFR2, JAK1 and HER2) and says that none appears as a
+high-confidence sub-micromolar hit. I tested your explanation against the
+Kinobeads table. For AZD-8055, vatalanib and ARRY-380, the target was not
+quantified for any of the 229 compounds, consistent with poor expression or
+capture. For BMS-911543 and filgotinib it does not hold: JAK2 and JAK1 were
+quantified for 7 and 12 other compounds (up to pKd 8.3). The Discussion now
+describes Type 1 compounds as having no target captured above the activity
+threshold on the profiled panel.
 
 
-9. "The manuscript would benefit from benchmarking definitional instability
-against the ranking variability introduced by assay platform."
+9. Benchmark definitional instability against platform variability.
 
-Added (Limitations). Matching PubChem CIDs against Klaeger's drug names
-resolves 46 compounds profiled in both Davis and Klaeger
-(davis_klaeger_overlap.py). On this fixed set, the platform effect (same
-definition, Davis rank against Klaeger rank) is on average larger than the
-definition effect: Spearman r = -0.06 to 0.69 across the four definitions
-(mean 0.44), against 0.14 to 1.00 for cross-definition comparisons within a
-platform (mean 0.60). The ratio is the extreme case. Its Davis and Klaeger
-rankings of the same compounds are uncorrelated (r = -0.06, p = 0.67). Practical
-Recommendations adds that within-dataset rank instability does not predict
-how far a compound's rank moves between platforms (|r| <= 0.25).
+Added (Limitations). Matching PubChem CIDs to Klaeger drug names gives 46
+compounds profiled in both Davis and Klaeger. On these, the platform effect
+(same definition, Davis rank against Klaeger rank) is on average larger than
+the definition effect: Spearman -0.06 to 0.69 (mean 0.44), against 0.14 to
+1.00 (mean 0.60). For the ratio, the two platforms' rankings are uncorrelated
+(r = -0.06, p = 0.67). Practical Recommendations adds that within-dataset rank
+instability does not predict how far a compound's rank moves between
+platforms (|r| <= 0.25).
 
 
-10. "The author should discuss how these properties limit the use of any
-single selectivity measure in the drug discovery decisions the Discussion
-describes."
+10. Discuss how these properties limit the use of any single measure.
 
-Added (Limitations). All four definitions and the candidate are symmetric
-functions of the binding profile, so two compounds with identical affinity
-distributions receive identical scores whether their off-targets are inert or
-known safety-relevant kinases. None of the measures incorporates target
-identity or exposure, and a measured affinity alone does not establish
-whether a target is occupied at a tolerated dose. The paragraph concludes
-that a selectivity score is at best a summary of binding breadth, and that
-go/no-go decisions should weigh it alongside target-specific liability
-knowledge and exposure modeling.
+Added (Limitations). All four definitions and the candidate treat a profile as
+an unordered set of affinities, so they score inert and safety-relevant
+off-targets alike, and none accounts for exposure. The paragraph concludes
+that a selectivity score is at best a summary of binding breadth, to be
+weighed alongside target-specific liability knowledge and exposure modeling.
 
 
-11. "The author should introduce the properties and candidate measure in
-Methods, report their evaluation in Results, and consolidate the
-qualifications so that the principal findings are stated plainly."
+11. Introduce the properties and candidate in Methods, evaluate them in
+Results, and consolidate the qualifications.
 
 Done. Methods now contains "Motivated Properties" (the formal statement,
-motivation and method of assessment of each property) and "A Candidate
-Measure" (the definition, the parameter choices, and the D4 proposition with
-its proof). Results evaluates them in "Existing Definitions Against the
-Properties" (Table 3), "The Candidate Measure", and "Why the Smooth Hinge
-Matters". The last of these opens with its purpose: to show that the
-candidate and the entropy differ in principle, although they rank these
-datasets almost identically. The variants of the candidate (quantile floor,
-Renyi order, smoothing width) moved to Supporting Information Section S5. I
-removed results repeated across sections and moved each qualification next to
-the finding it qualifies.
+motivation and assessment of each property) and "A Candidate Measure" (its
+definition, parameters, and the D4 proposition with proof). Results evaluates
+them in "Existing Definitions Against the Properties" (Table 3), "The
+Candidate Measure", and "Why the Smooth Hinge Matters". The candidate's
+variants moved to Supporting Information Section S5. Repeated results were
+reduced, and each qualification now sits next to the finding it qualifies.
 
 
 ====================================================================
 REVIEWER 1 — MINOR COMMENTS
 ====================================================================
 
-1. Unresolved cross-references. All cross-references now resolve, and
-references to sections use section names.
+1. Cross-references. All resolve, and references to sections use section
+names.
 
-2. Undefined skewness and range. Results now states that compounds with fewer
-than three active kinases (skewness) or fewer than two (standard deviation
-and range) are assigned 0, which produces the vertical clusters in Figure 3.
-Recomputing each correlation over only the compounds for which the feature is
-defined (161 and 180 of the 206 active Klaeger compounds) strengthens the
-Gini-skewness association from r = +0.35 to +0.48 (p < 0.001), so it does not
-depend on the placeholder. The other associations reported for Klaeger also
-strengthen, with one exception: the S-score's weak dependence on skewness moves from
-r = -0.16 (p = 0.02) to -0.15 (p = 0.05). On Davis no correlation changes
-materially (feature_placeholder_sensitivity.py).
+2. Undefined skewness and range. Results states that these are set to 0 for
+compounds with fewer than three (skewness) or two (standard deviation, range)
+active kinases, which produces the vertical clusters in Figure 3. Computing
+each correlation only over the compounds for which the feature is defined
+strengthens the Gini-skewness association (r = +0.35 to +0.48, p < 0.001), so
+it does not depend on the placeholder. The one association that weakens is
+the S-score's weak dependence on skewness (r = -0.16, p = 0.02, to -0.15,
+p = 0.05). On Davis no correlation changes materially.
 
-3. Figure 4. The caption now states that the figure shows Davis compounds,
-that Davis has no zero-active (Type 1) compounds, and that the right panel
-illustrates Type 2. The text introduces the taxonomy from Klaeger and says
-that Figure 4 shows Davis examples because the extremes are easier to see on
-the complete matrix. The statement that the most stable compounds in both
-datasets are highly promiscuous was wrong for Davis and has been corrected.
-On Klaeger the most stable compounds bind 55-57 kinases, and every definition
-ranks them near the bottom. On Davis, compounds with few active kinases are
-the most stable on average (mean sigma = 3.1 for one or two), as Drug 64 in
-Figure 4 illustrates. The text now explains the difference. On Davis the ratio
-ranks the broadest compounds in the middle (median ranks 29-52 of 68, against
-63-68 under the other three definitions), and without the ratio the mean
-instability of the 57 compounds with more than 20 active kinases falls from
-9.1 to 5.1. The legend
-label now reads "assay floor",
-matching the caption.
+3. Figure 4. The caption now says that the figure shows Davis compounds, that
+Davis has no Type 1 compounds, and that the right panel illustrates Type 2.
+The text explains why Davis examples are shown. The statement that the most
+stable compounds in both datasets are highly promiscuous was wrong for Davis
+and has been corrected. On Klaeger the most stable compounds bind 55-57
+kinases and rank near the bottom under every definition. On Davis, compounds
+with few active kinases are the most stable on average, and the broadest
+compounds are less stable because the ratio ranks them mid-table (29-52 of 68,
+against 63-68 under the other three definitions). The legend now reads "assay
+floor".
 
 4. "Predictable". Replaced with "associated with binding profile shape" in the
-Abstract, Conclusion and graphical abstract text.
+Abstract, Conclusion and graphical abstract.
 
 5. Results only in the repository. Supporting Information now contains
-Table S1 (panel-size p* at correlation bars from 0.80 to 0.95, all four
-datasets), Table S2 (Bosc et al.'s window and ranking scores and the CATDS
-proxy), Table S3 (correlation matrices under the original operationalizations,
-comment 1), Table S4 (the candidate's orientation, D3 and D4 on all four
-datasets), and Section S5 (variants of the candidate).
+Table S1 (panel-size p* at correlation bars from 0.80 to 0.95), Table S2
+(Bosc et al.'s window and ranking scores and the CATDS proxy), Table S3
+(correlations under the original operationalizations), Table S4 (the
+candidate's orientation, D3 and D4 on all four datasets), and Section S5
+(variants of the candidate).
 
 
 ====================================================================
 FURTHER CORRECTIONS
 ====================================================================
 
-These were found by re-running every analysis after a review of the code
-against Methods. All affected numbers, tables, figures and Supporting
-Information have been updated.
+All affected numbers, tables, figures and Supporting Information have been
+updated.
 
-1. Undefined entropy scores were not tied with single-target profiles. The
-code computed the entropy with a 1e-10 term inside the logarithm, which ranked
-compounds with an undefined entropy just below single-target profiles. Methods
-states that they are tied. With the exact formula:
+1. Undefined entropy scores. The code added 1e-10 inside the logarithm, which
+ranked compounds with an undefined entropy just below single-target profiles
+instead of tied with them, as Methods states. With the exact formula:
    - the Klaeger panel-size p* of the entropy and the candidate falls from
      110 to 80 kinases;
    - three Klaeger cells of Table 1 change (S-score-entropy 0.901 to 0.910,
@@ -379,43 +282,45 @@ states that they are tied. With the exact formula:
      Klaeger entropy column of Table 2 (largest change: number of active
      kinases, -0.409 to -0.381);
    - the per-definition D1 contrast for the entropy is no longer significant
-     (Major comment 3);
+     (Major 3);
    - Figure 1's Klaeger entropy value moves from -0.32 to -0.34.
 Davis and Metz are unaffected.
 
-2. Renyi order and panel size. The previous version reported that Renyi
-orders below 1 recover the Klaeger ranking faster than the Shannon order
-(p* = 80 against 110) and orders 2 and 3 more slowly (290). This came from
-scoring compounds with no gated weight on a subpanel differently at each
-order. Scored as in the main analysis, every order reaches p* = 80 on Klaeger
-and Metz, and the claim has been removed (Supporting Information, Section S5).
+2. Renyi order and panel size. The previous claim that orders below 1 recover
+the Klaeger ranking faster than the Shannon order came from scoring compounds
+with no gated weight on a subpanel differently at each order. Scored as in
+the main analysis, every order reaches p* = 80 on Klaeger and Metz, and the
+claim has been removed.
 
-3. Panel size on all four datasets. The previous version ran the subsampling
-analysis on Klaeger and Metz only. It now covers all four datasets (Figures 5
-and 7, Table S1). The candidate reaches p* = 50 kinases on Davis and
-Anastassiadis and 80 on Klaeger and Metz. Together with the Metz caveat
-(Major comment 2), this changes the summary in the Abstract from "about a
-third of a panel" to "from about a tenth to a quarter of a panel on three of
-the four datasets".
+3. Panel size on all four datasets. The subsampling analysis, previously run
+on Klaeger and Metz only, now covers all four (Figures 5 and 7, Table S1).
+The candidate reaches p* = 50 kinases on Davis and Anastassiadis and 80 on
+Klaeger and Metz. Leaving out Metz for the coverage reason in Major 2, the
+Abstract's summary changes from "about a third of a panel" to "from about a
+tenth to a quarter of a panel on three of the four datasets".
 
-4. Gated panel size. After item 1, applying the D1 gate leaves the
-candidate's and the entropy's p* unchanged on every dataset. The previous
-version attributed part of the candidate's convergence to the gate. The gate
-does bring the Gini to the entropy's p*, by removing compounds whose Gini is
-undefined on a subpanel, which the convention ranks least selective
-(Results, "The Candidate Measure").
+4. Gated panel size. After item 1, the D1 gate leaves the candidate's and the
+entropy's p* unchanged, so the previous attribution of part of the
+candidate's convergence to the gate has been removed. The gate does bring the
+Gini to the entropy's p*, by removing compounds whose Gini is undefined on a
+subpanel.
 
-5. Smoothing width. The proof of D4 (Major comment 7) requires
-T >= 0.58 (tau* - x0). The previous widths on Metz (T = 1 pKi unit) and
-Anastassiadis (T = 10 percentage points) were below this bound, and
-constructed profiles violate D4 there. T is now tau* - x0 on every dataset.
-This leaves Davis and Klaeger unchanged and changes the Metz and Anastassiadis
-rankings negligibly (Spearman 0.999).
+5. Smoothing width. The D4 proof requires T >= 0.58 (tau* - x0). The previous
+widths on Metz and Anastassiadis were below this bound, and constructed
+profiles violate D4 there. T is now tau* - x0 on every dataset, which leaves
+Davis and Klaeger unchanged and changes the Metz and Anastassiadis rankings
+negligibly (Spearman 0.999).
+
+6. Two-family wording. The Abstract, Introduction and Conclusion no longer say
+that the S-score, entropy and Gini "agree closely" (their lowest correlation is
+0.72, Klaeger S-score-Gini), only that they agree more with one another than
+with the ratio. Results now states that on Anastassiadis the separation comes
+mainly from the 44 compounds with no active kinase: among the other 134, the
+ratio correlates 0.79-0.84 with the family, against 0.87-0.999 within it.
 
 
-I believe these changes address each of the reviewer's comments, and I hope
-the manuscript is now suitable for publication in Molecular Informatics.
-Thank you again for the constructive review.
+I hope the manuscript is now suitable for publication in Molecular
+Informatics. Thank you again for a constructive review.
 
 Sincerely,
 Polina Vinogradova

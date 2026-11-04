@@ -16,16 +16,17 @@ CLEAN MAIN DOCUMENT (Word, no tracked changes) — if the system asks for one
   molecular_informatics_submission.docx
 
 AUTHOR RESPONSE LETTER
-  response_to_reviewers.txt  (paste into the response box, or upload as-is)
+  response_to_reviewers_round2.txt  (paste into the response box, or upload as-is)
 
 COVER LETTER
   cover_letter.txt
 
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
-  Figure1.png  = operationalization sensitivity of entropy & Gini (new figure)
+  Figure1.png  = operationalization sensitivity of entropy & Gini
   Figure2.png  = two-family structure across four datasets
   Figure3.png  = best predictor of instability per family
-  Figure4.png  = representative binding profiles (3 instability types)
+  Figure4.png  = binding profiles of the most stable, most unstable and most
+                 ratio-sensitive Davis compounds
   Figure5.png  = panel-size stability of existing definitions
   Figure6.png  = the two failure modes that motivate D1 and D3
   Figure7.png  = panel-size convergence of the candidate measure
@@ -41,19 +42,20 @@ GRAPHICAL ABSTRACT / TOC
 
 SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
-  Tables S1-S4: panel-size p* sensitivity to the correlation-cutoff bar;
-  Bosc et al./CATDS comparison; cross-definition correlations under the
-  original metric operationalizations; candidate-measure cross-dataset
-  validation. Referenced from Methods, Results, Discussion, and the
-  Motivated Properties section as "Supporting Information, Table S<n>".
+  Tables S1-S4 and Section S5 (with Table S5): panel-size p* sensitivity to
+  the correlation-cutoff bar; Bosc et al./CATDS comparison; cross-definition
+  correlations under the original metric operationalizations; candidate-measure
+  cross-dataset validation; variants of the candidate measure. Referenced from
+  Methods, Results and Discussion as "Supporting Information, Table S<n>" or
+  "Section S5".
 
 LATEX SOURCE (optional — "Production"/"Supplementary for review" slot)
   kinase-selectivity-latex-source.zip   (compiles main.pdf with: latexmk -pdf main.tex)
 
 Notes
 -----
-- Figures are PNG at ~300 dpi at their print widths (the multi-panel figures are
-  2000-2400 px wide). If the system requires TIFF/EPS or a higher nominal dpi,
-  the plotting scripts can re-export; Figures 4-5 use random subsampling, so a
-  re-run will shift those curves slightly (the reported numbers stay the same).
+- Figures are PNG, 1480-2980 px wide (about 210-430 dpi at a 7-inch print
+  width; Figures 1 and 6 are the narrowest). If the system requires TIFF/EPS or
+  a higher nominal dpi, the plotting scripts can re-export. Figures 5 and 7 use
+  random subsampling with a fixed seed, so a re-run reproduces them exactly.
 - The Tables .docx files are editable Word tables, each with its caption.
