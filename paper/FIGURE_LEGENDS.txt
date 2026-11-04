@@ -40,18 +40,12 @@ panel reaching mean r > 0.90.
 
 Figure 6. The two failure modes that motivate D1 and D3 (Klaeger). Left (D1):
 rank instability (std across the existing definitions' parameter sweeps) for
-compounds with no binding above the activity threshold versus compounds with at
-least one active kinase. The contrast comes mostly from the Gini and depends on
-the convention used for undefined scores (Methods). When instability is computed
-only over the configurations in which each compound's score is defined,
-zero-active compounds are more stable than active ones (text). Right (D3): per-compound rank instability
-against the number of active kinases, with each parameter swept over
-B = [5.0, 6.0]: the entropy's activity baseline (orange); the candidate's gate
-x0, with its emphasis baseline pinned to x0 at each point (green); and the
-candidate's emphasis baseline with x0 fixed at the assay floor (red). The
-candidate's gate and the entropy's baseline produce nearly the same mean
-instability (7.2 and 7.5). Only the emphasis sweep, with the gate held fixed,
-is stable (0.4).
+compounds with no binding above the activity threshold and for compounds with
+at least one active kinase. Right (D3): per-compound rank instability against
+the number of active kinases, with each parameter swept over B = [5.0, 6.0]:
+the entropy's activity baseline (orange), the candidate's gate x0 with its
+emphasis baseline pinned to x0 (green), and the candidate's emphasis baseline
+with x0 fixed at the assay floor (red).
 
 Figure 7. Panel-size convergence of the candidate measure compared with the four
 existing definitions, on all four datasets (50 random subpanels per size).

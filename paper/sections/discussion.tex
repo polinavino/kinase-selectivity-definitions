@@ -17,8 +17,9 @@ most on broad profiles, which bind many kinases at moderate affinity, often with
 one clearly dominant target (Type~3, e.g.\ Dovitinib and BMS-690514).
 Zero-active (Type~1) compounds have no target captured above the activity
 threshold on the profiled panel, so no definition can score them on measured
-binding, and D1 excludes them from scoring. D1 and D2 address Type~1 and
-Type~2, D3 the baseline sensitivity of compounds with few active kinases, and D4
+binding, and D1 excludes them from scoring. D1 addresses Type~1, D2 addresses
+Type~2 (near-tied top targets), D3 addresses the baseline sensitivity of compounds with 
+few active kinases, and D4 has to do with
 the effect of adding weakly bound kinases (Methods).
 
 This coexistence may have a historical explanation.
@@ -51,9 +52,9 @@ parameter choice, alongside the score at the chosen parameter value. Rank
 standard deviation across the parameter sweep is a compound-specific,
 interpretable quantity that identifies which compounds' assessments are robust
 to parameter choice, analogous to a confidence interval in statistical
-estimation. It is not a guide to robustness across platforms: on the 46
-compounds profiled in both Davis and Klaeger, it does not predict how far a
-compound's rank moves between the two ($|r| \leq 0.25$,
+estimation. This rank standard deviation is not a guide to robustness across
+platforms: on the 46 compounds profiled in both Davis and Klaeger, it does not
+predict how far a compound's rank moves between the two ($|r| \leq 0.25$,
 \texttt{claim\_checks.py}).
 
 Third, when comparing selectivity across studies that use different definitions,
@@ -81,9 +82,9 @@ conceptual distinction.
 The analysis covers four profiling datasets spanning three assay technologies
 and two readout types, but these still represent a fraction of the chemical and
 kinase space relevant to drug discovery.
-The assay technologies are not directly comparable in absolute terms (their
-active fractions differ), so our analysis compares rankings within each
-dataset.
+The assays report on different scales and detect different shares of active
+interactions (Methods), so every comparison between datasets is between
+rankings computed within each dataset.
 The two-family structure (in our common log-affinity operationalization)
 replicates across all four datasets, and so do the instability predictors,
 including the top$_1$--top$_2$ dependence on Anastassiadis once compounds
@@ -91,8 +92,10 @@ saturated at the $100\%$ inhibition ceiling are excluded (Results). This
 indicates that the findings are not artifacts of a single assay platform. On
 Metz, however, the distribution-based rankings largely track how many kinases
 each compound was measured against (Methods), so its contribution to the
-replication is weaker than its size suggests. Findings should still be interpreted in light of
+replication is weaker than its size suggests. 
+Findings should still be interpreted in light of
 these technological differences.
+
 Our comparison is also restricted to four widely used, historically
 established definitions. Bosc et al.'s window score and ranking
 score\cite{Bosc2017} were not included. On the same four datasets both
@@ -119,15 +122,14 @@ assays report occupancy of full-length kinase in intact cells, with regulatory
 domains, binding partners, and intracellular ATP present. Many
 cell-free binding panels, instead, score isolated, recombinantly expressed
 kinase-domain constructs. This specific contrast does not map cleanly onto the
-two cell-free datasets used here: Davis profiles recombinant constructs (on
+two cell-free datasets used here. In particular, Davis profiles recombinant constructs (on
 the same competition-binding platform, Karaman et al.\ used catalytic domains for
 large multidomain kinases and full-length constructs for small single-domain
 ones\cite{Karaman2008}), while Klaeger's Kinobeads approach captures endogenous,
 full-length kinases directly from cell lysate.
 
-This raises the following question: for compounds profiled on more than one
-platform, does the choice of assay technology move a compound's selectivity
-ranking more or less than the choice of selectivity definition does? We
+We compared how much the choice of assay technology and the choice of
+selectivity definition each move a compound's selectivity ranking. We
 resolved 46 compounds profiled in both Davis (competition binding) and
 Klaeger (chemoproteomics) by matching PubChem CIDs against Klaeger's drug
 names (\texttt{davis\_klaeger\_overlap.py}), and computed each definition's
@@ -143,8 +145,8 @@ uncorrelated ($r = -0.06$, $p = 0.67$). This should temper any
 cross-study comparison of selectivity rankings regardless of which definition
 is used.
 
-All four existing definitions and the candidate measure introduced above are
-symmetric functions of the binding profile: each treats a compound's affinity
+All four existing definitions and the candidate measure introduced above 
+treat a compound's affinity
 vector as an unordered multiset. Thus, two compounds with identical affinity
 distributions receive identical scores regardless of which specific kinases
 carry the off-target activity. A compound whose off-targets are

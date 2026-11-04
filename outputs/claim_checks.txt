@@ -78,5 +78,103 @@
    Anastassiadis (44 zero-active): s_score 7.0 vs 9.5 (p=0.46); entropy 21.4 vs 12.8 (p=2.6e-05); gini 43.6 vs 15.7 (p=4.9e-17); ratio 14.3 vs 13.2 (p=0.016)
    Metz          (5 zero-active): s_score 7.8 vs 71.2 (p=1.2e-06); entropy 11.0 vs 24.5 (p=0.037); gini 5.4 vs 24.2 (p=0.0094); ratio 58.3 vs 63.7 (p=0.93)
 
-14. Klaeger Gini p* (beta = x0 = 5.0), excluding only compounds whose Gini is undefined
-   p* = 80; 50:0.854 80:0.912 110:0.942 140:0.961 170:0.970
+14. Gini panel-size p* (beta = x0): all compounds, excluding only compounds whose Gini
+    is undefined on the subpanel or the full panel, and with the D1 gate (no kinase above tau*)
+   Davis        : p* all 110, undefined excluded 50, D1 gate 50
+   Klaeger      : p* all 290, undefined excluded 80, D1 gate 80
+   Anastassiadis: p* all 200, undefined excluded 50, D1 gate 50
+   Metz         : p* all 80, undefined excluded 80, D1 gate 80
+
+15. Klaeger active compounds: active affinity range vs per-family instability,
+    holding the number of active kinases fixed (partial Spearman)
+   Spearman(range, n_active) = +0.750 (n=206)
+   s_score : r(range, sigma) = -0.354 (p = 1.8e-07); partial on n_active = -0.235 (p = 0.00068)
+   entropy : r(range, sigma) = -0.271 (p = 7.9e-05); partial on n_active = +0.023 (p = 0.74)
+   gini    : r(range, sigma) = -0.102 (p = 0.14); partial on n_active = -0.049 (p = 0.48)
+
+16. Klaeger compounds with >= 3 active kinases: skewness, the weight the beta sweep
+    crosses, and Gini instability
+   n = 161; Spearman(skewness, weight share crossed) = +0.454 (p = 1.5e-09)
+   partial(weight share crossed, Gini sigma | n_active) = +0.713 (p = 2.9e-26)
+   partial(skewness, Gini sigma | n_active) = +0.571 (p = 2.5e-15); also holding the weight share fixed = +0.314 (p = 5.1e-05)
+
+17. The 46 shared Davis/Klaeger compounds: active affinity range vs S-score instability
+   Davis   : median n_active over all 46 = 50; 46 with >= 2 active: Spearman(range, S-score sigma) = -0.095 (p = 0.53)
+   Klaeger : median n_active over all 46 = 5; 37 with >= 2 active: Spearman(range, S-score sigma) = -0.407 (p = 0.012)
+
+18. Most stable compounds: median rank under each definition (rank 1 = most selective)
+   Klaeger XL-228      : n_active  55, sigma   7.0 | s_score 217.0  entropy 215.0  gini 208.0  ratio 219.0
+   Klaeger PF-03814735 : n_active  57, sigma   7.8 | s_score 214.5  entropy 217.0  gini 210.0  ratio 220.0
+   Davis most stable (row 64, Drug_Index 64): n_active 2, sigma 1.8 | s_score   5.5  entropy   5.0  gini   5.0  ratio   3.0
+   Davis broad (row 56): n_active 355, sigma  13.2 | s_score  68.0  entropy  68.0  gini  68.0  ratio  31.0
+   Davis broad (row 31): n_active 304, sigma   6.6 | s_score  67.0  entropy  67.0  gini  67.0  ratio  50.0
+   Davis broad (row 58): n_active 243, sigma   7.7 | s_score  66.0  entropy  66.0  gini  66.0  ratio  52.0
+   Davis broad (row 47): n_active 236, sigma  10.0 | s_score  64.0  entropy  65.0  gini  65.0  ratio  38.0
+   Davis broad (row 57): n_active 209, sigma  13.3 | s_score  63.0  entropy  63.0  gini  63.0  ratio  29.0
+   Davis, 37 compounds with > 40 active kinases: mean sigma 8.6 pooled over all four definitions, 4.3 without the ratio's configurations
+   Davis, 57 compounds with > 20 active kinases: mean sigma 9.1 pooled, 5.1 without the ratio's configurations; the other 11: 5.3
+   Davis, 8 most stable compounds (sigma, n_active): (1.8, 2), (1.9, 4), (2.0, 4), (2.8, 142), (3.3, 2), (3.7, 170), (3.8, 4), (3.9, 14)
+   Klaeger compounds with more active kinases than PF-03814735: 5
+   Davis, 3 compounds with 1-2 active kinases: mean sigma 3.1; median ranks row 13: s_score   2.0  entropy   2.0  gini   2.0  ratio  13.0; row 54: s_score   2.0  entropy   1.0  gini   1.0  ratio  11.0; row 64: s_score   5.5  entropy   5.0  gini   5.0  ratio   3.0
+
+19. D4 under realistic panel expansion (selectivity score = -entropy; a rise means the
+    compound looks more selective after kinases it binds below threshold are added)
+   Davis          50-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.0% (beta = 5) |  0.0% | 2422
+      +5                        :   0.0% (beta = 5) |  0.0% | 1342
+      +10                       :   0.0% (beta = 5) |  0.0% | 872
+      +30                       :   0.0% (beta = 5) |  0.0% | 276
+      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 3095
+      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 3095
+   Davis         100-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.0% (beta = 5) |  0.0% | 2652
+      +5                        :   0.0% (beta = 5) |  0.0% | 1552
+      +10                       :   0.0% (beta = 5) |  0.0% | 1009
+      +30                       :   0.0% (beta = 5) |  0.0% | 393
+      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 3246
+      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 3246
+   Klaeger        50-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.0% (beta = 5) |  0.0% | 6094
+      +5                        :   0.0% (beta = 5) |  0.0% | 4934
+      +10                       :   0.0% (beta = 5) |  0.0% | 4099
+      +30                       :   0.0% (beta = 5) |  0.0% | 2269
+      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 6483
+      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 6483
+   Klaeger       100-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.0% (beta = 5) |  0.0% | 7879
+      +5                        :   0.0% (beta = 5) |  0.0% | 6703
+      +10                       :   0.0% (beta = 5) |  0.0% | 5496
+      +30                       :   0.0% (beta = 5) |  0.0% | 3570
+      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 8108
+      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 8108
+   Anastassiadis  50-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.1% (beta = 0) |  0.0% | 4549
+      +5                        :   0.0% (beta = 0) |  0.0% | 3274
+      +10                       :   0.0% (beta = 0) |  0.0% | 2465
+      +30                       :   0.0% (beta = 0) |  0.0% | 1247
+      all sub-threshold         :   0.0% (beta = 0) |  0.0% | 5094
+      one at tau* (worst case)  :  10.7% (beta = 0) |  0.0% | 5094
+   Anastassiadis 100-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.1% (beta = 0) |  0.0% | 5344
+      +5                        :   0.1% (beta = 0) |  0.0% | 4036
+      +10                       :   0.0% (beta = 0) |  0.0% | 3117
+      +30                       :   0.0% (beta = 0) |  0.0% | 1718
+      all sub-threshold         :   0.0% (beta = 0) |  0.0% | 5906
+      one at tau* (worst case)  :  24.4% (beta = 0) |  0.0% | 5906
+   Metz           50-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.0% (beta = 4) |  0.0% | 24157
+      +5                        :   0.0% (beta = 4) |  0.0% | 7990
+      +10                       :   0.0% (beta = 4) |  0.0% | 2823
+      +30                       :   0.0% (beta = 4) |  0.0% | 362
+      all sub-threshold         :   0.0% (beta = 4) |  0.0% | 34544
+      one at tau* (worst case)  :   0.0% (beta = 4) |  0.0% | 34544
+   Metz          100-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
+      +1                        :   0.0% (beta = 4) |  0.0% | 25478
+      +5                        :   0.0% (beta = 4) |  0.0% | 8411
+      +10                       :   0.0% (beta = 4) |  0.0% | 3163
+      +30                       :   0.0% (beta = 4) |  0.0% | 549
+      all sub-threshold         :   0.0% (beta = 4) |  0.0% | 34764
+      one at tau* (worst case)  :   0.0% (beta = 4.25) |  0.0% | 34764
+   Davis wild-type constructs, expanded by the mutant and phosphorylation-state constructs
+      383 wild-type or domain constructs, 50 mutant/phosphorylation variants
+      adding each compound's sub-threshold variants: entropy rises for beta=5: 0, beta=5.25: 0, beta=5.5: 0, beta=5.75: 0, beta=6: 0, beta=6.25: 0, beta=6.5: 0 of 68 compounds; candidate rises for 0

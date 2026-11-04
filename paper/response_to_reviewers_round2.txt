@@ -30,7 +30,7 @@ the paper in four ways:
 
   (3) D3 has been restated so that each verdict follows from its definition.
       The properties table (now Table 3) gives vacuous satisfaction its own
-      symbol and states how each row was determined.
+      symbol, and Methods states how each property is assessed.
 
   (4) A Supporting Information file (Tables S1-S4 and Section S5) now holds
       the results that were previously only in the code repository.
@@ -113,7 +113,8 @@ entropy, 0.95 for the Gini, 0.76 for the S-score and 0.11 for the ratio
 I also removed a claim that rested on Metz. The previous summary of the
 candidate's panel-size result, "from as little as a tenth to about a half of
 a panel", took its upper end from Metz (80 of 172 kinases). The Abstract,
-Introduction and Conclusion now say "from as little as a tenth of a panel".
+Introduction and Conclusion now give the range on the other three datasets,
+"from about a tenth to a quarter of a panel".
 The Metz value is still reported, with this caveat, in Results ("The
 Candidate Measure").
 
@@ -210,10 +211,9 @@ reverses at most 0.72%. We use epsilon = 1%, and every verdict is the same for
 any epsilon from 1% to 7%. The ratio has no parameter on the affinity scale
 and satisfies D3 vacuously.
 
-The caption of Table 3 now states how each row was determined: D3
+The statement of each property in Methods now says how it is assessed: D3
 empirically on all four datasets, D1 from each measure's reporting rule, and
-D2 and D4 from each measure's functional form. The statement of each property
-in Methods also says how it is assessed.
+D2 and D4 from each measure's functional form.
 
 
 7. "The conclusion that none of the four satisfies all four properties
@@ -221,20 +221,21 @@ therefore depends largely on the absence of a reliability gate [...] Please
 state the conclusion more directly, and I would suggest giving vacuous
 satisfaction its own symbol in Table 2."
 
-The conclusion is now stated directly in the Abstract ("None of the four
-assessed satisfies all of them. The one property all four violate is a
-reliability condition for compounds without binding above threshold."), in
-contribution (iii) of the Introduction, and at the start of "Existing
-Definitions Against the Properties". That section adds that any of the four
-definitions could satisfy D1 by withholding or flagging such scores.
+The conclusion is now stated directly in contribution (iii) of the
+Introduction ("none of the four definitions assessed satisfies all four
+simultaneously. The one property all four violate is D1") and at the start of
+"Existing Definitions Against the Properties". That section adds that any of
+the four definitions could satisfy D1 by withholding or flagging such scores.
 
 With D3 restated (comment 6), D1 is no longer the entropy's only violation.
 The entropy fails D3 (8.8-22.6% of pairs reverse over B). It also fails D4 by
 its functional form. Its hard cutoff gives a kinase just above the baseline an
 arbitrarily small weight, so adding a kinase below the activity threshold can
 raise its score. Results ("Why the Smooth Hinge Matters") gives a worked
-example, and on Anastassiadis the violation occurs in the data for 34% of the
-compounds with an active kinase at a 0% baseline. The candidate's D4 is now
+example. Adding one kinase at the activity threshold to the real
+Anastassiadis profiles raises the score for 34% of the compounds with an
+active kinase at a 0% baseline, although adding real kinases almost never does
+(at most 0.1% of cases). The candidate's D4 is now
 proved (Methods, "A Candidate Measure", Proposition).
 
 The reviewer is right that the candidate and the entropy rank these datasets
@@ -337,9 +338,15 @@ illustrates Type 2. The text introduces the taxonomy from Klaeger and says
 that Figure 4 shows Davis examples because the extremes are easier to see on
 the complete matrix. The statement that the most stable compounds in both
 datasets are highly promiscuous was wrong for Davis and has been corrected.
-On Klaeger the most stable compounds bind 55-57 kinases. On Davis, compounds
-with one or two active kinases are the most stable (mean sigma = 3.1), as
-Drug 64 in Figure 4 illustrates. The legend label now reads "assay floor",
+On Klaeger the most stable compounds bind 55-57 kinases, and every definition
+ranks them near the bottom. On Davis, compounds with few active kinases are
+the most stable on average (mean sigma = 3.1 for one or two), as Drug 64 in
+Figure 4 illustrates. The text now explains the difference. On Davis the ratio
+ranks the broadest compounds in the middle (median ranks 29-52 of 68, against
+63-68 under the other three definitions), and without the ratio the mean
+instability of the 57 compounds with more than 20 active kinases falls from
+9.1 to 5.1. The legend
+label now reads "assay floor",
 matching the caption.
 
 4. "Predictable". Replaced with "associated with binding profile shape" in the
@@ -388,7 +395,8 @@ analysis on Klaeger and Metz only. It now covers all four datasets (Figures 5
 and 7, Table S1). The candidate reaches p* = 50 kinases on Davis and
 Anastassiadis and 80 on Klaeger and Metz. Together with the Metz caveat
 (Major comment 2), this changes the summary in the Abstract from "about a
-third of a panel" to "as little as a tenth of a panel".
+third of a panel" to "from about a tenth to a quarter of a panel on three of
+the four datasets".
 
 4. Gated panel size. After item 1, applying the D1 gate leaves the
 candidate's and the entropy's p* unchanged on every dataset. The previous

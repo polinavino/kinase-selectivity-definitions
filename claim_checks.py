@@ -21,8 +21,20 @@ Each section prints the numbers cited in the text for one claim:
  12. Compounds shared by Klaeger and Anastassiadis, by name (Discussion).
  13. Zero-active vs active rank instability per definition, on every dataset with
      zero-active compounds (Results, replication).
- 14. Klaeger Gini panel-size p* when only compounds whose Gini is undefined on the
-     subpanel or the full panel are excluded (Results, gated panel size).
+ 14. Gini panel-size p* on every dataset when only compounds whose Gini is undefined
+     on the subpanel or the full panel are excluded (Results, gated panel size).
+ 15. Klaeger: does the active affinity range predict instability once the number
+     of active kinases is held fixed? (Results, instability predictors)
+ 16. Klaeger: does the weight near the threshold explain the skewness-Gini
+     instability association? (Results, instability predictors)
+ 17. The 46 compounds shared by Davis and Klaeger: does active affinity range
+     predict S-score instability on both platforms? (Results, instability predictors)
+ 18. The most stable compounds on each dataset: where each definition ranks them,
+     and how much of the broad Davis compounds' instability comes from the ratio
+     (Results, Type 3 and stability patterns)
+ 19. D4 under realistic panel expansion: does adding real kinases that a compound
+     binds below threshold to a focused panel raise the entropy's or the
+     candidate's selectivity score? (Results, "Why the Smooth Hinge Matters")
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -234,15 +246,192 @@ for ds, (M, *_rest) in SETTINGS.items():
                      f"(p={mannwhitneyu(sd[~act], sd[act]).pvalue:.2g})")
     print(f"   {ds:13s} ({(~act).sum()} zero-active): " + "; ".join(cells))
 
-print("\n14. Klaeger Gini p* (beta = x0 = 5.0), excluding only compounds whose Gini is undefined")
-rng = np.random.RandomState(42)
-ref = gini(Mk, 5.0)
-curve = []
-for ps in list(range(50, Mk.shape[1], 30)) + [Mk.shape[1]]:
-    rs = []
-    for _ in range(50):
-        idx = rng.choice(Mk.shape[1], ps, replace=False)
-        keep = (Mk[:, idx] > 5.0).any(1) & (Mk > 5.0).any(1)
-        rs.append(spearmanr(to_ranks(ref[keep]), to_ranks(gini(Mk[:, idx], 5.0)[keep]))[0])
-    curve.append((ps, np.mean(rs)))
-print(f"   p* = {next(p for p, r in curve if r > 0.90)}; " + " ".join(f"{p}:{r:.3f}" for p, r in curve[:5]))
+print("\n14. Gini panel-size p* (beta = x0): all compounds, excluding only compounds whose Gini")
+print("    is undefined on the subpanel or the full panel, and with the D1 gate (no kinase above tau*)")
+for ds, M, x0, tau in (('Davis', Md, 5.0, 6.0), ('Klaeger', Mk, 5.0, 6.0),
+                       ('Anastassiadis', Ma, 20.0, 50.0), ('Metz', Mz, 4.0, 6.0)):
+    nk = M.shape[1]
+    sizes = list(range(50, nk, 30)) + [nk]
+    ref = gini(M, x0)
+    pstar = {}
+    for rule in ('all', 'undefined excluded', 'D1 gate'):
+        rng = np.random.RandomState(42)
+        curve = []
+        for ps in sizes:
+            rs = []
+            for _ in range(50):
+                idx = rng.choice(nk, ps, replace=False)
+                if rule == 'all':
+                    keep = np.ones(len(M), bool)
+                elif rule == 'undefined excluded':
+                    keep = (M[:, idx] > x0).any(1) & (M > x0).any(1)
+                else:
+                    keep = (M[:, idx] > tau).any(1) & (M > tau).any(1)
+                rs.append(spearmanr(to_ranks(ref[keep]), to_ranks(gini(M[:, idx], x0)[keep]))[0])
+            curve.append(np.mean(rs))
+        pstar[rule] = next((p for p, r in zip(sizes, curve) if r > 0.90), None)
+    print(f"   {ds:13s}: p* all {pstar['all']}, undefined excluded {pstar['undefined excluded']}, D1 gate {pstar['D1 gate']}")
+
+print("\n15. Klaeger active compounds: active affinity range vs per-family instability,")
+print("    holding the number of active kinases fixed (partial Spearman)")
+from scipy.stats import pearsonr
+act_rows = Mk[act_k]
+rng_k = np.array([np.ptp(r[r > 6]) if (r > 6).sum() >= 2 else 0.0 for r in act_rows])  # 0 placeholder, as Table 2
+na_act = na_k[act_k]
+
+
+def partial_spearman(x, y, z):
+    rx, ry, rz = rankdata(x), rankdata(y), rankdata(z)
+    ex = rx - np.polyval(np.polyfit(rz, rx, 1), rz)
+    ey = ry - np.polyval(np.polyfit(rz, ry, 1), rz)
+    return pearsonr(ex, ey)
+
+
+print(f"   Spearman(range, n_active) = {spearmanr(rng_k, na_act)[0]:+.3f} (n={act_k.sum()})")
+for f in ['s_score', 'entropy', 'gini']:
+    sig = R['Klaeger'][f].std(0)[act_k]
+    r0 = spearmanr(rng_k, sig)
+    r1 = partial_spearman(rng_k, sig, na_act)
+    print(f"   {f:8s}: r(range, sigma) = {r0[0]:+.3f} (p = {r0[1]:.2g}); "
+          f"partial on n_active = {r1[0]:+.3f} (p = {r1[1]:.2g})")
+
+
+def partial_spearman_multi(x, y, covs):
+    Z = np.column_stack([rankdata(c) for c in covs] + [np.ones(len(x))])
+    res = lambda v: rankdata(v) - Z @ np.linalg.lstsq(Z, rankdata(v), rcond=None)[0]
+    return pearsonr(res(x), res(y))
+
+
+print("\n16. Klaeger compounds with >= 3 active kinases: skewness, the weight the beta sweep")
+print("    crosses, and Gini instability")
+from scipy.stats import skew
+three = na_k >= 3
+X3 = Mk[three]
+na3 = na_k[three]
+sk3 = np.array([skew(r[r > 6]) for r in X3])
+w3 = np.maximum(X3 - 5.0, 0)
+wcross = (w3 * (X3 <= 6.5)).sum(1) / w3.sum(1)       # share of above-floor weight on kinases the sweep [5.0, 6.5] crosses
+sigG3 = R['Klaeger']['gini'].std(0)[three]
+r = spearmanr(sk3, wcross)
+print(f"   n = {three.sum()}; Spearman(skewness, weight share crossed) = {r[0]:+.3f} (p = {r[1]:.2g})")
+r = partial_spearman_multi(wcross, sigG3, [na3])
+print(f"   partial(weight share crossed, Gini sigma | n_active) = {r[0]:+.3f} (p = {r[1]:.2g})")
+r = partial_spearman_multi(sk3, sigG3, [na3])
+r2 = partial_spearman_multi(sk3, sigG3, [na3, wcross])
+print(f"   partial(skewness, Gini sigma | n_active) = {r[0]:+.3f} (p = {r[1]:.2g}); "
+      f"also holding the weight share fixed = {r2[0]:+.3f} (p = {r2[1]:.2g})")
+
+print("\n17. The 46 shared Davis/Klaeger compounds: active affinity range vs S-score instability")
+ov46 = pd.read_csv(f"{HERE}/davis_klaeger_overlap.csv")
+for ds, frame, key in (('Davis', Dv, 'Davis_Drug_Index'), ('Klaeger', Kl, 'Klaeger_Name')):
+    idx = frame.index.get_indexer(ov46[key])
+    X = frame.values[idx]
+    nact = (X > 6).sum(1)
+    two = nact >= 2
+    rg = np.array([np.ptp(row[row > 6]) for row in X[two]])
+    sig = R[ds]['s_score'].std(0)[idx][two]
+    r = spearmanr(rg, sig)
+    print(f"   {ds:8s}: median n_active over all 46 = {np.median(nact):.0f}; "
+          f"{two.sum()} with >= 2 active: Spearman(range, S-score sigma) = {r[0]:+.3f} (p = {r[1]:.2g})")
+
+print("\n18. Most stable compounds: median rank under each definition (rank 1 = most selective)")
+def med_ranks(ds, i):
+    return "  ".join(f"{f} {np.median(R[ds][f][:, i]):5.1f}" for f in FAM)
+for name in ('XL-228', 'PF-03814735'):
+    i = Kl.index.get_loc(name)
+    print(f"   Klaeger {name:12s}: n_active {na_k[i]:3d}, sigma {sig_k[i]:5.1f} | {med_ranks('Klaeger', i)}")
+i = int(sig_d.argmin())
+print(f"   Davis most stable (row {i}, Drug_Index {Dv.index[i]}): n_active {na_d[i]}, sigma {sig_d[i]:.1f} | {med_ranks('Davis', i)}")
+for i in np.argsort(-na_d)[:5]:
+    print(f"   Davis broad (row {i}): n_active {na_d[i]:3d}, sigma {sig_d[i]:5.1f} | {med_ranks('Davis', i)}")
+broad = na_d > 40
+sig_d_noratio = np.vstack([R['Davis'][f] for f in ('s_score', 'entropy', 'gini')]).std(0)
+print(f"   Davis, {broad.sum()} compounds with > 40 active kinases: mean sigma {sig_d[broad].mean():.1f} pooled over all four "
+      f"definitions, {sig_d_noratio[broad].mean():.1f} without the ratio's configurations")
+wide = na_d > 20
+print(f"   Davis, {wide.sum()} compounds with > 20 active kinases: mean sigma {sig_d[wide].mean():.1f} pooled, "
+      f"{sig_d_noratio[wide].mean():.1f} without the ratio's configurations; the other {(~wide).sum()}: {sig_d[~wide].mean():.1f}")
+print("   Davis, 8 most stable compounds (sigma, n_active): "
+      + ", ".join(f"({sig_d[i]:.1f}, {na_d[i]})" for i in np.argsort(sig_d)[:8]))
+print(f"   Klaeger compounds with more active kinases than PF-03814735: {(na_k > 57).sum()}")
+narrow = (na_d >= 1) & (na_d <= 2)
+print(f"   Davis, {narrow.sum()} compounds with 1-2 active kinases: mean sigma {sig_d[narrow].mean():.1f}; "
+      f"median ranks " + "; ".join(f"row {i}: " + med_ranks('Davis', i) for i in np.where(narrow)[0]))
+
+
+print("\n19. D4 under realistic panel expansion (selectivity score = -entropy; a rise means the")
+print("    compound looks more selective after kinases it binds below threshold are added)")
+import re
+
+
+def cand_score(X, x0, T):
+    w = (X > x0) * T * np.logaddexp(0.0, (X - x0) / T)
+    t = w.sum(1, keepdims=True)
+    p = w / np.where(t == 0, 1, t)
+    return (p * np.log2(np.where(p > 0, p, 1.0))).sum(1)
+
+
+D4SETS = (('Davis', Md, 5.0, 6.0, np.arange(5.0, 6.75, .25)),
+          ('Klaeger', Mk, 5.0, 6.0, np.arange(5.0, 6.75, .25)),
+          ('Anastassiadis', Ma, 20.0, 50.0, np.arange(0, 35, 5)),
+          ('Metz', Mz, 4.0, 6.0, np.arange(4.0, 5.75, .25)))
+
+
+def rise_rates(S, X, ok, x0, tau, betas):
+    """Share of eligible compounds whose score rises from panel S to expanded panel X."""
+    ent_r = {b: ((ent(X, b) - ent(S, b))[ok] > 1e-9).sum() for b in betas}
+    cand_r = ((cand_score(X, x0, tau - x0) - cand_score(S, x0, tau - x0))[ok] > 1e-9).sum()
+    return ent_r, cand_r, ok.sum()
+
+
+for ds, M, x0, tau, betas in D4SETS:
+    nk = M.shape[1]
+    for P in (50, 100):
+        rows = {}
+        for mode in ('+1', '+5', '+10', '+30', 'all sub-threshold', 'one at tau* (worst case)'):
+            rng = np.random.RandomState(42)
+            tot_e = {b: 0 for b in betas}; tot_c = 0; tot_n = 0
+            for _ in range(50):
+                idx = rng.choice(nk, P, replace=False)
+                rest = np.setdiff1d(np.arange(nk), idx)
+                S = M[:, idx]
+                scored = (S > tau).any(1)
+                if mode.startswith('+'):
+                    extra = rng.choice(rest, int(mode[1:]), replace=False)
+                    X = np.hstack([S, M[:, extra]])
+                    ok = scored & (M[:, extra] <= tau).all(1)
+                    e, c, n = rise_rates(S, X, ok, x0, tau, betas)
+                elif mode == 'all sub-threshold':
+                    e = {b: 0 for b in betas}; c = 0; n = 0
+                    for i in np.where(scored)[0]:
+                        add = M[i, rest][M[i, rest] <= tau]
+                        Xi = np.concatenate([S[i], add])[None, :]
+                        Si = S[i][None, :]
+                        ei, ci, ni = rise_rates(Si, Xi, np.array([True]), x0, tau, betas)
+                        for b in betas: e[b] += ei[b]
+                        c += ci; n += ni
+                else:
+                    X = np.hstack([S, np.full((len(M), 1), tau)])
+                    e, c, n = rise_rates(S, X, scored, x0, tau, betas)
+                for b in betas: tot_e[b] += e[b]
+                tot_c += c; tot_n += n
+            worst_b = max(betas, key=lambda b: tot_e[b])
+            rows[mode] = (100 * tot_e[worst_b] / max(tot_n, 1), worst_b, 100 * tot_c / max(tot_n, 1), tot_n)
+        print(f"   {ds:13s} {P:3d}-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs")
+        for mode, (er, wb, cr, n) in rows.items():
+            print(f"      {mode:26s}: {er:5.1f}% (beta = {wb:g}) | {cr:4.1f}% | {n}")
+
+print("   Davis wild-type constructs, expanded by the mutant and phosphorylation-state constructs")
+names = pd.read_csv(f"{HERE}/davis_proteins.csv").set_index('Protein_Index').loc[Dv.columns, 'Gene_Name']
+variant = names.str.contains(r"phosphorylated|\([^)]*(?:[A-Z]\d+[A-Z]|del|ins)", regex=True).values
+S, V = Md[:, ~variant], Md[:, variant]
+print(f"      {(~variant).sum()} wild-type or domain constructs, {variant.sum()} mutant/phosphorylation variants")
+betas = np.arange(5.0, 6.75, .25)
+e = {b: 0 for b in betas}; c = 0; n = 0
+for i in np.where((S > 6.0).any(1))[0]:
+    add = V[i][V[i] <= 6.0]
+    ei, ci, ni = rise_rates(S[i][None, :], np.concatenate([S[i], add])[None, :], np.array([True]), 5.0, 6.0, betas)
+    for b in betas: e[b] += ei[b]
+    c += ci; n += ni
+print(f"      adding each compound's sub-threshold variants: entropy rises for "
+      + ", ".join(f"beta={b:g}: {e[b]}" for b in betas) + f" of {n} compounds; candidate rises for {c}")
