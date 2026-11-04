@@ -99,9 +99,9 @@ persists with the undefined configurations dropped (59.6 against 30.6).
 Under the alternative you proposed, zero-active compounds are more stable
 than active ones (entropy 9.8 against 12.8, p = 0.046; Gini 9.5 against 13.0,
 p = 0.028; 14 of the 16 compounds, the other two being defined at fewer than
-two baselines). The case for D1 therefore now
-rests on these scores having no binding above the threshold behind them, not
-on their instability. Results ("The Two-Family Structure Replicates Across Assay
+two baselines). The case for D1 therefore no longer rests on these scores'
+instability, but on their being computed from sub-threshold values alone,
+which each definition treats differently. Results ("The Two-Family Structure Replicates Across Assay
 Technologies") gives the breakdown for Anastassiadis and Metz.
 
 

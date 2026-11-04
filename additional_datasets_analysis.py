@@ -181,8 +181,7 @@ for ax, r in zip(axes, results):
             ax.text(j, i, f"{r['corr'][i, j]:.2f}", ha='center', va='center', fontsize=8)
     ax.set_title(f"{r['label']}\n{r['n_cpd']}×{r['n_kin']}", fontsize=9)
 fig.colorbar(im, ax=axes, fraction=0.013, pad=0.02, label='Spearman r')
-fig.suptitle("Two-family structure across four datasets: S-score/entropy/Gini cluster; "
-             "ratio is the consistent outlier", fontsize=11)
+fig.suptitle("Spearman correlations between median rankings of the four definitions", fontsize=11)
 out = os.path.join(HERE, "cross_dataset_correlations.png")
 plt.savefig(out, dpi=150, bbox_inches='tight')
 print(f"Saved {out}")

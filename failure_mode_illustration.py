@@ -154,25 +154,24 @@ for b, v in zip(bars, [sigma_zero, sigma_active]):
     axL.text(b.get_x() + b.get_width() / 2, v + 1.5, f"{v:.0f}", ha='center', fontsize=11)
 axL.set_ylabel('Rank std across existing definitions\' parameter sweeps')
 axL.set_title('D1: rank instability by activity status (Klaeger)')
-axL.text(0, sigma_zero + 9, 'candidate: undefined\n(D1 gate), not scored',
+axL.text(0, sigma_zero + 9, 'not scored by\nthe candidate',
           ha='center', fontsize=8.5, color='C1')
 axL.set_ylim(0, max(sigma_zero, sigma_active) * 1.35)
 
 axR.scatter(n_active[has_active], ent_instab[has_active], s=16, color='C1', alpha=0.6,
             label=f'entropy, baseline swept (r={r_ent:+.2f})')
 axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2', alpha=0.6,
-            label=f'candidate, gate swept -- true equivalent (r={r_cand_floor:+.2f})')
+            label=f'candidate, gate swept (r={r_cand_floor:+.2f})')
 axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
             label=f'candidate, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
 axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
 axR.set_title('D3: gate vs. emphasis-parameter instability (Klaeger)')
 axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)
-axR.text(0.97, 0.55, f"gate swept: candidate {cand_floor_instab[has_active].mean():.1f} vs. "
-          f"entropy {ent_instab[has_active].mean():.1f}\n"
-          f"gate fixed: emphasis sweep {cand_emph_instab[has_active].mean():.1f}",
+axR.text(0.97, 0.55, f"mean: entropy {ent_instab[has_active].mean():.1f}, "
+          f"gate {cand_floor_instab[has_active].mean():.1f}, "
+          f"emphasis {cand_emph_instab[has_active].mean():.1f}",
           ha='right', va='top', fontsize=7.5, transform=axR.transAxes)
 
-fig.suptitle('The two failure modes that motivate D1 and D3', fontsize=12)
-plt.tight_layout(rect=[0, 0, 1, 0.94])
+plt.tight_layout()
 plt.savefig('failure_modes.png', dpi=150, bbox_inches='tight')
 print("\nSaved failure_modes.png")

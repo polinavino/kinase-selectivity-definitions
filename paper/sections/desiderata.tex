@@ -40,13 +40,13 @@ small and not significant for the entropy ($14.1$ versus $11.9$, $p = 0.25$) and
 the ratio ($24.0$ versus $20.7$, $p = 0.08$), and reverses for the S-score
 ($18.5$ versus $24.3$, $p = 0.07$), whose score is exactly $0$ for every such
 compound at the nine thresholds at or above $\tau^*$.
-The pooled contrast comes instead from the definitions disagreeing about these
+The pooled contrast is instead the result of definitions disagreeing about these
 compounds (Type~1, above). It persists with the undefined entropy and Gini
 configurations dropped ($\sigma = 59.6$ against $30.6$) and with only the
 S-score and ratio pooled ($66.0$ against $36.7$, both $p < 0.001$,
-\texttt{claim\_checks.py}). The Gini's own contrast comes from the convention
+\texttt{claim\_checks.py}). The Gini's contrast results from the convention
 for undefined scores (Methods), which ranks these compounds least selective at
-the baselines where their Gini is undefined. A zero-active compound's entropy
+the baselines (where their Gini is undefined). A zero-active compound's entropy
 and Gini are defined at only 1--4 of the 7 baselines swept (mean 3.2). When instability is computed
 only over each compound's defined configurations, ranking compounds at each
 baseline among those defined there, zero-active compounds are \emph{more}
@@ -54,9 +54,9 @@ stable than active ones (entropy: $\sigma = 9.8$ vs.\ $12.8$, $p = 0.046$;
 Gini: $\sigma = 9.5$ vs.\ $13.0$, $p = 0.028$,
 \texttt{undefined\_score\_convention.py}). This uses 14 of the 16 compounds,
 since the other two are defined at fewer than two baselines. The case for D1 is
-therefore not that these scores are unstable within a definition, but that no
-binding above the threshold supports them, so the definitions are free to
-disagree about them. Any of
+therefore not that these scores are unstable within a definition, but that they
+rest on sub-threshold values alone, which each definition treats differently,
+so the definitions disagree about them. Any of
 the four definitions could satisfy D1 by withholding or flagging such scores.
 For the ratio, the violation comes from our implementation's floor fallback
 (Methods, ``Ratio'').
@@ -112,8 +112,8 @@ compounds they both score almost identically (full-panel Spearman
 $0.994$--$0.999$ on all four datasets). The properties do not act by reordering
 compounds in the body of the distribution. They act on which compounds receive
 a score at all (D1, which flags 16 of 222 Klaeger compounds), on whether the
-ranking survives a shift in an analyst's parameter (D3), and on profiles that
-these datasets rarely or never contain (D4). ``Why the
+ranking survives a shift in an analyst's parameter (D3), and on whether adding
+a sub-threshold kinase can raise a score (D4). ``Why the
 Smooth Hinge Matters'', below, gives a concrete case in which the entropy fails
 one of them on a real dataset and the candidate provably does not.
 
@@ -135,17 +135,15 @@ that D4 allows (i.e. the addition most likely to raise the score)
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{figures/failure_modes}
-  \caption{The two failure modes that motivate D1 and D3 (Klaeger).
-           \emph{Left (D1):} rank instability (std across the existing
-           definitions' parameter sweeps) for compounds with no binding
-           above the activity threshold and for compounds with at least one
-           active kinase.
-           \emph{Right (D3):} per-compound rank instability against the
-           number of active kinases, with each parameter swept over
-           $B = [5.0, 6.0]$: the entropy's activity baseline (orange), the
-           candidate's gate $x_0$ with its emphasis baseline pinned to $x_0$
-           (green), and the candidate's emphasis baseline with $x_0$ fixed at
-           the assay floor (red).}
+  \caption{Rank instability on Klaeger. \emph{Left (D1):} rank standard deviation across
+           the existing definitions' parameter sweeps, for compounds with no
+           binding above the activity threshold and for compounds with at
+           least one active kinase. \emph{Right (D3):} per-compound rank
+           standard deviation against the number of active kinases, with one
+           parameter swept over $B = [5.0, 6.0]$: the entropy's activity
+           baseline (orange), the candidate's gate $x_0$ with its emphasis
+           baseline pinned to $x_0$ (green), and the candidate's emphasis
+           baseline with $x_0$ fixed at the assay floor (red).}
   \label{fig:failure_modes}
 \end{figure}
 

@@ -331,16 +331,11 @@ Information (Table~S3) and in the code repository
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/metric_fidelity}
-  \caption{Operationalization sensitivity of the entropy and Gini coefficient.
-           For Davis and Klaeger, the compound selectivity ranking computed in a form
-           close to the original publication (association-constant weighting) is
-           plotted against the baseline-subtracted log-affinity form used in the
-           main text. Top row: selectivity entropy; bottom row: Gini coefficient.
-           The two operationalizations of the same named metric differ
-           substantially, and for entropy the relationship between them even
-           changes sign on Klaeger ($r=0.42$ Davis, $-0.34$ Klaeger),
-           confirming that the operationalization of a named metric is a
-           source of the definitional instability.}
+  \caption{Entropy (top) and Gini coefficient (bottom) rankings on Davis and Klaeger
+           under two operationalizations: a form close to the original
+           publication (association-constant weighting, $x$-axis) and the
+           baseline-subtracted log-affinity form used in the main text
+           ($y$-axis). Spearman $r$ above each panel.}
   \label{fig:fidelity}
 \end{figure}
 
@@ -384,9 +379,9 @@ than $0.04$ on Davis and Klaeger, and by at most $0.075$ on the other two datase
 (\texttt{claim\_checks.py}).
 
 Associations between rank instability and binding profile features were
-assessed using Spearman correlation on the two $\mathrm{p}K_d$ datasets, Klaeger
-and Davis, where the same activity threshold and affinity-based features apply
-directly, so each relation can be checked for replication.
+assessed using Spearman correlation on Klaeger and Davis. Both report
+$\mathrm{p}K_d$, so the features are on the same scale and each relation found
+on one can be tested on the other.
 Profile features computed for each compound included: the number of active
 kinases ($\mathrm{p}K_d > 6$), the gap between the top and second-ranked
 affinities, the standard deviation and range of active affinities, the
@@ -409,8 +404,8 @@ repository (see Data and Software Availability).
 
 The instability patterns reported in Results motivate four properties. Each is
 stated formally below, together with the failure mode it targets and how a
-measure is assessed against it. Results evaluates the four definitions and the
-candidate measure against them.
+measure is assessed against it. We evaluate the four definitions and the
+candidate measure against them (Results).
 Let $\mathbf{x} = (x_1, \ldots, x_N) \in \mathbb{R}^N$ denote a compound's
 binding profile across $N$ kinases, where $x_i = \mathrm{p}K_{d,i}$ and $N$ is
 the panel size, which varies across datasets and subpanels. A selectivity measure is a

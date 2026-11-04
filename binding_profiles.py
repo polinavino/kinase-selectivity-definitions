@@ -107,9 +107,9 @@ for label, idx in [("most stable", most_stable), ("most unstable", most_unstable
           f"n_active={n_active}  top1-top2 gap={s[0]-s[1]:.3f}")
 
 panels = [
-    (most_stable,    "Most stable",          "clear winner", 'tab:green'),
-    (most_unstable,  "Most unstable",        "flat profile", '#ef5350'),
-    (most_ratio_sen, "Most ratio-sensitive", "tied top-2",   '#f0ad4e'),
+    (most_stable,    "Most stable",          "clear top target", 'tab:green'),
+    (most_unstable,  "Most unstable",        "no dominant target", '#ef5350'),
+    (most_ratio_sen, "Most ratio-sensitive", "near-tied top two", '#f0ad4e'),
 ]
 
 fig, axes = plt.subplots(1, 3, figsize=(18, 5))
