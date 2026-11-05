@@ -83,7 +83,9 @@ def pstars(M, R=50, seed=42):
             Ms = M[:, rng.choice(n, ps, replace=False)]
             for k, f in meas.items():
                 res[k][ps].append(spearmanr(ref[k], to_ranks(f(Ms)))[0])
-    return {k: next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None) for k in meas}
+    first = {k: next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None) for k in meas}
+    # reached only on the full panel: report "more than the largest subpanel tested"
+    return {k: (f">{panel[-2]}" if v == n else v) for k, v in first.items()}
 
 
 def summarize(M):
@@ -152,5 +154,5 @@ print(f"\n{'Result':48s}" + "".join(f"{l:>15s}" for l in labs))
 for k in res[labs[0]]:
     vals = [res[l][k] for l in labs]
     fmt = (lambda v: f"{v:.2g}") if "(p)" in k else \
-          (lambda v: f"{v}" if isinstance(v, (int, np.integer)) or v is None else f"{v:.3f}")
+          (lambda v: f"{v}" if isinstance(v, (int, np.integer, str)) or v is None else f"{v:.3f}")
     print(f"{k:48s}" + "".join(f"{fmt(v):>15s}" for v in vals))

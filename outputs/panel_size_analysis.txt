@@ -1,7 +1,7 @@
 
-=== Davis (68 drugs x 363 kinases) ===
+=== Davis (68 drugs x 363 kinases); 50 random subpanels per size ===
 Panel size stability (mean Spearman r vs full panel):
-  Panel size    entropy       gini    s_score      ratio
+  Panel size    entropy       Gini    S-score      ratio
           50  +0.968  +0.743  +0.949  +0.014
           80  +0.982  +0.843  +0.966  +0.176
          110  +0.988  +0.915  +0.978  +0.266
@@ -20,9 +20,9 @@ Minimum panel size for mean r > 0.90:
   s_score: 50 kinases
   ratio: 350 kinases
 
-=== Klaeger (222 drugs x 217 kinases) ===
+=== Klaeger (222 drugs x 217 kinases); 50 random subpanels per size ===
 Panel size stability (mean Spearman r vs full panel):
-  Panel size    entropy       gini    s_score      ratio
+  Panel size    entropy       Gini    S-score      ratio
           50  +0.892  +0.087  +0.843  +0.031
           80  +0.943  +0.373  +0.906  +0.151
          110  +0.966  +0.594  +0.940  +0.344
@@ -34,11 +34,11 @@ Minimum panel size for mean r > 0.90:
   entropy: 80 kinases
   gini: 200 kinases
   s_score: 80 kinases
-  ratio: 217 kinases
+  ratio: >200 kinases
 
-=== Anastassiadis (178 drugs x 291 kinases) ===
+=== Anastassiadis (178 drugs x 291 kinases); 50 random subpanels per size ===
 Panel size stability (mean Spearman r vs full panel):
-  Panel size    entropy       gini    s_score      ratio
+  Panel size    entropy       Gini    S-score      ratio
           50  +0.938  +0.307  +0.914  +0.151
           80  +0.963  +0.544  +0.952  +0.308
          110  +0.973  +0.687  +0.964  +0.421
@@ -55,9 +55,9 @@ Minimum panel size for mean r > 0.90:
   s_score: 50 kinases
   ratio: 260 kinases
 
-=== Metz (704 drugs x 172 kinases) ===
+=== Metz (704 drugs x 172 kinases); 50 random subpanels per size ===
 Panel size stability (mean Spearman r vs full panel):
-  Panel size    entropy       gini    s_score      ratio
+  Panel size    entropy       Gini    S-score      ratio
           50  +0.865  +0.868  +0.915  +0.166
           80  +0.927  +0.928  +0.956  +0.341
          110  +0.960  +0.961  +0.979  +0.544

@@ -136,8 +136,9 @@ print(f"Restricting every matrix to the {len(curated)} curated protein-kinase ta
 low_all = raw[raw['Target Classification'] != 'High confidence']
 print(f"  low-confidence pairs on curated targets: {int(low_all['Gene Name'].isin(curated).sum())} of {len(low_all)}")
 raw = raw[raw['Gene Name'].isin(curated)]
-M_high = M_high[curated]
-M_full = M_full[[c for c in curated if c in M_full.columns]]
+# measured values below the floor are set to the floor, as in curate_panels.py
+M_high = M_high[curated].clip(lower=5.0)
+M_full = M_full[[c for c in curated if c in M_full.columns]].clip(lower=5.0)
 # Main variant: relax the filter on the same drug/kinase grid, so only the filter
 # changes, not the panel. Low-confidence pairs for drugs or kinases with no
 # high-confidence measurement fall outside this grid.
@@ -167,8 +168,15 @@ for i, d in enumerate(DEFNS):
     print(f"{d:8s}" + "".join(f"{corr_relaxed[i, j]:8.3f}" for j in range(4)))
 print("\nMax absolute change in any off-diagonal cell: "
       f"{np.max(np.abs(corr_high - corr_relaxed)[~np.eye(4, dtype=bool)]):.3f}")
+act_h = (M_high.values > 6.0).any(1)
+act_r = (M_relaxed.values > 6.0).any(1)
+both_act = act_h & act_r
+ch_a, cr_a = correlations(M_high.values[both_act]), correlations(M_relaxed.values[both_act])
+print(f"\nCompounds with an active kinase under both filters ({both_act.sum()}), re-ranked among themselves: "
+      f"max absolute change in any off-diagonal cell: "
+      f"{np.max(np.abs(ch_a - cr_a)[~np.eye(4, dtype=bool)]):.3f}")
 corr_full = correlations(M_full.values)
-print("\nSame, all low-confidence pairs retained (adds drugs and kinases, so the panel changes too):")
+print("\nSame, all low-confidence pairs retained (adds the drugs with no high-confidence measurement):")
 print(f"{'':8s}" + "".join(f"{d:8s}" for d in DEFNS))
 for i, d in enumerate(DEFNS):
     print(f"{d:8s}" + "".join(f"{corr_full[i, j]:8.3f}" for j in range(4)))
@@ -177,6 +185,60 @@ print("Max absolute change vs high-confidence only: "
 
 panel_sizes_h, results_h = panel_curves(M_high.values, baseline=5.0, threshold=6.0, floor=5.0)
 panel_sizes_r, results_r = panel_curves(M_relaxed.values, baseline=5.0, threshold=6.0, floor=5.0)
-print("\nPanel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:")
+print("\nPanel-size p* without the D1 gate (SI Section S5 design), High-confidence only vs. relaxed:")
 for d in ['entropy', 'gini', 's_score', 'ratio', 'candidate']:
     print(f"  {d:9s}: {pstar(panel_sizes_h, results_h, d)} vs. {pstar(panel_sizes_r, results_r, d)}")
+
+
+# Gated recovery (main text, Figure 6; panel_recovery.py): same subpanel sizes, seed and D1
+# gate, Spearman over compounds scored on the full panel and the subpanel.
+def neg_entropy(w):
+    tot = w.sum(-1, keepdims=True)
+    p = w / np.where(tot <= 0, 1.0, tot)
+    return np.where(p > 0, p * np.log2(np.where(p > 0, p, 1.0)), 0.0).sum(-1)
+
+
+GATED = {
+    "S-score tau*": lambda M: -(M > 6.0).mean(-1),
+    "S-score x0":   lambda M: -(M > 5.0).mean(-1),
+    "entropy x0":   lambda M: neg_entropy(np.maximum(M - 5.0, 0.0)),
+    "entropy tau*": lambda M: neg_entropy(np.maximum(M - 6.0, 0.0)),
+    "Gini":         lambda M: gini_selectivity(M, 5.0),
+    "ratio":        lambda M: (lambda s: s[..., 0] - np.maximum(s[..., 1], 5.0))(-np.sort(-M, -1)),
+    "candidate":    lambda M: neg_entropy(np.where(M > 5.0, np.logaddexp(0.0, M - 5.0), 0.0)),
+    "entropy Ka":   lambda M: neg_entropy(np.where(M > 5.0, 10.0 ** (M - 9.0), 0.0)),
+    "entropy Ka, floor kept": lambda M: neg_entropy(10.0 ** (M - 9.0)),
+    "partition Ka": lambda M: (lambda K: K.max(-1) / np.where(K.sum(-1) > 0, K.sum(-1), 1.0))(
+        np.where(M > 5.0, 10.0 ** (M - 9.0), 0.0)),
+}
+
+
+def gated_pstar(M, sizes=(10, 20, 30, 40, 50, 65, 80, 100, 125, 150, 200), R=50, seed=42):
+    n, N = M.shape
+    elig = (M > 6.0).any(1)
+    full = {k: f(M) for k, f in GATED.items()}
+    rng = np.random.RandomState(seed)
+    ps, cov50 = {k: None for k in GATED}, None
+    for m in list(sizes) + [N]:
+        acc = {k: [] for k in GATED}
+        cov = []
+        for _ in range(R if m < N else 1):
+            Ms = M[:, rng.choice(N, m, replace=False)]
+            both = (Ms > 6.0).any(1) & elig
+            cov.append(both.sum() / elig.sum())
+            for k, f in GATED.items():
+                acc[k].append(spearmanr(full[k][both], f(Ms)[both])[0])
+        if m == 50:
+            cov50 = np.mean(cov)
+        for k in GATED:
+            if ps[k] is None and np.nanmean(acc[k]) > 0.90:
+                ps[k] = m
+    return ps, cov50
+
+
+ph, ch = gated_pstar(M_high.values)
+pr, cr = gated_pstar(M_relaxed.values)
+print("\nGated recovery p* (main text, Figure 3), High-confidence only vs. relaxed:")
+for k in GATED:
+    print(f"  {k:22s}: {ph[k]} vs. {pr[k]}")
+print(f"  coverage at 50 targets: {100 * ch:.1f}% vs. {100 * cr:.1f}%")

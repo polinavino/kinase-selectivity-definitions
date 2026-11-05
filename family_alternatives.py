@@ -5,7 +5,7 @@ alpha=1 candidate, and both are negative results kept here for the record rather
 than proposed as usable alternatives:
 
   1. Soft gate. Replaces the hard indicator 1[x_i > floor] with a sigmoid ramp,
-     to see whether D4 (monotonicity) and correct orientation survive losing the
+     to see whether D3 (monotonicity) and correct orientation survive losing the
      hard cutoff that candidate_measure.py's docstring says is essential.
   2. Rank-based weights. w_i depends only on the rank position of an active
      kinase, not its affinity value, so two profiles with the same active-set
@@ -96,7 +96,7 @@ for name, (M, floor, active) in datasets.items():
         pct, maxinc = d4_check(lambda P: candidate_softgate(P, floor, 1.0, tg), M, sub)
         agree = spearmanr(to_ranks(sel), fixed_rank)[0]
         print(f"  T_gate={tg:<5} orient_r={orient:+.3f}  D3(worst-case)={d3:+.3f}  "
-              f"D4(pct-non-incr)={pct:5.1f} maxinc={maxinc:.4f}  vs-hard-gate={agree:.3f}")
+              f"D3(pct-non-incr)={pct:5.1f} maxinc={maxinc:.4f}  vs-hard-gate={agree:.3f}")
 
 print()
 print("=" * 70)
@@ -113,7 +113,7 @@ for name, (M, floor, active) in datasets.items():
         agree = spearmanr(to_ranks(sel), fixed_rank)[0]
         pct, maxinc = d4_check(lambda P: candidate_rankweight(P, floor, d), M,
                                 floor + 0.5 * (active - floor))
-        print(f"  decay={d:<4} orient_r={orient:+.3f}  D4(pct-non-incr)={pct:5.1f} "
+        print(f"  decay={d:<4} orient_r={orient:+.3f}  D3(pct-non-incr)={pct:5.1f} "
               f"maxinc={maxinc:.4f}  vs-magnitude-weighted={agree:.3f}")
     row_small_gap = np.full(M.shape[1], floor - 1.0)
     row_small_gap[:3] = [8.0, 7.9, 7.8]

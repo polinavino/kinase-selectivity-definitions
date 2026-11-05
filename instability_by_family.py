@@ -1,13 +1,16 @@
 """
-Figure 3 and the instability-predictor tables (Klaeger = Table 2; Davis, printed
-for comparison).
+SI Figure S3 and the profile-feature table SI Table S4 (Klaeger and Davis).
 
 For each definition family (S-score, entropy, Gini, ratio) we sweep the
 definition's parameter, compute each active compound's rank standard deviation
 across the sweep (its "instability"), and correlate that instability against a
-set of binding-profile features. The single best-predicting feature per family
-is plotted for Klaeger (Figure 3). The full feature x family correlation table
-is printed for both Klaeger (Table 2) and Davis, so the predictor
+set of binding-profile features. The compounds are ranked among the compounds
+with an active kinase only, those D1 allows to be scored, so a compound's
+instability does not depend on how compounds with no active kinase are scored.
+The same table with ranks taken among all compounds is printed as a
+sensitivity check. The single best-predicting feature per definition
+is plotted for Klaeger (SI Figure S3). The full feature x definition correlation table
+is printed for both Klaeger and Davis (SI Table S4), so the predictor
 structure can be seen to replicate on the second pK_d dataset.
 """
 import script_logging; script_logging.capture(__file__)
@@ -71,15 +74,25 @@ feature_cols = ['n_active', 'top1_top2_gap', 'active_std', 'active_range', 'top2
 colors = {'s_score': 'tab:blue', 'entropy': 'tab:orange', 'gini': 'tab:green', 'ratio': 'tab:red'}
 
 
-def analyze(M, label):
-    """Return (instability, feature_df, active-mask, corr, best) for one dataset."""
-    n_drugs, n_kinases = M.shape
-    instability = {
+def family_instability(M):
+    return {
         's_score': np.array([to_ranks(s_score(M, t))             for t in s_thresholds]).std(axis=0),
         'entropy': np.array([to_ranks(selectivity_entropy(M, b)) for b in ent_baselines]).std(axis=0),
         'gini':    np.array([to_ranks(gini_selectivity(M, b))    for b in gini_baselines]).std(axis=0),
         'ratio':   np.array([to_ranks(ratio_selectivity(M, n))   for n in ratio_top_ns]).std(axis=0),
     }
+
+
+def analyze(M, label):
+    """Return (instability, feature_df, active-mask, corr, best) for one dataset."""
+    n_drugs, n_kinases = M.shape
+    act = (M > ACTIVE_THRESHOLD).any(1)
+    # ranks among the compounds with an active kinase (D1-eligible); NaN elsewhere
+    inst_act = family_instability(M[act])
+    instability = {f: np.full(n_drugs, np.nan) for f in inst_act}
+    for f in inst_act:
+        instability[f][act] = inst_act[f]
+    instability_all = family_instability(M)          # sensitivity: ranks among all compounds
     features = {}
     for i in range(n_drugs):
         profile = M[i]
@@ -98,9 +111,11 @@ def analyze(M, label):
     n_active_drugs = int(mask.sum())
 
     corr = {c: {} for c in feature_cols}
+    corr_all = {c: {} for c in feature_cols}
     for col in feature_cols:
         for fam in families:
             corr[col][fam] = spearmanr(feat_df[col].values[mask], instability[fam][mask])
+            corr_all[col][fam] = spearmanr(feat_df[col].values[mask], instability_all[fam][mask])
     best = {}
     for fam in families:
         col = max(feature_cols, key=lambda c: abs(corr[c][fam][0]))
@@ -108,7 +123,8 @@ def analyze(M, label):
 
     def stars(p):
         return '***' if p < 0.001 else '**' if p < 0.01 else '*' if p < 0.05 else ''
-    print(f"\n=== {label}: {n_drugs} drugs x {n_kinases} kinases; active drugs n={n_active_drugs} ===")
+    print(f"\n=== {label}: {n_drugs} drugs x {n_kinases} kinases; active drugs n={n_active_drugs}, "
+          f"ranked among themselves ===")
     print(f"{'Feature':16s} " + "".join(f"{f:>14s}" for f in families))
     for col in feature_cols:
         row = f"{col:16s} "
@@ -116,6 +132,14 @@ def analyze(M, label):
             r, p = corr[col][fam]
             row += f"{f'{r:+.3f}{stars(p)}':>14s}"
         print(row)
+    if n_active_drugs < n_drugs:
+        print(f"  sensitivity: the same {n_active_drugs} compounds, ranked among all {n_drugs} compounds")
+        for col in feature_cols:
+            row = f"  {col:14s} "
+            for fam in families:
+                r, p = corr_all[col][fam]
+                row += f"{f'{r:+.3f}{stars(p)}':>14s}"
+            print(row)
     for fam in families:
         col, r, p = best[fam]
         print(f"best predictor {fam:10s}: {col:14s} r={r:+.3f} p={p:.3f}")
@@ -125,7 +149,7 @@ def analyze(M, label):
     return instability, feat_df, mask, corr, best
 
 
-# ---- Klaeger (Table 2) + Figure 3 ----
+# ---- Klaeger (SI Table S4) + SI Figure S3 ----
 Mk = pd.read_csv("klaeger_matrix.csv", index_col=0).values
 instability, feat_df, mask, corr, best = analyze(Mk, "Klaeger")
 
@@ -141,12 +165,13 @@ for ax, fam in zip(axes, families):
     ax.set_title(f"{FAM_NAME[fam]}\nr={r:.2f}, " + ("p<0.001" if p < 0.001 else f"p={p:.3f}"))
     ax.set_xlabel(FEAT_NAME[col])
     ax.set_ylabel("Rank std")
-fig.suptitle("Within-family rank instability against its most strongly correlated feature (Klaeger)", fontsize=14)
+fig.suptitle("Within-definition rank instability against its most strongly correlated feature "
+             "(Klaeger, compounds with an active kinase, ranked among themselves)", fontsize=14)
 plt.tight_layout(rect=[0, 0, 1, 0.96])
 plt.savefig("instability_by_family.png", dpi=150, bbox_inches='tight')
 print("\nSaved instability_by_family.png")
 
-# ---- Davis (Table 3) ----
+# ---- Davis (SI Table S4, right) ----
 davis = pd.read_csv("davis_affinity.csv")
 Md = davis.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(5.0).values
 analyze(Md, "Davis")

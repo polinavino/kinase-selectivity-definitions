@@ -74,12 +74,18 @@ CANDIDATES = ['cr1_share', 'hhi', 'top1_pkd', 'near_tie_1pkd', 'active_cv']
 
 def analyze(M, label):
     n_drugs, n_kinases = M.shape
-    instability = {
-        's_score': np.array([to_ranks(s_score(M, t))             for t in s_thresholds]).std(axis=0),
-        'entropy': np.array([to_ranks(selectivity_entropy(M, b)) for b in ent_baselines]).std(axis=0),
-        'gini':    np.array([to_ranks(gini_selectivity(M, b))    for b in gini_baselines]).std(axis=0),
-        'ratio':   np.array([to_ranks(ratio_selectivity(M, n))   for n in ratio_top_ns]).std(axis=0),
+    # ranks among the compounds with an active kinase, as in Table 2 (instability_by_family.py)
+    act = (M > ACTIVE_THRESHOLD).any(1)
+    MA = M[act]
+    inst_a = {
+        's_score': np.array([to_ranks(s_score(MA, t))             for t in s_thresholds]).std(axis=0),
+        'entropy': np.array([to_ranks(selectivity_entropy(MA, b)) for b in ent_baselines]).std(axis=0),
+        'gini':    np.array([to_ranks(gini_selectivity(MA, b))    for b in gini_baselines]).std(axis=0),
+        'ratio':   np.array([to_ranks(ratio_selectivity(MA, n))   for n in ratio_top_ns]).std(axis=0),
     }
+    instability = {f: np.full(n_drugs, np.nan) for f in inst_a}
+    for f in inst_a:
+        instability[f][act] = inst_a[f]
     features = {}
     for i in range(n_drugs):
         profile = M[i]
@@ -106,8 +112,8 @@ def analyze(M, label):
     print(f"\n=== {label}: {n_drugs} drugs x {n_kinases} kinases; active drugs n={n_active_drugs} ===")
     r_hhi, p_hhi = spearmanr(feat_df['hhi'].values[mask], feat_df['n_active'].values[mask])
     r_cr1, p_cr1 = spearmanr(feat_df['cr1_share'].values[mask], feat_df['n_active'].values[mask])
-    print(f"HHI vs n_active:       r={r_hhi:+.3f}{stars(p_hhi)}  (redundancy check)")
-    print(f"CR1 vs n_active:       r={r_cr1:+.3f}{stars(p_cr1)}  (redundancy check)")
+    print(f"HHI vs n_active:       r={r_hhi:+.4f}{stars(p_hhi)}  (redundancy check)")
+    print(f"CR1 vs n_active:       r={r_cr1:+.4f}{stars(p_cr1)}  (redundancy check)")
     print(f"{'Feature':16s} " + "".join(f"{f:>14s}" for f in families))
     for col in CANDIDATES:
         row = f"{col:16s} "

@@ -1,6 +1,6 @@
 """
 Recoverability from small panels: how much of each measure's full-panel ranking a
-random subpanel preserves, for how many compounds (Figure 7).
+random subpanel preserves, for how many compounds (Figure 6).
 
 All measures are compared on the same curated panels (curate_panels.py), the same
 random subpanels (curated targets sampled uniformly without replacement, 50 per
@@ -15,10 +15,14 @@ a target above tau* there. Measures:
   entropy x0   baseline-subtracted entropy, beta = x0
   entropy tau* baseline-subtracted entropy, beta = tau*
   Gini         baseline-subtracted Gini, beta = x0
-  ratio        R(1), fallback x0
+  ratio        R(1), clipping level x0
   candidate    gated smooth-hinge entropy (Methods)
   entropy Ka   published association-constant entropy, p_i ~ 1/Kd_i, with the
                floor-coded entries given no weight (affinity datasets only)
+  partition Ka maximum partition index (Cheng et al. 2010), max_i Ka_i / sum_i Ka_i,
+               floor-coded entries given no weight (affinity datasets only); it
+               satisfies weak-addition monotonicity, since an addition at or below
+               tau* leaves the maximum unchanged and raises the denominator
 
 For each panel size m:
   coverage       share of the compounds scored on the full panel that are also
@@ -76,6 +80,10 @@ def measures(x0, tau, affinity=True):
     }
     if affinity:
         m["entropy Ka"] = lambda M: neg_entropy(np.where(M > x0, 10.0 ** (M - 9.0), 0.0))
+        m["partition Ka"] = lambda M: (lambda K: K.max(-1) / np.where(K.sum(-1) > 0, K.sum(-1), 1.0))(
+            np.where(M > x0, 10.0 ** (M - 9.0), 0.0))
+        # sensitivity (printed, not plotted): floor-coded entries kept at the floor value
+        m["entropy Ka, floor kept"] = lambda M: neg_entropy(10.0 ** (M - 9.0))
     return m
 
 
@@ -144,11 +152,11 @@ for ds, (M, x0, tau) in DATA.items():
                 err_n += both
         cover[m] = np.mean(cov)
         for k in meas:
-            res[k]["rho"][m] = (np.nanmean(rho[k]), np.nanstd(rho[k]))
+            res[k]["rho"][m] = (np.nanmean(rho[k]), np.nanstd(rho[k]), np.mean(np.array(rho[k]) > 0.90))
             res[k]["pair"][m] = (np.mean(pair[k]), np.std(pair[k]))
     curves[ds] = (sizes, cover, res)
 
-    print(f"\n=== {ds}: {n} compounds x {N} curated targets; {elig.sum()} scored on the full panel ===")
+    print(f"\n=== {ds}: {n} compounds x {N} curated targets; {elig.sum()} scored on the full panel; {R_PANELS} random subpanels per size ===")
     print("coverage (share of full-panel-scored compounds still scored): "
           + ", ".join(f"{m}: {100 * cover[m]:.0f}%" for m in sizes))
     print(f"{'measure':13s} " + "".join(f"{m:>7d}" for m in sizes) + "   (mean Spearman over compounds scored on both)")
@@ -160,7 +168,10 @@ for ds, (M, x0, tau) in DATA.items():
     for k in meas:
         ps = next((m for m in sizes if res[k]["rho"][m][0] > 0.90), None)
         pp = next((m for m in sizes if res[k]["pair"][m][0] > 0.90), None)
-        print(f"  {k:13s} p* (Spearman > 0.90): {ps};  smallest size with pair recovery > 0.90: {pp}")
+        prev = sizes[sizes.index(ps) - 1] if ps and sizes.index(ps) > 0 else None
+        mu, sd, share = res[k]["rho"][ps]
+        print(f"  {k:13s} p* (Spearman > 0.90): {ps} (largest smaller size tested: {prev}; at p*: mean {mu:.3f}, "
+              f"SD {sd:.3f}, {100 * share:.0f}% of subpanels above 0.90);  smallest size with pair recovery > 0.90: {pp}")
     diff = max(abs(res['S-score']['rho'][m][0] - res['count']['rho'][m][0]) for m in sizes)
     print(f"  S-score vs count: largest difference between their Spearman curves = {diff:.2e}")
     print("  full-panel Spearman with the S-score at x0, over scored compounds: "
@@ -188,38 +199,45 @@ for ds, (M, x0, tau) in DATA.items():
                 line += f";  effective number of targets: r = {spearmanr(neff[ok], e[k][ok])[0]:+.2f}"
             print(line)
 
-# ------------------------------------------------------------------ Figure 7
-ORDER = ["candidate", "entropy x0", "entropy tau*", "S-score", "Gini", "ratio", "S-score x0", "entropy Ka"]
-LABEL = {"candidate": "candidate", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
+# ------------------------------------------------------------------ Figure 6
+ORDER = ["candidate", "entropy x0", "entropy tau*", "S-score", "Gini", "ratio", "S-score x0", "entropy Ka",
+         "partition Ka"]
+LABEL = {"candidate": "gated entropy", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
          "S-score": "S-score, τ = τ* (= active count)", "Gini": "Gini, β = x₀", "ratio": "ratio R(1)",
-         "S-score x0": "S-score, τ = x₀", "entropy Ka": "entropy, published (1/Kd)"}
-COLOR = dict(zip(ORDER, ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]))
-MARK = dict(zip(ORDER, ["o", "s", "^", "D", "v", "P", "X", "*"]))
+         "S-score x0": "S-score, τ = x₀", "entropy Ka": "entropy, published (1/Kd)",
+         "partition Ka": "partition index, max (1/Kd)"}
+COLOR = dict(zip(ORDER, ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948",
+                         "#e34948"]))   # the two association-constant measures share a hue, told apart by line style
+MARK = dict(zip(ORDER, ["o", "s", "^", "D", "v", "P", "X", "*", "<"]))
+STYLE = {k: ("--" if k == "partition Ka" else "-") for k in ORDER}
 fig, axes = plt.subplots(3, 4, figsize=(18, 11), sharex="col",
-                         gridspec_kw={"height_ratios": [3, 3, 1.2]})
+                         gridspec_kw={"height_ratios": [1.2, 3, 3]})
 for c, (ds, (sizes, cover, res)) in enumerate(curves.items()):
-    for r, (key, ylab) in enumerate([("rho", "Spearman with full-panel ranking\n(compounds scored on both)"),
-                                     ("pair", "recoverability")]):
+    axc = axes[0, c]
+    axc.plot(sizes, [cover[m] for m in sizes], color="#555555", lw=2, marker="o", ms=4)
+    axc.set_ylim(0, 1.01)
+    axc.grid(alpha=0.3, lw=0.5)
+    axc.set_title(f"{ds} ({sizes[-1]} targets)")
+    if c == 0:
+        axc.set_ylabel("coverage")
+    for r, (key, ylab) in enumerate([("pair", "recoverability"),
+                                     ("rho", "Spearman with full-panel ranking\n(compounds scored on both)")], start=1):
         ax = axes[r, c]
         for k in [k for k in ORDER if k in res]:
             mu = np.array([res[k][key][m][0] for m in sizes])
-            ax.plot(sizes, mu, color=COLOR[k], lw=2, marker=MARK[k], ms=5, label=LABEL[k])
+            ax.plot(sizes, mu, color=COLOR[k], lw=2, ls=STYLE[k], marker=MARK[k], ms=5, label=LABEL[k])
+            if key == "rho":   # +/- 1 SD across subpanels
+                sd = np.array([res[k][key][m][1] for m in sizes])
+                ax.fill_between(sizes, mu - sd, mu + sd, color=COLOR[k], alpha=0.10, lw=0)
         ax.axhline(0.9, color="#888888", lw=1, ls="--")
         ax.set_ylim(0, 1.01)
         ax.grid(alpha=0.3, lw=0.5)
-        if r == 0:
-            ax.set_title(f"{ds} ({sizes[-1]} targets)")
         if c == 0:
             ax.set_ylabel(ylab)
-    axb = axes[2, c]
-    axb.plot(sizes, [cover[m] for m in sizes], color="#555555", lw=2, marker="o", ms=4)
-    axb.set_ylim(0, 1.01)
-    axb.grid(alpha=0.3, lw=0.5)
-    axb.set_xlabel("panel size (targets)")
-    if c == 0:
-        axb.set_ylabel("coverage")
-h, l = axes[0, 0].get_legend_handles_labels()
-fig.legend(h, l, loc="lower center", ncol=4, fontsize=10, frameon=False, bbox_to_anchor=(0.5, -0.045))
+        if r == 2:
+            ax.set_xlabel("panel size (targets)")
+h, l = axes[1, 0].get_legend_handles_labels()
+fig.legend(h, l, loc="lower center", ncol=5, fontsize=10, frameon=False, bbox_to_anchor=(0.5, -0.045))
 plt.tight_layout()
 plt.savefig("panel_recovery.png", dpi=150, bbox_inches="tight")
 print("\nSaved panel_recovery.png")

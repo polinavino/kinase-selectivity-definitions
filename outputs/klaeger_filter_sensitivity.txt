@@ -9,7 +9,7 @@ High-confidence-only matrix: (222, 217)
 Relaxed (High+Low confidence) matrix on the same grid: (222, 217)
 Low-confidence pairs inside the high-confidence grid: 402 of 405 (the rest involve 7 drugs and 0 kinases with no high-confidence measurement)
 Full relaxed matrix, all low-confidence pairs retained: (229, 217)
-Cells changed by relaxing the filter: 402 of 48174 (0.83%)
+Cells changed by relaxing the filter: 372 of 48174 (0.77%)
 
 Cross-definition Spearman correlation matrix (median ranks), High-confidence only:
         s_score entropy gini    ratio   
@@ -27,7 +27,9 @@ ratio      0.124   0.368   0.633   1.000
 
 Max absolute change in any off-diagonal cell: 0.078
 
-Same, all low-confidence pairs retained (adds drugs and kinases, so the panel changes too):
+Compounds with an active kinase under both filters (200), re-ranked among themselves: max absolute change in any off-diagonal cell: 0.006
+
+Same, all low-confidence pairs retained (adds the drugs with no high-confidence measurement):
         s_score entropy gini    ratio   
 s_score    1.000   0.902   0.484   0.049
 entropy    0.902   1.000   0.609   0.283
@@ -35,9 +37,22 @@ gini       0.484   0.609   1.000   0.653
 ratio      0.049   0.283   0.653   1.000
 Max absolute change vs high-confidence only: 0.061
 
-Panel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:
+Panel-size p* without the D1 gate (SI Section S1 design), High-confidence only vs. relaxed:
   entropy  : 80 vs. 80
   gini     : 200 vs. 200
   s_score  : 80 vs. 80
   ratio    : 217 vs. 217
   candidate: 80 vs. 50
+
+Gated recovery p* (main text, Figure 3), High-confidence only vs. relaxed:
+  S-score tau*          : 80 vs. 80
+  S-score x0            : 50 vs. 50
+  entropy x0            : 50 vs. 50
+  entropy tau*          : 100 vs. 100
+  Gini                  : 50 vs. 50
+  ratio                 : 200 vs. 200
+  candidate             : 50 vs. 50
+  entropy Ka            : 200 vs. 200
+  entropy Ka, floor kept: 200 vs. 200
+  partition Ka          : 200 vs. 200
+  coverage at 50 targets: 70.6% vs. 72.9%

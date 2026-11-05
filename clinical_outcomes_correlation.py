@@ -61,4 +61,4 @@ if __name__ == "__main__":
           f"min p = {df['p'].min():.4f}")
     print(f"n (FAERS rates) = {merged[RATE_COLS[0]].notna().sum()}, "
           f"n (discontinuation_rate) = {merged['discontinuation_rate'].notna().sum()}")
-    print(f"\ntotal_reports vs median_rank_ratio: r = {r_tot:.3f}, p = {p_tot:.4f}")
+    print(f"\ntotal_reports vs median_rank_ratio: r = {r_tot:.4f}, p = {p_tot:.4f}")

@@ -5,29 +5,21 @@
 \begin{document}
 \begin{table}[h]
   \centering
-  \caption{Spearman correlations between median rankings by definition. S:
-           S-score; E: entropy; G: Gini; R: ratio, with the entropy and Gini in
-           their log-affinity forms. E$_{K_a}$: the published entropy, with
-           association-constant weighting, with floor-coded pairs given no
-           weight and, in parentheses, kept at the floor. Every Davis compound
-           has an active kinase.}
-  \label{tab:correlations}
-  \begin{tabular}{lccc}
+  \caption{The four datasets. The floor $x_0$ is the value given to pairs with
+           no detected binding (Davis, Klaeger) or not tested (Metz); on
+           Anastassiadis it is a noise level. $\tau^*$ is the activity
+           threshold.}
+  \label{tab:datasets}
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \begin{tabular}{llcccc}
     \toprule
-         & Davis & \multicolumn{2}{c}{Klaeger} \\
-    \cmidrule(lr){3-4}
-    Pair & all ($n = 68$) & all ($n = 222$) & active ($n = 200$) \\
+    Dataset & Assay; readout & Compounds & Targets (released, curated) & $x_0$ & $\tau^*$ \\
     \midrule
-    S--E & 0.963 & 0.896 & 0.897 \\
-    S--G & 0.963 & 0.508 & 0.892 \\
-    E--G & 0.999 & 0.658 & 0.997 \\
-    S--R & 0.563 & 0.078 & 0.378 \\
-    E--R & 0.513 & 0.344 & 0.622 \\
-    G--R & 0.510 & 0.655 & 0.635 \\
-    \midrule
-    E$_{K_a}$--S & 0.738 (0.344) & 0.571 ($-0.597$) & 0.564 ($-0.412$) \\
-    E$_{K_a}$--G & 0.736 (0.368) & 0.530 (0.077)    & 0.782 ($-0.094$) \\
-    E$_{K_a}$--R & 0.861 (0.688) & 0.657 (0.648)    & 0.916 (0.591) \\
+    Davis         & competition binding; $\mathrm{p}K_d$  & 68  & 433, 363 & 5.0    & 6 \\
+    Klaeger       & Kinobeads in lysate; $\mathrm{p}K_d$  & 222 & 343, 217 & 5.0    & 6 \\
+    Anastassiadis & radiometric activity; \% inhibition  & 178 & 300, 291 & 20\%   & 50\% \\
+    Metz          & biochemical activity; $\mathrm{p}K_i$ & 704 & 172, 172 & 4.0    & 6 \\
     \bottomrule
   \end{tabular}
 \end{table}

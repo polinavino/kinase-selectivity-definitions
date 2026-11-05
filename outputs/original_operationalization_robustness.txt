@@ -5,7 +5,7 @@ s_score    1.000   0.344   0.963   0.563
 entropy    0.344   1.000   0.368   0.688
 gini       0.963   0.368   1.000   0.510
 ratio      0.563   0.688   0.510   1.000
-Davis floor-coded entries: 71.13%; Ka entropy with vs without them: Spearman 0.795
+Davis floor-coded entries: 71.13%; Ka entropy with vs without them: Spearman 0.7946
 
 Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
         s_score entropy gini    ratio   

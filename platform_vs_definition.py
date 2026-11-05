@@ -117,7 +117,7 @@ print("Lower r = more disagreement. Comparing the two ranges shows which source 
 
 # ---------------------------------------------------------------------------
 # The two curated panels profile different kinases (363 Davis reference targets,
-# 219 Klaeger protein kinases), so the comparison above mixes assay and panel.
+# 217 Klaeger protein kinases), so the comparison above mixes assay and panel.
 # Repeat it on the kinases both panels share: Davis reference constructs mapped to
 # HGNC gene symbols, Klaeger columns matched on any ';'-separated symbol.
 ALIAS = {
@@ -162,7 +162,7 @@ print(f"Summary on the shared panel: platform-effect r range = {min(plat_C):.2f}
       f"(mean {np.mean(defn_C):.2f})")
 
 # Compounds with no active target are scored by each definition's own convention
-# (Type 1), so repeat the shared-panel comparison on the compounds active in both.
+# (Results), so repeat the shared-panel comparison on the compounds active in both.
 act = (davis_C > 6).any(1) & (klaeger_C > 6).any(1)
 mdA, mkA = median_ranks(davis_C[act]), median_ranks(klaeger_C[act])
 plat_A = [spearmanr(mdA[d], mkA[d])[0] for d in DEFNS]

@@ -1,6 +1,6 @@
 """Sensitivity of panel-size recoverability p* to the r/rho > 0.90 bar.
 
-The main panel-size analysis (panel_size_analysis.py) calls a subpanel size
+The panel-size analysis without the D1 gate (panel_size_analysis.py; SI Section S5) calls a subpanel size
 "recovering" the full-panel ranking once mean Spearman r exceeds 0.90, a
 convention borrowed from reliability research's "excellent" agreement bar
 (Koo & Li 2016), not a property derived from the data. This script checks
@@ -84,7 +84,7 @@ def pstar_at(panel_sizes, results, d, bar):
 
 
 # All four datasets. Every measure uses the dataset's floor x0 as its baseline
-# (entropy, Gini) or fallback (ratio, k = 1), the activity threshold tau* as the
+# (entropy, Gini) or clipping level (ratio, k = 1), the activity threshold tau* as the
 # S-score cutoff, and, for the candidate, x0 and T = tau* - x0 (Methods).
 DATASETS = [
     dict(name='Davis',         file='davis_affinity.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
@@ -106,10 +106,11 @@ for ds in DATASETS:
     M = load_matrix(ds)
     panel_sizes, results = panel_curves(M, ds['baseline'], ds['threshold'], ds['floor'])
     print(f"\n=== {ds['name']} ({M.shape[0]} drugs x {M.shape[1]} kinases) ===")
-    print(f"{'bar':>6s}" + "".join(f"{d:>10s}" for d in order))
+    print(f"{'bar':>6s}" + "".join(f"{ {'entropy': 'entropy', 'gini': 'Gini', 's_score': 'S-score', 'ratio': 'ratio'}[d]:>10s}" for d in order))
     for bar in BARS:
         row = f"{bar:>6.2f}"
         for d in order:
             p = pstar_at(panel_sizes, results, d, bar)
-            row += f"{(p if p is not None else -1):>10d}"
+            # reached only on the full panel: more than the largest subpanel tested
+            row += f"{(f'>{panel_sizes[-2]}' if p == panel_sizes[-1] else p):>10}"
         print(row)

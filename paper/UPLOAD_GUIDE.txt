@@ -24,18 +24,19 @@ COVER LETTER
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
   Figure1.png  = published vs log-affinity entropy and Gini, two treatments
                  of floor-coded pairs
-  Figure2.png  = correlations between definitions, four datasets
-  Figure3.png  = profile feature most associated with instability per family
-  Figure4.png  = binding profiles of the most stable, most unstable and most
-                 ratio-sensitive Davis compounds
-  Figure5.png  = rank instability for D1 and D2 (Klaeger)
-  Figure6.png  = recovery from random subpanels, with coverage, all measures
+  Figure2.png  = binding profiles of two Davis compounds (near-tied top
+                 targets; broad profile with one dominant target)
+  Figure3.png  = recovery from random subpanels: coverage, pair recovery and
+                 conditional agreement, all scores
 
 TABLES  (one file per table, separate slot each)  -> submission_tables/
-  Table1.docx  = Spearman correlations between definitions, including the
+  table1.tex   = the four datasets
+  table2.tex   = score implementations
+  table3.tex   = Spearman correlations between definitions, including the
                  published entropy
-  Table2.docx  = profile-feature vs. instability correlations
-  Table3.docx  = property satisfaction by definition
+  table4.tex   = the three criteria for each score
+  (The Table*.docx files predate this reorganization and must be rebuilt
+  from these .tex tables before upload.)
 
 GRAPHICAL ABSTRACT / TOC
   Image:  figures/toc_graphic.png
@@ -43,23 +44,18 @@ GRAPHICAL ABSTRACT / TOC
 
 SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
-  Section S1 (Figure S1, Table S1), Tables S2-S4, Sections S5-S6 (with
-  Tables S5-S6) and Table S7: panel size without the D1 gate; Bosc et
-  al./CATDS comparison; correlations under the published operationalizations;
-  candidate-measure validation and D2 per dataset; variants of the candidate
-  measure; released versus curated panels and further analyses; the script
-  behind every result in the main text. Referenced from
-  Methods, Results and Discussion as "Supporting Information, Table S<n>" or
-  "Section S<n>".
-
-LATEX SOURCE (optional — "Production"/"Supplementary for review" slot)
-  kinase-selectivity-latex-source.zip   (compiles main.pdf with: latexmk -pdf main.tex)
+  Sections S1-S8 with Tables S1-S9 and Figures S1-S4: dataset construction
+  and target selection; score implementations and agreement; ranking
+  sensitivity and profile associations; the weak-addition property and the
+  gated entropy (proof, variants); recovery from subpanels, including the
+  analysis without the D1 gate; cross-dataset and supplementary comparisons;
+  the clinical analysis; and the script behind every result. Referenced from
+  the main text as "Supporting Information, Section S<n>", "Table S<n>" or
+  "Figure S<n>".
 
 Notes
 -----
-- Figures are PNG, 1480-2980 px wide (about 210-430 dpi at a 7-inch print
-  width; Figures 1 and 5 are the narrowest). If the system requires TIFF/EPS or
-  a higher nominal dpi, the plotting scripts can re-export. Figure 6 and
-  Supporting Figure S1 use random subsampling with a fixed seed, so a re-run
-  reproduces them exactly.
-- The Tables .docx files are editable Word tables, each with its caption.
+- Figures are PNG, 1484-2703 px wide (Figure 1 is the narrowest). If the
+  system requires TIFF/EPS or a higher nominal dpi, the plotting scripts can
+  re-export. Figure 3 and Supporting Figure S4 use random subsampling with a
+  fixed seed, so a re-run reproduces them exactly.

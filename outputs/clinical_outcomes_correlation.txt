@@ -19,4 +19,4 @@ discontinuation_rate   median_rank_ratio 33  0.103 0.5685
 max |r| across all rate x rank pairs = 0.193, min p = 0.1984
 n (FAERS rates) = 46, n (discontinuation_rate) = 33
 
-total_reports vs median_rank_ratio: r = 0.305, p = 0.0395
+total_reports vs median_rank_ratio: r = 0.3047, p = 0.0395

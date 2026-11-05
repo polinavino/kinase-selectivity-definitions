@@ -3,75 +3,52 @@
 
 Kinase inhibitors are among the most intensely investigated compound classes
 in drug discovery, with 94 FDA-approved agents and several hundred in
-clinical development.\cite{Roskoski2026}
-Because the human kinome is comprised of more than 500 proteins sharing a
-highly conserved ATP-binding site,\cite{Manning2002} the design of inhibitors
-with controlled target profiles remains a central challenge.
-Selectivity is a primary
-criterion in lead optimization and a key determinant in the drug approval
-process.\cite{Bhullar2018}
+clinical development.\cite{Roskoski2026} The human kinome comprises more than
+500 proteins with a conserved ATP-binding site,\cite{Manning2002} and
+selectivity is a primary criterion in lead optimization.\cite{Bhullar2018}
+Profiling assays measure a compound against a panel of tens to hundreds of
+kinases, and the resulting profile is often reduced to one selectivity score.
+Several scores are in use: the S-score, the fraction of the panel bound below
+an affinity cutoff;\cite{Karaman2008} the selectivity entropy, the Shannon
+entropy of the profile treated as a distribution;\cite{Uitdehaag2011} the Gini
+coefficient of the profile;\cite{Graczyk2010} the partition index, the share of
+binding that falls on one target;\cite{Cheng2010} and ratio-based measures,
+which compare the primary target with an off-target. They are often used
+interchangeably, although each summarizes a different aspect of the profile.
 
-Despite its importance, no single consistent definition of selectivity exists.
-The field employs at least four distinct quantitative measures:
-the S-score,\cite{Karaman2008} selectivity entropy,\cite{Uitdehaag2011}
-Gini coefficient,\cite{Graczyk2010} and ratio-based measures, which compare the
-primary target with an off-target.
-These definitions are often used interchangeably, and their parameters (the
-threshold in the S-score and the reference off-target in ratio-based measures)
-are usually set by convention. The published entropy and Gini have no such
-parameter, but computing them requires choosing how affinities are weighted and
-how pairs without a measured affinity are treated.
-Standardizing them would remove one source of disagreement between
-laboratories and platforms.
+Earlier work established that these scores can disagree. Bosc et
+al.\cite{Bosc2017} compared six scores on the Davis and Anastassiadis datasets,
+computed several at more than one parameter value, and found that compound
+rankings differ substantially between them. They traced individual
+disagreements to profile shape, such as a broad binder with one dominant
+target. The KInhibition platform\cite{KInhibition2018} noted that conflicting
+results across metrics are common and introduced a composite score, and a
+later resource from the same group offers a choice of scores.\cite{Gujral2026}
+Miljkovic and Bajorath\cite{Bajorath2018} found the concentration-dependent
+selectivity score of Klaeger et al.\cite{Klaeger2017} broadly consistent with
+activity data from ChEMBL. Karaman et al.\cite{Karaman2008} and Uitdehaag et
+al.\cite{Uitdehaag2012} showed that the S-score and the entropy of individual
+compounds vary when they are computed on random subpanels.
 
-Bosc et al.\cite{Bosc2017} showed that these definitions can produce
-substantially different compound rankings on the same dataset, and traced
-individual disagreements to profile shape, such as a broad binder with one
-dominant target. The KInhibition platform\cite{KInhibition2018} explicitly
-acknowledged that conflicting results across metrics are common.
-To our knowledge, which binding profile properties determine when the
-definitions agree or conflict has not been characterized systematically.
-Go/no-go decisions in lead optimization are often made on selectivity
-assessments whose sensitivity to the choice of definition is unknown, and
-inconsistent definitions make compounds hard to compare across studies.
+What has not been characterized systematically is how analysis choices alter
+agreement between the scores: how affinities are weighted, which compounds are
+ranked, how pairs without detected binding are treated, which assay targets
+count as kinases, and where each score's parameter is set. It is also not
+known which associations between profile shape and ranking instability persist
+across these choices, or how much of a ranking a smaller panel retains once
+some compounds can no longer be scored. The study concerns scores computed
+from a binding profile alone.
 
-In information theory, Shannon\cite{Shannon1948} settled which function should
-measure entropy by writing down a few properties a sensible measure must
-have and showing that only one formula satisfies them. We follow this
-precedent in part: we characterize how the competing measures behave, state
-properties a good measure should have, and examine which formulas satisfy
-them. We use four profiling datasets that span three assay technologies, each
-curated to one reference target per human protein kinase. Our contributions are
-as follows:
-
-\begin{itemize}
-    \item[(i)] we show that, with entropy and Gini on a common log-affinity
-scale, the S-score, entropy and Gini (the distribution-based family) agree more
-with each other than with the fold-selectivity ratio $R(k)$. This holds clearly
-on the two $\mathrm{p}K_d$ datasets among compounds with an active kinase, and
-with qualifications on the other two. With the entropy in its original
-association-constant form, this grouping fails on all three affinity datasets,
-by an amount that depends on how pairs without detected binding are treated;
-
-    \item[(ii)] we identify three sources of rank instability: the convention
-each definition uses to score compounds with no binding above the activity
-threshold, near-tied top targets, and broad profiles, often with one dominant
-target;
-
-    \item[(iii)] we state three properties, (D1) a reliability threshold, (D2)
-distributional consistency and (D3) monotonicity under weak off-target addition.
-No measure we assess satisfies D2: moving the activity boundary between the
-assay floor and the activity threshold reverses 8--13\% of compound pairs under
-the S-score, entropy and Gini on three datasets. D3 separates the measures;
-
-    \item[(iv)] we give a gated, smooth-hinge entropy that provably satisfies D3
-and weights binding below the activity threshold continuously. On these data it
-ranks compounds almost identically to the entropy and to the share of targets
-with detected binding, which also satisfies D3;
-
-    \item[(v)] we evaluate recovery from random subpanels separately from the
-properties. Measures that follow the share of targets with detected binding
-recover rankings from fewer targets than measures that rest on the strongest
-targets, such as the ratio and the published entropy. On small panels,
-recovery is limited mainly by the share of compounds that can be scored.
-\end{itemize}
+We compare the S-score, entropy, Gini and ratio on four datasets that span
+three assay technologies, each curated to one reference target per human
+protein kinase, with the entropy and Gini both in a common log-affinity form
+and in their published forms. We vary the compounds ranked, the treatment of
+pairs without detected binding and each score's parameter, and relate the
+resulting instability to features of the binding profile. From these results
+we state three criteria for a selectivity measure: activity eligibility,
+consistency across placements of the activity boundary, and monotonicity when
+a weakly bound kinase is added. We evaluate the existing scores and simple
+comparators against them, and give a gated, smooth-hinge entropy with a proof
+of the third. Finally, we measure how well each score's ranking is recovered
+from random subpanels, and for how many compounds. Stating such criteria
+follows the axiomatic approach Shannon used for entropy.\cite{Shannon1948}

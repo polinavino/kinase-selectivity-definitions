@@ -71,12 +71,14 @@ def panel_curves(M, baseline, threshold, floor, n_repeats=50, seed=42):
 
 
 def pstar(panel_sizes, results, d):
-    return next((ps for ps in panel_sizes if np.mean(results[d][ps]) > 0.90), None)
+    p = next((ps for ps in panel_sizes if np.mean(results[d][ps]) > 0.90), None)
+    # reached only on the full panel: more than the largest subpanel tested
+    return f">{panel_sizes[-2]}" if p == panel_sizes[-1] else p
 
 
 # All four datasets. Every measure uses the dataset's floor x0 as its baseline
-# (entropy, Gini) or fallback (ratio, k = 1), the activity threshold tau* as the
-# S-score cutoff, and, for the candidate, x0 and T = tau* - x0 (Methods).
+# (entropy, Gini) or clipping level (ratio, k = 1), and the activity threshold tau* as
+# the S-score cutoff (Methods).
 DATASETS = [
     dict(name='Davis',         file='davis_affinity.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
     dict(name='Klaeger',       file='klaeger_matrix.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
@@ -92,6 +94,7 @@ def load_matrix(ds):
     return pd.read_csv(ds['file'], index_col=0).values
 
 order = ['entropy', 'gini', 's_score', 'ratio']
+NAME = {'entropy': 'entropy', 'gini': 'Gini', 's_score': 'S-score', 'ratio': 'ratio'}
 colors = {'entropy': 'darkorange', 'gini': 'green', 's_score': 'steelblue', 'ratio': 'crimson'}
 
 fig, axes = plt.subplots(2, 2, figsize=(14, 10), squeeze=False)
@@ -100,9 +103,9 @@ for ax, ds in zip(axes.ravel(), DATASETS):
     n_drugs, n_kinases = M.shape
     panel_sizes, results = panel_curves(M, ds['baseline'], ds['threshold'], ds['floor'])
 
-    print(f"\n=== {ds['name']} ({n_drugs} drugs x {n_kinases} kinases) ===")
+    print(f"\n=== {ds['name']} ({n_drugs} drugs x {n_kinases} kinases); 50 random subpanels per size ===")
     print("Panel size stability (mean Spearman r vs full panel):")
-    print(f"{'Panel size':>12s} {'entropy':>10s} {'gini':>10s} {'s_score':>10s} {'ratio':>10s}")
+    print(f"{'Panel size':>12s} {'entropy':>10s} {'Gini':>10s} {'S-score':>10s} {'ratio':>10s}")
     for ps in panel_sizes:
         print(f"{ps:>12d}" + "".join(f"  {np.mean(results[d][ps]):+.3f}" for d in order))
     print("Minimum panel size for mean r > 0.90:")
@@ -113,7 +116,7 @@ for ax, ds in zip(axes.ravel(), DATASETS):
         means = [np.mean(results[d][ps]) for ps in panel_sizes]
         stds = [np.std(results[d][ps]) for ps in panel_sizes]
         ax.plot(panel_sizes, means, color=colors[d], linewidth=2,
-                label=f"{d} (p*={pstar(panel_sizes, results, d)})")
+                label=f"{NAME[d]} (p*={pstar(panel_sizes, results, d)})")
         ax.fill_between(panel_sizes, [m - s for m, s in zip(means, stds)],
                         [m + s for m, s in zip(means, stds)], alpha=0.15, color=colors[d])
     ax.axhline(0.90, color='black', linestyle='--', linewidth=1)

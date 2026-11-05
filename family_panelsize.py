@@ -1,7 +1,9 @@
 """
 Does the Renyi order (family_construction.py's first axis) affect how quickly the
 ranking converges to the full-panel ranking? candidate_measure.py's panel_convergence
-gives p* for the alpha=1 (Shannon) candidate. This script repeats that check across
+gives p* for the alpha=1 (Shannon) candidate without the D1 gate, on the grid of the
+panel-size analysis in SI Section S5 (the main text's gated recovery is
+panel_recovery.py). This script repeats that check across
 alpha and asks two follow-up questions before treating any difference as a usable
 finding:
 

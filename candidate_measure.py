@@ -73,7 +73,7 @@ def ratio(P, floor, k=1):
 
 def measures_for(baseline, threshold, floor):
     return {
-        # T = tau* - floor: the D4 guarantee needs T >= 0.58 (tau* - floor) (d4_entropy_vs_candidate.py)
+        # T = tau* - floor: the D3 guarantee needs T >= 0.58 (tau* - floor) (d4_entropy_vs_candidate.py)
         'candidate': lambda P: candidate(P, baseline=floor, floor=floor, T=threshold - floor),
         'entropy':   lambda P: entropy(P, b=baseline),
         'gini':      lambda P: gini(P, b=baseline),
@@ -137,7 +137,7 @@ def gated_panel_convergence(M, baseline, threshold, floor, tau, R=50, seed=42):
 
 
 # All four datasets. Every measure uses the dataset's floor x0 as its baseline
-# (entropy, Gini) or fallback (ratio, k = 1), the activity threshold tau* as the
+# (entropy, Gini) or clipping level (ratio, k = 1), the activity threshold tau* as the
 # S-score cutoff, and, for the candidate, x0 and T = tau* - x0 (Methods).
 DATASETS = [
     dict(name='Davis',         file='davis_affinity.csv',       baseline=5.0,  threshold=6.0,  floor=5.0),
@@ -179,15 +179,15 @@ betas = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] = [5.0, 6.0] (Methods, D2)
 def worst_pair(fn):
     rr = np.array([to_ranks(fn(b)) for b in betas])
     return min(spearmanr(rr[i], rr[j])[0] for i in range(len(betas)) for j in range(i + 1, len(betas)))
-print("\nD3 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):")
+print("\nD2 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):")
 print(f"  candidate, vary emphasis baseline (gate pinned at floor): {worst_pair(lambda b: candidate(Mk, baseline=b, floor=FLOOR)):+.3f}")
 print(f"  candidate, vary active-set boundary (gate = floor)       : {worst_pair(lambda b: candidate(Mk, baseline=b, floor=b)):+.3f}")
 print(f"  existing entropy, vary baseline                          : {worst_pair(lambda b: entropy(Mk, b=b)):+.3f}")
 
-# D4: monotonicity under weak off-target addition
+# D3: monotonicity under weak off-target addition
 base = candidate(Mk, FLOOR, FLOOR)
 new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR)]), FLOOR, FLOOR)   # worst case: at tau*
-print(f"\nD4 (add a sub-threshold off-target): selectivity non-increasing for "
+print(f"\nD3 (add a sub-threshold off-target): selectivity non-increasing for "
       f"{(new <= base + 1e-9).mean() * 100:.0f}% of compounds; max increase = {max(0.0, (new - base).max()):.4f}")
 
 # ---------------- panel-size convergence (all four datasets) ----------------

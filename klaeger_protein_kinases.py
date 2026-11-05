@@ -28,8 +28,9 @@ NON_PK = {
         "PDCD10", "RASSF2", "RASSF3", "RASSF5", "TPRKB", "LAGE3", "OSGEP", "INCENP",
         "GSKIP", "DCAF7", "FAM83A", "FAM83B", "AZI2", "TANK", "TBKBP1", "AFF1", "AFF4",
         "CCAR2", "AP1G1", "AP2A1", "AP2A2", "AP2B1", "AP2M1"],
-    "small-molecule and lipid kinases": [
-        "ADK", "AK2", "CMPK1", "DCK", "PDXK", "PFKP", "NME2",
+    "small-molecule kinases": [
+        "ADK", "AK2", "CMPK1", "DCK", "PDXK", "PFKP", "NME2"],
+    "lipid kinases": [
         "PIP4K2A", "PIP4K2A;PIP4K2B", "PIP4K2C"],
     "other enzymes": [
         "ACAD10", "ACAD11", "ACOX3", "CARS", "CERS2", "COMT", "DCTPP1", "DHCR24", "FECH",
@@ -112,7 +113,9 @@ def pstars(M, R=50, seed=42):
             Ms = M[:, rng.choice(n, ps, replace=False)]
             for k, f in meas.items():
                 res[k][ps].append(spearmanr(ref[k], to_ranks(f(Ms)))[0])
-    return {k: next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None) for k in meas}
+    first = {k: next((ps for ps in panel if np.mean(res[k][ps]) > 0.90), None) for k in meas}
+    # reached only on the full panel: report "more than the largest subpanel tested"
+    return {k: (f">{panel[-2]}" if v == n else v) for k, v in first.items()}
 
 
 def summarize(M):
@@ -148,7 +151,10 @@ def summarize(M):
     out["pooled rank sd, active"] = sd[act].mean()
     out["Mann-Whitney p"] = mannwhitneyu(sd[~act], sd[act]).pvalue if (~act).any() else np.nan
 
-    inst = {f: r.std(0) for f, r in ranks.items()}
+    # Table 2 rows: compounds with an active kinase, ranked among themselves
+    inst = {f: np.full(len(M), np.nan) for f in ranks}
+    for f, (fn, grid) in SWEEPS.items():
+        inst[f][act] = np.array([to_ranks(fn(M[act], p)) for p in grid]).std(0)
     s = -np.sort(-M, 1)
     gap = s[:, 0] - s[:, 1]
     rng_ = np.array([np.ptp(r[r > TAU]) if (r > TAU).sum() > 1 else 0.0 for r in M])
@@ -198,7 +204,7 @@ print(f"\n{'Result':48s} {'all 343':>10s} {'curated ' + str(len(pk)):>16s}")
 for k in full:
     a, b = full[k], prot[k]
     fmt = (lambda v: f"{v:.3g}") if "(p)" in k or "Mann" in k else \
-          (lambda v: f"{v}" if isinstance(v, (int, np.integer)) or v is None else f"{v:.3f}")
+          (lambda v: f"{v}" if isinstance(v, (int, np.integer, str)) or v is None else f"{v:.5f}")
     print(f"{k:48s} {fmt(a):>10s} {fmt(b):>16s}")
 
 # D2 example (top1-top2 gap < 0.05): how many near-ties involve a non-kinase column,

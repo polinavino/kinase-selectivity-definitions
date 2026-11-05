@@ -5,10 +5,9 @@ Ent        0.963   1.000   0.999   0.513
 Gini       0.963   0.999   1.000   0.510
 Ratio      0.563   0.513   0.510   1.000
 
-Klaeger (222 drugs x 217 kinases) minimum panel size for mean r > 0.90:
-  entropy: 80 kinases
-  gini: 200 kinases
-  s_score: 80 kinases
-  ratio: 217 kinases
+Davis gated recovery, smallest panel with mean Spearman > 0.90:
+  S-score, threshold at the floor: 20 targets
+  entropy, published (1/Kd): 300 targets
+  ratio R(1): 363 targets
 
 Saved /Users/polina/Documents/BioInfStuff/selectivity/paper/figures/toc_graphic.png

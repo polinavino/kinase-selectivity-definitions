@@ -8,7 +8,7 @@ D1 decomposed per definition (mean rank std within that definition's own sweep):
   ratio    zero-active  17.45   active  19.10   REVERSES   (Mann-Whitney p=0.51)
   (the S-score reverses because its score is exactly 0 for every zero-active
    compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)
-D2: corr(n_active, instability) -- entropy r=-0.316 (p=5.2e-06); candidate-floor-swept r=-0.324 (p=3.0e-06); candidate-emphasis-swept (gate fixed) r=+0.197 (p=5.2e-03)
-D2: mean instability over B=[5.0,6.0] -- entropy (baseline swept) 7.54; candidate (gate/floor swept, true equivalent) 7.43 (0.98x the entropy's); candidate (emphasis swept, gate fixed by declaration) 0.39 (19x smaller than entropy -- but only because the gate itself is no longer a free parameter being compared)
+D2: corr(n_active, instability) -- entropy r=-0.163 (p=2.1e-02); candidate-floor-swept r=-0.154 (p=2.9e-02); candidate-emphasis-swept (gate fixed) r=+0.205 (p=3.6e-03)
+D2: mean instability over B=[5.0,6.0] -- entropy (baseline swept) 7.025; candidate (gate/floor swept, true equivalent) 6.849 (0.97x the entropy's); candidate (emphasis swept, gate fixed by declaration) 0.384 (18x smaller than entropy -- but only because the gate itself is no longer a free parameter being compared)
 
 Saved failure_modes.png

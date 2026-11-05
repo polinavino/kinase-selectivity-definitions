@@ -101,6 +101,8 @@ cur = [c for c, st, _ in rows if st == "kept"]
 below = int((km[cur].values < FLOOR_K).sum())
 km[cur].clip(lower=FLOOR_K).to_csv("klaeger_matrix.csv")
 print(f"\nKlaeger: {km.shape[1]} targets -> {len(cur)} protein kinases annotated by the source")
+n_ann = int(ann.loc[km.columns, "protein/lipid kinase"].notna().sum())
+print(f"  annotated by the source as protein or lipid kinases: {n_ann}; not annotated as kinases: {km.shape[1] - n_ann}")
 for reason in sorted({r for _, st, r in rows if st == "removed" and not r.startswith("not annotated as a kinase (")}):
     names = [c for c, st, r in rows if r == reason]
     print(f"  removed, {reason}: {len(names)}" + (f" ({', '.join(names)})" if len(names) <= 10 else ""))

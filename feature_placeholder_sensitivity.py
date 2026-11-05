@@ -66,12 +66,18 @@ FEATURES = {'active_std': 2, 'active_range': 2, 'active_skew': 3}
 
 
 def run(M, label):
-    instability = {
-        's_score': np.array([to_ranks(s_score(M, t)) for t in s_thresholds]).std(axis=0),
-        'entropy': np.array([to_ranks(selectivity_entropy(M, b)) for b in baselines]).std(axis=0),
-        'gini':    np.array([to_ranks(gini_selectivity(M, b)) for b in baselines]).std(axis=0),
-        'ratio':   np.array([to_ranks(ratio_selectivity(M, n)) for n in range(1, 6)]).std(axis=0),
+    # ranks among the compounds with an active kinase, as in Table 2 (instability_by_family.py)
+    act = (M > ACTIVE_THRESHOLD).any(1)
+    MA = M[act]
+    inst_a = {
+        's_score': np.array([to_ranks(s_score(MA, t)) for t in s_thresholds]).std(axis=0),
+        'entropy': np.array([to_ranks(selectivity_entropy(MA, b)) for b in baselines]).std(axis=0),
+        'gini':    np.array([to_ranks(gini_selectivity(MA, b)) for b in baselines]).std(axis=0),
+        'ratio':   np.array([to_ranks(ratio_selectivity(MA, n)) for n in range(1, 6)]).std(axis=0),
     }
+    instability = {f: np.full(len(M), np.nan) for f in inst_a}
+    for f in inst_a:
+        instability[f][act] = inst_a[f]
     actives = [row[row > ACTIVE_THRESHOLD] for row in M]
     n_active = np.array([len(a) for a in actives])
     feats = {

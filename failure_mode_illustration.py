@@ -2,16 +2,15 @@
 Illustrates two failure modes (D1: scores for compounds with no binding above the
 activity threshold; D2: baseline-driven instability), using
 the same Klaeger computations that produced the numbers quoted in the paper
-(paper/sections/desiderata.tex, D1 and D2 paragraphs).
+(SI Figure S2; Results).
 
 Left panel (D1): pooled rank instability (std across all four existing
 definitions' parameter sweeps) for compounds with no binding above the pK_d > 6
 activity threshold vs. compounds with at least one active kinase. 16 of the 22
 such compounds on the curated panel bind some kinase above the floor of
 pK_d = 5.0; "zero-active" is defined against the activity threshold, not the
-floor. The candidate does not assign these
-compounds a score at all (D1 gate), rather than a low-instability one -- shown as
-a hatch pattern, not a bar height.
+floor. Under D1 these compounds receive no score at all, rather than a
+low-instability one -- shown as a hatch pattern, not a bar height.
 
 The pooled statistic is also decomposed per definition below, because it is not
 uniform across the four: it is driven by the Gini, is small for the entropy and
@@ -21,7 +20,7 @@ by degeneracy rather than by reliability). The paper reports the decomposition r
 holds "under all four definitions".
 
 Right panel (D2): per-compound rank instability vs. n_active, for active
-compounds, under three different sweeps (Reviewer 1, Molecular Informatics
+compounds ranked among themselves, under three different sweeps (Reviewer 1, Molecular Informatics
 revision: the original version of this panel compared entropy's sensitivity to
 its gate/baseline against only the candidate's emphasis parameter, which does
 not touch the gate -- an apples-to-oranges comparison the reviewer correctly
@@ -118,14 +117,17 @@ print("   compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)"
 # one grid for all three sweeps: B = [x0, tau*] = [5.0, 6.0] (Methods, D2), so the
 # candidate's gate is swept over exactly the entropy's range
 sweep = np.arange(5.0, 6.01, 0.25)
-ent_ranks_b = np.array([to_ranks(entropy(M, b)) for b in sweep])
-ent_instab = ent_ranks_b.std(axis=0)
+# compounds with an active kinase (those D1 scores), ranked among themselves
+MA = M[has_active]
+def instab_active(rank_rows):
+    out = np.full(n_drugs, np.nan)
+    out[has_active] = np.array(rank_rows).std(axis=0)
+    return out
+ent_instab = instab_active([to_ranks(entropy(MA, b)) for b in sweep])
 # true equivalent: sweep the candidate's own gate (floor x0), beta pinned to x0 at each point
-cand_floor_ranks = np.array([to_ranks(candidate(M, baseline=f, floor=f)) for f in sweep])
-cand_floor_instab = cand_floor_ranks.std(axis=0)
+cand_floor_instab = instab_active([to_ranks(candidate(MA, baseline=f, floor=f)) for f in sweep])
 # the candidate's remaining free parameter once the gate is fixed by declaration (x0 = FLOOR)
-cand_emph_ranks = np.array([to_ranks(candidate(M, baseline=b, floor=FLOOR)) for b in sweep])
-cand_emph_instab = cand_emph_ranks.std(axis=0)
+cand_emph_instab = instab_active([to_ranks(candidate(MA, baseline=b, floor=FLOOR)) for b in sweep])
 
 r_ent, p_ent = spearmanr(n_active[has_active], ent_instab[has_active])
 r_cand_floor, p_cf = spearmanr(n_active[has_active], cand_floor_instab[has_active])
@@ -135,10 +137,10 @@ print(f"D2: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}
       f"candidate-emphasis-swept (gate fixed) r={r_cand_emph:+.3f} (p={p_ce:.1e})")
 ratio_gate = cand_floor_instab[has_active].mean() / ent_instab[has_active].mean()
 ratio_emph = ent_instab[has_active].mean() / cand_emph_instab[has_active].mean()
-print(f"D2: mean instability over B=[5.0,6.0] -- entropy (baseline swept) {ent_instab[has_active].mean():.2f}; "
-      f"candidate (gate/floor swept, true equivalent) {cand_floor_instab[has_active].mean():.2f} "
+print(f"D2: mean instability over B=[5.0,6.0] -- entropy (baseline swept) {ent_instab[has_active].mean():.3f}; "
+      f"candidate (gate/floor swept, true equivalent) {cand_floor_instab[has_active].mean():.3f} "
       f"({ratio_gate:.2f}x the entropy's); "
-      f"candidate (emphasis swept, gate fixed by declaration) {cand_emph_instab[has_active].mean():.2f} "
+      f"candidate (emphasis swept, gate fixed by declaration) {cand_emph_instab[has_active].mean():.3f} "
       f"({ratio_emph:.0f}x smaller than entropy -- but only because the gate itself is no longer "
       f"a free parameter being compared)")
 
@@ -152,16 +154,16 @@ for b, v in zip(bars, [sigma_zero, sigma_active]):
     axL.text(b.get_x() + b.get_width() / 2, v + 1.5, f"{v:.0f}", ha='center', fontsize=11)
 axL.set_ylabel('Rank std across existing definitions\' parameter sweeps')
 axL.set_title('D1: rank instability by activity status (Klaeger)')
-axL.text(0, sigma_zero + 9, 'not scored by\nthe candidate',
+axL.text(0, sigma_zero + 9, 'not scored\nunder D1',
           ha='center', fontsize=8.5, color='C1')
 axL.set_ylim(0, max(sigma_zero, sigma_active) * 1.35)
 
 axR.scatter(n_active[has_active], ent_instab[has_active], s=16, color='C1', alpha=0.6,
             label=f'entropy, baseline swept (r={r_ent:+.2f})')
 axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2', alpha=0.6,
-            label=f'candidate, gate swept (r={r_cand_floor:+.2f})')
+            label=f'gated entropy, gate swept (r={r_cand_floor:+.2f})')
 axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
-            label=f'candidate, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
+            label=f'gated entropy, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
 axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
 axR.set_title('D2: rank instability under each parameter sweep (Klaeger)')
 axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)

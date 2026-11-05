@@ -1,24 +1,26 @@
 """
-Monotonicity under weak off-target addition (the paper's D3; labelled D4 in this
-script's output) for the entropy and the candidate.
+Monotonicity under weak off-target addition (the paper's D3) for the entropy and
+the candidate.
 
 As stated in Methods: adding a kinase with affinity in (x0, tau*] must not raise
-a compound's selectivity score. This script supports the "Why the smooth hinge
-matters" subsection:
+a compound's selectivity score. This script supports Methods (the proposition)
+and Results, "Monotonicity Under Weak-Target Addition" (SI Section S4):
 
 1. The condition on the smoothing width T under which the candidate provably
-   satisfies D4 (with emphasis baseline beta = floor x0): every gated weight is
+   satisfies D3 (with emphasis baseline beta = floor x0): every gated weight is
    above m = T ln 2, an added kinase at or below tau* has weight at most
    a = T ln(1 + exp((tau* - x0)/T)), and the proof needs a/m <= e, i.e.
    T >= (tau* - x0) / ln(2^e - 1) ~= 0.58 (tau* - x0). With T = tau* - x0 the
    same argument covers every beta in B = [x0, tau*], with m = T ln(1 + exp((x0 - beta)/T)).
 2. That the condition is sharp: just below it, a profile with one strong target
-   and enough kinases just above the floor violates D4.
+   and enough kinases just above the floor violates D3.
 3. A worked counterexample for the baseline-subtracted entropy.
 4. How often, on the real data, adding one kinase at tau* raises the entropy's
    selectivity score, and that it never raises the candidate's.
 5. A random adversarial search for candidate violations with T = tau* - x0.
 6. How much moving T to tau* - x0 changes the Metz and Anastassiadis rankings.
+7. Two limits of the candidate: its jump at the floor, and that strengthening an
+   existing off-target (rather than adding one) can raise its score.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -81,7 +83,7 @@ def load():
 
 data = load()
 
-print("1. Condition for the candidate's D4 guarantee: T >= %.4f (tau* - x0)" % T_FACTOR)
+print("1. Condition for the candidate's D3 guarantee: T >= %.4f (tau* - x0)" % T_FACTOR)
 print(f"   {'dataset':14s} {'tau*-x0':>8s} {'T now':>6s} {'T before':>9s} {'r=a/m now':>10s} {'r before':>9s}  (need r <= e = {np.e:.3f})")
 for name, (M, x0, tau, top, grid, T_old) in data.items():
     d = tau - x0
@@ -99,14 +101,14 @@ for name in ("Klaeger", "Metz", "Anastassiadis"):
     for label, T in (("T = tau*-x0", d), ("T before", T_old),
                      ("T just above bound", 1.01 * T_FACTOR * d), ("T just below bound", 0.97 * T_FACTOR * d)):
         rise, n = worst_rise_near_floor(x0, tau, T, top, n_max=2000)
-        verdict = "D4 holds" if rise <= 1e-12 else f"D4 VIOLATED (max rise {rise:+.1e} bits at n = {n})"
+        verdict = "D3 holds" if rise <= 1e-12 else f"D3 VIOLATED (max rise {rise:+.1e} bits at n = {n})"
         print(f"   {name:14s} {label:20s} T = {T:7.3f}: {verdict}")
 
 print("\n3. Worked counterexample for the entropy (beta = floor = 5.0, tau* = 6.0)")
 prof = [7.0] + [5.1] * 50
 before, after = entropy(prof, 5.0)[0], entropy(add_column(prof, 6.0), 5.0)[0]
 print(f"   profile: one kinase at pKd 7.0 and fifty at 5.1; add one kinase at pKd 6.0")
-print(f"   entropy selectivity  {before:+.4f} -> {after:+.4f}  ({'RISES: D4 violated' if after > before else 'does not rise'})")
+print(f"   entropy selectivity  {before:+.4f} -> {after:+.4f}  ({'RISES: D3 violated' if after > before else 'does not rise'})")
 cb, ca = candidate(prof, 5.0, 1.0)[0], candidate(add_column(prof, 6.0), 5.0, 1.0)[0]
 print(f"   candidate (T = 1)    {cb:+.4f} -> {ca:+.4f}  ({'RISES' if ca > cb else 'does not rise'})")
 
@@ -151,3 +153,24 @@ for name, (M, x0, tau, top, grid, T_old) in data.items():
         continue
     r = spearmanr(candidate(M, x0, T_old), candidate(M, x0, d))[0]
     print(f"   {name:14s} T = {T_old:g} -> {d:g}: Spearman = {r:.3f}")
+
+
+print("\n7. Limits of the candidate (beta = x0 = 5.0, T = 1)")
+one = lambda xs: float(candidate(np.array([xs]), 5.0, 1.0)[0])
+print(f"   jump at the floor: one target at 7 with a second at 5.0: {one([7.0, 5.0]):+.4f} bits; "
+      f"second at 5.0 + 1e-8: {one([7.0, 5.0 + 1e-8]):+.4f} bits")
+base = [7.0] + [5.1] * 50
+stronger = [7.0, 6.0] + [5.1] * 49
+print(f"   one target at 7 and fifty at 5.1: {one(base):+.5f}; one of the fifty raised to 6.0: {one(stronger):+.5f} "
+      f"({'higher' if one(stronger) > one(base) else 'not higher'}: strengthening an existing off-target "
+      f"is not covered by D3)")
+
+print("\n8. The published (association-constant) entropy, floor-coded pairs given no weight")
+def ka_score(xs, floor=5.0):
+    x = np.asarray(xs, float)
+    w = np.where(x > floor, 10.0 ** (x - 9.0), 0.0)
+    p = w / w.sum()
+    return float((p * np.log2(np.where(p > 0, p, 1.0))).sum())
+base = [6.01] + [5.01] * 50
+print(f"   one target at 6.01 and fifty at 5.01: {ka_score(base):+.4f} bits; one kinase added at 6.0: "
+      f"{ka_score(base + [6.0]):+.4f} bits ({'rises: D3 violated' if ka_score(base + [6.0]) > ka_score(base) else 'does not rise'})")

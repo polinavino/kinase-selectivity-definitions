@@ -78,7 +78,20 @@ def analyze(M, s_thr, baselines, ratio_floor, active_thr, label):
     }
     all_ranks = np.vstack(list(ranks.values()))
     rank_std = all_ranks.std(axis=0)
-    instab = {d: ranks[d].std(axis=0) for d in DEFNS}
+    # feature associations: compounds with an active kinase, ranked among themselves (as Table 2)
+    act_c = (M > active_thr).any(1)
+    Ma_ = M[act_c]
+    ranks_a = {
+        's_score': np.array([to_ranks(s_score(Ma_, t)) for t in s_thr]),
+        'entropy': np.array([to_ranks(selectivity_entropy(Ma_, b)) for b in baselines]),
+        'gini':    np.array([to_ranks(gini_selectivity(Ma_, b)) for b in baselines]),
+        'ratio':   np.array([to_ranks(ratio_selectivity(Ma_, k, ratio_floor)) for k in range(1, 6)]),
+    }
+    instab = {d: np.full(M.shape[0], np.nan) for d in DEFNS}
+    for d in DEFNS:
+        instab[d][act_c] = ranks_a[d].std(axis=0)
+    med_a = {d: np.median(ranks_a[d], axis=0) for d in DEFNS}
+    corr_act = np.array([[spearmanr(med_a[a], med_a[b])[0] for b in DEFNS] for a in DEFNS])
     med = {d: np.median(ranks[d], axis=0) for d in DEFNS}
     corr = np.array([[spearmanr(med[a], med[b])[0] for b in DEFNS] for a in DEFNS])
 
@@ -96,6 +109,7 @@ def analyze(M, s_thr, baselines, ratio_floor, active_thr, label):
         return spearmanr(fdf[feature].values[mask], instab[defn][mask])
 
     return dict(label=label, n_cpd=M.shape[0], n_kin=M.shape[1], corr=corr,
+                corr_act=corr_act, n_act=int(act_c.sum()),
                 rank_std=rank_std, has_active=has_active, n_active=n_active,
                 fc=fc, med=med)
 
@@ -171,18 +185,22 @@ pd.DataFrame(rows).to_csv(os.path.join(HERE, "cross_dataset_summary.csv"), index
 print("\nSaved cross_dataset_summary.csv")
 
 # ------------------------------- figure ------------------------------------
-fig, axes = plt.subplots(1, 4, figsize=(16, 4.2))
+fig, axes = plt.subplots(2, 4, figsize=(16, 8.4))
 labels = ['S', 'Ent', 'Gini', 'Ratio']
-for ax, r in zip(axes, results):
-    im = ax.imshow(r['corr'], vmin=0, vmax=1, cmap='RdYlGn')
-    ax.set_xticks(range(4)); ax.set_yticks(range(4))
-    ax.set_xticklabels(labels, fontsize=9); ax.set_yticklabels(labels, fontsize=9)
-    for i in range(4):
-        for j in range(4):
-            ax.text(j, i, f"{r['corr'][i, j]:.2f}", ha='center', va='center', fontsize=8)
-    ax.set_title(f"{r['label']}\n{r['n_cpd']}×{r['n_kin']}", fontsize=9)
+for row, (key, what) in enumerate((("corr_act", "compounds with an active kinase"), ("corr", "all compounds"))):
+    for ax, r in zip(axes[row], results):
+        C = r[key]
+        im = ax.imshow(C, vmin=0, vmax=1, cmap='RdYlGn')
+        ax.set_xticks(range(4)); ax.set_yticks(range(4))
+        ax.set_xticklabels(labels, fontsize=9); ax.set_yticklabels(labels, fontsize=9)
+        for i in range(4):
+            for j in range(4):
+                ax.text(j, i, f"{C[i, j]:.2f}", ha='center', va='center', fontsize=8)
+        n = r['n_act'] if key == "corr_act" else r['n_cpd']
+        ax.set_title(f"{r['label']}\n{what}: {n}×{r['n_kin']}", fontsize=9)
 fig.colorbar(im, ax=axes, fraction=0.013, pad=0.02, label='Spearman r')
-fig.suptitle("Spearman correlations between median rankings of the four definitions", fontsize=11)
+fig.suptitle("Spearman correlations between median rankings of the four definitions "
+             "(top: compounds with an active kinase, ranked among themselves; bottom: all compounds)", fontsize=11)
 out = os.path.join(HERE, "cross_dataset_correlations.png")
 plt.savefig(out, dpi=150, bbox_inches='tight')
 print(f"Saved {out}")

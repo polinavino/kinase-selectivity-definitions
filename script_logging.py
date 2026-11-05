@@ -27,12 +27,13 @@ import shutil
 # number. Order follows the figures' appearance in the compiled paper.
 FIGURE_MAP = {
     "metric_fidelity.png": "Figure1.png",
-    "cross_dataset_correlations.png": "Figure2.png",
-    "instability_by_family.png": "Figure3.png",
-    "binding_profiles.png": "Figure4.png",
-    "panel_size_stability.png": None,      # Supporting Information, Figure S1
-    "failure_modes.png": "Figure5.png",
-    "panel_recovery.png": "Figure6.png",
+    "binding_profiles.png": "Figure2.png",
+    "panel_recovery.png": "Figure3.png",
+    # Supporting Information figures: copied to paper/figures only
+    "cross_dataset_correlations.png": None,
+    "instability_by_family.png": None,
+    "failure_modes.png": None,
+    "panel_size_stability.png": None,
 }
 
 

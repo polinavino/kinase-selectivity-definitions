@@ -1,49 +1,14 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have characterized four kinase inhibitor selectivity definitions on four
-profiling datasets, each curated to one reference target per human protein
-kinase. Their rankings depend on choices usually left implicit: where the
-activity boundary is placed, which off-target the ratio references, how
-compounds with no binding above the activity threshold are scored, how the
-entropy and Gini are operationalized, and which assay targets count as
-kinases. Rank instability is associated with binding profile shape, and among
-the most unstable compounds it has three structurally distinct sources. On a
-common log-affinity scale, the S-score, entropy and Gini agree more with one
-another than with the ratio, most clearly on the two $\mathrm{p}K_d$ datasets.
-Under the association-constant form of the original publication, the entropy
-does not cluster with the S-score and Gini, and how far it departs from them
-depends on how pairs without detected binding are treated.
-
-We stated three properties for a selectivity measure: a reliability threshold,
-distributional consistency across placements of the activity boundary, and
-monotonicity under weak off-target addition. No measure we assess satisfies
-distributional consistency. Moving the activity boundary between the assay
-floor and the activity threshold reverses 8--13\% of compound pairs under the
-S-score, entropy and Gini on three datasets, and over 20\% on the fourth. The
-boundary must therefore be fixed in the analysis protocol and its effect
-reported. The reliability threshold is a reporting rule that any measure can
-adopt. Monotonicity separates the measures: it holds for the ratio and for
-simple measures such as a count of active kinases, but not for the S-score with
-a threshold above the floor, the Gini, or the entropy with a baseline below the
-activity threshold.
-
-The candidate we propose, a gated, smooth-hinge entropy, satisfies the
-reliability threshold and monotonicity, which we prove, and weights binding
-below the activity threshold continuously. On these data it ranks compounds
-almost identically to the entropy and to the share of targets with detected
-binding, which is also monotone, so it is not an empirical improvement on
-either. Recovery from small panels is a separate objective. Measures that
-follow the share of targets with detected binding, the candidate among them,
-recover rankings from fewer targets than the ratio and the published entropy,
-which rest on the strongest targets. On small random panels, recovery is
-limited mainly by the share of compounds that can be scored.
-
-The immediate practical implications are that selectivity assessments should
-state their unit of analysis, fix the activity boundary in advance and report
-how rankings change with it, withhold scores from compounds with no binding
-above the activity threshold, and report how many compounds remain scorable on
-small panels. The longer-term implication is that the field needs a principled
-basis for choosing among selectivity definitions. Establishing properties that
-single out a measure, as Shannon's axioms do for entropy, is a natural next
-step, for which additional datasets may be required.
+Kinase inhibitor selectivity rankings depend on choices usually left implicit:
+how affinities are weighted, which compounds are ranked, how pairs without
+detected binding are treated, which targets the panel includes, and where the
+activity boundary is placed. These choices change whether the common scores
+agree, how much a ranking moves when the activity boundary moves, and how much
+of a ranking a small panel retains. Selectivity analyses should state
+them, apply an activity-eligibility rule, fix the activity boundary in advance
+and report its effect, and report how many compounds remain scorable on small
+panels. The gated entropy shows that a Shannon entropy with continuous weights
+can be made monotone under weak-target addition, but on these data it ranks
+compounds almost as the share of targets with detected binding does.

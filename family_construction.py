@@ -13,7 +13,7 @@ the original candidate) empirically, the same way candidate_validation.py does.
      proved only for alpha = 1 and is checked here with one kinase added at tau*.
 
   2. Quantile-referenced floor: the fixed assay floor replaced by a per-compound
-     low quantile of the profile (SI Section S5). The script also counts the
+     low quantile of the profile (SI Section S4). The script also counts the
      compounds whose quantile equals the fixed floor, since on these data the
      variant then coincides with the featured measure.
 """
@@ -98,7 +98,7 @@ for name, (M, floor, active, T) in datasets.items():
     nact = (M > active).sum(1)
     base_rank = to_ranks(candidate_alpha(M, floor, T, alpha=1.0))
     print(f"\n{name} ({M.shape[0]} cpd x {M.shape[1]} kin):")
-    sub = active   # worst case for D4: an addition exactly at tau*
+    sub = active   # worst case for D3: an addition exactly at tau*
     for alpha in ALPHAS:
         sel = candidate_alpha(M, floor, T, alpha=alpha)
         orient = spearmanr(sel, nact)[0]
@@ -124,7 +124,7 @@ for name, (M, floor, active, T) in datasets.items():
     agree = spearmanr(to_ranks(sel_q), fixed_rank)[0]
     d3_q = worst_pair(lambda q: candidate_quantile(M, q, T), QSWEEP)
     d3_q_rev = rev_frac(lambda q: candidate_quantile(M, q, T), QSWEEP, nact > 0)
-    sub = active   # worst case for D4: an addition exactly at tau*
+    sub = active   # worst case for D3: an addition exactly at tau*
     base_q = sel_q
     new_q = candidate_quantile(np.hstack([M, np.full((M.shape[0], 1), sub)]), q_ref, T)
     d4_q = (new_q <= base_q + 1e-9).mean() * 100

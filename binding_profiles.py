@@ -1,5 +1,5 @@
 """
-Figure 4: representative Davis binding profiles for the three instability types.
+Figure 2: two Davis binding profiles that illustrate where the definitions disagree.
 
 Selects three compounds directly from the rank-instability analysis of the Davis
 dataset (same parameter sweep as selectivity_analysis.py):
@@ -8,8 +8,9 @@ dataset (same parameter sweep as selectivity_analysis.py):
   - most ratio-sensitive = largest rank std within the ratio family, among compounds
     whose two best-bound constructs are different genes (Davis profiles mutant and
     wild-type constructs of the same kinase, e.g. BRAF(V600E) and BRAF),
-and plots each compound's kinase affinities sorted in descending order.
-Produces binding_profiles.png (Figure 4).
+and plots the most ratio-sensitive compound (near-tied top targets) and the most
+unstable compound (a broad profile with one dominant target), each compound's kinase
+affinities sorted in descending order. Produces binding_profiles.png (Figure 2).
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -129,12 +130,11 @@ for label, idx in [("most stable", most_stable), ("most unstable", most_unstable
 print(f"compounds whose two best-bound constructs are the same gene: {int((~distinct).sum())} of {n_drugs}")
 
 panels = [
-    (most_stable,    "Most stable",          'tab:green'),
-    (most_unstable,  "Most unstable",        '#ef5350'),
-    (most_ratio_sen, "Most ratio-sensitive", '#f0ad4e'),
+    (most_ratio_sen, "near-tied top targets", '#2a78d6'),
+    (most_unstable,  "broad, one dominant target", '#eb6834'),
 ]
 
-fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 for ax, (idx, title, color) in zip(axes, panels):
     profile, s, n_active = describe(idx)
     note = f"top1-top2 gap {s[0] - s[1]:.2f}"

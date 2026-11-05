@@ -7,7 +7,7 @@ different underlying quantities:
 
   * Uitdehaag & Zaman (2011) normalise association constants,
     p_i = Ka_i / sum_j Ka_j  with  Ka_i = 1/Kd_i = 10^(pKd_i - 9).
-  * Graczyk (2007) computes the Gini coefficient of percent-inhibition values.
+  * Graczyk (2010) computes the Gini coefficient of percent-inhibition values.
 
 This script recomputes entropy and Gini using forms closer to the originals
 (association-constant weighting) and compares the resulting selectivity
@@ -78,7 +78,7 @@ for col, (name, M) in enumerate(datasets.items()):
         ent_lit = to_ranks(-entropy_literal(M, fw))                           # rank1=selective
         gini_lit = to_ranks(gini(ka(M, fw)))                                  # Gini of Ka
         r[fw] = (spearmanr(ent_lit, ent_man)[0], spearmanr(gini_lit, gini_man)[0])
-        print(f"{name:10s}{'at the floor' if fw else 'no weight':>22s}{r[fw][0]:>28.3f}{r[fw][1]:>32.3f}")
+        print(f"{name:10s}{'at the floor' if fw else 'no weight':>22s}{r[fw][0]:>28.4f}{r[fw][1]:>32.4f}")
         axes[0, col].scatter(ent_lit, ent_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
         axes[1, col].scatter(gini_lit, gini_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
     for row, what in enumerate(("entropy", "Gini")):

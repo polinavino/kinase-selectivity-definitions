@@ -2,10 +2,11 @@
 
 Rebuilds paper/figures/toc_graphic.png from current data. Left panel reuses
 the Davis cross-definition correlation analysis (additional_datasets_analysis.py
-load_davis/analyze) so it matches Table 1 exactly. Right panel reuses the
-Klaeger panel-size stability analysis (panel_size_analysis.py) so it matches
-Figure 5 exactly. Not one of the seven numbered manuscript figures, so it is
-saved directly to paper/figures/ rather than via script_logging's FIGURE_MAP.
+load_davis/analyze) so it matches Table 3 exactly. Right panel repeats the gated
+recovery analysis of Figure 3 (panel_recovery.py: same subpanel sizes, seed and
+D1 gate) on Davis for three measures. Not one of the numbered manuscript
+figures, so it is saved directly to paper/figures/ rather than via
+script_logging's FIGURE_MAP.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -80,47 +81,48 @@ def davis_correlation_matrix():
     return corr
 
 
-# ------------------------ right panel: Klaeger stability --------------------
-def scores_at(M, baseline, threshold, floor):
-    return {
-        'entropy': to_ranks(-selectivity_entropy(M, baseline)),
-        'gini':    to_ranks(gini_selectivity(M, baseline)),
-        's_score': to_ranks(s_score(M, threshold)),
-        'ratio':   to_ranks(ratio_selectivity(M, 1, floor)),
-    }
+# ------------------- right panel: gated recovery on Davis (Figure 6) -------------------
+def neg_entropy(w):
+    tot = w.sum(-1, keepdims=True)
+    p = w / np.where(tot <= 0, 1.0, tot)
+    return np.where(p > 0, p * np.log2(np.where(p > 0, p, 1.0)), 0.0).sum(-1)
 
 
-def panel_curves(M, baseline, threshold, floor, n_repeats=50, seed=42):
-    n_drugs, n_kinases = M.shape
-    ref_ranks = scores_at(M, baseline, threshold, floor)
-    panel_sizes = list(range(50, n_kinases, 30)) + [n_kinases]
+X0, TAU = 5.0, 6.0
+RIGHT = {  # label: (score, colour, marker), colours as in Figure 6
+    "S-score, threshold at the floor": (lambda M: -(M > X0).mean(-1), "#6250d6", "X"),
+    "entropy, published (1/Kd)": (lambda M: neg_entropy(np.where(M > X0, 10.0 ** (M - 9.0), 0.0)), "#e34948", "*"),
+    "ratio R(1)": (lambda M: (lambda s: s[..., 0] - np.maximum(s[..., 1], X0))(-np.sort(-M, -1)), "#008300", "P"),
+}
+SIZES = [10, 20, 30, 40, 50, 65, 80, 100, 125, 150, 200, 250, 300]
+
+
+def recovery_curves(M, n_repeats=50, seed=42):
+    n, N = M.shape
+    elig = (M > TAU).any(1)
+    full = {k: f(M) for k, (f, _, _) in RIGHT.items()}
+    sizes = [m for m in SIZES if m < N] + [N]
     rng = np.random.RandomState(seed)
-    results = {d: {ps: [] for ps in panel_sizes} for d in ref_ranks}
-    for ps in panel_sizes:
-        for _ in range(n_repeats):
-            idx = rng.choice(n_kinases, ps, replace=False)
-            sub = scores_at(M[:, idx], baseline, threshold, floor)
-            for d in results:
-                results[d][ps].append(spearmanr(ref_ranks[d], sub[d])[0])
-    return panel_sizes, results
+    out = {k: [] for k in RIGHT}
+    for m in sizes:
+        acc = {k: [] for k in RIGHT}
+        for _ in range(n_repeats if m < N else 1):
+            Ms = M[:, rng.choice(N, m, replace=False)]
+            both = (Ms > TAU).any(1) & elig
+            for k, (f, _, _) in RIGHT.items():
+                acc[k].append(spearmanr(full[k][both], f(Ms)[both])[0])
+        for k in RIGHT:
+            out[k].append(np.nanmean(acc[k]))
+    return sizes, out
 
-
-def pstar(panel_sizes, results, d):
-    return next((ps for ps in panel_sizes if np.mean(results[d][ps]) > 0.90), None)
-
-
-order = ['entropy', 'gini', 's_score', 'ratio']
-colors = {'entropy': 'darkorange', 'gini': 'green', 's_score': 'steelblue', 'ratio': 'crimson'}
 
 corr = davis_correlation_matrix()
-
-km = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0)
-M = km.values
-n_drugs, n_kinases = M.shape
-panel_sizes, results = panel_curves(M, baseline=5.0, threshold=6.0, floor=5.0)
-print(f"\nKlaeger ({n_drugs} drugs x {n_kinases} kinases) minimum panel size for mean r > 0.90:")
-for d in order:
-    print(f"  {d}: {pstar(panel_sizes, results, d)} kinases")
+aff = pd.read_csv(os.path.join(HERE, "davis_affinity.csv"))
+Md = aff.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(5.0).values
+sizes, curves = recovery_curves(Md)
+print(f"\nDavis gated recovery, smallest panel with mean Spearman > 0.90:")
+for k in RIGHT:
+    print(f"  {k}: {next((m for m, v in zip(sizes, curves[k]) if v > 0.90), None)} targets")
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
@@ -135,15 +137,14 @@ ax.set_title('Cross-definition agreement (Davis dataset)')
 fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
 
 ax = axes[1]
-for d in order:
-    means = [np.mean(results[d][ps]) for ps in panel_sizes]
-    ax.plot(panel_sizes, means, color=colors[d], linewidth=2, label=d)
-ax.axhline(0.90, color='black', linestyle='--', linewidth=1)
-ax.set_xlabel('Panel size (number of kinases)')
-ax.set_ylabel('Spearman r vs full panel ranking')
-ax.set_title('Rank stability vs panel size (Klaeger dataset)')
-ax.legend(fontsize=8)
-ax.set_ylim(-0.2, 1.01)
+for k, (_, col, mk) in RIGHT.items():
+    ax.plot(sizes, curves[k], color=col, marker=mk, ms=5, linewidth=2, label=k)
+ax.axhline(0.90, color='#888888', linestyle='--', linewidth=1)
+ax.set_xlabel('Panel size (number of targets)')
+ax.set_ylabel('Spearman r with full-panel ranking')
+ax.set_title('Recovery from random subpanels (Davis dataset)')
+ax.legend(fontsize=8, loc='lower right', frameon=False)
+ax.set_ylim(0, 1.01)
 
 plt.tight_layout()
 outpath = os.path.join(HERE, "paper", "figures", "toc_graphic.png")

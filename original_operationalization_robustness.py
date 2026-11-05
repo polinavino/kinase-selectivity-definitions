@@ -120,7 +120,7 @@ print_matrix("Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entr
 # censored value, not a measured affinity. Sensitivity: exclude them per compound.
 ent_lit_davis_meas = entropy_literal_sparse([r[r > 5.0] for r in M_davis])
 print(f"Davis floor-coded entries: {100 * (M_davis == 5.0).mean():.2f}%; Ka entropy with vs without them: "
-      f"Spearman {spearmanr(ent_lit_davis, ent_lit_davis_meas)[0]:.3f}")
+      f"Spearman {spearmanr(ent_lit_davis, ent_lit_davis_meas)[0]:.4f}")
 print_matrix("Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
              "(floor-coded entries excluded)", corr_with_literal_entropy(M_davis, ent_lit_davis_meas))
 

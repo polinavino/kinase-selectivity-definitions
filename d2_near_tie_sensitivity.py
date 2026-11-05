@@ -1,7 +1,7 @@
 """
 Reference-choice sensitivity of the ratio: for Klaeger compounds with an active
 kinase whose top1-top2 affinity gap is below 0.05 pKd units, how much does R(k)
-change between k = 1 and k = 2? (Results, Type 2.)
+change between k = 1 and k = 2? (Results, Parameter Sensitivity.)
 """
 import script_logging; script_logging.capture(__file__)
 import os

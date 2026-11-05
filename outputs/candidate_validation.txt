@@ -6,12 +6,12 @@ Anastassiadis    178    291    -0.934           0.0036           0.1424         
          Metz    704    172    -0.783           0.0072           0.2359          0.2280   100.0
 
 Smoothing-width T sweep on Klaeger:
-   T  orient_r  d3_emphasis_rev
-0.50    -0.949           0.0194
-0.75    -0.947           0.0086
-1.00    -0.946           0.0053
-1.50    -0.946           0.0011
-2.00    -0.945           0.0004
+   T  orient_r  d3_emphasis_rev  d4_pct
+0.50    -0.949           0.0194   100.0
+0.75    -0.947           0.0086   100.0
+1.00    -0.946           0.0053   100.0
+1.50    -0.946           0.0011   100.0
+2.00    -0.945           0.0004   100.0
 worst-case cross-T ranking agreement (Spearman) = 0.999
 
 Why the gate is needed (Klaeger):

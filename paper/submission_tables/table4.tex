@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\pagestyle{empty}
+\begin{document}
+\begin{table}[h]
+  \centering
+  \caption{The three criteria for the four definitions, three comparators and
+           the gated entropy. $P_{\max}$ and the published entropy have no
+           boundary parameter and are assessed in the text. $\checkmark$: satisfied. $\times$: violated. D1
+           is assessed from each score's reporting rule, D2 empirically on the
+           four datasets (Methods), and D3 from the functional form. The
+           comparators are reported only for compounds with an active target.}
+  \label{tab:desiderata}
+  \small
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{lcccccccc}
+    \toprule
+    & \multicolumn{2}{c}{S-score} & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Gated \\
+    \cmidrule(lr){2-3}\cmidrule(lr){5-6}
+    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & & & entropy \\
+    \midrule
+    D1 (eligibility)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
+    D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
+    D3 (monotonicity)  & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{document}

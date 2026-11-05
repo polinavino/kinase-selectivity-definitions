@@ -1,11 +1,11 @@
 Orientation check (Klaeger): corr(candidate selectivity, n_active) = -0.946 (must be negative)
 
-D3 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):
+D2 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):
   candidate, vary emphasis baseline (gate pinned at floor): +1.000
   candidate, vary active-set boundary (gate = floor)       : +0.938
   existing entropy, vary baseline                          : +0.927
 
-D4 (add a sub-threshold off-target): selectivity non-increasing for 100% of compounds; max increase = 0.0000
+D3 (add a sub-threshold off-target): selectivity non-increasing for 100% of compounds; max increase = 0.0000
 
 Panel-size convergence p* (Davis, 68 cpd x 363 kin):
   measure     p* (all cpd)  p* (D1-gated)

@@ -67,7 +67,7 @@ def load():
     davis = aff.pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0).values
     return {
         # T = active threshold - floor in every dataset (1, 1, 30, 2): below 0.58 x that
-        # distance the candidate can violate D4 (d4_entropy_vs_candidate.py).
+        # distance the candidate can violate D3 (d4_entropy_vs_candidate.py).
         "Davis":         (davis, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
         "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
         # percent-inhibition assay: detection floor set to the 20% noise level
@@ -97,10 +97,10 @@ def validate():
         d3_bound = rev_frac(lambda b: candidate(M, b, T, baseline=b), bsweep, keep)
         # the entropy's own baseline swept over the same grid, for comparison
         d3_ent = rev_frac(lambda b: entropy_sel(M, b), bsweep, keep)
-        sub = active                                           # worst case for D4: an addition exactly at tau*
+        sub = active                                           # worst case for D3: an addition exactly at tau*
         base = candidate(M, floor, T)
         new = candidate(np.hstack([M, np.full((M.shape[0], 1), sub)]), floor, T)
-        d4 = (new <= base + 1e-9).mean() * 100
+        d4 = (new <= base + 1e-9)[keep].mean() * 100           # over the compounds D1 scores
         rows.append(dict(dataset=name, n_cpd=M.shape[0], n_kin=M.shape[1],
                          orient_r=round(orient, 3), d3_emphasis_rev=round(d3_emph, 4),
                          d3_boundary_rev=round(d3_bound, 4), d3_entropy_rev=round(d3_ent, 4),
@@ -116,7 +116,9 @@ def t_sweep():
         sel = candidate(M, floor, T)
         orient = spearmanr(sel[nact > 0], nact[nact > 0])[0]
         d3 = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, nact > 0)
-        rows.append(dict(T=T, orient_r=round(orient, 3), d3_emphasis_rev=round(d3, 4)))
+        added = candidate(np.hstack([M, np.full((M.shape[0], 1), active)]), floor, T)
+        d4 = (added <= sel + 1e-9)[nact > 0].mean() * 100   # D3: one kinase added at tau*
+        rows.append(dict(T=T, orient_r=round(orient, 3), d3_emphasis_rev=round(d3, 4), d4_pct=round(d4, 1)))
     # cross-T ranking agreement (are rankings stable as T varies?)
     rk = [to_ranks(candidate(M, floor, T)[nact > 0]) for T in [0.5, 0.75, 1.0, 1.5, 2.0]]
     worstT = min(spearmanr(rk[i], rk[j])[0] for i in range(len(rk)) for j in range(i + 1, len(rk)))

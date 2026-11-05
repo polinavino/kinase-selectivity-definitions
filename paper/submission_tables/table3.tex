@@ -5,31 +5,29 @@
 \begin{document}
 \begin{table}[h]
   \centering
-  \caption{Satisfaction of the three motivated properties by the existing
-           selectivity definitions, three comparators, and the candidate
-           measure. $\checkmark$: satisfied. $\times$: violated. D1 is assessed
-           from each measure's reporting rule. The comparators (S-score with
-           $\tau = x_0$, count, entropy with $\beta = \tau^*$) are reported only
-           for compounds with an active target, and any measure can adopt this
-           gate. D2 is assessed empirically, with the parameter that places the
-           activity boundary swept over $B$; a comparator is assessed with the
-           parameter it fixes swept. A measure satisfies D2 only if at most
-           $\varepsilon$ of pairs reverse on every dataset (for the ratio, for
-           every $k$). D3 is assessed from the functional form. With the
-           candidate's gate fixed, its emphasis baseline stays within
-           $\varepsilon$.}
-  \label{tab:desiderata}
-  \small
-  \setlength{\tabcolsep}{3.5pt}
-  \begin{tabular}{lcccccccc}
+  \caption{Spearman correlations between median rankings. S: S-score; E:
+           entropy; G: Gini; R: ratio, with the entropy and Gini in their
+           log-affinity forms. E$_{K_a}$: the published entropy, with
+           floor-coded pairs given no weight and, in parentheses, kept at the
+           floor. In the active columns, compounds are ranked among themselves.
+           Every Davis compound has an active kinase.}
+  \label{tab:correlations}
+  \begin{tabular}{lccc}
     \toprule
-    & \multicolumn{2}{c}{S-score} & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Candidate \\
-    \cmidrule(lr){2-3}\cmidrule(lr){5-6}
-    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & & & \\
+         & Davis & \multicolumn{2}{c}{Klaeger} \\
+    \cmidrule(lr){3-4}
+    Pair & all ($n = 68$) & all ($n = 222$) & active ($n = 200$) \\
     \midrule
-    D1 (reliability)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
-    D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
-    D3 (monotonicity)  & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+    S--E & 0.963 & 0.896 & 0.897 \\
+    S--G & 0.963 & 0.508 & 0.892 \\
+    E--G & 0.999 & 0.658 & 0.997 \\
+    S--R & 0.563 & 0.078 & 0.378 \\
+    E--R & 0.513 & 0.344 & 0.622 \\
+    G--R & 0.510 & 0.655 & 0.635 \\
+    \midrule
+    E$_{K_a}$--S & 0.738 (0.344) & 0.571 ($-0.597$) & 0.564 ($-0.412$) \\
+    E$_{K_a}$--G & 0.736 (0.368) & 0.530 (0.077)    & 0.782 ($-0.094$) \\
+    E$_{K_a}$--R & 0.861 (0.688) & 0.657 (0.648)    & 0.916 (0.591) \\
     \bottomrule
   \end{tabular}
 \end{table}

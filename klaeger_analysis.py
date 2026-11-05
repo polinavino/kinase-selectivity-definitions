@@ -57,12 +57,15 @@ all_ranks  = np.vstack([s_ranks, ent_ranks, gini_ranks, ratio_ranks])
 rank_std   = all_ranks.std(axis=0)
 rank_mean  = all_ranks.mean(axis=0)
 
-instability = {
-    's_score': s_ranks.std(axis=0),
-    'entropy': ent_ranks.std(axis=0),
-    'gini':    gini_ranks.std(axis=0),
-    'ratio':   ratio_ranks.std(axis=0),
-}
+# feature associations (printed below, as Table 2): compounds with an active kinase,
+# ranked among themselves; the overall rank std above ranks all compounds (zero-active compounds, D1)
+_act = (M > 6.0).any(1)
+_MA = M[_act]
+instability = {f: np.full(M.shape[0], np.nan) for f in ('s_score', 'entropy', 'gini', 'ratio')}
+instability['s_score'][_act] = np.array([to_ranks(s_score(_MA, t)) for t in s_thresholds]).std(axis=0)
+instability['entropy'][_act] = np.array([to_ranks(selectivity_entropy(_MA, b)) for b in ent_baselines]).std(axis=0)
+instability['gini'][_act] = np.array([to_ranks(gini_selectivity(_MA, b)) for b in gini_baselines]).std(axis=0)
+instability['ratio'][_act] = np.array([to_ranks(ratio_selectivity(_MA, n)) for n in ratio_top_ns]).std(axis=0)
 
 median_ranks = {
     's_score': np.median(s_ranks, axis=0),
