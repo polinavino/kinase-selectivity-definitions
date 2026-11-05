@@ -5,19 +5,24 @@ measures, which are often used interchangeably. We propose four properties
 that a well-formed selectivity measure should satisfy: a reliability
 threshold, bounded sensitivity to the reference off-target, consistency
 across placements of the activity boundary, and monotonicity when a weakly
-bound kinase is added. None of the four definitions satisfies all of them.
+bound kinase is added. None of the four definitions satisfies all of them, nor
+even the second and fourth together: the ratio fails bounded sensitivity, and
+the others fail monotonicity.
 The properties are motivated by four profiling datasets spanning three assay
-technologies (68--704 compounds each), on which rank instability is
-associated with binding profile shape and has three sources: conflicting
-scores for compounds with no binding above the activity threshold, near-tied
-top targets, and distribution-ratio disagreement for promiscuous compounds.
+technologies. Moving the activity boundary between the assay floor and the
+activity threshold reverses 8--12\% of compound pairs under the S-score,
+entropy and Gini on three of the datasets, and over 20\% on the fourth. Rank
+instability is associated with binding profile shape, and the most unstable
+compounds have no binding above the activity threshold, which the definitions
+score inconsistently, near-tied top targets, or broad profiles, often with one
+dominant target.
 With entropy and Gini on a common log-affinity scale, the S-score, entropy
-and Gini agree more with one another than with the fold-selectivity ratio, a
-grouping that fails for the entropy as originally published. A gated,
-smooth-hinge variant of the entropy satisfies all four properties when its
-activity boundary is fixed at the assay floor, ranks these datasets almost
-identically to the entropy, and recovers its full-panel ranking from about a
-tenth to a quarter of a panel on three of the four datasets.
+and Gini agree more with one another than with the fold-selectivity ratio,
+most clearly on the two $\mathrm{p}K_d$ datasets, but not for the entropy as
+originally published. A gated, smooth-hinge variant of the entropy satisfies
+all four properties, the second vacuously and the third with its activity
+boundary fixed. It ranks these datasets almost identically to the entropy but,
+unlike it, provably satisfies monotonicity.
 \end{abstract}
 
 \noindent\textbf{Keywords:} binding selectivity,

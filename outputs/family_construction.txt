@@ -19,11 +19,13 @@ Quantile-referenced floor (per-compound, replaces the fixed assay floor)
 ======================================================================
 
 Davis (68 cpd x 433 kin):
+  compounds whose q-th quantile equals the fixed floor (of 68): q=0.05: 68, q=0.075: 68, q=0.1: 66, q=0.125: 66, q=0.15: 66
   q=0.1: orient_r=-0.969  Spearman vs fixed-floor candidate = 1.000
   D3 over q in [0.05, 0.075, 0.1, 0.125, 0.15]: pairs reversing = 0.00%, worst-case rank Spearman = +1.000
   D4 (add a sub-threshold off-target): non-increasing for 100.0% of compounds; max increase = 0.0000
 
 Klaeger (222 cpd x 343 kin):
+  compounds whose q-th quantile equals the fixed floor (of 222): q=0.05: 222, q=0.075: 222, q=0.1: 222, q=0.125: 222, q=0.15: 222
   q=0.1: orient_r=-0.936  Spearman vs fixed-floor candidate = 1.000
   D3 over q in [0.05, 0.075, 0.1, 0.125, 0.15]: pairs reversing = 0.00%, worst-case rank Spearman = +1.000
   D4 (add a sub-threshold off-target): non-increasing for 100.0% of compounds; max increase = 0.0000

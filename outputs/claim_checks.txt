@@ -203,3 +203,11 @@
     24 tests per dataset (two-tailed Spearman p from r and n)
    klaeger  (n=206, cutoff p < 0.0021): 8 of 13 nominally significant survive: n_active/s_score (p=7e-05), n_active/entropy (p=2e-08), top1_top2_gap/ratio (p=5e-07), active_std/s_score (p=4e-05), active_range/s_score (p=2e-07), active_range/entropy (p=8e-05), top2_pkd/s_score (p=4e-06), active_skew/gini (p=3e-07)
    davis    (n=68, cutoff p < 0.0021): 1 of 5 nominally significant survive: top1_top2_gap/ratio (p=0.0001)
+
+22. The candidate's dependence on the activity threshold tau*, which sets its D1 gate and
+    T = tau* - x0: compounds scored, and Spearman with the default ranking on compounds
+    scored at both values
+   Davis         (default tau*=6: 68 of 68 scored): tau*=5.5: 68 scored, r=0.9996; tau*=6.5: 68 scored, r=0.9997; tau*=7: 66 scored, r=0.9992
+   Klaeger       (default tau*=6: 206 of 222 scored): tau*=5.5: 219 scored, r=0.9996; tau*=6.5: 196 scored, r=0.9999; tau*=7: 163 scored, r=0.9998
+   Anastassiadis (default tau*=50: 134 of 178 scored): tau*=40: 141 scored, r=0.9998; tau*=60: 126 scored, r=0.9999; tau*=70: 116 scored, r=0.9999
+   Metz          (default tau*=6: 699 of 704 scored): tau*=5.5: 704 scored, r=0.9999; tau*=6.5: 690 scored, r=0.9999; tau*=7: 680 scored, r=0.9999

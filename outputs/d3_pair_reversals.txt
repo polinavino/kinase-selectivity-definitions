@@ -6,6 +6,11 @@ Davis: B = [5, 6] (5 values), 68 scored compounds
   Gini (beta)                 rev =   9.09%   rho = 0.950   fail
   candidate (emphasis beta)   rev =   0.48%   rho = 0.999   PASS
   candidate (gate x0)         rev =   8.52%   rho = 0.966   fail
+  ratio (floor fallback, k=1) rev =   0.00%   rho = 1.000   PASS
+  ratio (floor fallback, k=2) rev =   0.35%   rho = 0.999   PASS
+  ratio (floor fallback, k=3) rev =   0.40%   rho = 0.999   PASS
+  ratio (floor fallback, k=4) rev =   0.75%   rho = 0.997   PASS
+  ratio (floor fallback, k=5) rev =   1.05%   rho = 0.995   fail
 
 Klaeger: B = [5, 6] (5 values), 206 scored compounds
   S-score (tau)               rev =   8.31%   rho = 0.950   fail
@@ -13,6 +18,11 @@ Klaeger: B = [5, 6] (5 values), 206 scored compounds
   Gini (beta)                 rev =  11.54%   rho = 0.928   fail
   candidate (emphasis beta)   rev =   0.54%   rho = 1.000   PASS
   candidate (gate x0)         rev =  10.57%   rho = 0.949   fail
+  ratio (floor fallback, k=1) rev =   3.75%   rho = 0.953   fail
+  ratio (floor fallback, k=2) rev =   6.70%   rho = 0.921   fail
+  ratio (floor fallback, k=3) rev =   9.33%   rho = 0.911   fail
+  ratio (floor fallback, k=4) rev =  10.96%   rho = 0.900   fail
+  ratio (floor fallback, k=5) rev =  12.33%   rho = 0.888   fail
 
 Anastassiadis: B = [20, 50] (7 values), 134 scored compounds
   S-score (tau)               rev =  10.72%   rho = 0.940   fail
@@ -20,6 +30,11 @@ Anastassiadis: B = [20, 50] (7 values), 134 scored compounds
   Gini (beta)                 rev =  10.17%   rho = 0.946   fail
   candidate (emphasis beta)   rev =   0.43%   rho = 1.000   PASS
   candidate (gate x0)         rev =  12.49%   rho = 0.935   fail
+  ratio (floor fallback, k=1) rev =   2.11%   rho = 0.983   fail
+  ratio (floor fallback, k=2) rev =   3.79%   rho = 0.963   fail
+  ratio (floor fallback, k=3) rev =   5.73%   rho = 0.937   fail
+  ratio (floor fallback, k=4) rev =   7.57%   rho = 0.921   fail
+  ratio (floor fallback, k=5) rev =   9.24%   rho = 0.909   fail
 
 Metz: B = [4, 6] (9 values), 699 scored compounds
   S-score (tau)               rev =  20.64%   rho = 0.784   fail
@@ -27,5 +42,17 @@ Metz: B = [4, 6] (9 values), 699 scored compounds
   Gini (beta)                 rev =  22.41%   rho = 0.763   fail
   candidate (emphasis beta)   rev =   0.72%   rho = 1.000   PASS
   candidate (gate x0)         rev =  22.45%   rho = 0.784   fail
+  ratio (floor fallback, k=1) rev =   0.04%   rho = 1.000   PASS
+  ratio (floor fallback, k=2) rev =   0.43%   rho = 0.995   PASS
+  ratio (floor fallback, k=3) rev =   0.75%   rho = 0.990   PASS
+  ratio (floor fallback, k=4) rev =   0.84%   rho = 0.988   PASS
+  ratio (floor fallback, k=5) rev =   1.03%   rho = 0.986   fail
 
-Largest passing fraction: 0.72%; smallest failing fraction: 7.95%. Every verdict is the same for any eps in between.
+Largest fraction over the four datasets (and over k for the ratio), per swept parameter:
+  S-score (tau)                20.64%
+  entropy (beta)               22.60%
+  Gini (beta)                  22.41%
+  candidate (emphasis beta)     0.72%
+  candidate (gate x0)          22.45%
+  ratio (floor fallback)       12.33%
+Only the candidate's emphasis baseline stays within eps on every dataset (0.72%); every other swept parameter exceeds 12.33% on at least one dataset, so each Table 3 D3 verdict is the same for any eps in between.

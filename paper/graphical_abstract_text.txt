@@ -4,9 +4,9 @@ Characterization and Motivated Properties for a Well-Formed Measure
 Polina Vinogradova*
 
 We propose four properties a well-formed kinase inhibitor selectivity measure
-should satisfy, motivated by three sources of rank instability on four
-profiling datasets; none of the S-score, entropy, Gini coefficient or fold-
-selectivity ratio satisfies all of them. With entropy and Gini on a common
-log-affinity scale, the first three agree more with one another than with the
-ratio. A gated variant of the entropy satisfies all four when its activity
-boundary is fixed at the assay floor.
+should satisfy, motivated by rank instability on four profiling datasets; none
+of the S-score, entropy, Gini coefficient or fold-selectivity ratio satisfies
+all of them. With entropy and Gini on a common log-affinity scale, the first
+three agree more with one another than with the ratio. A gated, smooth-hinge
+entropy satisfies all four (one vacuously) and ranks these datasets almost
+identically to the entropy.

@@ -41,6 +41,8 @@ Each section prints the numbers cited in the text for one claim:
      instability with the undefined entropy/Gini configurations dropped (Results, D1)
  21. Table 2 with a Bonferroni correction for the 24 tests per dataset (Results,
      instability predictors)
+ 22. The candidate's sensitivity to the activity threshold tau*, which sets its D1
+     gate and smoothing width (Results, candidate measure)
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -488,3 +490,16 @@ for ds, n in (('klaeger', 206), ('davis', 68)):
     cut = 0.05 / r.size
     keep = [f"{tab.index[i]}/{tab.columns[j]} (p={pv[i, j]:.1g})" for i, j in zip(*np.where(pv < cut))]
     print(f"   {ds:8s} (n={n}, cutoff p < {cut:.4f}): {len(keep)} of {int((pv < 0.05).sum())} nominally significant survive: {', '.join(keep)}")
+
+print("\n22. The candidate's dependence on the activity threshold tau*, which sets its D1 gate and"
+      "\n    T = tau* - x0: compounds scored, and Spearman with the default ranking on compounds"
+      "\n    scored at both values")
+for ds, M, x0, tau, _ in D4SETS:
+    grid = (40.0, 60.0, 70.0) if ds == 'Anastassiadis' else (5.5, 6.5, 7.0)
+    ref, ref_ok = cand_score(M, x0, tau - x0), (M > tau).any(1)
+    parts = []
+    for t in grid:
+        c, ok = cand_score(M, x0, t - x0), (M > t).any(1)
+        both = ok & ref_ok
+        parts.append(f"tau*={t:g}: {ok.sum()} scored, r={spearmanr(c[both], ref[both])[0]:.4f}")
+    print(f"   {ds:13s} (default tau*={tau:g}: {ref_ok.sum()} of {len(M)} scored): " + "; ".join(parts))

@@ -134,6 +134,9 @@ for name, (M, floor, active, T) in datasets.items():
     new_q = candidate_quantile(np.hstack([M, np.full((M.shape[0], 1), sub)]), q_ref, T)
     d4_q = (new_q <= base_q + 1e-9).mean() * 100
     max_increase = max(0.0, (new_q - base_q).max())
+    at_floor = {q: int(np.isclose(np.quantile(M, q, axis=1), floor).sum()) for q in QSWEEP}
+    print(f"  compounds whose q-th quantile equals the fixed floor (of {M.shape[0]}): "
+          + ", ".join(f"q={q}: {n}" for q, n in at_floor.items()))
     print(f"  q={q_ref}: orient_r={orient_q:+.3f}  "
           f"Spearman vs fixed-floor candidate = {agree:.3f}")
     print(f"  D3 over q in {QSWEEP}: pairs reversing = {100 * d3_q_rev:.2f}%, worst-case rank Spearman = {d3_q:+.3f}")

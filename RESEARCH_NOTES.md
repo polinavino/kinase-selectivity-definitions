@@ -13,8 +13,7 @@ ratio) are used interchangeably. The paper:
 1. Characterizes where and why they disagree, on four datasets
 2. Identifies three sources of rank instability
 3. Motivates four properties (D1-D4) for a well-formed measure
-4. Shows with a candidate measure that D1-D4 can be met together (D3 with
-   the floor fixed)
+4. Shows with a candidate measure that D1-D4 can be met together
 
 ## Key findings
 - Two families, with entropy and Gini on a common baseline-subtracted
@@ -31,11 +30,19 @@ ratio) are used interchangeably. The paper:
 - Replicated relations: ratio-gap on all four datasets (Anastassiadis only
   after excluding 8 ceiling-saturated compounds); entropy-n_active on all four
   (r = -0.28 to -0.42; Davis p = 0.02, not significant after Bonferroni).
-- Properties: no existing definition satisfies all four; D1 is the one all four
-  violate. Candidate (gated, smooth-hinge effective-target number) satisfies
-  all four, D3 only with its activity boundary fixed at the assay floor; D4 is
-  proved for beta = x0 and T >= 0.58 (tau* - x0), and for every beta in B
-  when T = tau* - x0.
+- Properties: no existing definition satisfies all four, nor even D2 and D4
+  together: the ratio fails D2, the S-score, entropy and Gini fail D4. D3 holds
+  for every measure only with its parameter fixed (the ratio's floor fallback
+  swept over B reverses 2-12% of pairs on Klaeger and Anastassiadis).
+  Candidate (gated, smooth-hinge effective-target number) satisfies all four
+  (D2 vacuously, D3 with its gate fixed at x0); D4 (additions in (x0, tau*])
+  is proved for beta = x0 and T >= 0.58 (tau* - x0), and for every beta in B
+  when T = tau* - x0. Varying tau* from 5.5 to 7 leaves its ranking of
+  commonly scored compounds at Spearman >= 0.999.
+- Klaeger panel: 120 of 343 targets are not protein kinases (cyclins and
+  other complex subunits, etc.); on the 223 protein kinases, 21 compounds are
+  zero-active (from 16), and results for active compounds are essentially
+  unchanged (klaeger_protein_kinases.py).
 - Candidate and entropy rank these datasets almost identically
   (Spearman 0.994-0.999); panel-size p* = 50 (Davis, Anastassiadis), 80
   (Klaeger, Metz) for both.

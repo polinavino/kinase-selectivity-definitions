@@ -11,8 +11,9 @@ from D1.
 Parameters swept over B: the S-score's threshold tau, the entropy's and Gini's
 baseline beta, and, for the candidate, either its emphasis baseline beta (gate
 fixed at x0, the featured measure) or its gate x0 itself (beta pinned to x0, the
-like-for-like comparison with the entropy's baseline). The ratio has no such
-parameter and is not swept.
+like-for-like comparison with the entropy's baseline). The ratio's only
+affinity-scale value is the floor it substitutes for a missing off-target; it is
+swept over B for each off-target index k.
 
 The worst-case pairwise Spearman correlation between the rankings at any two
 values in B is printed alongside, for comparison with earlier versions.
@@ -49,6 +50,11 @@ def gini(M, b):
     return np.where(t == 0, 0.0, g)
 
 
+def ratio(M, k, floor):
+    s = -np.sort(-M, 1)
+    return s[:, 0] - np.maximum(s[:, k], floor)
+
+
 def candidate(M, x0, T, b):
     return neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - b) / T), 0.0))
 
@@ -75,7 +81,7 @@ DATA = {  # matrix, floor x0, reliability threshold tau*, grid step
 
 print(f"D3 over B = [x0, tau*]: fraction of pairs reversing (rev) and worst-case pairwise Spearman (rho); "
       f"pass if rev <= {EPS:.0%}")
-passing, failing = [], []
+largest = {}   # largest reversal fraction per swept parameter, over datasets (and k for the ratio)
 for name, (M, x0, tau, step) in DATA.items():
     B = np.arange(x0, tau + step / 2, step)
     keep = (M > tau).any(1)
@@ -87,11 +93,18 @@ for name, (M, x0, tau, step) in DATA.items():
         "candidate (emphasis beta)": [candidate(M, x0, T, b) for b in B],
         "candidate (gate x0)":      [candidate(M, b, T, b) for b in B],
     }
+    rows.update({f"ratio (floor fallback, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
     print(f"\n{name}: B = [{x0:g}, {tau:g}] ({len(B)} values), {keep.sum()} scored compounds")
     for label, r in rows.items():
         frac, worst = reversals(r, keep)
-        (passing if frac <= EPS else failing).append(frac)
+        key = label.split(", k=")[0] + (")" if ", k=" in label else "")
+        largest[key] = max(largest.get(key, 0.0), frac)
         print(f"  {label:27s} rev = {100 * frac:6.2f}%   rho = {worst:.3f}   {'PASS' if frac <= EPS else 'fail'}")
 
-print(f"\nLargest passing fraction: {100 * max(passing):.2f}%; smallest failing fraction: "
-      f"{100 * min(failing):.2f}%. Every verdict is the same for any eps in between.")
+print("\nLargest fraction over the four datasets (and over k for the ratio), per swept parameter:")
+for key, v in largest.items():
+    print(f"  {key:27s} {100 * v:6.2f}%")
+swept = [v for k, v in largest.items() if k != "candidate (emphasis beta)"]
+print(f"Only the candidate's emphasis baseline stays within eps on every dataset "
+      f"({100 * largest['candidate (emphasis beta)']:.2f}%); every other swept parameter exceeds "
+      f"{100 * min(swept):.2f}% on at least one dataset, so each Table 3 D3 verdict is the same for any eps in between.")

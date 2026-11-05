@@ -18,8 +18,7 @@ distribution.
 Klaeger et al.\cite{Klaeger2017} introduced the concentration- and
 target-dependent selectivity (CATDS) score, which quantifies the reduction in
 binding to a given target relative to the summed reduction across all detected
-targets at a specified inhibitor concentration (see Discussion for why we
-did not implement it as a fifth measure).
+targets at a specified inhibitor concentration.
 
 Bosc et al.\cite{Bosc2017} subsequently proposed two further metrics, the
 window score and ranking score, and compared them against four previously
@@ -30,11 +29,9 @@ certain compounds cannot be scored under some definitions when threshold
 conditions are not satisfied. For example, ratio-based scores are undefined
 for a compound with no kinase above the activity threshold, since there is then
 no primary target or off-target to compare.
-Our implementation of $R(k)$ does not follow this convention (Methods,
-``Ratio'').
 
 To our knowledge, attempts to reconcile the definitions have been limited.
-Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
+Miljkovic and Bajorath\cite{Bajorath2018} compared CATDS-based selectivity
 assessments from Klaeger et al.\ with activity data mined from ChEMBL for the
 same compounds, finding broad consistency between the two sources.
 The KInhibition platform\cite{KInhibition2018} addressed conflicting results across metrics by introducing its own composite score (combining on-target

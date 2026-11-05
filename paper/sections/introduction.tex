@@ -2,8 +2,8 @@
 \label{sec:intro}
 
 Kinase inhibitors are among the most intensely investigated compound classes
-in drug discovery, with 80 FDA-approved agents and several hundred in
-clinical development.\cite{Roskoski2024}
+in drug discovery, with 94 FDA-approved agents and several hundred in
+clinical development.\cite{Roskoski2026}
 Because the human kinome is comprised of more than 500 proteins sharing a
 highly conserved ATP-binding site,\cite{Manning2002} the design of inhibitors
 with controlled target profiles remains a central challenge.
@@ -17,7 +17,7 @@ the S-score,\cite{Karaman2008} selectivity entropy,\cite{Uitdehaag2011}
 Gini coefficient,\cite{Graczyk2010} and ratio-based measures, which compare the
 primary target with an off-target.
 These definitions are often used interchangeably, and their parameter values
-(the activity threshold in the S-score, the baseline in the entropy and Gini
+(the threshold in the S-score, the baseline in the entropy and Gini
 coefficient, the reference off-target in ratio-based measures) are usually set
 by convention.
 Standardizing them would remove one source of disagreement between
@@ -44,27 +44,30 @@ contributions are as follows:
 \begin{itemize}
     \item[(i)] we show that, with entropy and Gini on a common log-affinity
 scale, the S-score, entropy and Gini (the distribution-based family) agree more
-with each other on all four datasets (Spearman $0.72$--$1.00$) than with the
-fold-selectivity ratio $R(k)$ ($0.14$--$0.62$). With the entropy in its
+with each other than with the fold-selectivity ratio $R(k)$, clearly on the two
+$\mathrm{p}K_d$ datasets among compounds with an active kinase and with
+qualifications on the other two. With the entropy in its
 original association-constant form, this grouping fails on all three affinity
-datasets (Methods);
+datasets (Methods). $R(k)$ is also the slowest to recover its full-panel
+ranking from random subpanels, on every dataset;
 
-    \item[(ii)] we identify three sources of rank instability: no binding above
-the activity threshold, near-tied top targets, and broad moderate off-target
-activity, often with one dominant target;
+    \item[(ii)] we identify three sources of instability among the most
+unstable compounds: no binding above the activity threshold, which the
+definitions score inconsistently, near-tied top targets, and broad profiles,
+often with one dominant target;
 
     \item[(iii)] we motivate four properties, (D1) a reliability threshold, (D2)
 bounded gap sensitivity, (D3) distributional consistency and (D4) monotonicity
 under weak off-target addition, and find that none of the four definitions
-assessed satisfies all of them. D1, a reporting convention that any of them
-could adopt, is the only one they all violate;
+assessed satisfies all of them, nor even D2 and D4 together: the ratio fails
+D2, and the other three fail D4. All four satisfy D3 only with a parameter
+fixed: moving the S-score's threshold or the entropy's or Gini's baseline
+reverses 8--12\% of compound pairs on three datasets;
 
     \item[(iv)] we propose a candidate measure, a gated, smooth-hinge
 effective-target number, which shows that the four properties can be met
-together (D3 only with its activity boundary fixed at the assay floor). It
-ranks these datasets almost identically to the entropy but, unlike it, provably
-cannot be made to look more selective by adding a weakly bound kinase. It
-recovers its full-panel ranking from about a tenth to a quarter of the panel on
-three of the four datasets.
+together (D2 vacuously, D3 with its activity boundary fixed). It ranks these datasets almost identically to the entropy but,
+unlike it, provably cannot be made to look more selective by adding a weakly
+bound kinase.
 \end{itemize}
 

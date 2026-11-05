@@ -4,7 +4,7 @@ references, per Molecular Informatics style; figures upload as separate files).
 Figure 1. Entropy (top) and Gini coefficient (bottom) rankings on Davis and
 Klaeger under two operationalizations: a form close to the original publication
 (association-constant weighting, x-axis) and the baseline-subtracted
-log-affinity form used in the main text (y-axis). Spearman r above each panel.
+log-affinity form used throughout (y-axis). Spearman r above each panel.
 
 Figure 2. Spearman correlations between the median rankings of the four
 selectivity definitions on each dataset (compounds x kinases above each panel).
@@ -33,7 +33,7 @@ Figure 6. Rank instability on Klaeger. Left (D1): rank standard deviation across
 the existing definitions' parameter sweeps, for compounds with no binding above
 the activity threshold and for compounds with at least one active kinase. Right
 (D3): per-compound rank standard deviation against the number of active kinases,
-with one parameter swept over B = [5.0, 6.0]: the entropy's activity baseline
+with one parameter swept over B = [5.0, 6.0]: the entropy's baseline beta
 (orange), the candidate's gate x0 with its emphasis baseline pinned to x0
 (green), and the candidate's emphasis baseline with x0 fixed at the assay floor
 (red).
@@ -42,4 +42,4 @@ Figure 7. Panel-size convergence of the candidate measure compared with the four
 existing definitions, on all four datasets (50 random subpanels per size).
 Curves show the mean Spearman correlation between the ranking computed on a
 random subpanel and the full-panel ranking; p* (legend) is the smallest panel
-reaching mean rho > 0.90.
+reaching mean r > 0.90.

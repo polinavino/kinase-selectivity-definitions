@@ -56,8 +56,8 @@ ratio but **promiscuous** by entropy — neither answer is wrong; they answer
 different questions.
 
 We confirmed this across **four datasets spanning three assay technologies**
-(competition binding, chemoproteomics, and functional-activity assays), so it is
-not an artifact of one dataset or one assay. We also found that the disagreements
+(competition binding, chemoproteomics, and functional-activity assays), most
+clearly on the two pK_d datasets. We also found that the disagreements
 are associated with the shape of a drug's binding profile, and that ratio-based
 scores become unreliable on the small (50–100 kinase) panels used in practice,
 while entropy-based scores recover the full-panel ranking from 50–80 kinases.
@@ -73,15 +73,17 @@ Four **motivated properties** that any good selectivity formula should satisfy:
    swings in the score.
 3. The ranking should not depend much on where, between the assay floor and the
    activity threshold, an analyst places the activity cutoff.
-4. Adding a weak (below-threshold) binding interaction should not make a drug
-   look *more* selective.
+4. Adding a kinase the drug binds weakly (above the assay floor but below the
+   activity threshold) should not make it look *more* selective.
 
-No existing formula satisfies all four at once. We then propose a **candidate
-measure** that does once its activity cutoff is fixed at the assay floor: the
-selectivity entropy with three changes — a reliability
-gate (property 1), an activity cutoff fixed at the assay floor (property 3), and
-a smooth rather than hard weighting above that floor (property 4, which we
-prove). It recovers its full-panel ranking from 50–80 kinases, as the entropy
+No existing formula satisfies all four at once, nor even properties 2 and 4
+together: the ratio fails property 2 and the other three fail property 4
+(properties 1 and 3 can be met by withholding scores below the activity
+threshold and fixing the activity cutoff). We then propose a **candidate measure** that satisfies all four: the
+selectivity entropy with a reliability gate (property 1) and a smooth rather
+than hard weighting above the assay floor (property 4, which we prove). Like
+the entropy, it meets property 3 only with its activity cutoff fixed at the
+floor. It recovers its full-panel ranking from 50–80 kinases, as the entropy
 does, and ranks these datasets almost identically to the entropy: its role is to
 show that the four properties can be met together.
 
@@ -91,8 +93,7 @@ This is a first step. In the 1940s Claude Shannon didn't just propose a formula
 for measuring information — he showed it was the *only* one satisfying a few
 reasonable requirements. The long-term goal is the analogous result for
 selectivity. This paper characterizes the mess, states the properties a solution
-should have, and offers a candidate that meets them (D3 once its floor is
-fixed); proving whether it is the
+should have, and offers a candidate that meets them; proving whether it is the
 *unique* such measure is left for future work.
 
 ---
@@ -179,7 +180,8 @@ from these files and cited in the Discussion/Limitations sections.
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical analysis, Limitations) |
 | bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion, SI Table S2) |
 | clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations, using the frozen FAERS counts and the current Klaeger median ranks (Discussion, Limitations) |
-| klaeger_filter_sensitivity.py | Klaeger high-confidence filter: entries removed, and sensitivity of Table 1 / panel-size p* to relaxing it (Methods) |
+| klaeger_filter_sensitivity.py | Klaeger high-confidence filter: entries removed, and sensitivity of Table 1 / panel-size p* to relaxing it (Methods, SI Section S6) |
+| klaeger_protein_kinases.py | Klaeger panel composition (120 of 343 targets are not protein kinases) and the main Klaeger results recomputed on the 223 protein kinases (Methods, SI Table S6) |
 | metz_coverage.py | Per-compound kinase-coverage distribution among the 704 retained Metz compounds (Methods) |
 | dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis stricter-cutoff (pKd>7) robustness check |
 | d2_near_tie_sensitivity.py | Verifies the D2 near-tie example: Klaeger compounds with top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Results, D2) |
@@ -193,9 +195,9 @@ from these files and cited in the Discussion/Limitations sections.
 | failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability, all over B = [5.0, 6.0]) |
 | d4_entropy_vs_candidate.py | D4 for the entropy vs. the candidate: the condition on T and its sharpness, the entropy counterexample, real-data frequency, and the effect of setting T = tau* - x0 (Methods proposition; Results, "Why the Smooth Hinge Matters") |
 | feature_placeholder_sensitivity.py | Table 2 predictors recomputed without the 0 placeholder for undefined skewness/std/range (Results) |
-| claim_checks.py | Numbers for specific claims: Type 1 target capture, Klaeger correlations without zero-active compounds and bootstrap, mean vs. median ranks, the Anastassiadis ceiling, Type 3 and stability patterns, Davis/Klaeger and Klaeger/Anastassiadis overlap, the Metz coverage dependence, the zero-active contrast per definition on every dataset, the Gini panel size with undefined compounds excluded on every dataset, active affinity range vs. instability with the number of active kinases held fixed, the weight near the threshold behind the skewness–Gini association, range vs. S-score instability on the 46 shared Davis/Klaeger compounds, where each definition ranks the most stable compounds on Davis and Klaeger, D4 under realistic panel expansion, where each definition ranks zero-active compounds, and Table 2 with a Bonferroni correction (SI Table S6 maps every result to its script and section) |
+| claim_checks.py | Numbers for specific claims: Type 1 target capture, Klaeger correlations without zero-active compounds and bootstrap, mean vs. median ranks, the Anastassiadis ceiling, Type 3 and stability patterns, Davis/Klaeger and Klaeger/Anastassiadis overlap, the Metz coverage dependence, the zero-active contrast per definition on every dataset, the Gini panel size with undefined compounds excluded on every dataset, active affinity range vs. instability with the number of active kinases held fixed, the weight near the threshold behind the skewness–Gini association, range vs. S-score instability on the 46 shared Davis/Klaeger compounds, where each definition ranks the most stable compounds on Davis and Klaeger, D4 under realistic panel expansion, where each definition ranks zero-active compounds, Table 2 with a Bonferroni correction, and the candidate's sensitivity to the activity threshold (SI Table S7 maps every result to its script and section) |
 | instability_predictor_candidates.py | Five further candidate predictors of rank instability (CR1, HHI, top1 pKd, near-tie count, active-affinity CV) against Table 2's features (Results) |
-| family_construction.py | Variants of the candidate: quantile floor, Rényi order; D1–D4 checks on Davis and Klaeger (SI Section S5, Table S5) |
+| family_construction.py | Variants of the candidate: quantile floor (which coincides with the featured measure on these data), Rényi order; D1–D4 checks on Davis and Klaeger (SI Section S5, Table S5) |
 | family_panelsize.py | Panel-size p* of the candidate by Rényi order on Klaeger and Metz (SI Section S5, Table S5) |
 | family_alternatives.py | Two further candidate variants kept as negative results (soft gate, rank-based weights); not reported in the paper |
 | script_logging.py | Shared helper imported by every script: mirrors printed output to `outputs/<script>.txt` and copies regenerated manuscript figures into `paper/figures/` and `paper/submission_figures/` |

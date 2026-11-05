@@ -22,16 +22,18 @@
 \maketitle
 
 This document reports, in full, four robustness checks summarized in the main
-text, and the variants of the candidate measure (Section~S5). All numbers are reproducible from the code repository
+text, the variants of the candidate measure (Section~S5), and further analyses
+summarized in one sentence in the main text (Section~S6). All numbers are
+reproducible from the code repository
 (\url{https://github.com/polinavino/kinase-selectivity-definitions}); the
-script generating each table is named in its caption, and Table~S6 lists the
+script generating each table is named in its caption, and Table~S7 lists the
 script behind every result reported in the main text.
 
 \section*{Table S1: Panel-size recoverability under alternative correlation
 bars}
 
 The main text calls a panel size ``recovering'' the full-panel ranking once
-mean Spearman $\rho$ against the full panel exceeds $0.90$, a bar
+mean Spearman $r$ against the full panel exceeds $0.90$, a bar
 borrowed from the ``excellent'' range of intraclass-correlation guidelines (Results). Table~S1 reports $p^*$ (the
 smallest panel size reaching the bar) at four bars, including the main-text bar
 of $0.90$, for all four
@@ -55,7 +57,7 @@ bar = 0.95 & 50 & 170 & 80 & 410 \\
 \vspace{1em}
 \begin{tabular}{lcccc}
 \toprule
-Klaeger (343 kinases) & entropy & gini & s\_score & ratio \\
+Klaeger (343 targets) & entropy & gini & s\_score & ratio \\
 \midrule
 bar = 0.80 & 50 & 260 & 50 & 320 \\
 bar = 0.85 & 50 & 260 & 80 & 320 \\
@@ -214,7 +216,7 @@ with the gate $x_0$ fixed (the featured measure), for the gate $x_0$ itself swep
 as a free parameter (the like-for-like comparison with the entropy's baseline,
 Figure~6 of the main text), and for the entropy's own baseline. D4 is the
 percentage of compounds for which the score does not rise when one kinase is
-added at the reliability threshold $\tau^*$, the strongest binding D4 allows
+added at the activity threshold $\tau^*$, the strongest binding D4 allows
 and so the addition most likely to raise the score. $B$ is
 $[5.0, 6.0]$ on Davis and Klaeger, $[4.0, 6.0]$ on Metz, and $[20, 50]\%$
 inhibition on Anastassiadis, and the smoothing width is $T = \tau^* - x_0$ on
@@ -224,30 +226,31 @@ every dataset (Methods). D3 passes at $\varepsilon = 1\%$.
 \begin{table}[h]
 \centering
 \caption{Candidate measure: orientation, D3 (pairs reversing in $B$, \%), and
-D4, across all four datasets. Orientation and D3 are computed over the
-compounds that D1 allows to be scored (68, 206, 134, and 699).}
+D4, across all four datasets, over the $n$ compounds that D1 allows to be
+scored.}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lcccccc}
 \toprule
-Dataset & $n_\mathrm{cpd}$ & orientation $r$ & D3, gate fixed & D3, gate swept
+Dataset & $n$ & orientation $r$ & D3, gate fixed & D3, gate swept
 & D3, entropy & D4 (\%) \\
 \midrule
 Davis         & 68  & $-0.969$ & $0.48$ & $8.52$  & $8.82$  & 100.0 \\
-Klaeger       & 222 & $-0.951$ & $0.54$ & $10.57$ & $11.20$ & 100.0 \\
-Anastassiadis & 178 & $-0.936$ & $0.43$ & $12.49$ & $10.27$ & 100.0 \\
-Metz          & 704 & $-0.783$ & $0.72$ & $22.45$ & $22.60$ & 100.0 \\
+Klaeger       & 206 & $-0.951$ & $0.54$ & $10.57$ & $11.20$ & 100.0 \\
+Anastassiadis & 134 & $-0.936$ & $0.43$ & $12.49$ & $10.27$ & 100.0 \\
+Metz          & 699 & $-0.783$ & $0.72$ & $22.45$ & $22.60$ & 100.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The ``gate swept'' and ``entropy'' columns confirm, on every dataset, that the
-candidate's D3 satisfaction rests on fixing the gate $x_0$ by declaration.
+candidate's D3 satisfaction, like the entropy's, rests on fixing its activity
+boundary at $x_0$.
 Swept over the same interval, the candidate's gate reverses about as many pairs
 as the entropy's baseline does, and the emphasis parameter, with the gate fixed,
 reverses fewer than one pair in a hundred.
 Removing the gate inverts the measure's orientation entirely (gated $r =
--0.951$ vs.\ ungated $r = +0.930$ against $n_\mathrm{active}$ on Klaeger),
+-0.951$ vs.\ ungated $r = +0.93$ against $n_\mathrm{active}$ on Klaeger),
 which is why the gate is required for correct orientation.
 
 \clearpage
@@ -262,11 +265,11 @@ $\tau^*$ to every compound. (\texttt{family\_construction.py},
 \texttt{family\_panelsize.py}, \texttt{candidate\_validation.py})
 
 \paragraph{Quantile floor.} Replacing the fixed floor $x_0$ with a per-compound
-low quantile of the profile (the 10th percentile) gives a variant that is
-invariant to shifts of the readout. On Davis and Klaeger it ranks compounds
-exactly as the featured measure does (Spearman $1.000$), no pair of scored
-compounds reverses as the quantile is varied from the 5th to the 15th
-percentile, and D4 holds for every compound.
+low quantile of the profile (the 5th to 15th percentile) gives a variant that
+is invariant to shifts of the readout, but on these data it is not a separate
+test: on Klaeger every such percentile of every compound's profile equals the
+floor, and on Davis it does for all but at most two compounds, so the variant ranks
+compounds exactly as the featured measure does (Spearman $1.000$).
 
 \paragraph{R\'enyi order.} Generalizing the Shannon functional to R\'enyi order
 $\alpha > 0$,
@@ -275,9 +278,8 @@ $\alpha > 0$,
 \]
 gives a family that recovers the featured measure at $\alpha = 1$. D1 holds for every
 order, since the gate is applied before the entropy is computed, and D2 holds
-vacuously. D4 holds for additions at or below the floor, because
-$p_i^\alpha = 0$ whenever $p_i = 0$, and holds on every compound with one kinase
-added at $\tau^*$ for each order tested. D3 separates the orders
+vacuously. D4 holds on every compound with one kinase added at $\tau^*$ for
+each order tested. D3 separates the orders
 (Table~S5): the orders $0.5$ and $1$ pass on both datasets, $\alpha = 2$ is borderline
 (it passes on Davis and narrowly fails on Klaeger), and $\alpha = 3$ fails on
 both.
@@ -286,7 +288,7 @@ both.
 \centering
 \caption{R\'enyi-order variants on Davis and Klaeger: D3 (pairs reversing in
 $B$, \%), agreement with the Shannon ranking (Spearman), and panel size $p^*$
-on Klaeger (smallest panel reaching mean $\rho > 0.90$). On Metz every order
+on Klaeger (smallest panel reaching mean $r > 0.90$). On Metz every order
 also reaches $p^* = 80$. (\texttt{family\_construction.py},
 \texttt{family\_panelsize.py})}
 \small
@@ -318,10 +320,116 @@ and narrowly fails at $T = 0.5$ ($1.94\%$), which also falls below the D4 bound
 $T \geq 0.58$. As $T \to 0$ the softplus converges to the hard cutoff,
 recovering the entropy together with its D3 and D4 failures.
 
-\section*{Table S6: Provenance of reported results}
+\clearpage
+\section*{S6: Additional analyses}
+
+The analyses below are summarized in one sentence in the main text, and are
+given here in the order the main text cites them.
+
+\paragraph{Klaeger restricted to protein kinases.} The 343 Klaeger targets are
+the proteins the Kinobeads pulldown quantified, and 120 of them are not protein
+kinases: 46 cyclins and other subunits or adaptors of kinase complexes (for
+example CCNA2--CCNT2, CKS1B, the AMPK and PKA regulatory subunits, and the AP2
+adaptor subunits), 10 small-molecule and lipid kinases, 20 other enzymes (for
+example COMT, NQO2, TOP2B, PYGB, PYGL and PTPN1), and 44 other proteins,
+including ribosomal proteins and SLC transporters. Kinobeads co-capture complex
+partners with their kinases, so a CDK hit can also count its cyclin. These
+columns hold 519 of the 2{,}763 active entries ($18.8\%$), in 117 of the 222
+compounds, and five compounds (AZD-2014, AZD-8186, SGX-523, TG-100115,
+volitinib) are active only on them. Table~S6 recomputes the main Klaeger
+results on the 223 protein kinases. Among compounds with an active kinase, the
+two-family structure, the D3 verdicts and all but one of the instability
+relations are essentially unchanged, and the candidate and the entropy still rank compounds
+almost identically and reach the same $p^*$. Three results move. With all
+compounds included, the five new zero-active compounds pull the Gini toward the
+ratio ($0.655$ against $0.515$ with the S-score), so, as in the main text, its
+placement on Klaeger depends on the zero-active compounds. The skewness--Gini
+association weakens from $0.35$ to $0.24$ (still $p < 0.001$). The S-score
+and Gini reach $p^*$ at fewer kinases (80 and 200), partly because the full panel
+is smaller, and the ratio still needs the full panel.
+
+\begin{table}[h]
+\centering
+\caption{Klaeger results on the full 343-target panel and on its 223 protein
+kinases. Correlations are Spearman $r$; ``active'' rows re-rank the compounds
+with an active kinase among themselves.
+(\texttt{klaeger\_protein\_kinases.py})}
+\small
+\begin{tabular}{lcc}
+\toprule
+Result & All 343 targets & 223 protein kinases \\
+\midrule
+Zero-active compounds & 16 & 21 \\
+Active entries (\% of matrix) & 3.6 & 4.5 \\
+Table~1, all compounds: S--E, S--G, E--G & 0.910, 0.722, 0.840 & 0.897, 0.515, 0.661 \\
+Table~1, all compounds: R against S, E, G & 0.223, 0.455, 0.616 & 0.092, 0.349, 0.655 \\
+Table~1, active: S--E, S--G, E--G & 0.913, 0.911, 0.998 & 0.898, 0.896, 0.998 \\
+Table~1, active: R against S, E, G & 0.418, 0.621, 0.634 & 0.381, 0.616, 0.629 \\
+$r(\mathrm{S,G}) - r(\mathrm{G,R})$, active, 95\% interval & $[0.19, 0.37]$ & $[0.17, 0.37]$ \\
+Pooled rank $\sigma$, zero-active vs.\ active & 74.0 vs.\ 31.2 & 78.8 vs.\ 32.0 \\
+Table~2: $n_\mathrm{active}$, entropy instability & $-0.381$ & $-0.369$ \\
+Table~2: top$_1$--top$_2$ gap, ratio instability & $-0.341$ & $-0.353$ \\
+Table~2: active range, S-score instability & $-0.354$ & $-0.352$ \\
+Table~2: skewness, Gini instability & $+0.346$ & $+0.241$ \\
+D3, pairs reversing (\%): S-score, entropy, Gini & 8.3, 11.2, 11.5 & 8.5, 12.1, 12.4 \\
+D3, candidate: emphasis baseline, gate (\%) & 0.54, 10.6 & 0.40, 11.4 \\
+Candidate vs.\ entropy, scored compounds & 0.998 & 0.999 \\
+$p^*$: candidate, entropy, S-score, Gini, ratio & 80, 80, 110, 290, 343 & 80, 80, 80, 200, 223 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Klaeger confidence filter.} The high-confidence filter removes 793
+of the 5{,}916 drug--target rows in the table ($13.4\%$), one of which has no
+numeric $K_d^\mathrm{app}$. A removed pair is treated identically to one with
+no detected binding and assigned the same $\mathrm{p}K_d = 5.0$ background
+value. Of the 792 low-confidence pairs with a numeric $K_d^\mathrm{app}$, 561
+fall within the $222 \times 343$ high-confidence matrix. The other 231 involve
+7 compounds and 177 kinases with no high-confidence measurement. Adding the 561
+pairs to the same matrix changes only $0.74\%$ of its entries, shifts every cell
+of the Klaeger triangle of main-text Table~1 by at most $0.05$, and leaves
+every Klaeger panel-size $p^*$ value unchanged. Retaining all 792 pairs also
+adds those compounds and kinases, which changes the panel itself. It shifts the
+Klaeger cells of Table~1 by up to $0.12$ (S-score against ratio, from $0.22$ to
+$0.34$) and leaves the two-family structure intact.
+(\texttt{klaeger\_filter\_sensitivity.py})
+
+\paragraph{Skewness and Gini instability.} Among the 161 Klaeger compounds with
+at least three active kinases, skewness correlates with the share of a
+compound's weight carried by kinases that the $\beta$ sweep crosses
+($r = 0.45$), and that share predicts Gini instability with the number of
+active kinases held fixed (partial $r = 0.71$). Holding it fixed as well lowers
+the skewness association from $0.57$ to $0.31$, so this mechanism accounts for
+part of the association. (\texttt{claim\_checks.py}, section 16)
+
+\paragraph{Type~3 compounds.} Five of the ten largest entropy--ratio
+disagreements among active Klaeger compounds have a top$_1$--top$_2$ gap above
+$1$, for example dovitinib ($n_\mathrm{active} = 26$, gap $= 1.935$) and
+BMS-690514 ($n_\mathrm{active} = 20$, gap $= 1.985$). The ratio ranks these
+five 22nd to 60th of 222, and the entropy and Gini rank them 157th to 191st.
+(\texttt{claim\_checks.py}, section 5;
+\texttt{klaeger\_\allowbreak{}selectivity\_\allowbreak{}results.csv})
+
+\paragraph{Most stable compounds.} On Klaeger the most stable compounds are
+among the most promiscuous. XL-228 ($\sigma = 7.0$) and PF-03814735
+($\sigma = 7.8$), with 55--57 active kinases, have median ranks of 208--220 of
+222 under every definition, and mean instability falls from about 31--33 for
+compounds with 1 to 40 active kinases to 16 above 40. On Davis, compounds with
+few active kinases are the most stable on average (mean $\sigma = 3.1$ for one
+or two, $4.4$ for three to five). The most stable, neflamapimod (main-text
+Figure~4, left, $\sigma = 1.8$), has two, with median ranks of 3--5.5 under the
+four definitions. The 57 Davis compounds with more than 20 active kinases are
+less stable (mean $\sigma = 9.1$, against $5.3$ for the other 11). The S-score,
+entropy, and Gini give the five broadest median ranks of 63--68 of 68, and the
+ratio gives them 29--52. Without the ratio's configurations, the mean
+instability of the 57 broad compounds falls from $9.1$ to $5.1$.
+(\texttt{claim\_checks.py}, sections 7 and 18)
+
+\clearpage
+\section*{Table S7: Provenance of reported results}
 
 Every result in the main text is printed by a script in the code repository.
-Table~S6 gives, for each result, the script that computes it. Each script
+Table~S7 gives, for each result, the script that computes it. Each script
 saves its printed output as \texttt{outputs/\allowbreak <script>.txt};
 numbers in parentheses are numbered sections of that output, and a few results
 are read from the CSV file the script writes, named in parentheses. Random steps are
@@ -342,7 +450,8 @@ Location & Result & Script (output section) \\
 \endfoot
 Methods, Datasets; Candidate & Active fractions; stricter S-score cutoff on Davis; missing entries and noise floor on Anastassiadis; Metz coverage per compound & \texttt{dataset\_\allowbreak{}descriptive\_\allowbreak{}stats.py} \\
 Methods, Datasets & Active fractions of the 46 compounds shared by Davis and Klaeger & \texttt{claim\_\allowbreak{}checks.py} (9) \\
-Methods, Datasets & Klaeger confidence filter: rows removed, relaxed-filter sensitivity & \texttt{klaeger\_\allowbreak{}filter\_\allowbreak{}sensitivity.py} \\
+Methods, Datasets; Section~S6 & Klaeger restricted to protein kinases (Table~S6) & \texttt{klaeger\_\allowbreak{}protein\_\allowbreak{}kinases.py} \\
+Methods, Datasets; Section~S6 & Klaeger confidence filter: rows removed, relaxed-filter sensitivity & \texttt{klaeger\_\allowbreak{}filter\_\allowbreak{}sensitivity.py} \\
 Methods, Datasets & Metz coverage distribution & \texttt{metz\_\allowbreak{}coverage.py} \\
 Methods, Datasets & Metz rankings vs number of measured kinases & \texttt{claim\_\allowbreak{}checks.py} (10) \\
 Methods, Definitions & Compounds with no kinase above the threshold; ratio off-target cap & \texttt{dataset\_\allowbreak{}descriptive\_\allowbreak{}stats.py} \\
@@ -360,26 +469,27 @@ Table~2; Figure~3 & Profile features vs within-family instability & \texttt{inst
 Results, Instability & Overall rank instability, mean and range & \texttt{klaeger\_\allowbreak{}analysis.py}, \texttt{selectivity\_\allowbreak{}analysis.py} \\
 Results, Instability & Entropy instability vs share of kinases crossing the baseline sweep & \texttt{claim\_\allowbreak{}checks.py} (8) \\
 Results, Instability & Range vs instability holding the number of active kinases fixed & \texttt{claim\_\allowbreak{}checks.py} (15) \\
-Results, Instability & Skewness association and threshold weight & \texttt{claim\_\allowbreak{}checks.py} (16) \\
+Results, Instability; Section~S6 & Skewness association and threshold weight & \texttt{claim\_\allowbreak{}checks.py} (16) \\
 Results, Instability & Range vs S-score instability on the 46 shared compounds & \texttt{claim\_\allowbreak{}checks.py} (17) \\
 Results, Instability & Table~2 with a Bonferroni correction & \texttt{claim\_\allowbreak{}checks.py} (21) \\
 Results, Instability & Anastassiadis gap--ratio relation without saturated compounds & \texttt{claim\_\allowbreak{}checks.py} (4) \\
 Results, Instability & Undefined skewness and range: placeholder sensitivity & \texttt{feature\_\allowbreak{}placeholder\_\allowbreak{}sensitivity.py} \\
 Results, Instability & Further candidate features & \texttt{instability\_\allowbreak{}predictor\_\allowbreak{}candidates.py} \\
 Results, Sources & The 20 most unstable Klaeger compounds by type & \texttt{claim\_\allowbreak{}checks.py} (6) \\
-Results, Types~1 and~3 & Instability and median ranks of individual Klaeger compounds & \texttt{klaeger\_\allowbreak{}analysis.py} (\texttt{klaeger\_\allowbreak{}selectivity\_\allowbreak{}results.csv}) \\
+Results, Type~1; Section~S6 & Instability and median ranks of individual Klaeger compounds & \texttt{klaeger\_\allowbreak{}analysis.py} (\texttt{klaeger\_\allowbreak{}selectivity\_\allowbreak{}results.csv}) \\
 Results, Type~1 & Were the zero-active compounds' targets quantified & \texttt{claim\_\allowbreak{}checks.py} (1) \\
-Results, Type~3 & Ten largest entropy--ratio disagreements & \texttt{claim\_\allowbreak{}checks.py} (5) \\
-Results, Type~3 & Instability by number of active kinases; most stable compounds & \texttt{claim\_\allowbreak{}checks.py} (7, 18) \\
+Results, Type~3; Section~S6 & Ten largest entropy--ratio disagreements & \texttt{claim\_\allowbreak{}checks.py} (5) \\
+Section~S6 & Instability by number of active kinases; most stable compounds & \texttt{claim\_\allowbreak{}checks.py} (7, 18) \\
 Figure~4 & Binding profiles of three Davis compounds & \texttt{binding\_\allowbreak{}profiles.py} \\
 Figure~5; Table~S1 & Panel-size recovery and $p^*$ at four bars & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py} \\
 D1; Figure~6 & Zero-active instability under each convention; D1 and D3 panels & \texttt{undefined\_\allowbreak{}score\_\allowbreak{}convention.py}, \texttt{failure\_\allowbreak{}mode\_\allowbreak{}illustration.py} \\
 Table~3; D2 & Ratio at near-tied top targets & \texttt{d2\_\allowbreak{}near\_\allowbreak{}tie\_\allowbreak{}sensitivity.py} \\
 Table~3; D3 & Pairs reversing in $B$ & \texttt{d3\_\allowbreak{}pair\_\allowbreak{}reversals.py} \\
 Candidate; Table~S4 & Orientation, D3, D4 at $\tau^*$, smoothing-width sweep & \texttt{candidate\_\allowbreak{}validation.py} \\
+Candidate & Dependence on the activity threshold $\tau^*$ & \texttt{claim\_\allowbreak{}checks.py} (22) \\
 Candidate; Figure~7 & Agreement with the entropy; panel-size recovery, gated and ungated & \texttt{candidate\_\allowbreak{}measure.py} \\
 Candidate & Gini $p^*$ without compounds whose Gini is undefined & \texttt{claim\_\allowbreak{}checks.py} (14) \\
-Candidate; Section~S5 & Variants of the candidate and their panel sizes & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
+Candidate; Section~S5 & Variants of the candidate and their panel sizes; quantile floor & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
 Smooth Hinge & Entropy and candidate under one added kinase at $\tau^*$; worked example & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} (2--6) \\
 Smooth Hinge & Realistic panel expansion & \texttt{claim\_\allowbreak{}checks.py} (19) \\
 Discussion & Platform vs definition on the 46 shared compounds & \texttt{davis\_\allowbreak{}klaeger\_\allowbreak{}overlap.py}, \texttt{platform\_\allowbreak{}vs\_\allowbreak{}definition.py} \\

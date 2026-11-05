@@ -20,8 +20,8 @@ response, the manuscript has been revised as follows:
     definition effects on compounds shared by Davis and Klaeger;
 
   - the candidate measure's monotonicity property is now proved, and the
-    dependence of its distributional consistency on a fixed assay floor is
-    stated plainly; and
+    paper states plainly that every measure, the candidate included, meets
+    distributional consistency only with its parameter fixed; and
 
   - a Supporting Information file now holds the results previously available
     only in the code repository, with a table giving the script behind every

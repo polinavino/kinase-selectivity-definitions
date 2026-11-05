@@ -5,17 +5,19 @@ We have proposed four properties that a well-formed kinase inhibitor
 selectivity measure should satisfy: a reliability threshold condition,
 bounded gap sensitivity, distributional consistency, and monotonicity under
 weak off-target addition. None of the four definitions assessed satisfies all
-four. The one property all four violate is the reliability condition, a
-reporting convention that any of them could adopt.
+four, nor even bounded gap sensitivity and monotonicity together: the ratio
+fails the first, and the S-score, entropy and Gini fail the second.
 
 The properties come from characterizing the definitions on four datasets.
-Rank instability within and between definition families is associated with
-binding profile shape and has three structurally distinct sources. How the
-definitions relate depends on how they are computed: on a common log-affinity
-scale they split into two groups that measure different properties of binding
-profiles (the S-score, entropy and Gini agree more with one another than with
-the ratio), but under the association-constant form of the original
-publication the entropy does not cluster with the S-score and Gini.
+Moving the activity boundary between the assay floor and the activity
+threshold reverses 8--12\% of compound pairs under the S-score, entropy and
+Gini on three of them, and over 20\% on the fourth. Rank instability is
+associated with binding profile shape, and the most unstable compounds have
+three structurally distinct sources of instability. How the definitions relate
+depends on how they are computed. On a common log-affinity scale, the S-score,
+entropy and Gini agree more with one another than with the ratio, most clearly
+on the two $\mathrm{p}K_d$ datasets. Under the association-constant form of the
+original publication, the entropy does not cluster with the S-score and Gini.
 
 The candidate we propose, a gated, smooth-hinge effective-target number,
 satisfies all four properties in the following ways:
@@ -24,20 +26,16 @@ satisfies all four properties in the following ways:
     \item[(i)] the reliability condition by a
 reporting rule;
     \item[(ii)] bounded gap sensitivity vacuously;
-    \item[(iii)] distributional consistency
-because its activity boundary is
-fixed at the assay floor (swept as a free parameter, that boundary moves the
-ranking about as much as the entropy's baseline does); and
+    \item[(iii)] distributional consistency, as the entropy can, by fixing
+its activity boundary at the assay floor; and
     \item[(iv)] monotonicity under weak
 off-target addition by its functional form, which we prove.
 \end{itemize}
 
-The candidate recovers its full-panel ranking from about
-a tenth to a quarter of the panel on Davis, Klaeger, and Anastassiadis, as the
-entropy does, and variants of it satisfy the four properties on Davis and
-Klaeger (Supporting Information, Section~S5). It ranks the compounds almost
-identically to the entropy, so on these data it is
-not an improvement on the entropy. The case for the properties therefore does not rest on these data:
+Like the entropy, the candidate recovers its full-panel ranking from 50--80
+kinases on Davis, Klaeger, and Anastassiadis. It ranks the compounds almost
+identically to the entropy, so on these data it is not an improvement on the
+entropy. The case for the properties therefore does not rest on the candidate:
 they are requirements on the measure itself, and we propose them as checks
 that any new selectivity measure should pass.
 

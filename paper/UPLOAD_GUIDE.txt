@@ -42,13 +42,15 @@ GRAPHICAL ABSTRACT / TOC
 
 SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
-  Tables S1-S4, Section S5 (with Table S5) and Table S6: panel-size p* sensitivity to
-  the correlation-cutoff bar; Bosc et al./CATDS comparison; cross-definition
-  correlations under the original metric operationalizations; candidate-measure
-  cross-dataset validation; variants of the candidate measure; the script
-  behind every result in the main text. Referenced from
+  Tables S1-S4, Sections S5-S6 (with Tables S5-S6) and Table S7: panel-size p*
+  sensitivity to the correlation-cutoff bar; Bosc et al./CATDS comparison;
+  cross-definition correlations under the original metric operationalizations;
+  candidate-measure cross-dataset validation; variants of the candidate
+  measure; additional analyses (Klaeger restricted to protein kinases, the
+  Klaeger filter, the skewness mechanism, Type 3 ranks, most stable compounds);
+  the script behind every result in the main text. Referenced from
   Methods, Results and Discussion as "Supporting Information, Table S<n>" or
-  "Section S5".
+  "Section S<n>".
 
 LATEX SOURCE (optional — "Production"/"Supplementary for review" slot)
   kinase-selectivity-latex-source.zip   (compiles main.pdf with: latexmk -pdf main.tex)
