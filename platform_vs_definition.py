@@ -128,6 +128,7 @@ ALIAS = {
     'IKK-epsilon': 'IKBKE', 'JNK1': 'MAPK8', 'JNK2': 'MAPK9', 'JNK3': 'MAPK10', 'LKB1': 'STK11',
     'LOK': 'STK10', 'LZK': 'MAP3K13', 'MEK1': 'MAP2K1', 'MEK2': 'MAP2K2', 'MEK3': 'MAP2K3', 'MEK4': 'MAP2K4',
     'MEK5': 'MAP2K5', 'MEK6': 'MAP2K6', 'MKK7': 'MAP2K7', 'MINK': 'MINK1', 'MLK1': 'MAP3K9',
+    'MLCK': 'MYLK3',   # Davis 'MLCK' is NP_872299.2, myosin light chain kinase 3
     'MLK2': 'MAP3K10', 'MLK3': 'MAP3K11', 'MRCKA': 'CDC42BPA', 'MRCKB': 'CDC42BPB', 'MST1': 'STK4',
     'MST2': 'STK3', 'MST3': 'STK24', 'MST4': 'STK26', 'NDR1': 'STK38', 'NDR2': 'STK38L', 'PCTK1': 'CDK16',
     'PCTK2': 'CDK17', 'PCTK3': 'CDK18', 'PFTAIRE2': 'CDK15', 'PFTK1': 'CDK14', 'PAK7': 'PAK5',
@@ -147,6 +148,13 @@ kcol = {sym: c for c in klaeger_full.columns for sym in c.split(';')}
 common = sorted(g for g in davis_gene.columns if g in kcol)
 davis_C = davis_gene.loc[overlap['Davis_Drug_Index'].values, common].values
 klaeger_C = klaeger_full.loc[overlap['Klaeger_Name'].values, [kcol[g] for g in common]].values
+unmatched = sorted(g for g in davis_gene.columns if g not in kcol)
+print(f"\nDavis genes with no Klaeger column after alias mapping ({len(unmatched)}): {', '.join(unmatched)}")
+RENAMED = {'CDC2L1': 'CDK11B', 'CDC2L2': 'CDK11A', 'CDK11': 'CDK19', 'DCAMKL1': 'DCLK1', 'DCAMKL2': 'DCLK2',
+           'DCAMKL3': 'DCLK3', 'DRAK1': 'STK17A', 'DRAK2': 'STK17B', 'YANK2': 'STK32B', 'YANK3': 'STK32C',
+           'RIPK5': 'DSTYK', 'NIM1': 'NIM1K', 'ADCK4': 'COQ8B'}
+hits = {d: c for d, c in RENAMED.items() if d in unmatched and c in kcol}
+print(f"  current symbols of renamed Davis genes found among Klaeger targets: {hits if hits else 'none'}")
 print(f"\nShared panel: {len(common)} genes profiled on both platforms "
       f"(of {davis_gene.shape[1]} Davis genes and {klaeger_full.shape[1]} Klaeger targets)")
 print(f"  compounds with no active target on the shared panel: Davis {int((~(davis_C > 6).any(1)).sum())}, "
@@ -156,7 +164,7 @@ plat_C = [spearmanr(mdC[d], mkC[d])[0] for d in DEFNS]
 defn_C = [spearmanr(med[DEFNS[i]], med[DEFNS[j]])[0] for med in (mdC, mkC)
           for i in range(4) for j in range(i + 1, 4)]
 for d, r in zip(DEFNS, plat_C):
-    print(f"  platform effect, {d:8s}: r = {r:+.3f} (p = {spearmanr(mdC[d], mkC[d])[1]:.3g})")
+    print(f"  platform effect, {d:8s}: r = {r:+.4f} (p = {spearmanr(mdC[d], mkC[d])[1]:.3g})")
 print(f"Summary on the shared panel: platform-effect r range = {min(plat_C):.2f}-{max(plat_C):.2f} "
       f"(mean {np.mean(plat_C):.2f}); definition-effect r range = {min(defn_C):.2f}-{max(defn_C):.2f} "
       f"(mean {np.mean(defn_C):.2f})")
@@ -170,6 +178,6 @@ defn_A = [spearmanr(med[DEFNS[i]], med[DEFNS[j]])[0] for med in (mdA, mkA)
           for i in range(4) for j in range(i + 1, 4)]
 print(f"\nShared panel, the {int(act.sum())} compounds active on both platforms:")
 for d, r in zip(DEFNS, plat_A):
-    print(f"  platform effect, {d:8s}: r = {r:+.3f}")
+    print(f"  platform effect, {d:8s}: r = {r:+.4f}")
 print(f"Summary: platform-effect r range = {min(plat_A):.2f}-{max(plat_A):.2f} (mean {np.mean(plat_A):.2f}); "
       f"definition-effect r range = {min(defn_A):.2f}-{max(defn_A):.2f} (mean {np.mean(defn_A):.2f})")

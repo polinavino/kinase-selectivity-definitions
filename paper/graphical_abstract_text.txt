@@ -1,5 +1,4 @@
-Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Motivated Properties for a Well-Formed Measure
+Analysis Choices and Ranking Stability in Kinase Inhibitor Selectivity Scores
 
 Polina Vinogradova*
 

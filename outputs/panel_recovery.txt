@@ -38,6 +38,13 @@ entropy Ka, floor kept   0.198  0.287  0.338  0.427  0.466  0.537  0.569  0.639 
   entropy Ka, floor kept p* (Spearman > 0.90): 300 (largest smaller size tested: 250; at p*: mean 0.913, SD 0.069, 72% of subpanels above 0.90);  smallest size with pair recovery > 0.90: 300
   S-score vs count: largest difference between their Spearman curves = 0.00e+00
   full-panel Spearman with the S-score at x0, over scored compounds: S-score 0.9698, count 0.9698, entropy x0 0.9960, entropy tau* 0.9583, Gini 0.9958, ratio 0.3730, candidate 0.9984, entropy Ka 0.6672, partition Ka 0.5498, entropy Ka, floor kept 0.3085
+  p* at bar 0.80: S-score 20, count 20, S-score x0 10, entropy x0 10, entropy tau* 20, Gini 10, ratio 300, candidate 10, entropy Ka 200, partition Ka 250, entropy Ka, floor kept 300
+  p* at bar 0.85: S-score 20, count 20, S-score x0 20, entropy x0 20, entropy tau* 20, Gini 20, ratio 363, candidate 20, entropy Ka 250, partition Ka 300, entropy Ka, floor kept 300
+  p* at bar 0.95: S-score 65, count 65, S-score x0 40, entropy x0 40, entropy tau* 80, Gini 40, ratio 363, candidate 40, entropy Ka 363, partition Ka 363, entropy Ka, floor kept 363
+  probability of staying scored at 50 targets, by number of active targets: 1: 0.14, 2: 0.26, 5: 0.53, 10: 0.78
+  entropy x0 vs gated entropy: largest difference in mean Spearman 0.002, in recoverability 0.002
+  Gini vs gated entropy: largest difference in mean Spearman 0.006, in recoverability 0.003
+  S-score x0 vs gated entropy: largest difference in mean Spearman 0.005, in recoverability 0.001
   Influence vs recovery error at m = 50 (Spearman over scored compounds):
     S-score       max leave-one-out influence: r = +0.48
     count         max leave-one-out influence: the same for every scored compound (one target)
@@ -90,6 +97,13 @@ entropy Ka, floor kept   0.056  0.119  0.197  0.282  0.348  0.439  0.515  0.609 
   entropy Ka, floor kept p* (Spearman > 0.90): 200 (largest smaller size tested: 150; at p*: mean 0.963, SD 0.039, 88% of subpanels above 0.90);  smallest size with pair recovery > 0.90: 200
   S-score vs count: largest difference between their Spearman curves = 0.00e+00
   full-panel Spearman with the S-score at x0, over scored compounds: S-score 0.9444, count 0.9444, entropy x0 0.9968, entropy tau* 0.9138, Gini 0.9940, ratio 0.3422, candidate 0.9991, entropy Ka 0.7166, partition Ka 0.5763, entropy Ka, floor kept -0.1067
+  p* at bar 0.80: S-score 50, count 50, S-score x0 30, entropy x0 30, entropy tau* 50, Gini 30, ratio 200, candidate 30, entropy Ka 125, partition Ka 150, entropy Ka, floor kept 150
+  p* at bar 0.85: S-score 65, count 65, S-score x0 30, entropy x0 40, entropy tau* 65, Gini 40, ratio 200, candidate 30, entropy Ka 150, partition Ka 200, entropy Ka, floor kept 200
+  p* at bar 0.95: S-score 150, count 150, S-score x0 80, entropy x0 100, entropy tau* 150, Gini 100, ratio 217, candidate 100, entropy Ka 200, partition Ka 200, entropy Ka, floor kept 200
+  probability of staying scored at 50 targets, by number of active targets: 1: 0.23, 2: 0.41, 5: 0.73, 10: 0.93
+  entropy x0 vs gated entropy: largest difference in mean Spearman 0.002, in recoverability 0.001
+  Gini vs gated entropy: largest difference in mean Spearman 0.005, in recoverability 0.002
+  S-score x0 vs gated entropy: largest difference in mean Spearman 0.008, in recoverability 0.003
   Influence vs recovery error at m = 50 (Spearman over scored compounds):
     S-score       max leave-one-out influence: r = +0.24
     count         max leave-one-out influence: the same for every scored compound (one target)
@@ -133,6 +147,13 @@ candidate       0.129  0.284  0.383  0.466  0.539  0.621  0.673  0.761  0.816  0
   candidate     p* (Spearman > 0.90): 30 (largest smaller size tested: 20; at p*: mean 0.922, SD 0.022, 86% of subpanels above 0.90);  smallest size with pair recovery > 0.90: 200
   S-score vs count: largest difference between their Spearman curves = 0.00e+00
   full-panel Spearman with the S-score at x0, over scored compounds: S-score 0.9375, count 0.9375, entropy x0 0.9940, entropy tau* 0.9282, Gini 0.9920, ratio 0.6104, candidate 0.9997
+  p* at bar 0.80: S-score 20, count 20, S-score x0 10, entropy x0 10, entropy tau* 20, Gini 10, ratio 250, candidate 10
+  p* at bar 0.85: S-score 30, count 30, S-score x0 20, entropy x0 20, entropy tau* 40, Gini 20, ratio 250, candidate 20
+  p* at bar 0.95: S-score 100, count 100, S-score x0 65, entropy x0 65, entropy tau* 125, Gini 65, ratio 291, candidate 65
+  probability of staying scored at 50 targets, by number of active targets: 1: 0.17, 2: 0.31, 5: 0.61, 10: 0.85
+  entropy x0 vs gated entropy: largest difference in mean Spearman 0.005, in recoverability 0.005
+  Gini vs gated entropy: largest difference in mean Spearman 0.006, in recoverability 0.006
+  S-score x0 vs gated entropy: largest difference in mean Spearman 0.003, in recoverability 0.001
   Influence vs recovery error at m = 50 (Spearman over scored compounds):
     S-score       max leave-one-out influence: r = +0.39
     count         max leave-one-out influence: the same for every scored compound (one target)
@@ -182,6 +203,13 @@ entropy Ka, floor kept   0.491  0.621  0.682  0.731  0.766  0.791  0.837  0.906 
   entropy Ka, floor kept p* (Spearman > 0.90): 150 (largest smaller size tested: 125; at p*: mean 0.933, SD 0.059, 80% of subpanels above 0.90);  smallest size with pair recovery > 0.90: 100
   S-score vs count: largest difference between their Spearman curves = 0.00e+00
   full-panel Spearman with the S-score at x0, over scored compounds: S-score 0.7838, count 0.7838, entropy x0 0.9928, entropy tau* 0.7442, Gini 0.9798, ratio 0.0561, candidate 0.9992, entropy Ka 0.3062, partition Ka 0.1726, entropy Ka, floor kept 0.2725
+  p* at bar 0.80: S-score 30, count 30, S-score x0 30, entropy x0 30, entropy tau* 30, Gini 30, ratio 150, candidate 30, entropy Ka 100, partition Ka 150, entropy Ka, floor kept 100
+  p* at bar 0.85: S-score 30, count 30, S-score x0 50, entropy x0 50, entropy tau* 30, Gini 50, ratio 172, candidate 50, entropy Ka 125, partition Ka 150, entropy Ka, floor kept 125
+  p* at bar 0.95: S-score 80, count 80, S-score x0 125, entropy x0 125, entropy tau* 80, Gini 125, ratio 172, candidate 125, entropy Ka 172, partition Ka 172, entropy Ka, floor kept 172
+  probability of staying scored at 50 targets, by number of active targets: 1: 0.29, 2: 0.50, 5: 0.82, 10: 0.97
+  entropy x0 vs gated entropy: largest difference in mean Spearman 0.007, in recoverability 0.001
+  Gini vs gated entropy: largest difference in mean Spearman 0.009, in recoverability 0.002
+  S-score x0 vs gated entropy: largest difference in mean Spearman 0.015, in recoverability 0.001
   Influence vs recovery error at m = 50 (Spearman over scored compounds):
     S-score       max leave-one-out influence: r = +0.10
     count         max leave-one-out influence: the same for every scored compound (one target)

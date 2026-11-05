@@ -70,8 +70,8 @@ def load():
         # distance the candidate can violate D3 (d4_entropy_vs_candidate.py).
         "Davis":         (davis, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
         "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
-        # percent-inhibition assay: detection floor set to the 20% noise level
-        # (median value is ~4%), the analog of the pKd = 5 background floor.
+        # percent-inhibition assay: x0 is an operational weak-inhibition cutoff of 20%
+        # (54% of entries lie between 0% and 20%), the analog of the pKd = 5 floor.
         "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0, 30.0, np.linspace(20.0, 50.0, 201)),
         "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0, 2.0, np.linspace(4.0, 6.0, 201)),
     }
@@ -94,7 +94,11 @@ def validate():
         orient = spearmanr(sel[keep], nact[keep])[0]           # want strongly negative
         d3_emph = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, keep)  # gate pinned
         # boundary varied: gate and emphasis move together (floor = b)
-        d3_bound = rev_frac(lambda b: candidate(M, b, T, baseline=b), bsweep, keep)
+        # the gate jumps where it passes an observed value: evaluate at every observed value
+        # in B and just below it, as well as on the grid
+        v = np.unique(M[(M > floor) & (M <= active)])
+        gsweep = np.unique(np.concatenate([bsweep, v, np.nextafter(v, -np.inf)]))
+        d3_bound = rev_frac(lambda b: candidate(M, b, T, baseline=b), gsweep, keep)
         # the entropy's own baseline swept over the same grid, for comparison
         d3_ent = rev_frac(lambda b: entropy_sel(M, b), bsweep, keep)
         sub = active                                           # worst case for D3: an addition exactly at tau*

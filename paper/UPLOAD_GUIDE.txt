@@ -55,7 +55,7 @@ SUPPORTING INFORMATION
 
 Notes
 -----
-- Figures are PNG, 1484-2703 px wide (Figure 1 is the narrowest). If the
+- Figures are PNG, 1484-1784 px wide (Figure 1 is the narrowest). If the
   system requires TIFF/EPS or a higher nominal dpi, the plotting scripts can
   re-export. Figure 3 and Supporting Figure S4 use random subsampling with a
   fixed seed, so a re-run reproduces them exactly.

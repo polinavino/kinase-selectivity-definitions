@@ -4,6 +4,7 @@ Raw Klaeger Kinobeads sheet: 5916 drug-target pairs with an Apparent Kd
   Dropping 1 row(s) with a missing/non-numeric Apparent Kd before aggregation (all Low confidence)
 Restricting every matrix to the 217 curated protein-kinase targets
   low-confidence pairs on curated targets: 405 of 792
+  of these, fitted pKd above 5: 375; above 6: 208
 
 High-confidence-only matrix: (222, 217)
 Relaxed (High+Low confidence) matrix on the same grid: (222, 217)
@@ -37,7 +38,7 @@ gini       0.484   0.609   1.000   0.653
 ratio      0.049   0.283   0.653   1.000
 Max absolute change vs high-confidence only: 0.061
 
-Panel-size p* without the D1 gate (SI Section S1 design), High-confidence only vs. relaxed:
+Panel-size p* without the D1 gate (SI Section S5 design), High-confidence only vs. relaxed:
   entropy  : 80 vs. 80
   gini     : 200 vs. 200
   s_score  : 80 vs. 80

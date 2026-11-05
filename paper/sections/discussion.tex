@@ -25,8 +25,9 @@ Each recommendation follows from a result above.
 \begin{enumerate}
   \item State the target universe and the score implementation, including the
         weighting and any baseline.
-  \item Distinguish measured, censored and untested entries, and state the
-        value and weight each receives.
+  \item Distinguish measured affinities, pairs with no detected binding,
+        rejected fits and untested pairs, and state the value and weight each
+        receives.
   \item Apply D1: state the activity threshold, withhold or flag the scores of
         compounds with no target above it, and rank the eligible compounds
         among themselves. Otherwise an active compound's instability depends on
@@ -51,8 +52,9 @@ The four datasets cover three assay technologies but a small part of chemical
 and kinase space, and they detect different shares of active interactions.
 Missing values are not random: Metz compounds were tested against different
 kinases. On no dataset is the floor a measured detection limit. It codes
-non-detection on Davis and Klaeger and untested pairs on Metz, and it is a
-noise level on Anastassiadis. Fixing the boundary at the floor therefore
+non-detection on Davis; non-detection, low-confidence fits and weak measured
+affinities on Klaeger; and untested pairs on Metz. On Anastassiadis it is an
+operational cutoff for weak inhibition. Fixing the boundary at the floor therefore
 depends on how each dataset codes these pairs. Random subpanels are one sampling design;
 panels chosen by kinase family, as many screening panels are, may recover
 rankings differently. Cell-free panels can also miss interactions that

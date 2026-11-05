@@ -1,7 +1,9 @@
 Response to Reviewers — Manuscript 7756455
 
-"Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Motivated Properties for a Well-Formed Measure"
+"Analysis Choices and Ranking Stability in Kinase Inhibitor Selectivity Scores"
+(previously "Definitional Instability in Kinase Inhibitor Selectivity: An
+Empirical Characterization and Motivated Properties for a Well-Formed
+Measure")
 
 Polina Vinogradova — Independent Researcher
 polina.vino@gmail.com — ORCID 0000-0003-3271-3841
@@ -21,6 +23,9 @@ Thank you for a careful reading. In summary:
     11,100 in the version you read, with three figures. Supporting
     Information follows the same order (Sections S1-S8) and holds the full
     evidence for each check.
+  - The title is changed to match this focus (both titles are given above).
+    The previous title suggested that the paper characterizes a well-formed
+    measure.
   - The analyses use one reference target per human protein kinase. The
     released Davis panel lists mutant and domain constructs of the same gene
     (for 26 of the 68 compounds the two best-bound constructs are forms of
@@ -93,6 +98,14 @@ of 0.90 with its full-panel ranking, against 20, 50 and 65 for the
 log-affinity entropy, under either floor treatment (Figure 3; Supporting
 Information Section S5 for the at-floor treatment).
 
+On Klaeger, the floor-excluded treatment also drops 194 measured high-confidence
+affinities weaker than 10 uM. A third treatment keeps every measured affinity
+at its measured value and omits only unmeasured pairs. It
+changes the published entropy's ranking little (Spearman 0.9996 with the
+floor-excluded ranking among active compounds), changes its correlations with
+the other definitions by at most 0.013, and leaves its recovery p* at 200
+targets (Supporting Information Section S2).
+
 
 2. Report what the Klaeger filter removes and the sensitivity to relaxing it;
 restate the Metz threshold or report its coverage distribution.
@@ -108,8 +121,11 @@ such as cyclins, that Kinobeads co-capture. The analyses now use the 217
 single-gene protein kinases that the source annotates, except Q6ZSR9, an
 uncharacterized protein without a kinase domain. This also removes BCR and
 TRRAP, which the source flags as possibly co-enriched with
-ABL1 and CDK8. Measured values below the floor (194 entries) are set to the
-floor.
+ABL1 and CDK8. Methods now distinguishes the pairs coded at the floor: no
+detected binding, low-confidence fits (375 of the 405 on curated targets have
+a fitted pKd above 5, so a low-confidence fit does not establish weak binding)
+and 194 measured affinities weaker than 10 uM. Giving them all the floor value
+is stated as an analysis convention.
 
 Metz (Methods; Supporting Information Section S1). The threshold is stated as
 at least 50 of 172 kinases, and Section S1 reports the coverage of the 704
@@ -180,7 +196,11 @@ Anastassiadis and 21.8% on Metz, and the entropy's and Gini's baselines
 7.9-12.4% and 22.5-22.8%. The ratio's level reverses 2.1-13.7% on Klaeger and
 Anastassiadis, 0-2.6% on Davis and 0.04-1.03% on Metz. Under this rule the
 verdicts are the same for any tolerance up to 13% (Supporting Information
-Table S3). D1 is assessed from each score's reporting rule and D3 from its
+Table S3). Methods presents D2
+as a boundary-sensitivity diagnostic: a score whose question changes with the
+threshold can reasonably rank compounds differently at different thresholds,
+and fixing the boundary defines the protocol without removing the
+sensitivity. D1 is assessed from each score's reporting rule and D3 from its
 functional form.
 
 
@@ -201,7 +221,8 @@ almost as the entropy does (Spearman 0.994-0.998), and almost as the S-score
 with its threshold at the floor does (0.998-0.9997), which also satisfies D1
 and D3, as does the partition index at the most strongly bound target. It
 recovers rankings from subpanels no better than that S-score. What it adds is
-a Shannon entropy with continuous weights and a proof of D3. The proof is in
+a Shannon entropy whose weights vary smoothly above a fixed gate, with a proof
+of D3. The proof is in
 Supporting Information Section S4; Methods gives the proposition and the
 reason it holds. The paper also states its limits: the score is discontinuous
 at the floor, and strengthening a target already in the profile can raise it.
@@ -222,9 +243,11 @@ compound-specific capture, competition or curve fitting does.
 
 Added (Results, "Analysis Choices Change Agreement Between Scores"; full
 results in Supporting Information Section S6). On 46 compounds profiled in
-both Davis and Klaeger and the 200 kinases both panels share, the same
-definition's rankings correlate at 0.33-0.84 between datasets (mean 0.60),
-against -0.09 to 1.00 between definitions within a dataset (mean 0.56).
+both Davis and Klaeger and the 201 kinases both panels share, the same
+definition's rankings correlate at 0.34-0.84 between datasets (mean 0.61),
+against -0.08 to 1.00 between definitions within a dataset (mean 0.57).
+Kinases are matched by gene symbol with renamed symbols mapped to current ones
+(Davis's MLCK is MYLK3).
 Among the 40 compounds active in both, the means are 0.72 and 0.73. The
 comparison is descriptive.
 
@@ -309,8 +332,11 @@ Gini "agree closely", only that they agree more with one another than with
 the ratio among compounds with an active kinase. On Anastassiadis the
 separation among active compounds is weak, and Results says so.
 
-6. D2 percentages are exact for the S-score and computed on 201 values
-otherwise.
+6. D2 percentages are exact for the S-score. The gated entropy's gate is
+evaluated at the observed values, where its score jumps, and on 201 values,
+which raises its upper value from 14.2% to 14.4%. The other parameters are
+evaluated on the 201 values, and Methods calls these percentages grid
+estimates.
 
 7. Bosc et al. The earlier statement that Bosc et al.'s convention leaves
 ratio-type scores undefined was wrong: they withheld ranks only for the
@@ -336,6 +362,20 @@ sentence in the Introduction.
 and Methods states its model: on the affinity datasets it perturbs measured
 values and leaves floor-coded pairs fixed, and on Anastassiadis it perturbs
 every entry.
+
+11. Proposition. The SI now proves that the bound on T cannot be lowered
+(previously shown only by examples), states the exact constant
+1/ln(2^e - 1) = 0.5816, and corrects a bound to a/m < 2.213.
+
+12. Recovery benchmark. The 0.90 bar is described as a chosen descriptive
+benchmark, not as an intraclass-correlation standard, and Results reports
+that the comparisons between scores hold with bars of 0.80, 0.85 and 0.95. Methods states that each score is
+compared with its own full-panel ranking, and Results notes that the compounds
+lost on small panels are mostly those with few active targets.
+
+13. Wording. A group-level result about the 16 compounds with no active kinase
+is no longer stated as holding for each compound, and the Anastassiadis floor
+is described as an operational cutoff for weak inhibition, not a noise level.
 
 
 I hope the manuscript is now suitable for publication in Molecular

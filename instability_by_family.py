@@ -133,6 +133,14 @@ def analyze(M, label):
             row += f"{f'{r:+.3f}{stars(p)}':>14s}"
         print(row)
     if n_active_drugs < n_drugs:
+        # check: only compounds whose entropy and Gini are defined throughout the baseline
+        # sweep (a kinase above its top, 6.5), re-ranked among themselves
+        full_def = M.max(1) > ent_baselines.max()
+        inst_d = family_instability(M[full_def])
+        na_d = (M[full_def] > ACTIVE_THRESHOLD).sum(1)
+        print(f"  check: the {int(full_def.sum())} compounds defined throughout the baseline sweep, re-ranked: "
+              + "; ".join(f"n_active vs {fam} instability r = {spearmanr(na_d, inst_d[fam])[0]:+.3f} "
+                          f"(p = {spearmanr(na_d, inst_d[fam])[1]:.2g})" for fam in ('entropy', 'gini')))
         print(f"  sensitivity: the same {n_active_drugs} compounds, ranked among all {n_drugs} compounds")
         for col in feature_cols:
             row = f"  {col:14s} "

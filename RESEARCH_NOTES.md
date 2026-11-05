@@ -56,7 +56,7 @@ ratio) are used interchangeably. The paper:
 - Properties: no boundary parameter tested satisfies D2 (rule: within eps on every
   dataset and, for the ratio, every k). S-score threshold reverses 8.4-13.0%
   of pairs on three datasets; entropy/Gini 7.9-12.4%; candidate gate
-  9.2-14.2%; ratio clipping level b in R_b(k) = x(1) - max(x(k+1), b) up to
+  9.2-14.4%; ratio clipping level b in R_b(k) = x(1) - max(x(k+1), b) up to
   13.7%. D3 holds for the active count, the S-score at tau = x0, the entropy
   with beta = tau*, the ratio, P_max and the gated entropy (not the
   published entropy); not for the S-score with

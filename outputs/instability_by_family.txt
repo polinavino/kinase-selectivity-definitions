@@ -7,6 +7,7 @@ active_std            -0.254***        -0.083        -0.135        -0.129
 active_range          -0.317***      -0.185**      -0.188**        -0.118
 top2_pkd              -0.271***       -0.157*      -0.218**      +0.188**
 active_skew            -0.199**        -0.051        +0.072        -0.089
+  check: the 189 compounds defined throughout the baseline sweep, re-ranked: n_active vs entropy instability r = -0.274 (p = 0.00013); n_active vs gini instability r = -0.272 (p = 0.00015)
   sensitivity: the same 200 compounds, ranked among all 222 compounds
   n_active            -0.253***     -0.394***        -0.075        -0.025
   top1_top2_gap          +0.016        +0.057        +0.057     -0.342***

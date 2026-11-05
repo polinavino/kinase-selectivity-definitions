@@ -135,6 +135,8 @@ curated = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0).col
 print(f"Restricting every matrix to the {len(curated)} curated protein-kinase targets")
 low_all = raw[raw['Target Classification'] != 'High confidence']
 print(f"  low-confidence pairs on curated targets: {int(low_all['Gene Name'].isin(curated).sum())} of {len(low_all)}")
+_lc = low_all[low_all['Gene Name'].isin(curated)]
+print(f"  of these, fitted pKd above 5: {int((_lc['pKd'] > 5).sum())}; above 6: {int((_lc['pKd'] > 6).sum())}")
 raw = raw[raw['Gene Name'].isin(curated)]
 # measured values below the floor are set to the floor, as in curate_panels.py
 M_high = M_high[curated].clip(lower=5.0)

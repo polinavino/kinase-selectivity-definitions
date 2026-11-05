@@ -21,8 +21,8 @@ within each.
   \centering
   \caption{The four datasets. The floor $x_0$ is the value given to pairs with
            no detected binding (Davis, Klaeger) or not tested (Metz); on
-           Anastassiadis it is a noise level. $\tau^*$ is the activity
-           threshold.}
+           Anastassiadis it is an operational cutoff for weak inhibition.
+           $\tau^*$ is the activity threshold.}
   \label{tab:datasets}
   \footnotesize
   \setlength{\tabcolsep}{3pt}
@@ -58,22 +58,25 @@ columns are already one human protein kinase each. The code repository lists
 every target with the reason it was kept or removed, and Supporting
 Information (Section~S1) compares the released panels.
 
-\paragraph{Floor-coded and missing values.} Pairs without a measured affinity
-are coded at the floor $x_0$, which is not a measured detection limit. On
-Davis, the released matrix assigns $\mathrm{p}K_d = 5.0$ ($K_d = 10~\mu$M) to
-non-binding pairs, following DeepDTA;\cite{DeepDTA} Bosc et al.\ used nearly
-the same value ($10.1~\mu$M).\cite{Bosc2017} On Klaeger we kept the 5{,}123
-drug--target pairs that the original authors classified as high confidence,
-and coded all other pairs at $\mathrm{p}K_d = 5.0$, together with the 194
-measured values weaker than $10~\mu$M. On both datasets these are treated as
-censored values: any binding is taken to be weaker than the floor. On Metz, pairs that were not
-tested are coded at $\mathrm{p}K_i = 4.0$, the lowest value reported in the
-data. These are missing values, not censored ones. A median Metz compound is
-measured against only 21 of the 172 kinases, so we kept the 704 compounds
-measured against at least 50 (median 64). On Anastassiadis, the $1.1\%$ of
-missing entries were set to $0\%$ inhibition. We place $x_0$ at $20\%$,
-because $54\%$ of the entries lie between $0\%$ and $20\%$ inhibition. A
-compound is active against a target above the activity threshold $\tau^*$.
+\paragraph{Floor-coded and missing values.} Several kinds of pair receive the
+same floor value $x_0$, which is not a measured detection limit. On Davis, the
+released matrix assigns $\mathrm{p}K_d = 5.0$ ($K_d = 10~\mu$M) to pairs with
+no detected binding, following DeepDTA;\cite{DeepDTA} Bosc et al.\ used nearly
+the same value ($10.1~\mu$M).\cite{Bosc2017} On Klaeger, we kept the 5{,}123
+drug--target pairs that the original authors classified as high confidence. We
+coded at $\mathrm{p}K_d = 5.0$ three kinds of pair: those with no detected
+binding, those whose fit was classified as low confidence, and the 194 measured
+affinities weaker than $10~\mu$M. A low-confidence fit does not establish weak
+binding: of the 405 such pairs on curated targets, 375 have a fitted
+$\mathrm{p}K_d$ above 5. Giving all of these pairs the floor value is an
+analysis convention. On Metz, pairs that were not tested are coded at
+$\mathrm{p}K_i = 4.0$, the lowest value reported in the data. A median Metz
+compound is measured against only 21 of the 172 kinases, so we kept the 704
+compounds measured against at least 50 (median 64). On Anastassiadis, the
+$1.1\%$ of missing entries were set to $0\%$ inhibition. There we place $x_0$
+at $20\%$ as an operational cutoff for weak inhibition, since $54\%$ of the
+entries lie between $0\%$ and $20\%$. A compound is active against a target
+above the activity threshold $\tau^*$.
 
 \subsection{Selectivity Scores and Their Implementations}
 \label{sec:methods:defs}
@@ -154,9 +157,11 @@ minimally selective under the Gini. $R_b(k)$ uses $b$ for a missing
 off-target and so scores every compound, as Bosc et al.'s ranking score does.
 Log-affinity weights with $\beta = x_0$ give floor-coded pairs no weight.
 Association constants give them a small positive weight if they are kept at the
-floor value. For the published entropy and $P_{\max}$ we give them no weight,
-and report keeping them at the floor as a sensitivity analysis; neither
-treatment is free of assumptions.
+floor value. For the published entropy and $P_{\max}$ we give them no weight.
+As sensitivity analyses we keep them at the floor value and, on Klaeger, use
+every measured high-confidence affinity at its measured value, including those
+weaker than the floor; neither of the first two treatments is free of
+assumptions.
 
 \paragraph{Comparators.} The active count, the entropy with $\beta = \tau^*$
 and the S-score with $\tau = x_0$ (the share of the panel with detected
@@ -176,11 +181,16 @@ a stated set of compounds. Analyses of compounds with an active kinase rank
 them among themselves, which applies D1 (below); analyses that compare
 compounds with and without an active kinase rank all compounds. Agreement
 between two definitions is the Spearman correlation between their median rank
-vectors over each definition's parameter sweep. Using mean ranks instead
+vectors over each definition's parameter sweep: $\tau$ in steps of $0.25$
+(11 values) and $\beta$ in steps of $0.25$ (7 values) on the $\mathrm{p}K$
+datasets, $\tau$ in steps of $5\%$ (9 values) and $\beta$ in steps of $5\%$
+(7 values) on Anastassiadis, and $k = 1, \ldots, 5$. Using mean ranks instead
 changes no all-compound correlation by more than $0.08$.
 
 A compound's rank instability is the standard deviation of its rank across a
 sweep, within one definition or pooled over all four definitions' sweeps.
+Pooling weights each definition by its number of parameter values, so the
+S-score carries the most weight.
 Profile features (the number of active kinases, the top$_1$--top$_2$ affinity
 gap, the second-ranked affinity, and the standard deviation, range and
 skewness of the active affinities) are correlated with within-definition
@@ -192,7 +202,8 @@ uncorrected. Bootstrap intervals use 1{,}000 resamples of compounds.
 
 To compare the effect of the dataset with that of the definition, we matched
 46 compounds profiled in both Davis and Klaeger by PubChem CID, restricted both
-panels to the 200 kinases they share, and correlated each definition's
+panels to the 201 kinases they share (matched by gene symbol, with renamed
+symbols mapped to current ones), and correlated each definition's
 rankings between the datasets and the definitions' rankings within each
 dataset. Analyses used Python 3 with NumPy, pandas and
 SciPy;\cite{NumPy,pandas,SciPy} Supporting Information (Table~S9) names the
@@ -222,11 +233,16 @@ f(\mathbf{y}; \theta)$ is positive at some $\theta \in B$ and negative at
 another. D2 requires that at most $\varepsilon = 1\%$ of the pairs of compounds
 scored under D1 reverse in $B$, on every dataset and, for the ratio, for every
 $k$. A score that fixes such a parameter, such as the active count, is assessed
-with the parameter swept, so D2 concerns a family of scores. The S-score is
-evaluated at every observed value in $B$ and the other parameters at 201
-equally spaced values. Fixing a parameter before analysis is a protocol
-decision; D2 reports how much the ranking would change had another value been
-chosen.
+with the parameter swept, so D2 concerns a family of scores. D2 is a
+boundary-sensitivity diagnostic. Whether a score should satisfy it depends on
+the use: a score whose question changes with the threshold can reasonably give
+different rankings at different thresholds. Fixing the boundary defines the
+analysis protocol; it does not remove the sensitivity, which D2 reports. The
+S-score is evaluated at every observed value in $B$, where its value changes.
+The gated entropy's gate is evaluated there and just below each observed value,
+where its score jumps, and on 201 equally spaced values; the other parameters
+are evaluated on the 201 values. Apart from the S-score, the percentages are
+therefore estimates on a grid.
 
 \textbf{D3 (monotonicity under weak-target addition).} For any $\mathbf{x}$ with
 $\max_i x_i > \tau^*$, if $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ with
@@ -261,8 +277,8 @@ $T = \tau^* - x_0$ this holds for every $\beta \in B$.
 The proof (Supporting Information, Section~S4) uses a lower bound on the
 weights. Every gated target has weight above $m = T\ln 2$, and the added
 target has weight at most $e\,m$. This bound on its share of the total weight
-is enough for the entropy not to decrease. The condition on $T$ is sharp. The
-same minimum weight makes the score discontinuous at $x_0$: for a profile with
+is enough for the entropy not to decrease. The bound on $T$ cannot be lowered.
+The same minimum weight makes the score discontinuous at $x_0$: for a profile with
 one target at $\mathrm{p}K_d = 7$, a second target at the floor leaves the
 score at $0$, and one just above the floor lowers it by $0.80$ bits. To
 measure the effect of noise near the gate, we perturbed the measured values
@@ -285,9 +301,12 @@ is the share of clearly separated full-panel pairs (ranks at least a quarter
 of the scored compounds apart) that are scored on the subpanel and keep their
 order, with a pair tied on the subpanel counted as one half. Conditional
 agreement is the Spearman correlation between subpanel and full-panel scores
-over the compounds scored on both. We write $p^*$ for the smallest tested size
-at which its mean over subpanels exceeds $0.90$, a bar taken from the
-``excellent'' range of intraclass-correlation guidelines.\cite{Koo2016} As a
+over the compounds scored on both. Each score is compared with its own
+full-panel ranking, and its clearly separated pairs are chosen from that
+ranking, so recovery measures how much of a score's own ordering a subpanel
+keeps, not which score is more accurate. We write $p^*$ for the smallest tested
+size at which the mean conditional agreement over subpanels exceeds $0.90$, a
+descriptive benchmark that we chose. As a
 diagnostic, each compound's rank error at 50 targets is correlated with the
 largest change in its full-panel score when one target is left out. Results
 without the D1 gate, which mix ranking with the conventions for undefined

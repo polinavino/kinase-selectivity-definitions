@@ -1,7 +1,8 @@
-# Kinase Inhibitor Selectivity: Definitional Instability and Motivated Properties
+# Analysis Choices and Ranking Stability in Kinase Inhibitor Selectivity Scores
 
-**Paper:** Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Motivated Properties for a Well-Formed Measure
+**Paper:** Analysis Choices and Ranking Stability in Kinase Inhibitor
+Selectivity Scores (submitted revision; the preprint below has an earlier
+title)
 **Author:** Polina Vinogradova (Input Output Global, Singapore)
 **Preprint:** https://doi.org/10.26434/chemrxiv.15001618/v1
 
@@ -187,17 +188,17 @@ from these files and cited in the Discussion/Limitations sections.
 | curate_panels.py | Builds the curated panels (one reference target per human protein kinase) from the released Davis, Klaeger and Anastassiadis files, and the target_curation_*.csv tables (Methods) |
 | klaeger_protein_kinases.py | Klaeger panel composition (122 of 343 targets removed besides four protein groups) and the main Klaeger results on the released and curated panels (SI Table S1) |
 | davis_gene_level.py | The main Davis results on the released constructs, the curated panel and the best affinity per gene (SI Table S1) |
-| panel_recovery.py | Recovery from random subpanels for all measures, including the S-score at the floor and the published entropy, with coverage, pair recovery and an influence diagnostic (Results, Figure 3) |
+| panel_recovery.py | Recovery from random subpanels for all measures, including the S-score at the floor and the published entropy, with coverage, pair recovery, p* at other bars, the probability that a compound stays scored, and an influence diagnostic (Results, Figure 3) |
 | metz_coverage.py | Per-compound kinase-coverage distribution among the 704 retained Metz compounds (Methods) |
 | dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis check with the S-score sweep shifted to [6.5, 9.0] (SI Section S1) |
 | d2_near_tie_sensitivity.py | The ratio's reference-choice sensitivity: Klaeger compounds with an active kinase and a top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Results, Parameter Sensitivity) |
-| original_operationalization_robustness.py | Cross-definition correlations under the original (association-constant entropy, native %inhibition Gini) operationalizations, two floor treatments (Results, Table 3, SI Table S2) |
+| original_operationalization_robustness.py | Cross-definition correlations under the original (association-constant entropy, native %inhibition Gini) operationalizations, two floor treatments, and on Klaeger every measured affinity kept at its value (Results, Table 3, SI Table S2) |
 | undefined_score_convention.py | States the entropy/Gini 0/0 convention for zero-active compounds and the alternative defined-configs-only rank-sigma contrast (Results; SI Section S3) |
 | pstar_bar_sensitivity.py | Ungated panel-size p* at four correlation bars (SI Table S7) |
 | candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D2 (emphasis- and gate-swept), D3, smoothing-width sweep on Klaeger (Results, SI Table S5 and Section S4) |
-| d3_pair_reversals.py | D2 (distributional consistency) for every measure on all four datasets: share of pairs reversing over B = [x0, tau*], exact for the S-score and on 201 grid points otherwise (Results, SI Table S3) |
+| d3_pair_reversals.py | D2 (distributional consistency) for every measure on all four datasets: share of pairs reversing over B = [x0, tau*], exact for the S-score; the gated entropy's gate also at every observed value, where its score jumps; 201 grid points otherwise (Results, SI Table S3) |
 | davis_klaeger_overlap.py | Resolves Davis/Klaeger compound overlap via PubChem CID matching (46 compounds; Discussion) |
-| platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds (Results; SI Section S6) |
+| platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds and 201 shared kinases, renamed symbols mapped (Results; SI Section S6) |
 | failure_mode_illustration.py | SI Figure S2: D1 (zero-active instability) and D2 (gate-swept vs. emphasis-swept instability, all over B = [5.0, 6.0]) |
 | d4_entropy_vs_candidate.py | D3 (monotonicity) for the entropy, the published entropy and the gated entropy: the condition on T and its sharpness, counterexamples, real-data frequency, the jump at the floor and the strengthening example (Methods; Results, "Monotonicity Under Weak-Target Addition"; SI Section S4) |
 | feature_placeholder_sensitivity.py | Profile features recomputed without the 0 placeholder for undefined skewness/std/range (SI Section S3) |

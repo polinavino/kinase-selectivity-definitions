@@ -18,8 +18,9 @@ interchangeably, although each summarizes a different aspect of the profile.
 
 Earlier work established that these scores can disagree. Bosc et
 al.\cite{Bosc2017} compared six scores on the Davis and Anastassiadis datasets,
-computed several at more than one parameter value, and found that compound
-rankings differ substantially between them. They traced individual
+computed several at more than one parameter value, compared them on compounds
+and kinases shared between datasets, and found that compound rankings differ
+substantially between them. They traced individual
 disagreements to profile shape, such as a broad binder with one dominant
 target. The KInhibition platform\cite{KInhibition2018} noted that conflicting
 results across metrics are common and introduced a composite score, and a
@@ -39,10 +40,11 @@ across these choices, or how much of a ranking a smaller panel retains once
 some compounds can no longer be scored. The study concerns scores computed
 from a binding profile alone.
 
-We compare the S-score, entropy, Gini and ratio on four datasets that span
-three assay technologies, each curated to one reference target per human
-protein kinase, with the entropy and Gini both in a common log-affinity form
-and in their published forms. We vary the compounds ranked, the treatment of
+This study adds a systematic account of these choices. We compare the S-score,
+entropy, Gini and ratio on four datasets that span three assay technologies,
+each curated to one reference target per human protein kinase, with the
+entropy and Gini both in a common log-affinity form and in their published
+forms. We vary the compounds ranked, the treatment of
 pairs without detected binding and each score's parameter, and relate the
 resulting instability to features of the binding profile. From these results
 we state three criteria for a selectivity measure: activity eligibility,

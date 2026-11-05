@@ -45,7 +45,9 @@ def gini_selectivity(M, b):
     return np.array(out)
 
 
-M = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0).values
+_K = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0)
+M = _K.values
+drug_names = _K.index.tolist()
 n_drugs = M.shape[0]
 baselines = np.arange(5.0, 6.75, .25)
 max_aff = M.max(axis=1)
@@ -106,6 +108,9 @@ for name, ranks in [('entropy', ent_ranks_def), ('gini', gini_ranks_def)]:
           f"({(~valid).sum()} excluded -- defined at <2 of 7 baselines, cannot be scored at all); "
           f"zero-active mean sigma (n={zero_valid.sum()})={sigma_defined[zero_valid].mean():.1f}  "
           f"active mean sigma (n={act_valid.sum()})={sigma_defined[act_valid].mean():.1f}  (p={p2:.2e})")
+    above = np.where(zero_valid & (sigma_defined > sigma_defined[act_valid].mean()))[0]
+    print(f"    zero-active compounds above the active mean: "
+          + (", ".join(f"{drug_names[i]} ({sigma_defined[i]:.2f})" for i in above) if len(above) else "none"))
 
 sigma_defined = np.full(n_drugs, np.nan)
 for i in range(n_drugs):

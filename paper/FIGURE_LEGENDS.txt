@@ -18,10 +18,11 @@ Figure 3. Recovery from random subpanels with D1 applied to every score, on all
 four datasets (50 subpanels per size). Top: coverage, the share of compounds
 scored on the full panel that are still scored. Middle: recoverability, the
 share of clearly separated full-panel pairs that are scored on the subpanel and
-keep their order. Bottom: mean Spearman correlation between subpanel and full-
-panel rankings over compounds scored on both, with +/-1 standard deviation
-across subpanels shaded. The Gini uses beta = x0 and the ratio is R(1). The
-published entropy and P_max give floor-coded pairs no weight and are not
-defined on Anastassiadis. The S-score at tau* and the active count coincide,
-and the S-score at x0 is drawn over the gated entropy, which it almost matches.
-Dashed line: 0.90.
+keep their order. Bottom: mean Spearman correlation between subpanel and
+full-panel rankings over compounds scored on both, with +/-1 standard deviation
+across subpanels shaded. Each score is compared with its own full-panel
+ranking. The ratio is R(1). The published entropy and P_max give floor-coded
+pairs no weight and are not defined on Anastassiadis. The S-score at tau* and
+the active count coincide. The entropy and Gini with beta = x0 and the S-score
+with tau = x0 are not drawn: their curves differ from the gated entropy's by at
+most 0.015. Dashed line: 0.90.

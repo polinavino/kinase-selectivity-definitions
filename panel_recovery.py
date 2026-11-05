@@ -178,6 +178,21 @@ for ds, (M, x0, tau) in DATA.items():
           + ", ".join(f"{k} {spearmanr(full[k][elig], full['S-score x0'][elig])[0]:.4f}"
                       for k in meas if k != "S-score x0"))
 
+    # p* at other bars (the 0.90 bar is a chosen descriptive benchmark)
+    for bar in (0.80, 0.85, 0.95):
+        print(f"  p* at bar {bar:.2f}: " + ", ".join(
+            f"{k} {next((m for m in sizes if res[k]['rho'][m][0] > bar), None)}" for k in meas))
+    # who drops out under D1: probability that a compound with a active targets keeps one
+    # on a uniform random 50-target subpanel (hypergeometric)
+    from math import comb
+    print("  probability of staying scored at 50 targets, by number of active targets: "
+          + ", ".join(f"{a}: {1 - comb(N - a, 50) / comb(N, 50):.2f}" for a in (1, 2, 5, 10)))
+    # how close the share-following scores are to the gated entropy
+    for k in ("entropy x0", "Gini", "S-score x0"):
+        dr = max(abs(res[k]["rho"][m][0] - res["candidate"]["rho"][m][0]) for m in sizes)
+        dp = max(abs(res[k]["pair"][m][0] - res["candidate"]["pair"][m][0]) for m in sizes)
+        print(f"  {k} vs gated entropy: largest difference in mean Spearman {dr:.3f}, in recoverability {dp:.3f}")
+
     # influence diagnostic on the full panel
     if M_DIAG in sizes:
         e = {k: np.where(err_n > 0, err[k] / np.maximum(err_n, 1), np.nan) for k in meas}
@@ -202,7 +217,12 @@ for ds, (M, x0, tau) in DATA.items():
 # ------------------------------------------------------------------ Figure 6
 ORDER = ["candidate", "entropy x0", "entropy tau*", "S-score", "Gini", "ratio", "S-score x0", "entropy Ka",
          "partition Ka"]
-LABEL = {"candidate": "gated entropy", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
+# plotted: the entropy and Gini at x0 and the S-score at x0 lie on the gated entropy's curve
+# (differences printed above), so they are not drawn
+PLOT = ["candidate", "S-score", "entropy tau*", "ratio", "entropy Ka", "partition Ka"]
+plt.rcParams.update({"font.size": 13, "axes.titlesize": 13, "axes.labelsize": 13,
+                     "xtick.labelsize": 11, "ytick.labelsize": 11})
+LABEL = {"candidate": "gated entropy (≈ entropy, Gini, S-score at x₀)", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
          "S-score": "S-score, τ = τ* (= active count)", "Gini": "Gini, β = x₀", "ratio": "ratio R(1)",
          "S-score x0": "S-score, τ = x₀", "entropy Ka": "entropy, published (1/Kd)",
          "partition Ka": "partition index, max (1/Kd)"}
@@ -210,22 +230,22 @@ COLOR = dict(zip(ORDER, ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", 
                          "#e34948"]))   # the two association-constant measures share a hue, told apart by line style
 MARK = dict(zip(ORDER, ["o", "s", "^", "D", "v", "P", "X", "*", "<"]))
 STYLE = {k: ("--" if k == "partition Ka" else "-") for k in ORDER}
-fig, axes = plt.subplots(3, 4, figsize=(18, 11), sharex="col",
+fig, axes = plt.subplots(3, 4, figsize=(11, 8.5), sharex="col",
                          gridspec_kw={"height_ratios": [1.2, 3, 3]})
 for c, (ds, (sizes, cover, res)) in enumerate(curves.items()):
     axc = axes[0, c]
     axc.plot(sizes, [cover[m] for m in sizes], color="#555555", lw=2, marker="o", ms=4)
     axc.set_ylim(0, 1.01)
     axc.grid(alpha=0.3, lw=0.5)
-    axc.set_title(f"{ds} ({sizes[-1]} targets)")
+    axc.set_title(f"{ds} ({sizes[-1]})")
     if c == 0:
         axc.set_ylabel("coverage")
     for r, (key, ylab) in enumerate([("pair", "recoverability"),
-                                     ("rho", "Spearman with full-panel ranking\n(compounds scored on both)")], start=1):
+                                     ("rho", "Spearman with\nfull-panel ranking")], start=1):
         ax = axes[r, c]
-        for k in [k for k in ORDER if k in res]:
+        for k in [k for k in PLOT if k in res]:
             mu = np.array([res[k][key][m][0] for m in sizes])
-            ax.plot(sizes, mu, color=COLOR[k], lw=2, ls=STYLE[k], marker=MARK[k], ms=5, label=LABEL[k])
+            ax.plot(sizes, mu, color=COLOR[k], lw=2, ls=STYLE[k], marker=MARK[k], ms=4, label=LABEL[k])
             if key == "rho":   # +/- 1 SD across subpanels
                 sd = np.array([res[k][key][m][1] for m in sizes])
                 ax.fill_between(sizes, mu - sd, mu + sd, color=COLOR[k], alpha=0.10, lw=0)
@@ -235,9 +255,9 @@ for c, (ds, (sizes, cover, res)) in enumerate(curves.items()):
         if c == 0:
             ax.set_ylabel(ylab)
         if r == 2:
-            ax.set_xlabel("panel size (targets)")
+            ax.set_xlabel("targets")
 h, l = axes[1, 0].get_legend_handles_labels()
-fig.legend(h, l, loc="lower center", ncol=5, fontsize=10, frameon=False, bbox_to_anchor=(0.5, -0.045))
+fig.legend(h, l, loc="lower center", ncol=3, fontsize=12, frameon=False, bbox_to_anchor=(0.5, -0.09))
 plt.tight_layout()
 plt.savefig("panel_recovery.png", dpi=150, bbox_inches="tight")
 print("\nSaved panel_recovery.png")

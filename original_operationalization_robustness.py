@@ -117,7 +117,7 @@ corr_davis = corr_with_literal_entropy(M_davis, ent_lit_davis)
 print_matrix("Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
              "(complete matrix, floor-coded entries included)", corr_davis)
 # Davis codes non-binding pairs at the floor (pKd 5.0); a floor-coded entry is a
-# censored value, not a measured affinity. Sensitivity: exclude them per compound.
+# coded value, not a measured affinity. Sensitivity: exclude them per compound.
 ent_lit_davis_meas = entropy_literal_sparse([r[r > 5.0] for r in M_davis])
 print(f"Davis floor-coded entries: {100 * (M_davis == 5.0).mean():.2f}%; Ka entropy with vs without them: "
       f"Spearman {spearmanr(ent_lit_davis, ent_lit_davis_meas)[0]:.4f}")
@@ -146,6 +146,56 @@ print_matrix(f"Klaeger, the {int(act_k.sum())} compounds with an active kinase: 
 print_matrix(f"Klaeger, the {int(act_k.sum())} compounds with an active kinase: manuscript S/Gini/ratio vs. "
              "literal Ka-weighted entropy (floor-coded entries included)",
              corr_with_literal_entropy(M_klaeger.values[act_k], entropy_literal_dense(M_klaeger.values[act_k])))
+
+# Klaeger sensitivity: every measured high-confidence affinity at its measured value,
+# including the measured values weaker than the floor (which the curated matrix sets
+# to 5.0), and unmeasured pairs omitted.
+kb = pd.read_excel(os.path.join(HERE, "aan4368_Table_S2.xlsx"), sheet_name='Kinobeads')
+kb['pKd'] = 9 - np.log10(pd.to_numeric(kb['Apparent Kd'], errors='coerce'))
+kb = kb[(kb['Target Classification'] == 'High confidence') & kb['Gene Name'].isin(M_klaeger.columns)
+        & kb['pKd'].notna()]
+M_meas = (kb.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack()
+          .reindex(index=M_klaeger.index, columns=M_klaeger.columns))       # NaN = not measured
+n_meas = int(M_meas.notna().sum().sum())
+n_below = int((M_meas < 5.0).sum().sum())
+print(f"\nKlaeger measured high-confidence cells on the curated panel: {n_meas}; below the floor: {n_below} "
+      f"(in {int((M_meas < 5.0).any(axis=1).sum())} compounds)")
+Mm = M_meas.values
+ent_meas = np.array([entropy_literal_sparse([r[~np.isnan(r)]])[0] if (~np.isnan(r)).any() else 0.0 for r in Mm])
+print_matrix("Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
+             "(every measured affinity retained at its value)", corr_with_literal_entropy(M_klaeger.values, ent_meas))
+print_matrix(f"Klaeger, the {int(act_k.sum())} compounds with an active kinase: manuscript S/Gini/ratio vs. "
+             "literal Ka-weighted entropy (every measured affinity retained at its value)",
+             corr_with_literal_entropy(M_klaeger.values[act_k], ent_meas[act_k]))
+print(f"Spearman between the floor-excluded and measured-retained published entropy: all compounds "
+      f"{spearmanr(ent_lit_klaeger, ent_meas)[0]:.4f}; active compounds {spearmanr(ent_lit_klaeger[act_k], ent_meas[act_k])[0]:.4f}")
+
+# Recovery on the same seeded subpanels as panel_recovery.py (RandomState(42), 50 per size, D1 gate)
+def neg_ent_ka(X):
+    W = np.where(np.isnan(X), 0.0, 10.0 ** (np.nan_to_num(X, nan=0.0) - 9.0))
+    tot = W.sum(1, keepdims=True)
+    P = W / np.where(tot <= 0, 1.0, tot)
+    return np.where(P > 0, P * np.log2(np.where(P > 0, P, 1.0)), 0.0).sum(1)
+Mc = M_klaeger.values
+Mx = np.where(Mc > 5.0, Mc, np.nan)                       # floor-coded entries given no weight
+N = Mc.shape[1]
+elig = (Mc > 6.0).any(1)
+full = {"floor-excluded": neg_ent_ka(Mx), "measured-retained": neg_ent_ka(Mm)}
+sizes = [m for m in [10, 20, 30, 40, 50, 65, 80, 100, 125, 150, 200, 250, 300] if m < N] + [N]
+rng = np.random.RandomState(42)
+means = {k: {} for k in full}
+for m in sizes:
+    acc = {k: [] for k in full}
+    for _ in range(50 if m < N else 1):
+        cols = rng.choice(N, m, replace=False)
+        both = (Mc[:, cols] > 6.0).any(1) & elig
+        for k, X in (("floor-excluded", Mx), ("measured-retained", Mm)):
+            acc[k].append(spearmanr(full[k][both], neg_ent_ka(X[:, cols])[both])[0])
+    for k in full:
+        means[k][m] = np.nanmean(acc[k])
+for k in full:
+    ps = next((m for m in sizes if means[k][m] > 0.90), None)
+    print(f"Klaeger published entropy, {k:17s}: recovery p* = {ps}; mean Spearman at 50 targets = {means[k][50]:.4f}")
 
 # ---------------------------------- Metz --------------------------------------
 mz = pd.read_excel(os.path.join(HERE, "metz.xls"), sheet_name=0, header=0)

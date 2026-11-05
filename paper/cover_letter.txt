@@ -1,9 +1,11 @@
 Dear Professor Baumann,
 
-I am pleased to submit the second revision of manuscript 7756455,
-"Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
-Characterization and Motivated Properties for a Well-Formed Measure", as a
-Research Article (Full Paper).
+I am pleased to submit the second revision of manuscript 7756455, as a
+Research Article (Full Paper). Its title is changed from "Definitional
+Instability in Kinase Inhibitor Selectivity: An Empirical Characterization and
+Motivated Properties for a Well-Formed Measure" to "Analysis Choices and
+Ranking Stability in Kinase Inhibitor Selectivity Scores", to describe the
+revised content.
 
 I am grateful to the reviewer for a second constructive assessment. In
 response, the manuscript has been revised as follows:

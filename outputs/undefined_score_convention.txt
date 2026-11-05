@@ -11,7 +11,9 @@ Per-compound number of DEFINED configurations (of 7 baselines swept): min=0, max
 Alternative convention (compounds ranked only among those defined at each beta;
 rank sigma computed only over each compound's own DEFINED configs):
   entropy: 216 of 222 compounds have >=2 defined configs (6 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=16)=7.0  active mean sigma (n=200)=13.5  (p=2.05e-03)
+    zero-active compounds above the active mean: Brivanib (21.28), Brivanib_alaninate (18.94), NMS-1286937 (28.13)
   gini: 216 of 222 compounds have >=2 defined configs (6 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=16)=6.7  active mean sigma (n=200)=13.6  (p=1.52e-03)
+    zero-active compounds above the active mean: Brivanib (21.44), Brivanib_alaninate (17.18), NMS-1286937 (28.22)
   pooled (entropy+gini): 216 of 222 computable; mean rank sigma, zero-active (n=16): 6.9  active (n=200): 13.6  (Mann-Whitney p=1.81e-03)
 
 Done.

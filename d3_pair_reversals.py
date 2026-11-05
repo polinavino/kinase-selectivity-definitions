@@ -16,9 +16,12 @@ Aggregate rule: a measure satisfies D2 only if at most eps of pairs reverse on e
 dataset, and, for the ratio, for every k.
 
 The S-score is a step function of tau, so it is evaluated exactly, at every
-observed affinity in B and between consecutive ones. The other parameters are
-evaluated on a 201-point grid; the same calculation on a 101-point grid is
-printed as a convergence check.
+observed affinity in B and between consecutive ones. The gated entropy's gate
+makes its score jump wherever the gate passes an observed value, so the gate is
+evaluated at every observed value in B and just below it, as well as on the grid.
+The other parameters are evaluated on a 201-point grid; the same calculation on
+a 101-point grid is printed as a convergence check. Except for the S-score, the
+percentages are grid estimates: reversals between evaluated points can be missed.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -94,7 +97,9 @@ def sweeps(M, x0, tau, n_grid):
         "entropy (beta)":            [entropy(M, b) for b in B],
         "Gini (beta)":               [gini(M, b) for b in B],
         "candidate (emphasis beta)": [candidate(M, x0, T, b) for b in B],
-        "candidate (gate x0)":       [candidate(M, b, T, b) for b in B],
+        # the gate jumps where it passes an observed value: evaluate there and just below too
+        "candidate (gate x0)":       [candidate(M, b, T, b) for b in np.unique(np.concatenate(
+                                         [B, v[v > x0], np.nextafter(v[v > x0], -np.inf)]))],
     }
     rows.update({f"ratio (clipping level, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
     return rows

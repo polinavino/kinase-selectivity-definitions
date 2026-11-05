@@ -2,8 +2,8 @@
 
 The panel-size analysis without the D1 gate (panel_size_analysis.py; SI Section S5) calls a subpanel size
 "recovering" the full-panel ranking once mean Spearman r exceeds 0.90, a
-convention borrowed from reliability research's "excellent" agreement bar
-(Koo & Li 2016), not a property derived from the data. This script checks
+descriptive benchmark we chose, not a property derived from the data. This
+script checks
 whether the qualitative ordering of the four definitions by panel-size
 requirement -- entropy and S-score fast, Gini dataset-dependent, ratio
 slowest -- is an artifact of that specific choice, by recomputing p* at
