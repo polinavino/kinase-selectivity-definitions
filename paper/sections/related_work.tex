@@ -26,10 +26,11 @@ published metrics (the S-score, Gini coefficient, selectivity entropy, and a
 partition index) on the Davis and Anastassiadis datasets. They showed that
 compound rankings differ substantially depending on the metric applied, computed
 several metrics at more than one parameter value (S-score thresholds, window
-widths, ranking positions), and noted that certain compounds cannot be scored
-under some definitions when threshold conditions are not satisfied. For example, ratio-based scores are undefined
-for a compound with no kinase above the activity threshold, since there is then
-no primary target or off-target to compare.
+widths, ranking positions), and left a compound unranked under the S-score
+when no kinase cleared its threshold. Their window and ranking scores, which
+start from each compound's best affinity, were computed for every compound.
+They also traced individual disagreements to profile shape, such as a broad
+binder with one dominant target.
 
 To our knowledge, attempts to reconcile the definitions have been limited.
 Miljkovic and Bajorath\cite{Bajorath2018} compared CATDS-based selectivity
@@ -47,7 +48,8 @@ Gini-based score.
 
 To our knowledge, how much each parameter and implementation choice moves the
 rankings across datasets and assay technologies, and which profile properties
-determine when the definitions agree, have not been characterized. The present
+determine when the definitions agree, have been illustrated for individual
+compounds but not characterized systematically. The present
 work addresses both.
 
 \subsection{Axiomatic Approaches to Ranking and Measurement}

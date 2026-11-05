@@ -1,26 +1,21 @@
 """
-Beyond the single candidate: does D1-D4 pin down a family of measures, or just one?
+Variants of the candidate: which other measures of the same construction meet D1 and D3?
 
 This script builds two generalizations of the candidate in candidate_measure.py /
-candidate_validation.py and checks D1-D4 (and cross-dataset ranking agreement with
+candidate_validation.py and checks D1-D3 (and cross-dataset ranking agreement with
 the original candidate) empirically, the same way candidate_validation.py does.
 
   1. Renyi order alpha.  The candidate's score is -H(p), the negative Shannon
      entropy of the gated, smoothed profile.  Shannon is the alpha -> 1 case of the
      Renyi family H_alpha(p) = 1/(1-alpha) * log2(sum_i p_i^alpha).  For any alpha > 0,
-     p_i = 0 still contributes 0 to sum_i p_i^alpha (0^alpha = 0), so D4's
-     append-a-zero-weight-coordinate argument goes through unchanged, and D2/D3 are
-     unaffected by alpha (they concern the p_i map, not the entropy functional
-     applied to it). This is a genuine one-parameter family, not just a restatement.
+     p_i = 0 still contributes 0 to sum_i p_i^alpha (0^alpha = 0), so additions at
+     or below the floor leave the score unchanged; D3 (additions in (x0, tau*]) is
+     proved only for alpha = 1 and is checked here with one kinase added at tau*.
 
-  2. Quantile-referenced floor.  desiderata.tex's closing paragraph claims that
-     replacing the fixed assay floor with a per-compound low-quantile reference
-     gives a shift-invariant variant with "nearly the same ranking on both
-     datasets (Spearman r ~ 1.00)". No script in the repository computed that
-     number; this one does, so the claim is either confirmed or corrected.
-     Caveat checked here: a per-compound floor is a statistic of the *compound's
-     own row*, so appending a column (D4) can in principle move it, unlike the
-     fixed floor, which cannot move by construction. Checked empirically below.
+  2. Quantile-referenced floor: the fixed assay floor replaced by a per-compound
+     low quantile of the profile (SI Section S5). The script also counts the
+     compounds whose quantile equals the fixed floor, since on these data the
+     variant then coincides with the featured measure.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -92,7 +87,7 @@ def load():
 
 
 datasets = load()
-BSWEEP = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] (Methods, D3)
+BSWEEP = np.linspace(5.0, 6.0, 201)   # B = [x0, tau*] (Methods, D2), 201 points as in d3_pair_reversals.py
 QSWEEP = [0.05, 0.075, 0.10, 0.125, 0.15]
 ALPHAS = [0.5, 1.0, 2.0, 3.0]
 
@@ -112,8 +107,8 @@ for name, (M, floor, active, T) in datasets.items():
         new = candidate_alpha(np.hstack([M, np.full((M.shape[0], 1), sub)]), floor, T, alpha=alpha)
         d4 = (new <= base + 1e-9).mean() * 100
         agree = spearmanr(to_ranks(sel), base_rank)[0]
-        print(f"  alpha={alpha:<4} orient_r={orient:+.3f}  D3(pairs reversing in B)={100 * d3:.2f}%  "
-              f"D4(%% non-increasing)={d4:5.1f}  Spearman-vs-alpha=1={agree:.3f}")
+        print(f"  alpha={alpha:<4} orient_r={orient:+.3f}  D2(pairs reversing in B)={100 * d3:.2f}%  "
+              f"D3(% non-increasing)={d4:5.1f}  Spearman-vs-alpha=1={agree:.3f}")
 
 print()
 print("=" * 70)
@@ -139,8 +134,8 @@ for name, (M, floor, active, T) in datasets.items():
           + ", ".join(f"q={q}: {n}" for q, n in at_floor.items()))
     print(f"  q={q_ref}: orient_r={orient_q:+.3f}  "
           f"Spearman vs fixed-floor candidate = {agree:.3f}")
-    print(f"  D3 over q in {QSWEEP}: pairs reversing = {100 * d3_q_rev:.2f}%, worst-case rank Spearman = {d3_q:+.3f}")
-    print(f"  D4 (add a sub-threshold off-target): non-increasing for {d4_q:.1f}% of "
+    print(f"  D2 over q in {QSWEEP}: pairs reversing = {100 * d3_q_rev:.2f}%, worst-case rank Spearman = {d3_q:+.3f}")
+    print(f"  D3 (add a sub-threshold off-target): non-increasing for {d4_q:.1f}% of "
           f"compounds; max increase = {max_increase:.4f}")
 
 print("\nDone.")

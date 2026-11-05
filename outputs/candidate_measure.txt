@@ -1,9 +1,9 @@
-Orientation check (Klaeger): corr(candidate selectivity, n_active) = -0.948 (must be negative)
+Orientation check (Klaeger): corr(candidate selectivity, n_active) = -0.946 (must be negative)
 
 D3 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):
   candidate, vary emphasis baseline (gate pinned at floor): +1.000
-  candidate, vary active-set boundary (gate = floor)       : +0.940
-  existing entropy, vary baseline                          : +0.929
+  candidate, vary active-set boundary (gate = floor)       : +0.938
+  existing entropy, vary baseline                          : +0.927
 
 D4 (add a sub-threshold off-target): selectivity non-increasing for 100% of compounds; max increase = 0.0000
 
@@ -21,15 +21,15 @@ Panel-size convergence p* (Davis, 68 cpd x 363 kin):
    improvement is selection rather than a property of the gate)
   Spearman(candidate, entropy) on the full panel, 68 scored compounds = +0.9973
 
-Panel-size convergence p* (Klaeger, 222 cpd x 219 kin):
+Panel-size convergence p* (Klaeger, 222 cpd x 217 kin):
   measure     p* (all cpd)  p* (D1-gated)
   candidate             80             50
-  entropy               80             80
+  entropy               80             50
   s_score               80            110
   gini                 200             80
-  ratio                219            200
+  ratio                217            200
   fraction of compounds UNDEFINED under the D1 gate, by panel size:
-   50:36%  80:27%  110:19%  140:16%  170:13%  200:11%  219:10%
+   50:38%  80:27%  110:20%  140:16%  170:13%  200:11%  217:10%
   (gated and ungated p* are computed on different populations: gating removes
    the least-bound compounds, which are also the hardest to rank, so part of any
    improvement is selection rather than a property of the gate)

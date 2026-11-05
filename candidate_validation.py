@@ -1,9 +1,10 @@
 """
 Cross-dataset validation of the candidate selectivity measure.
 
-For each dataset it checks the three properties that do not depend on panel
-subsampling (orientation, D3, D4), using the same per-dataset detection floor and
-active threshold used elsewhere in the analysis.  It also (a) sweeps the smoothing
+For each dataset it checks orientation, D2 (distributional consistency, on the
+same 201-point grid over B = [x0, tau*] as d3_pair_reversals.py) and D3
+(monotonicity, one kinase added at tau*), using the same per-dataset floor and
+activity threshold used elsewhere in the analysis.  It also (a) sweeps the smoothing
 width T to show the ranking is stable across it, and (b) shows that removing the
 floor gate inverts the measure, which is what makes the gate necessary.
 
@@ -43,29 +44,36 @@ def worst_pair(fn, grid):
 
 
 def rev_frac(fn, grid, keep):
-    """D3 as stated in Methods: fraction of pairs of scored compounds whose order
-    reverses somewhere in the grid (see d3_pair_reversals.py)."""
+    """D2 as stated in Methods: fraction of pairs of scored compounds whose order
+    reverses somewhere in the grid (as in d3_pair_reversals.py)."""
     S = np.array([fn(v) for v in grid])[:, keep]
-    iu = np.triu_indices(S.shape[1], 1)
-    sign = np.sign(S[:, iu[0]] - S[:, iu[1]])
-    return ((sign.max(0) > 0) & (sign.min(0) < 0)).mean()
+    G, n = S.shape
+    chunk = max(1, int(4e7 // (G * n)))
+    count = 0
+    for i0 in range(0, n, chunk):
+        d = S[:, i0:i0 + chunk, None] - S[:, None, :]
+        rev = (d > 0).any(0) & (d < 0).any(0)
+        rows = np.arange(i0, min(i0 + chunk, n))[:, None]
+        count += int((rev & (np.arange(n)[None, :] > rows)).sum())
+    return count / (n * (n - 1) / 2)
 
 
-# per-dataset: (matrix, detection floor, active threshold, T, D3 sweep).
-# The D3 sweep is B = [x0, tau*] (Methods), the same for the candidate's gate and
-# emphasis and for the entropy's baseline, as in d3_pair_reversals.py.
+# per-dataset: (matrix, floor, activity threshold, T, D2 sweep).
+# The D2 sweep is 201 points over B = [x0, tau*] (Methods), the same for the
+# candidate's gate and emphasis and for the entropy's baseline, as in
+# d3_pair_reversals.py.
 def load():
     aff = pd.read_csv(f"{HERE}/davis_affinity.csv")
     davis = aff.pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0).values
     return {
         # T = active threshold - floor in every dataset (1, 1, 30, 2): below 0.58 x that
         # distance the candidate can violate D4 (d4_entropy_vs_candidate.py).
-        "Davis":         (davis, 5.0, 6.0, 1.0, np.arange(5.0, 6.01, 0.25)),
-        "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.arange(5.0, 6.01, 0.25)),
+        "Davis":         (davis, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
+        "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
         # percent-inhibition assay: detection floor set to the 20% noise level
         # (median value is ~4%), the analog of the pKd = 5 background floor.
-        "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0, 30.0, np.arange(20.0, 50.1, 5.0)),
-        "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0, 2.0, np.arange(4.0, 6.01, 0.25)),
+        "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0, 30.0, np.linspace(20.0, 50.0, 201)),
+        "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0, 2.0, np.linspace(4.0, 6.0, 201)),
     }
 
 
@@ -132,7 +140,7 @@ def inversion_demo():
 if __name__ == "__main__":
     df = validate()
     df.to_csv(f"{HERE}/candidate_validation.csv", index=False)
-    print("Cross-dataset validation (orientation must be negative; D3 = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D4 = 100):")
+    print("Cross-dataset validation (orientation must be negative; D2 (d3_* columns) = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D3 (d4_pct) = 100):")
     print(df.to_string(index=False))
     ts, worstT = t_sweep()
     print("\nSmoothing-width T sweep on Klaeger:")

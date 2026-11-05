@@ -116,11 +116,10 @@ print("Lower r = more disagreement. Comparing the two ranges shows which source 
       "this shared-compound set.")
 
 # ---------------------------------------------------------------------------
-# The two platforms profile different targets (433 Davis constructs, 343 Klaeger
-# proteins), so the comparison above mixes assay and panel. Repeat it on the
-# genes both panels share: Davis constructs collapsed to genes (best affinity per
-# gene), Davis names mapped to HGNC symbols, Klaeger columns matched on any
-# ';'-separated symbol.
+# The two curated panels profile different kinases (363 Davis reference targets,
+# 219 Klaeger protein kinases), so the comparison above mixes assay and panel.
+# Repeat it on the kinases both panels share: Davis reference constructs mapped to
+# HGNC gene symbols, Klaeger columns matched on any ';'-separated symbol.
 ALIAS = {
     'AMPK-alpha1': 'PRKAA1', 'AMPK-alpha2': 'PRKAA2', 'ARK5': 'NUAK1', 'ASK1': 'MAP3K5', 'ASK2': 'MAP3K6',
     'BIKE': 'BMP2K', 'BRK': 'PTK6', 'CDC2L5': 'CDK13', 'CTK': 'MATK', 'DLK': 'MAP3K12', 'DMPK2': 'CDC42BPG',
@@ -157,7 +156,20 @@ plat_C = [spearmanr(mdC[d], mkC[d])[0] for d in DEFNS]
 defn_C = [spearmanr(med[DEFNS[i]], med[DEFNS[j]])[0] for med in (mdC, mkC)
           for i in range(4) for j in range(i + 1, 4)]
 for d, r in zip(DEFNS, plat_C):
-    print(f"  platform effect, {d:8s}: r = {r:+.3f} (p = {spearmanr(mdC[d], mkC[d])[1]:.1e})")
+    print(f"  platform effect, {d:8s}: r = {r:+.3f} (p = {spearmanr(mdC[d], mkC[d])[1]:.3g})")
 print(f"Summary on the shared panel: platform-effect r range = {min(plat_C):.2f}-{max(plat_C):.2f} "
       f"(mean {np.mean(plat_C):.2f}); definition-effect r range = {min(defn_C):.2f}-{max(defn_C):.2f} "
       f"(mean {np.mean(defn_C):.2f})")
+
+# Compounds with no active target are scored by each definition's own convention
+# (Type 1), so repeat the shared-panel comparison on the compounds active in both.
+act = (davis_C > 6).any(1) & (klaeger_C > 6).any(1)
+mdA, mkA = median_ranks(davis_C[act]), median_ranks(klaeger_C[act])
+plat_A = [spearmanr(mdA[d], mkA[d])[0] for d in DEFNS]
+defn_A = [spearmanr(med[DEFNS[i]], med[DEFNS[j]])[0] for med in (mdA, mkA)
+          for i in range(4) for j in range(i + 1, 4)]
+print(f"\nShared panel, the {int(act.sum())} compounds active on both platforms:")
+for d, r in zip(DEFNS, plat_A):
+    print(f"  platform effect, {d:8s}: r = {r:+.3f}")
+print(f"Summary: platform-effect r range = {min(plat_A):.2f}-{max(plat_A):.2f} (mean {np.mean(plat_A):.2f}); "
+      f"definition-effect r range = {min(defn_A):.2f}-{max(defn_A):.2f} (mean {np.mean(defn_A):.2f})")

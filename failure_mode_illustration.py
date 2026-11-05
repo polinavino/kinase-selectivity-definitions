@@ -1,15 +1,15 @@
 """
-Illustrates the two failure modes the candidate measure is built to repair
-(D1: arbitrary scores for non-binders, D2: baseline-driven instability), using
+Illustrates two failure modes (D1: scores for compounds with no binding above the
+activity threshold; D2: baseline-driven instability), using
 the same Klaeger computations that produced the numbers quoted in the paper
 (paper/sections/desiderata.tex, D1 and D2 paragraphs).
 
 Left panel (D1): pooled rank instability (std across all four existing
 definitions' parameter sweeps) for compounds with no binding above the pK_d > 6
-activity threshold vs. compounds with at least one active kinase. Note that all
-16 of these compounds do have binding above the assay detection floor of
-pK_d = 5.0 (their maxima run 5.16 to 6.00); "zero-active" is defined against the
-activity threshold, not the detection floor. The candidate does not assign these
+activity threshold vs. compounds with at least one active kinase. 16 of the 22
+such compounds on the curated panel bind some kinase above the floor of
+pK_d = 5.0; "zero-active" is defined against the activity threshold, not the
+floor. The candidate does not assign these
 compounds a score at all (D1 gate), rather than a low-instability one -- shown as
 a hatch pattern, not a bar height.
 
@@ -36,11 +36,9 @@ flagged). All three series are swept over B = [x0, tau*] = [5.0, 6.0]:
       moves kinases in and out of the active set;
   (3) candidate, emphasis beta in B with the gate FIXED at the assay
       floor (x0 = 5.0, as used throughout the rest of this paper) -- the
-      candidate's only remaining free parameter once x0 is fixed by
-      declaration rather than left free. This is the comparison that
-      motivates D2: not that the candidate is insensitive to its gate, but
-      that its gate is removed from the free-parameter space entirely, and
-      what remains is empirically robust.
+      candidate's only remaining free parameter once x0 is fixed. Fixing the
+      gate is a protocol decision: swept as in (2), the candidate fails D2 as
+      the entropy does, and only its remaining emphasis parameter is robust.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -96,8 +94,8 @@ print(f"D1: rank std, zero-active = {sigma_zero:.1f}; active = {sigma_active:.1f
       f"(n_zero={ (~has_active).sum() }, n_active={has_active.sum()}; "
       f"Mann-Whitney U={u_stat:.0f}, p={u_p:.2e}, two-sided)")
 print(f"D1: max pK_d among the {(~has_active).sum()} zero-active compounds: "
-      f"{M[~has_active].max(1).min():.2f} to {M[~has_active].max(1).max():.2f} "
-      f"(all above the assay detection floor of {FLOOR})")
+      f"{M[~has_active].max(1).min():.2f} to {M[~has_active].max(1).max():.2f}; "
+      f"{int((M[~has_active].max(1) > FLOOR).sum())} bind some kinase above the floor of {FLOOR}")
 
 # Per-definition decomposition: the pooled figure above is NOT uniform across the four.
 print("\nD1 decomposed per definition (mean rank std within that definition's own sweep):")

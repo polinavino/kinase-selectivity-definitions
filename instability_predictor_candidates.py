@@ -1,4 +1,4 @@
-"""Candidate profile-shape features considered for Table 2/3 but not added.
+"""Candidate profile-shape features considered for Table 2 but not added.
 
 instability_by_family.py correlates six binding-profile features against
 within-family rank instability. Before settling on that set (five original
@@ -12,7 +12,7 @@ active-affinity distribution. This script reports why each was excluded:
 CR1/HHI closely track n_active already in the table (shown here via their
 direct correlation with n_active) rather than adding independent information,
 and the remaining three are uniformly weaker predictors than the features
-already in Table 2/3.
+already in Table 2.
 """
 import script_logging; script_logging.capture(__file__)
 import os

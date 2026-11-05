@@ -109,11 +109,6 @@ def summarize(M):
         out[f"Table 2: {feat} vs {fam} instability (p)"] = p
     out["compounds with top1-top2 gap < 0.05"] = int((feats["top1-top2 gap"] < 0.05).sum())
     out["mean overall rank sd"] = np.vstack(list(ranks.values())).std(0).mean()
-    B = np.arange(X0, TAU + 0.125, 0.25)
-    out["D3 rev %, S-score"] = 100 * reversals([s_score(M, b) for b in B], act)
-    out["D3 rev %, entropy"] = 100 * reversals([entropy(M, b) for b in B], act)
-    out["D3 rev %, Gini"] = 100 * reversals([gini(M, b) for b in B], act)
-    out["D3 rev %, candidate (emphasis beta)"] = 100 * reversals([candidate(M, X0, b) for b in B], act)
     c = candidate(M)
     out["candidate vs entropy, scored compounds"] = spearmanr(c[act], entropy(M, X0)[act])[0]
     for k, v in pstars(M).items():
@@ -122,6 +117,7 @@ def summarize(M):
 
 
 prot = pd.read_csv("davis_proteins.csv").set_index("Protein_Index")["Gene_Name"]
+drugs_cid = pd.read_csv("davis_drugs.csv")["CID"].values
 rel = pd.read_csv("davis_affinity_released.csv").pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0)
 cur = pd.read_csv("davis_affinity.csv").pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0)
 names = prot.reindex(rel.columns)
@@ -134,6 +130,11 @@ print(f"Davis: {rel.shape[1]} released constructs ({gene.nunique()} distinct nam
       f"{cur.shape[1]} reference targets; {Mg.shape[1]} genes for the best-affinity alternative")
 same = [gene[t[0]] == gene[t[1]] for t in (rel.iloc[r].sort_values(ascending=False).index[:2] for r in range(len(rel)))]
 print(f"Released panel: compounds whose two best-bound constructs are the same gene: {sum(same)} of {len(rel)}")
+print(f"Released panel: EGFR constructs: {int((gene == 'EGFR').sum())}")
+r_rank = np.array([to_ranks(ratio(rel.values, k)) for k in range(1, 6)])
+worst = int(np.argmax(r_rank.std(0)))
+print(f"Released panel: most ratio-unstable compound (rank sd over k = 1-5): row {worst}, "
+      f"CID {drugs_cid[worst]}, sd {r_rank.std(0)[worst]:.1f}")
 
 drugs = pd.read_csv("davis_drugs.csv")
 gdc = int(drugs.index[drugs["CID"] == 11717001][0])   # GDC-0879

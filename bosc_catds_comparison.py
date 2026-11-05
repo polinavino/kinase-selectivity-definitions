@@ -18,9 +18,10 @@ the percent-inhibition dataset (Anastassiadis); rank positions 20/10/5 for all
 four datasets.
 
 CATDS (Klaeger et al. 2017) divides each target's concentration-dependent
-binding reduction by the summed reduction across the whole panel, which
-requires raw dose-response curves this repository does not have (only the
-derived apparent-Kd matrices). The proxy used here applies the same
+binding reduction by the summed reduction across the whole panel. It is
+defined on Kinobeads concentration-response curves, which exist only for Klaeger
+(aan4368_Table_S2.xlsx lists the fitted curves) and not for the other three
+datasets, and it is not reimplemented here. The proxy used here applies the same
 normalization idea to the baseline-subtracted affinity profile already used
 for entropy/Gini: catds_proxy(x) = max_i(shifted_i) / sum_j(shifted_j), i.e.
 the top target's share of the total panel-wide binding-reduction budget.

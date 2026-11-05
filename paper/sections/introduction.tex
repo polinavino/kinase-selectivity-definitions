@@ -16,19 +16,21 @@ The field employs at least four distinct quantitative measures:
 the S-score,\cite{Karaman2008} selectivity entropy,\cite{Uitdehaag2011}
 Gini coefficient,\cite{Graczyk2010} and ratio-based measures, which compare the
 primary target with an off-target.
-These definitions are often used interchangeably, and their parameter values
-(the threshold in the S-score, the baseline in the entropy and Gini
-coefficient, the reference off-target in ratio-based measures) are usually set
-by convention.
+These definitions are often used interchangeably, and their parameters (the
+threshold in the S-score and the reference off-target in ratio-based measures)
+are usually set by convention. The published entropy and Gini have no such
+parameter, but computing them requires choosing how affinities are weighted and
+how pairs without a measured affinity are treated.
 Standardizing them would remove one source of disagreement between
 laboratories and platforms.
 
 Bosc et al.\cite{Bosc2017} showed that these definitions can produce
-substantially different compound rankings on the same dataset, and the
-KInhibition platform\cite{KInhibition2018} explicitly acknowledged that
-conflicting results across metrics are common.
+substantially different compound rankings on the same dataset, and traced
+individual disagreements to profile shape, such as a broad binder with one
+dominant target. The KInhibition platform\cite{KInhibition2018} explicitly
+acknowledged that conflicting results across metrics are common.
 To our knowledge, which binding profile properties determine when the
-definitions agree or conflict, and why, has not been characterized.
+definitions agree or conflict has not been characterized systematically.
 Go/no-go decisions in lead optimization are often made on selectivity
 assessments whose sensitivity to the choice of definition is unknown, and
 inconsistent definitions make compounds hard to compare across studies.
@@ -45,31 +47,31 @@ as follows:
 \begin{itemize}
     \item[(i)] we show that, with entropy and Gini on a common log-affinity
 scale, the S-score, entropy and Gini (the distribution-based family) agree more
-with each other than with the fold-selectivity ratio $R(k)$, clearly on the two
-$\mathrm{p}K_d$ datasets among compounds with an active kinase and with
-qualifications on the other two. With the entropy in its original
-association-constant form, this grouping fails on all three affinity datasets
-(Methods);
+with each other than with the fold-selectivity ratio $R(k)$. This holds clearly
+on the two $\mathrm{p}K_d$ datasets among compounds with an active kinase, and
+with qualifications on the other two. With the entropy in its original
+association-constant form, this grouping fails on all three affinity datasets,
+by an amount that depends on how pairs without detected binding are treated;
 
-    \item[(ii)] we identify three sources of rank instability: near-tied top
-targets, broad profiles, often with one dominant target, and, for compounds with
-no binding above the activity threshold, the convention each definition uses to
-score them;
+    \item[(ii)] we identify three sources of rank instability: the convention
+each definition uses to score compounds with no binding above the activity
+threshold, near-tied top targets, and broad profiles, often with one dominant
+target;
 
     \item[(iii)] we state three properties, (D1) a reliability threshold, (D2)
 distributional consistency and (D3) monotonicity under weak off-target addition.
-No measure examined satisfies D2: moving the activity boundary between the
+No measure we assess satisfies D2: moving the activity boundary between the
 assay floor and the activity threshold reverses 8--13\% of compound pairs under
-the S-score, entropy and Gini on three datasets. D3 holds for simple measures,
-such as a count of active kinases, but not for the S-score, the Gini, or the
-entropy with a baseline below the activity threshold;
+the S-score, entropy and Gini on three datasets. D3 separates the measures;
 
     \item[(iv)] we give a gated, smooth-hinge entropy that provably satisfies D3
-while still weighting binding below the activity threshold. It ranks these
-datasets almost identically to the entropy;
+and weights binding below the activity threshold continuously. On these data it
+ranks compounds almost identically to the entropy and to the share of targets
+with detected binding, which also satisfies D3;
 
     \item[(v)] we evaluate recovery from random subpanels separately from the
-properties. Measures that weight weak binding recover rankings from fewer
-targets on three of the four datasets, but on small panels the share of
-compounds that can be scored limits recovery more than the choice of measure.
+properties. Measures that follow the share of targets with detected binding
+recover rankings from fewer targets than measures that rest on the strongest
+targets, such as the ratio and the published entropy. On small panels,
+recovery is limited mainly by the share of compounds that can be scored.
 \end{itemize}

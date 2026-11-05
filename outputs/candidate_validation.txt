@@ -1,23 +1,23 @@
-Cross-dataset validation (orientation must be negative; D3 = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D4 = 100):
+Cross-dataset validation (orientation must be negative; D2 (d3_* columns) = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D3 (d4_pct) = 100):
       dataset  n_cpd  n_kin  orient_r  d3_emphasis_rev  d3_boundary_rev  d3_entropy_rev  d4_pct
-        Davis     68    363    -0.968           0.0044           0.0817          0.0781   100.0
-      Klaeger    222    219    -0.948           0.0042           0.1131          0.1191   100.0
-Anastassiadis    178    291    -0.934           0.0036           0.1265          0.1042   100.0
-         Metz    704    172    -0.783           0.0072           0.2245          0.2260   100.0
+        Davis     68    363    -0.968           0.0044           0.0922          0.0790   100.0
+      Klaeger    222    217    -0.946           0.0053           0.1297          0.1237   100.0
+Anastassiadis    178    291    -0.934           0.0036           0.1424          0.1058   100.0
+         Metz    704    172    -0.783           0.0072           0.2359          0.2280   100.0
 
 Smoothing-width T sweep on Klaeger:
    T  orient_r  d3_emphasis_rev
-0.50    -0.950           0.0181
-0.75    -0.948           0.0076
-1.00    -0.948           0.0042
-1.50    -0.947           0.0011
-2.00    -0.947           0.0003
+0.50    -0.949           0.0194
+0.75    -0.947           0.0086
+1.00    -0.946           0.0053
+1.50    -0.946           0.0011
+2.00    -0.945           0.0004
 worst-case cross-T ranking agreement (Spearman) = 0.999
 
 Why the gate is needed (Klaeger):
-  gated   selectivity vs n_active = -0.948  (correct: negative)
-  ungated selectivity vs n_active = +0.912  (inverted: positive)
-  ungated selectivity vs distribution family = -0.912  (anti-correlated)
-  gated   selectivity vs distribution family = +0.948
+  gated   selectivity vs n_active = -0.946  (correct: negative)
+  ungated selectivity vs n_active = +0.908  (inverted: positive)
+  ungated selectivity vs distribution family = -0.908  (anti-correlated)
+  gated   selectivity vs distribution family = +0.946
 
 Saved candidate_validation.csv

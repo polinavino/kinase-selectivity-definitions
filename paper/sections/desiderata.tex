@@ -1,33 +1,41 @@
 \subsection{Existing Definitions Against the Properties}
 \label{sec:desiderata}
 
-Table~\ref{tab:desiderata} summarizes how the four definitions, the two
+Table~\ref{tab:desiderata} summarizes how the four definitions, three
 comparators, and the candidate measure fare against the properties D1--D3
-defined in Methods. No measure satisfies D2: wherever a parameter places the
-activity boundary, moving it across $B$ reorders compounds. D1 and D3 separate
-the measures, and simple constructions such as the active count and the entropy
-with $\beta = \tau^*$ satisfy both.
+defined in Methods. None of them satisfies D2: moving the activity boundary
+across $B$ reorders compounds under every measure in the table. D1 and D3
+separate the measures. Simple constructions satisfy both: the active count, the
+entropy with $\beta = \tau^*$, and the S-score with its threshold at the floor,
+each reported only for compounds with an active target.
 
 \begin{table}[h]
   \centering
   \caption{Satisfaction of the three motivated properties by the existing
-           selectivity definitions, two comparators, and the candidate measure.
-           $\checkmark$: satisfied. $\times$: violated. D1 is assessed from each
-           measure's reporting rule (any measure can adopt the gate), D2
-           empirically on the four datasets for the parameter that places the
-           activity boundary, and D3 from the functional form. The candidate's
-           emphasis baseline, with its gate fixed, satisfies D2.}
+           selectivity definitions, three comparators, and the candidate
+           measure. $\checkmark$: satisfied. $\times$: violated. D1 is assessed
+           from each measure's reporting rule. The comparators (S-score with
+           $\tau = x_0$, count, entropy with $\beta = \tau^*$) are reported only
+           for compounds with an active target, and any measure can adopt this
+           gate. D2 is assessed empirically, with the parameter that places the
+           activity boundary swept over $B$; a comparator is assessed with the
+           parameter it fixes swept. A measure satisfies D2 only if at most
+           $\varepsilon$ of pairs reverse on every dataset (for the ratio, for
+           every $k$). D3 is assessed from the functional form. With the
+           candidate's gate fixed, its emphasis baseline stays within
+           $\varepsilon$.}
   \label{tab:desiderata}
   \small
-  \setlength{\tabcolsep}{4pt}
-  \begin{tabular}{lccccccc}
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{lcccccccc}
     \toprule
-    & S-score & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Candidate \\
-    &         &       & $\beta = x_0$ & $\beta = \tau^*$ & & & \\
+    & \multicolumn{2}{c}{S-score} & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Candidate \\
+    \cmidrule(lr){2-3}\cmidrule(lr){5-6}
+    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & & & \\
     \midrule
-    D1 (reliability threshold)         & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
-    D2 (distributional consistency)    & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
-    D3 (monotonicity, weak off-target) & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+    D1 (reliability)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
+    D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
+    D3 (monotonicity)  & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -35,49 +43,59 @@ with $\beta = \tau^*$ satisfy both.
 \textit{D1.} None of the four definitions has a reliability condition, so each
 scores the 22 Klaeger compounds with no binding above the activity threshold.
 Pooled across the four definitions' sweeps, their rank instability is
-$\sigma = 78.0$ against $32.1$ for active compounds ($p < 0.001$, Mann--Whitney
+$\sigma = 77.9$ against $32.2$ for active compounds ($p < 0.001$, Mann--Whitney
 $U$ test; Figure~\ref{fig:failure_modes}, left). Within a single definition the
-contrast is significant only for the Gini ($65.0$ against $16.0$), through its
+contrast is significant only for the Gini ($65.0$ against $16.3$), through its
 convention for undefined scores (Methods). It is small and not significant for
-the entropy ($11.8$ against $12.5$, $p = 0.81$) and the ratio ($17.3$ against
-$19.2$, $p = 0.50$), and reverses for the S-score ($18.8$ against $25.6$,
+the entropy ($11.9$ against $12.6$, $p = 0.91$) and the ratio ($17.5$ against
+$19.1$, $p = 0.51$), and reverses for the S-score ($19.0$ against $25.7$,
 $p = 0.01$). The pooled contrast persists with the undefined entropy and Gini
-configurations dropped ($66.3$ against $31.6$) and with only the S-score and
-ratio pooled ($70.7$ against $37.6$, both $p < 0.001$). Computed only over each
+configurations dropped ($66.2$ against $31.7$) and with only the S-score and
+ratio pooled ($70.6$ against $37.7$, both $p < 0.001$). Computed only over each
 compound's defined configurations, zero-active compounds are \emph{more}
-stable than active ones within the entropy ($6.9$ against $13.2$) and the Gini
-($6.7$ against $13.3$, both $p = 0.002$). The case for D1 is therefore not that
+stable than active ones within the entropy ($7.0$ against $13.5$) and the Gini
+($6.7$ against $13.6$, both $p = 0.002$). The case for D1 is therefore not that
 these scores are unstable within a definition, but that they rest on
 sub-threshold values alone, which each definition treats by its own
 convention. Any of the four definitions could satisfy D1 by withholding or
-flagging such scores, and $R(k)$ would under Bosc et al.'s convention (Methods,
-``Ratio'').
+flagging such scores, as Bosc et al.\ did for the S-score.
 
 \textit{D2.} Swept over $B = [x_0, \tau^*]$, the S-score's threshold reverses
 the order of $8.4$--$13.0\%$ of pairs of scored compounds on Davis, Klaeger and
 Anastassiadis, and $21.8\%$ on Metz. The entropy's and Gini's baselines reverse
-$7.9$--$12.5\%$, and $22.5$--$22.8\%$ on Metz. The active count ranks every
-panel as the S-score does, and the entropy with $\beta = \tau^*$ is the entropy
-at one end of its sweep, so both have the same sensitivity. The candidate's gate
-reverses $9.2$--$14.2\%$, and $23.6\%$ on Metz, with per-compound instability
-similar to that of the entropy's baseline on Klaeger (mean rank $\sigma = 7.3$
-and $7.5$; Figure~\ref{fig:failure_modes}, right). The ratio's floor fallback
-reverses $2.1$--$13.5\%$ of pairs on Klaeger and Anastassiadis, depending on
-$k$, and up to $2.6\%$ on Davis. All are well above $\varepsilon = 1\%$. No
-measure examined therefore satisfies D2, and the activity boundary must be
-fixed in the analysis protocol, with its effect reported. With its gate fixed,
+$7.9$--$12.4\%$, and $22.5$--$22.8\%$ on Metz. Each comparator fixes a
+parameter of one of these sweeps and so shares its sensitivity: the S-score with
+$\tau = x_0$ and the active count reverse the same pairs as the S-score, and the
+entropy with $\beta = \tau^*$ the same pairs as the entropy. The candidate's
+gate, swept with $T$ held at $\tau^* - x_0$, reverses $9.2$--$14.2\%$, and
+$23.6\%$ on Metz. On Klaeger its per-compound instability is similar to that of the
+entropy's baseline (mean rank $\sigma = 7.4$ and $7.5$;
+Figure~\ref{fig:failure_modes}, right). For the ratio, the parameter is the
+level $b$ in $R_b(k) = x_{(1)} - \max(x_{(k+1)}, b)$, which replaces any
+off-target affinity below $b$, measured or not, by $b$. Moving $b$ across $B$
+reverses $2.1$--$13.7\%$ of pairs on Klaeger and Anastassiadis, depending on
+$k$, $0$--$2.6\%$ on Davis and $0.04$--$1.03\%$ on Metz (Supporting
+Information, Table~S4). It exceeds $\varepsilon$ for every $k$ on Klaeger and
+Anastassiadis. None of the measures in Table~\ref{tab:desiderata} therefore
+satisfies D2, and the activity boundary must be fixed in the analysis protocol,
+with its effect reported. The published entropy has no such boundary parameter
+and is not assessed against D2. With its gate fixed,
 the candidate's remaining parameter, its emphasis baseline, reverses at most
 $0.72\%$ of pairs.
 
-\textit{D3.} The S-score and Gini violate D3 by construction: both are computed
-over the full panel of size $N$, so adding a kinase the compound binds only
-weakly lowers the S-score's hit fraction and can raise the Gini's inequality,
-inflating the apparent selectivity. The active count ranks every panel exactly
-as the S-score at $\tau^*$ does but does not divide by $N$, so it satisfies D3.
+\textit{D3.} The S-score violates D3 for any threshold above the floor. Adding
+a kinase bound between the floor and the threshold increases $N$ but not the
+number of hits, so the hit fraction falls and the compound looks more
+selective. With the threshold at the floor, every addition that D3 allows is a
+hit. A compound with $C$ hits among $N$ kinases then moves from $-C/N$ to
+$-(C+1)/(N+1)$, which is not higher, so the S-score with $\tau = x_0$ satisfies
+D3. The active count ranks every panel exactly as the S-score at $\tau^*$ does
+but does not divide by $N$, so it also satisfies D3.
 D3 therefore concerns how scores change when a panel is extended, not how
 compounds are ranked on a given panel. This matters whenever panels differ in
-size or composition, as between Davis and Klaeger.
-The ratio satisfies D3, because a sub-threshold kinase cannot displace the
+size or composition, as between Davis and Klaeger. The Gini violates D3 by
+construction: it is computed over the full panel, so adding a weakly bound
+kinase can raise its inequality. The ratio satisfies D3, because a sub-threshold kinase cannot displace the
 primary target and cannot lower the reference off-target's affinity. The
 entropy satisfies D3 at $\beta = \tau^*$, where no addition below $\tau^*$
 carries weight, and for $\beta < \tau^*$ only for additions at or below $\beta$
@@ -92,16 +110,20 @@ The non-binder gate is what makes this so. Without it, the non-binding kinases
 at the floor dominate the profile and the score inverts, rising with the number
 of active kinases ($r = +0.91$ on Klaeger).
 
-Because the candidate is a local modification of the entropy, the two rank the
+Because the candidate changes only the entropy's gate and hinge, the two rank the
 compounds they both score almost identically (Spearman $0.994$--$0.998$ on all
 four datasets). The candidate satisfies D1 by its reliability gate and D3 by
 its functional form (Methods, Proposition), while still weighting binding
-between the floor and the activity threshold. Like every other measure, it
+between the floor and the activity threshold. It also ranks compounds almost
+identically to the S-score with $\tau = x_0$ (Spearman $0.998$--$0.9997$), which
+satisfies both properties too. What the candidate adds is a weight on each
+target that increases continuously with affinity above the floor, which
+separates compounds that a count of detected targets ties. Like every other measure, it
 fails D2 when its gate is moved (above). The activity threshold $\tau^*$, which
 sets its D1 gate and $T$, is also fixed. Moving it from $5.5$ to $7$ ($40\%$ to
 $70\%$ on Anastassiadis) changes which compounds are scored but barely changes
 how the candidate ranks those scored at both values (Spearman $\geq 0.999$ on
-every dataset). D3 also holds on every compound in all four datasets when one
+every dataset). D3 also holds for every scored compound in all four datasets when one
 kinase is added at $\tau^*$, the strongest binding that D3 allows (Supporting
 Information Table~S4).
 
@@ -120,56 +142,72 @@ Information Table~S4).
   \label{fig:failure_modes}
 \end{figure}
 
-The featured candidate is one member of a family of measures: the R\'enyi
-orders $0.5$, $1$ and $2$ keep the emphasis baseline within $\varepsilon$ on
-Davis and Klaeger, as do smoothing widths from $0.75$ to $2$ times
-$\tau^* - x_0$ on Klaeger. D3 is proved only for the Shannon order,
+Variants of the candidate behave in much the same way. Sweeping the emphasis
+baseline reverses at most $\varepsilon$ of pairs for R\'enyi orders $0.5$ and
+$1$ on Davis and Klaeger, and for smoothing widths from $0.75$ to $2$ times
+$\tau^* - x_0$ on Klaeger. Order $2$ stays within $\varepsilon$ on Davis and
+slightly exceeds it on Klaeger ($1.04\%$). D3 is proved only for the Shannon order,
 $\alpha = 1$. These variants are reported in Supporting Information
 (Section~S5).
 
 \subsection{Recovery from Small Panels}
 \label{sec:recovery}
 
-The panel-size analysis above scores every compound on every subpanel. Under
-D1, a compound with no active target on a subpanel receives no score. We
-therefore compared the four definitions, the two comparators and the candidate
-on the same random subpanels, from 10 targets up to the full panel, with the
-D1 gate applied to all of them (Figure~\ref{fig:candidate}). Coverage, the
-share of compounds scored on the full panel that are still scored on the
-subpanel, is then the same for every measure. At 50 targets it is $88\%$ on
-Davis, $71\%$ on Klaeger, $77\%$ on Anastassiadis and $99\%$ on Metz.
+Karaman et al.\cite{Karaman2008} scored each compound's S-score on random
+subpanels and found that it varies more as panels shrink. Scoring every
+compound on every subpanel, as they did, mixes the ranking with each
+definition's convention for compounds that have no active target on the
+subpanel (Supporting Information, Section~S1). Under D1, such a compound
+receives no score. We therefore compared all measures on the same random
+subpanels, from 10 targets up to the full panel, with the D1 gate applied to
+all of them (Figure~\ref{fig:candidate}). Coverage, the share of compounds
+scored on the full panel that are still scored on the subpanel, is then the
+same for every measure. At 50 targets it is $88\%$ on Davis, $71\%$ on Klaeger,
+$77\%$ on Anastassiadis and $99\%$ on Metz. We write $p^*$ for the smallest
+panel size tested at which the mean Spearman correlation with the full-panel
+ranking, over compounds scored on both, exceeds $0.90$, a bar borrowed from the
+``excellent'' range of intraclass-correlation guidelines.\cite{Koo2016}
 
-Among the compounds scored on both panels, measures that weight binding below
-the activity threshold recover the full-panel ranking from fewer targets on
-three of the four datasets. The entropy with $\beta = x_0$, the Gini and the
-candidate reach mean Spearman $0.90$ at 20 targets on Davis, 50 on Klaeger and
-30 on Anastassiadis. The S-score and the active count need 30, 100 and 50, and
-the entropy with $\beta = \tau^*$ needs 40, 100 and 65. On Metz the order
-reverses (65 against 50 targets), where untested targets are set to the floor
-(Methods). The candidate is the only measure in the faster group that
-satisfies D3, but it recovers rankings no better than the entropy with
-$\beta = x_0$.
+How quickly a measure recovers depends on how much its ranking rests on the few
+strongest targets (Figure~\ref{fig:candidate}, top). On the full panel, the
+S-score with $\tau = x_0$, the entropy with $\beta = x_0$, the Gini and the
+candidate all rank compounds by the share of targets with detected binding
+(Spearman $\geq 0.98$ with the S-score at $\tau = x_0$ on every dataset). They
+reach $p^*$ at 20 targets on Davis, 50 on Klaeger and 30 on Anastassiadis. The
+S-score at $\tau^*$ and the active count need 30, 80 and 50, and the entropy
+with $\beta = \tau^*$ 40, 100 and 65. The measures dominated by the strongest
+targets recover slowest. The published entropy needs 300 of 363 targets on
+Davis, 200 of 217 on Klaeger and 150 of 172 on Metz, and the ratio needs the
+full panel on every dataset except Klaeger (200). The published entropy gives
+binding below the activity threshold a small positive weight, so including weak
+binding does not by itself make a measure recover quickly. On Metz, where
+untested targets are set to the floor (Methods), the order of the first two
+groups reverses (65 against 50 targets). The candidate recovers rankings no
+better than the S-score with $\tau = x_0$.
 
-The active count and the S-score give identical recovery on every dataset,
-although only the count satisfies D3. Recoverability, which counts a pair only
-if both compounds are scored and keep their order, is limited mainly by
-coverage. Keeping $90\%$ of clearly separated pairs takes 150 targets on Davis,
-200 on Klaeger and Anastassiadis, and 40 on Metz for every measure except the
-ratio, which needs as many or more. On Davis, Anastassiadis and Metz, compounds
-whose score changes most when a single target is left out recover least well
-(Spearman $r = 0.21$--$0.73$ between that change and the rank error at 50
-targets, for the entropy with $\beta = x_0$, the Gini and the candidate). On
-Klaeger this association is weak ($r \leq 0.14$).
+The active count and the S-score at $\tau^*$ give identical recovery on every
+dataset, although only the count satisfies D3. Recoverability is limited mainly
+by coverage. Keeping $90\%$ of clearly separated pairs takes 150 targets on
+Davis, 200 on Klaeger and Anastassiadis, and 40 on Metz for every measure except
+the ratio and the published entropy, which need as many or more
+(Figure~\ref{fig:candidate}, middle). On Davis, Anastassiadis and Metz,
+compounds whose score changes most when a single target is left out tend to
+have larger rank errors at 50 targets (Spearman $r = 0.21$--$0.73$, for the
+entropy with $\beta = x_0$, the Gini and the candidate). On Klaeger this
+association is weak ($r \leq 0.14$).
 
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{figures/panel_recovery}
   \caption{Recovery from random subpanels with the D1 gate applied to every
            measure, on all four datasets (50 subpanels per size).
-           Top: recoverability, the share of clearly separated full-panel pairs
-           that are scored on the subpanel and keep their order. Bottom:
-           coverage, the share of compounds scored on the full panel that are
-           still scored. The S-score and the active count coincide. Dashed line:
+           Top: mean Spearman correlation between the subpanel and full-panel
+           rankings, over compounds scored on both. Middle: recoverability,
+           the share of clearly separated full-panel pairs that are scored on
+           the subpanel and keep their order. Bottom: coverage, the share of compounds scored on the full panel that are
+           still scored. The S-score at $\tau^*$ and the active count coincide,
+           and the S-score at $x_0$ is drawn over the candidate, which it almost
+           matches. The published entropy is not defined on Anastassiadis. Dashed line:
            $0.90$.}
   \label{fig:candidate}
 \end{figure}
@@ -177,11 +215,8 @@ Klaeger this association is weak ($r \leq 0.14$).
 \subsection{Why the Smooth Hinge Matters}
 \label{sec:hinge}
 
-The candidate and the entropy with $\beta = x_0$ differ in principle on D3,
-through the candidate's functional form.
-
 \textit{The entropy can violate D3.} Its hard cutoff gives a kinase just above
-the baseline $\beta$ an arbitrarily small weight. A profile with many such
+the baseline $\beta$ a weight close to zero. A profile with many such
 kinases therefore has high entropy, and adding one kinase that is bound more
 strongly, but still below $\tau^*$, concentrates the distribution and raises the
 selectivity score. For example, with $\beta = 5.0$ and $\tau^* = 6.0$, a profile
@@ -202,8 +237,6 @@ binding below $\tau^*$.
 \textit{The candidate cannot violate D3.} By the proposition in Methods, no
 sub-threshold addition can raise its score, and its condition on $T$ is sharp:
 just below it, a profile with one strong target and enough kinases just above
-the floor violates D3. With $T = 1$ on Metz or $T = 10$ on Anastassiadis, both
-below the bound, constructed profiles of this kind violate D3 (by up to $0.014$
-bits on Anastassiadis), although none of the real compounds does. Setting
-$T = \tau^* - x_0$ (Methods) instead changes the Metz and Anastassiadis rankings
-negligibly (Spearman $0.999$ against $T = 1$ and $T = 10$, respectively).
+the floor violates D3. Below the bound, constructed profiles of this kind
+violate D3 (by up to $0.014$ bits on Anastassiadis with $T = 10$), although none
+of the real compounds does.

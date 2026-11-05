@@ -4,16 +4,16 @@ Cross-definition correlation matrix under the ORIGINAL metric operationalization
 
 The manuscript computes entropy and Gini on a common baseline-subtracted
 log-affinity scale so that all four definitions are comparable and so that the
-baseline is an explicit, swept parameter (motivating D3). Reviewer 1 asked for
+baseline is an explicit, swept parameter (motivating D2). Reviewer 1 asked for
 a robustness check: does the two-family clustering (S-score/entropy/Gini vs.
 ratio) survive if entropy and Gini are instead computed in forms closer to
 their original publications?
 
   * Entropy (Uitdehaag & Zaman 2011): association-constant weighting,
-    p_i = Ka_i / sum_j Ka_j with Ka_i = 1/Kd_i, computed PER COMPOUND ONLY
-    OVER ITS MEASURED TARGETS (Davis is a complete matrix, so "measured" is
-    every cell; Klaeger and Metz are sparse, so unmeasured kinase-compound
-    pairs are excluded from the sum rather than treated as floor measurements).
+    p_i = Ka_i / sum_j Ka_j with Ka_i = 1/Kd_i, computed per compound with the
+    floor-coded entries (no binding detected on Davis and Klaeger, not tested on
+    Metz) excluded from the sum, and, as a sensitivity analysis, with them included
+    at the floor value.
   * Gini (Graczyk 2010): computed directly on native percent-inhibition
     values (no baseline subtraction), which is only meaningful on the one
     percent-inhibition dataset, Anastassiadis.
@@ -115,26 +115,37 @@ M_davis = aff.pivot(index='Drug_Index', columns='Protein_Index', values='Affinit
 ent_lit_davis = entropy_literal_dense(M_davis)
 corr_davis = corr_with_literal_entropy(M_davis, ent_lit_davis)
 print_matrix("Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
-             "(complete matrix, all entries 'measured')", corr_davis)
+             "(complete matrix, floor-coded entries included)", corr_davis)
+# Davis codes non-binding pairs at the floor (pKd 5.0); a floor-coded entry is a
+# censored value, not a measured affinity. Sensitivity: exclude them per compound.
+ent_lit_davis_meas = entropy_literal_sparse([r[r > 5.0] for r in M_davis])
+print(f"Davis floor-coded entries: {100 * (M_davis == 5.0).mean():.2f}%; Ka entropy with vs without them: "
+      f"Spearman {spearmanr(ent_lit_davis, ent_lit_davis_meas)[0]:.3f}")
+print_matrix("Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
+             "(floor-coded entries excluded)", corr_with_literal_entropy(M_davis, ent_lit_davis_meas))
 
 # -------------------------------- Klaeger ------------------------------------
-raw = pd.read_excel(os.path.join(HERE, "aan4368_Table_S2.xlsx"), sheet_name='Kinobeads')
-raw['pKd'] = 9 - np.log10(raw['Apparent Kd'])
-raw = raw.dropna(subset=['pKd'])
-high = raw[raw['Target Classification'] == 'High confidence']
-# curated protein-kinase panel (curate_panels.py)
+# curated protein-kinase panel (curate_panels.py); entries above the floor are the
+# measured high-confidence affinities, the rest are pairs with no detected binding
 M_klaeger = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0)
-high = high[high['Gene Name'].isin(M_klaeger.columns)]
-drugs = M_klaeger.index.tolist()
-by_drug = high.groupby('Drug')['pKd'].apply(list)
-pkd_rows = [by_drug.get(d, []) for d in drugs]
+pkd_rows = [r[r > 5.0] for r in M_klaeger.values]
 # a compound with no measured curated target has an undefined entropy, scored 0 as elsewhere
 ent_lit_klaeger = np.array([entropy_literal_sparse([r])[0] if len(r) else 0.0 for r in pkd_rows])
 print(f"Klaeger compounds with no measured curated target (entropy undefined, set to 0): "
       f"{sum(len(r) == 0 for r in pkd_rows)}")
 corr_klaeger = corr_with_literal_entropy(M_klaeger.values, ent_lit_klaeger)
 print_matrix("Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
-             "(measured high-confidence entries only, per compound)", corr_klaeger)
+             "(floor-coded entries excluded)", corr_klaeger)
+print_matrix("Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
+             "(floor-coded entries included)",
+             corr_with_literal_entropy(M_klaeger.values, entropy_literal_dense(M_klaeger.values)))
+act_k = (M_klaeger.values > 6.0).any(1)
+print_matrix(f"Klaeger, the {int(act_k.sum())} compounds with an active kinase: manuscript S/Gini/ratio vs. "
+             "literal Ka-weighted entropy (floor-coded entries excluded)",
+             corr_with_literal_entropy(M_klaeger.values[act_k], ent_lit_klaeger[act_k]))
+print_matrix(f"Klaeger, the {int(act_k.sum())} compounds with an active kinase: manuscript S/Gini/ratio vs. "
+             "literal Ka-weighted entropy (floor-coded entries included)",
+             corr_with_literal_entropy(M_klaeger.values[act_k], entropy_literal_dense(M_klaeger.values[act_k])))
 
 # ---------------------------------- Metz --------------------------------------
 mz = pd.read_excel(os.path.join(HERE, "metz.xls"), sheet_name=0, header=0)
@@ -152,7 +163,11 @@ corr_metz = corr_with_literal_entropy(M_metz, ent_lit_metz, ratio_floor=4.0,
                                       s_thr=np.arange(5.0, 7.75, .25),
                                       baselines=np.arange(4.0, 5.75, .25))
 print_matrix("Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
-             "(measured entries only, per compound)", corr_metz)
+             "(floor-imputed entries excluded: measured entries only)", corr_metz)
+print_matrix("Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
+             "(floor-imputed entries included)",
+             corr_with_literal_entropy(M_metz, entropy_literal_dense(M_metz), ratio_floor=4.0,
+                                       s_thr=np.arange(5.0, 7.75, .25), baselines=np.arange(4.0, 5.75, .25)))
 
 # ----------------------------- Anastassiadis -----------------------------------
 csv = os.path.join(HERE, "anastassiadis_matrix.csv")

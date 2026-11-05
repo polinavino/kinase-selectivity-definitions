@@ -1,25 +1,61 @@
 
-Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (complete matrix, all entries 'measured')
+Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (complete matrix, floor-coded entries included)
         s_score entropy gini    ratio   
 s_score    1.000   0.344   0.963   0.563
 entropy    0.344   1.000   0.368   0.688
 gini       0.963   0.368   1.000   0.510
 ratio      0.563   0.688   0.510   1.000
+Davis floor-coded entries: 71.13%; Ka entropy with vs without them: Spearman 0.795
+
+Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
+        s_score entropy gini    ratio   
+s_score    1.000   0.738   0.963   0.563
+entropy    0.738   1.000   0.736   0.861
+gini       0.963   0.736   1.000   0.510
+ratio      0.563   0.861   0.510   1.000
 Klaeger compounds with no measured curated target (entropy undefined, set to 0): 6
 
-Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (measured high-confidence entries only, per compound)
+Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
         s_score entropy gini    ratio   
-s_score    1.000   0.567   0.511   0.085
-entropy    0.567   1.000   0.532   0.661
-gini       0.511   0.532   1.000   0.657
-ratio      0.085   0.661   0.657   1.000
+s_score    1.000   0.571   0.508   0.078
+entropy    0.571   1.000   0.530   0.657
+gini       0.508   0.530   1.000   0.655
+ratio      0.078   0.657   0.655   1.000
 
-Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (measured entries only, per compound)
+Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries included)
+        s_score entropy gini    ratio   
+s_score    1.000  -0.597   0.508   0.078
+entropy   -0.597   1.000   0.077   0.648
+gini       0.508   0.077   1.000   0.655
+ratio      0.078   0.648   0.655   1.000
+
+Klaeger, the 200 compounds with an active kinase: manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
+        s_score entropy gini    ratio   
+s_score    1.000   0.564   0.892   0.378
+entropy    0.564   1.000   0.782   0.916
+gini       0.892   0.782   1.000   0.635
+ratio      0.378   0.916   0.635   1.000
+
+Klaeger, the 200 compounds with an active kinase: manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries included)
+        s_score entropy gini    ratio   
+s_score    1.000  -0.412   0.892   0.378
+entropy   -0.412   1.000  -0.094   0.591
+gini       0.892  -0.094   1.000   0.635
+ratio      0.378   0.591   0.635   1.000
+
+Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-imputed entries excluded: measured entries only)
         s_score entropy gini    ratio   
 s_score    1.000   0.291   0.821   0.193
 entropy    0.291   1.000   0.385   0.758
 gini       0.821   0.385   1.000   0.155
 ratio      0.193   0.758   0.155   1.000
+
+Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-imputed entries included)
+        s_score entropy gini    ratio   
+s_score    1.000   0.241   0.821   0.193
+entropy    0.241   1.000   0.342   0.742
+gini       0.821   0.342   1.000   0.155
+ratio      0.193   0.742   0.155   1.000
 
 Anastassiadis (n=178): manuscript S/entropy/ratio vs. native %inhibition Gini (no baseline subtraction)
         s_score entropy gini    ratio   

@@ -1,0 +1,434 @@
+Protein_Index,construct,gene,status,reason
+0,AAK1,AAK1,kept,reference construct for AAK1
+1,ABL1(E255K)-phosphorylated,ABL1,removed,mutant construct
+3,ABL1(F317I)-phosphorylated,ABL1,removed,mutant construct
+5,ABL1(F317L)-phosphorylated,ABL1,removed,mutant construct
+7,ABL1(H396P)-phosphorylated,ABL1,removed,mutant construct
+8,ABL1(M351T)-phosphorylated,ABL1,removed,mutant construct
+10,ABL1(Q252H)-phosphorylated,ABL1,removed,mutant construct
+12,ABL1(T315I)-phosphorylated,ABL1,removed,mutant construct
+13,ABL1(Y253F)-phosphorylated,ABL1,removed,mutant construct
+15,ABL1-phosphorylated,ABL1,kept,reference construct for ABL1
+16,ABL2,ABL2,kept,reference construct for ABL2
+17,ACVR1,ACVR1,kept,reference construct for ACVR1
+18,ACVR1B,ACVR1B,kept,reference construct for ACVR1B
+19,ACVR2A,ACVR2A,kept,reference construct for ACVR2A
+20,ACVR2B,ACVR2B,kept,reference construct for ACVR2B
+21,ACVRL1,ACVRL1,kept,reference construct for ACVRL1
+22,ADCK3,ADCK3,kept,reference construct for ADCK3
+23,ADCK4,ADCK4,kept,reference construct for ADCK4
+24,AKT1,AKT1,kept,reference construct for AKT1
+25,AKT2,AKT2,kept,reference construct for AKT2
+26,AKT3,AKT3,kept,reference construct for AKT3
+27,ALK,ALK,kept,reference construct for ALK
+28,AMPK-alpha1,AMPK-alpha1,kept,reference construct for AMPK-alpha1
+29,AMPK-alpha2,AMPK-alpha2,kept,reference construct for AMPK-alpha2
+30,ANKK1,ANKK1,kept,reference construct for ANKK1
+31,ARK5,ARK5,kept,reference construct for ARK5
+32,ASK1,ASK1,kept,reference construct for ASK1
+33,ASK2,ASK2,kept,reference construct for ASK2
+34,AURKA,AURKA,kept,reference construct for AURKA
+35,AURKB,AURKB,kept,reference construct for AURKB
+36,AURKC,AURKC,kept,reference construct for AURKC
+37,AXL,AXL,kept,reference construct for AXL
+38,BIKE,BIKE,kept,reference construct for BIKE
+39,BLK,BLK,kept,reference construct for BLK
+40,BMPR1A,BMPR1A,kept,reference construct for BMPR1A
+41,BMPR1B,BMPR1B,kept,reference construct for BMPR1B
+42,BMPR2,BMPR2,kept,reference construct for BMPR2
+43,BMX,BMX,kept,reference construct for BMX
+44,BRAF,BRAF,kept,reference construct for BRAF
+45,BRAF(V600E),BRAF,removed,mutant construct
+46,BRK,BRK,kept,reference construct for BRK
+47,BRSK1,BRSK1,kept,reference construct for BRSK1
+48,BRSK2,BRSK2,kept,reference construct for BRSK2
+49,BTK,BTK,kept,reference construct for BTK
+50,CAMK1,CAMK1,kept,reference construct for CAMK1
+51,CAMK1D,CAMK1D,kept,reference construct for CAMK1D
+52,CAMK1G,CAMK1G,kept,reference construct for CAMK1G
+53,CAMK2A,CAMK2A,kept,reference construct for CAMK2A
+54,CAMK2B,CAMK2B,kept,reference construct for CAMK2B
+55,CAMK2D,CAMK2D,kept,reference construct for CAMK2D
+56,CAMK2G,CAMK2G,kept,reference construct for CAMK2G
+57,CAMK4,CAMK4,kept,reference construct for CAMK4
+58,CAMKK1,CAMKK1,kept,reference construct for CAMKK1
+59,CAMKK2,CAMKK2,kept,reference construct for CAMKK2
+60,CASK,CASK,kept,reference construct for CASK
+61,CDC2L1,CDC2L1,kept,reference construct for CDC2L1
+62,CDC2L2,CDC2L2,kept,reference construct for CDC2L2
+63,CDC2L5,CDC2L5,kept,reference construct for CDC2L5
+64,CDK11,CDK11,kept,reference construct for CDK11
+65,CDK2,CDK2,kept,reference construct for CDK2
+66,CDK3,CDK3,kept,reference construct for CDK3
+69,CDK5,CDK5,kept,reference construct for CDK5
+70,CDK7,CDK7,kept,reference construct for CDK7
+71,CDK8,CDK8,kept,reference construct for CDK8
+72,CDK9,CDK9,kept,reference construct for CDK9
+73,CDKL1,CDKL1,kept,reference construct for CDKL1
+74,CDKL2,CDKL2,kept,reference construct for CDKL2
+75,CDKL3,CDKL3,kept,reference construct for CDKL3
+76,CDKL5,CDKL5,kept,reference construct for CDKL5
+77,CHEK1,CHEK1,kept,reference construct for CHEK1
+78,CHEK2,CHEK2,kept,reference construct for CHEK2
+79,CIT,CIT,kept,reference construct for CIT
+80,CLK1,CLK1,kept,reference construct for CLK1
+81,CLK2,CLK2,kept,reference construct for CLK2
+82,CLK3,CLK3,kept,reference construct for CLK3
+83,CLK4,CLK4,kept,reference construct for CLK4
+84,CSF1R,CSF1R,kept,reference construct for CSF1R
+85,CSK,CSK,kept,reference construct for CSK
+86,CSNK1A1,CSNK1A1,kept,reference construct for CSNK1A1
+87,CSNK1A1L,CSNK1A1L,kept,reference construct for CSNK1A1L
+88,CSNK1D,CSNK1D,kept,reference construct for CSNK1D
+89,CSNK1E,CSNK1E,kept,reference construct for CSNK1E
+90,CSNK1G1,CSNK1G1,kept,reference construct for CSNK1G1
+91,CSNK1G2,CSNK1G2,kept,reference construct for CSNK1G2
+92,CSNK1G3,CSNK1G3,kept,reference construct for CSNK1G3
+93,CSNK2A1,CSNK2A1,kept,reference construct for CSNK2A1
+94,CSNK2A2,CSNK2A2,kept,reference construct for CSNK2A2
+95,CTK,CTK,kept,reference construct for CTK
+96,DAPK1,DAPK1,kept,reference construct for DAPK1
+97,DAPK2,DAPK2,kept,reference construct for DAPK2
+98,DAPK3,DAPK3,kept,reference construct for DAPK3
+99,DCAMKL1,DCAMKL1,kept,reference construct for DCAMKL1
+100,DCAMKL2,DCAMKL2,kept,reference construct for DCAMKL2
+101,DCAMKL3,DCAMKL3,kept,reference construct for DCAMKL3
+102,DDR1,DDR1,kept,reference construct for DDR1
+103,DDR2,DDR2,kept,reference construct for DDR2
+104,DLK,DLK,kept,reference construct for DLK
+105,DMPK,DMPK,kept,reference construct for DMPK
+106,DMPK2,DMPK2,kept,reference construct for DMPK2
+107,DRAK1,DRAK1,kept,reference construct for DRAK1
+108,DRAK2,DRAK2,kept,reference construct for DRAK2
+109,DYRK1A,DYRK1A,kept,reference construct for DYRK1A
+110,DYRK1B,DYRK1B,kept,reference construct for DYRK1B
+111,DYRK2,DYRK2,kept,reference construct for DYRK2
+112,EGFR,EGFR,kept,reference construct for EGFR
+113,EGFR(E746-A750del),EGFR,removed,mutant construct
+114,EGFR(G719C),EGFR,removed,mutant construct
+115,EGFR(G719S),EGFR,removed,mutant construct
+116,"EGFR(L747-E749del, A750P)",EGFR,removed,mutant construct
+117,"EGFR(L747-S752del, P753S)",EGFR,removed,mutant construct
+118,"EGFR(L747-T751del,Sins)",EGFR,removed,mutant construct
+119,EGFR(L858R),EGFR,removed,mutant construct
+120,"EGFR(L858R,T790M)",EGFR,removed,mutant construct
+121,EGFR(L861Q),EGFR,removed,mutant construct
+122,EGFR(S752-I759del),EGFR,removed,mutant construct
+123,EGFR(T790M),EGFR,removed,mutant construct
+124,EIF2AK1,EIF2AK1,kept,reference construct for EIF2AK1
+125,EPHA1,EPHA1,kept,reference construct for EPHA1
+126,EPHA2,EPHA2,kept,reference construct for EPHA2
+127,EPHA3,EPHA3,kept,reference construct for EPHA3
+128,EPHA4,EPHA4,kept,reference construct for EPHA4
+129,EPHA5,EPHA5,kept,reference construct for EPHA5
+130,EPHA6,EPHA6,kept,reference construct for EPHA6
+131,EPHA7,EPHA7,kept,reference construct for EPHA7
+132,EPHA8,EPHA8,kept,reference construct for EPHA8
+133,EPHB1,EPHB1,kept,reference construct for EPHB1
+134,EPHB2,EPHB2,kept,reference construct for EPHB2
+135,EPHB3,EPHB3,kept,reference construct for EPHB3
+136,EPHB4,EPHB4,kept,reference construct for EPHB4
+137,EPHB6,EPHB6,kept,reference construct for EPHB6
+138,ERBB2,ERBB2,kept,reference construct for ERBB2
+139,ERBB3,ERBB3,kept,reference construct for ERBB3
+140,ERBB4,ERBB4,kept,reference construct for ERBB4
+141,ERK1,ERK1,kept,reference construct for ERK1
+142,ERK2,ERK2,kept,reference construct for ERK2
+143,ERK3,ERK3,kept,reference construct for ERK3
+144,ERK4,ERK4,kept,reference construct for ERK4
+145,ERK5,ERK5,kept,reference construct for ERK5
+146,ERK8,ERK8,kept,reference construct for ERK8
+147,ERN1,ERN1,kept,reference construct for ERN1
+148,FAK,FAK,kept,reference construct for FAK
+149,FER,FER,kept,reference construct for FER
+150,FES,FES,kept,reference construct for FES
+151,FGFR1,FGFR1,kept,reference construct for FGFR1
+152,FGFR2,FGFR2,kept,reference construct for FGFR2
+153,FGFR3,FGFR3,kept,reference construct for FGFR3
+154,FGFR3(G697C),FGFR3,removed,mutant construct
+155,FGFR4,FGFR4,kept,reference construct for FGFR4
+156,FGR,FGR,kept,reference construct for FGR
+157,FLT1,FLT1,kept,reference construct for FLT1
+158,FLT3,FLT3,kept,reference construct for FLT3
+159,FLT3(D835H),FLT3,removed,mutant construct
+160,FLT3(D835Y),FLT3,removed,mutant construct
+162,FLT3(K663Q),FLT3,removed,mutant construct
+163,FLT3(N841I),FLT3,removed,mutant construct
+164,FLT3(R834Q),FLT3,removed,mutant construct
+165,FLT4,FLT4,kept,reference construct for FLT4
+166,FRK,FRK,kept,reference construct for FRK
+167,FYN,FYN,kept,reference construct for FYN
+168,GAK,GAK,kept,reference construct for GAK
+169,"GCN2(Kin.Dom.2,S808G)",GCN2,removed,mutant construct
+170,GRK1,GRK1,kept,reference construct for GRK1
+171,GRK4,GRK4,kept,reference construct for GRK4
+172,GRK7,GRK7,kept,reference construct for GRK7
+173,GSK3A,GSK3A,kept,reference construct for GSK3A
+174,GSK3B,GSK3B,kept,reference construct for GSK3B
+175,HCK,HCK,kept,reference construct for HCK
+176,HIPK1,HIPK1,kept,reference construct for HIPK1
+177,HIPK2,HIPK2,kept,reference construct for HIPK2
+178,HIPK3,HIPK3,kept,reference construct for HIPK3
+179,HIPK4,HIPK4,kept,reference construct for HIPK4
+180,HPK1,HPK1,kept,reference construct for HPK1
+181,HUNK,HUNK,kept,reference construct for HUNK
+182,ICK,ICK,kept,reference construct for ICK
+183,IGF1R,IGF1R,kept,reference construct for IGF1R
+184,IKK-alpha,IKK-alpha,kept,reference construct for IKK-alpha
+185,IKK-beta,IKK-beta,kept,reference construct for IKK-beta
+186,IKK-epsilon,IKK-epsilon,kept,reference construct for IKK-epsilon
+187,INSR,INSR,kept,reference construct for INSR
+188,INSRR,INSRR,kept,reference construct for INSRR
+189,IRAK1,IRAK1,kept,reference construct for IRAK1
+190,IRAK3,IRAK3,kept,reference construct for IRAK3
+191,IRAK4,IRAK4,kept,reference construct for IRAK4
+192,ITK,ITK,kept,reference construct for ITK
+193,JAK1(JH1domain-catalytic),JAK1,kept,reference construct for JAK1
+194,JAK1(JH2domain-pseudokinase),JAK1,removed,another construct of JAK1 is the reference (JAK1(JH1domain-catalytic))
+195,JAK2(JH1domain-catalytic),JAK2,kept,reference construct for JAK2
+196,JAK3(JH1domain-catalytic),JAK3,kept,reference construct for JAK3
+197,JNK1,JNK1,kept,reference construct for JNK1
+198,JNK2,JNK2,kept,reference construct for JNK2
+199,JNK3,JNK3,kept,reference construct for JNK3
+200,KIT,KIT,kept,reference construct for KIT
+201,KIT(A829P),KIT,removed,mutant construct
+202,KIT(D816H),KIT,removed,mutant construct
+203,KIT(D816V),KIT,removed,mutant construct
+204,KIT(L576P),KIT,removed,mutant construct
+205,KIT(V559D),KIT,removed,mutant construct
+206,"KIT(V559D,T670I)",KIT,removed,mutant construct
+207,"KIT(V559D,V654A)",KIT,removed,mutant construct
+208,LATS1,LATS1,kept,reference construct for LATS1
+209,LATS2,LATS2,kept,reference construct for LATS2
+210,LCK,LCK,kept,reference construct for LCK
+211,LIMK1,LIMK1,kept,reference construct for LIMK1
+212,LIMK2,LIMK2,kept,reference construct for LIMK2
+213,LKB1,LKB1,kept,reference construct for LKB1
+214,LOK,LOK,kept,reference construct for LOK
+215,LRRK2,LRRK2,kept,reference construct for LRRK2
+216,LRRK2(G2019S),LRRK2,removed,mutant construct
+217,LTK,LTK,kept,reference construct for LTK
+218,LYN,LYN,kept,reference construct for LYN
+219,LZK,LZK,kept,reference construct for LZK
+220,MAK,MAK,kept,reference construct for MAK
+221,MAP3K1,MAP3K1,kept,reference construct for MAP3K1
+222,MAP3K15,MAP3K15,kept,reference construct for MAP3K15
+223,MAP3K2,MAP3K2,kept,reference construct for MAP3K2
+224,MAP3K3,MAP3K3,kept,reference construct for MAP3K3
+225,MAP3K4,MAP3K4,kept,reference construct for MAP3K4
+226,MAP4K2,MAP4K2,kept,reference construct for MAP4K2
+227,MAP4K3,MAP4K3,kept,reference construct for MAP4K3
+228,MAP4K4,MAP4K4,kept,reference construct for MAP4K4
+229,MAP4K5,MAP4K5,kept,reference construct for MAP4K5
+230,MAPKAPK2,MAPKAPK2,kept,reference construct for MAPKAPK2
+231,MAPKAPK5,MAPKAPK5,kept,reference construct for MAPKAPK5
+232,MARK1,MARK1,kept,reference construct for MARK1
+233,MARK2,MARK2,kept,reference construct for MARK2
+234,MARK3,MARK3,kept,reference construct for MARK3
+235,MARK4,MARK4,kept,reference construct for MARK4
+236,MAST1,MAST1,kept,reference construct for MAST1
+237,MEK1,MEK1,kept,reference construct for MEK1
+238,MEK2,MEK2,kept,reference construct for MEK2
+239,MEK3,MEK3,kept,reference construct for MEK3
+240,MEK4,MEK4,kept,reference construct for MEK4
+241,MEK5,MEK5,kept,reference construct for MEK5
+242,MEK6,MEK6,kept,reference construct for MEK6
+243,MELK,MELK,kept,reference construct for MELK
+244,MERTK,MERTK,kept,reference construct for MERTK
+245,MET,MET,kept,reference construct for MET
+246,MET(M1250T),MET,removed,mutant construct
+247,MET(Y1235D),MET,removed,mutant construct
+248,MINK,MINK,kept,reference construct for MINK
+249,MKK7,MKK7,kept,reference construct for MKK7
+250,MKNK1,MKNK1,kept,reference construct for MKNK1
+251,MKNK2,MKNK2,kept,reference construct for MKNK2
+252,MLCK,MLCK,kept,reference construct for MLCK
+253,MLK1,MLK1,kept,reference construct for MLK1
+254,MLK2,MLK2,kept,reference construct for MLK2
+255,MLK3,MLK3,kept,reference construct for MLK3
+256,MRCKA,MRCKA,kept,reference construct for MRCKA
+257,MRCKB,MRCKB,kept,reference construct for MRCKB
+258,MST1,MST1,kept,reference construct for MST1
+259,MST1R,MST1R,kept,reference construct for MST1R
+260,MST2,MST2,kept,reference construct for MST2
+261,MST3,MST3,kept,reference construct for MST3
+262,MST4,MST4,kept,reference construct for MST4
+263,MTOR,MTOR,kept,reference construct for MTOR
+264,MUSK,MUSK,kept,reference construct for MUSK
+265,MYLK,MYLK,kept,reference construct for MYLK
+266,MYLK2,MYLK2,kept,reference construct for MYLK2
+267,MYLK4,MYLK4,kept,reference construct for MYLK4
+268,MYO3A,MYO3A,kept,reference construct for MYO3A
+269,MYO3B,MYO3B,kept,reference construct for MYO3B
+270,NDR1,NDR1,kept,reference construct for NDR1
+271,NDR2,NDR2,kept,reference construct for NDR2
+272,NEK1,NEK1,kept,reference construct for NEK1
+273,NEK11,NEK11,kept,reference construct for NEK11
+274,NEK2,NEK2,kept,reference construct for NEK2
+275,NEK3,NEK3,kept,reference construct for NEK3
+276,NEK4,NEK4,kept,reference construct for NEK4
+277,NEK5,NEK5,kept,reference construct for NEK5
+278,NEK6,NEK6,kept,reference construct for NEK6
+279,NEK7,NEK7,kept,reference construct for NEK7
+280,NEK9,NEK9,kept,reference construct for NEK9
+281,NIM1,NIM1,kept,reference construct for NIM1
+282,NLK,NLK,kept,reference construct for NLK
+283,OSR1,OSR1,kept,reference construct for OSR1
+284,p38-alpha,p38-alpha,kept,reference construct for p38-alpha
+285,p38-beta,p38-beta,kept,reference construct for p38-beta
+286,p38-delta,p38-delta,kept,reference construct for p38-delta
+287,p38-gamma,p38-gamma,kept,reference construct for p38-gamma
+288,PAK1,PAK1,kept,reference construct for PAK1
+289,PAK2,PAK2,kept,reference construct for PAK2
+290,PAK3,PAK3,kept,reference construct for PAK3
+291,PAK4,PAK4,kept,reference construct for PAK4
+292,PAK6,PAK6,kept,reference construct for PAK6
+293,PAK7,PAK7,kept,reference construct for PAK7
+294,PCTK1,PCTK1,kept,reference construct for PCTK1
+295,PCTK2,PCTK2,kept,reference construct for PCTK2
+296,PCTK3,PCTK3,kept,reference construct for PCTK3
+297,PDGFRA,PDGFRA,kept,reference construct for PDGFRA
+298,PDGFRB,PDGFRB,kept,reference construct for PDGFRB
+299,PDPK1,PDPK1,kept,reference construct for PDPK1
+300,PFCDPK1(P.falciparum),PFCDPK1,removed,non-human kinase
+301,PFPK5(P.falciparum),PFPK5,removed,non-human kinase
+302,PFTAIRE2,PFTAIRE2,kept,reference construct for PFTAIRE2
+303,PFTK1,PFTK1,kept,reference construct for PFTK1
+304,PHKG1,PHKG1,kept,reference construct for PHKG1
+305,PHKG2,PHKG2,kept,reference construct for PHKG2
+306,PIK3C2B,PIK3C2B,removed,lipid kinase
+307,PIK3C2G,PIK3C2G,removed,lipid kinase
+308,PIK3CA,PIK3CA,removed,lipid kinase
+309,PIK3CA(C420R),PIK3CA,removed,lipid kinase
+310,PIK3CA(E542K),PIK3CA,removed,lipid kinase
+311,PIK3CA(E545A),PIK3CA,removed,lipid kinase
+312,PIK3CA(E545K),PIK3CA,removed,lipid kinase
+313,PIK3CA(H1047L),PIK3CA,removed,lipid kinase
+314,PIK3CA(H1047Y),PIK3CA,removed,lipid kinase
+315,PIK3CA(I800L),PIK3CA,removed,lipid kinase
+316,PIK3CA(M1043I),PIK3CA,removed,lipid kinase
+317,PIK3CA(Q546K),PIK3CA,removed,lipid kinase
+318,PIK3CB,PIK3CB,removed,lipid kinase
+319,PIK3CD,PIK3CD,removed,lipid kinase
+320,PIK3CG,PIK3CG,removed,lipid kinase
+321,PIK4CB,PIK4CB,removed,lipid kinase
+322,PIM1,PIM1,kept,reference construct for PIM1
+323,PIM2,PIM2,kept,reference construct for PIM2
+324,PIM3,PIM3,kept,reference construct for PIM3
+325,PIP5K1A,PIP5K1A,removed,lipid kinase
+326,PIP5K1C,PIP5K1C,removed,lipid kinase
+327,PIP5K2B,PIP5K2B,removed,lipid kinase
+328,PIP5K2C,PIP5K2C,removed,lipid kinase
+329,PKAC-alpha,PKAC-alpha,kept,reference construct for PKAC-alpha
+330,PKAC-beta,PKAC-beta,kept,reference construct for PKAC-beta
+331,PKMYT1,PKMYT1,kept,reference construct for PKMYT1
+332,PKN1,PKN1,kept,reference construct for PKN1
+333,PKN2,PKN2,kept,reference construct for PKN2
+334,PKNB(M.tuberculosis),PKNB,removed,non-human kinase
+335,PLK1,PLK1,kept,reference construct for PLK1
+336,PLK2,PLK2,kept,reference construct for PLK2
+337,PLK3,PLK3,kept,reference construct for PLK3
+338,PLK4,PLK4,kept,reference construct for PLK4
+339,PRKCD,PRKCD,kept,reference construct for PRKCD
+340,PRKCE,PRKCE,kept,reference construct for PRKCE
+341,PRKCH,PRKCH,kept,reference construct for PRKCH
+342,PRKCI,PRKCI,kept,reference construct for PRKCI
+343,PRKCQ,PRKCQ,kept,reference construct for PRKCQ
+344,PRKD1,PRKD1,kept,reference construct for PRKD1
+345,PRKD2,PRKD2,kept,reference construct for PRKD2
+346,PRKD3,PRKD3,kept,reference construct for PRKD3
+347,PRKG1,PRKG1,kept,reference construct for PRKG1
+348,PRKG2,PRKG2,kept,reference construct for PRKG2
+349,PRKR,PRKR,kept,reference construct for PRKR
+350,PRKX,PRKX,kept,reference construct for PRKX
+351,PRP4,PRP4,kept,reference construct for PRP4
+352,PYK2,PYK2,kept,reference construct for PYK2
+353,QSK,QSK,kept,reference construct for QSK
+354,RAF1,RAF1,kept,reference construct for RAF1
+355,RET,RET,kept,reference construct for RET
+356,RET(M918T),RET,removed,mutant construct
+357,RET(V804L),RET,removed,mutant construct
+358,RET(V804M),RET,removed,mutant construct
+359,RIOK1,RIOK1,kept,reference construct for RIOK1
+360,RIOK2,RIOK2,kept,reference construct for RIOK2
+361,RIOK3,RIOK3,kept,reference construct for RIOK3
+362,RIPK1,RIPK1,kept,reference construct for RIPK1
+363,RIPK2,RIPK2,kept,reference construct for RIPK2
+364,RIPK4,RIPK4,kept,reference construct for RIPK4
+365,RIPK5,RIPK5,kept,reference construct for RIPK5
+366,ROCK1,ROCK1,kept,reference construct for ROCK1
+367,ROCK2,ROCK2,kept,reference construct for ROCK2
+368,ROS1,ROS1,kept,reference construct for ROS1
+369,RPS6KA4(Kin.Dom.1-N-terminal),RPS6KA4,kept,reference construct for RPS6KA4
+370,RPS6KA4(Kin.Dom.2-C-terminal),RPS6KA4,removed,another construct of RPS6KA4 is the reference (RPS6KA4(Kin.Dom.1-N-terminal))
+371,RPS6KA5(Kin.Dom.1-N-terminal),RPS6KA5,kept,reference construct for RPS6KA5
+372,RPS6KA5(Kin.Dom.2-C-terminal),RPS6KA5,removed,another construct of RPS6KA5 is the reference (RPS6KA5(Kin.Dom.1-N-terminal))
+373,RSK1(Kin.Dom.1-N-terminal),RSK1,kept,reference construct for RSK1
+374,RSK1(Kin.Dom.2-C-terminal),RSK1,removed,another construct of RSK1 is the reference (RSK1(Kin.Dom.1-N-terminal))
+375,RSK2(Kin.Dom.1-N-terminal),RSK2,kept,reference construct for RSK2
+376,RSK3(Kin.Dom.1-N-terminal),RSK3,kept,reference construct for RSK3
+377,RSK3(Kin.Dom.2-C-terminal),RSK3,removed,another construct of RSK3 is the reference (RSK3(Kin.Dom.1-N-terminal))
+378,RSK4(Kin.Dom.1-N-terminal),RSK4,kept,reference construct for RSK4
+379,RSK4(Kin.Dom.2-C-terminal),RSK4,removed,another construct of RSK4 is the reference (RSK4(Kin.Dom.1-N-terminal))
+380,S6K1,S6K1,kept,reference construct for S6K1
+381,SBK1,SBK1,kept,reference construct for SBK1
+382,SgK110,SgK110,kept,reference construct for SgK110
+383,SGK3,SGK3,kept,reference construct for SGK3
+384,SIK,SIK,kept,reference construct for SIK
+385,SIK2,SIK2,kept,reference construct for SIK2
+386,SLK,SLK,kept,reference construct for SLK
+387,SNARK,SNARK,kept,reference construct for SNARK
+388,SNRK,SNRK,kept,reference construct for SNRK
+389,SRC,SRC,kept,reference construct for SRC
+390,SRMS,SRMS,kept,reference construct for SRMS
+391,SRPK1,SRPK1,kept,reference construct for SRPK1
+392,SRPK2,SRPK2,kept,reference construct for SRPK2
+393,SRPK3,SRPK3,kept,reference construct for SRPK3
+394,STK16,STK16,kept,reference construct for STK16
+395,STK33,STK33,kept,reference construct for STK33
+396,STK35,STK35,kept,reference construct for STK35
+397,STK36,STK36,kept,reference construct for STK36
+398,STK39,STK39,kept,reference construct for STK39
+399,SYK,SYK,kept,reference construct for SYK
+400,TAK1,TAK1,kept,reference construct for TAK1
+401,TAOK1,TAOK1,kept,reference construct for TAOK1
+402,TAOK2,TAOK2,kept,reference construct for TAOK2
+403,TAOK3,TAOK3,kept,reference construct for TAOK3
+404,TBK1,TBK1,kept,reference construct for TBK1
+405,TEC,TEC,kept,reference construct for TEC
+406,TESK1,TESK1,kept,reference construct for TESK1
+407,TGFBR1,TGFBR1,kept,reference construct for TGFBR1
+408,TGFBR2,TGFBR2,kept,reference construct for TGFBR2
+409,TIE1,TIE1,kept,reference construct for TIE1
+410,TIE2,TIE2,kept,reference construct for TIE2
+411,TLK1,TLK1,kept,reference construct for TLK1
+412,TLK2,TLK2,kept,reference construct for TLK2
+413,TNIK,TNIK,kept,reference construct for TNIK
+414,TNK1,TNK1,kept,reference construct for TNK1
+415,TNK2,TNK2,kept,reference construct for TNK2
+416,TNNI3K,TNNI3K,kept,reference construct for TNNI3K
+417,TRKA,TRKA,kept,reference construct for TRKA
+418,TRKB,TRKB,kept,reference construct for TRKB
+419,TRKC,TRKC,kept,reference construct for TRKC
+420,TRPM6,TRPM6,kept,reference construct for TRPM6
+421,TSSK1B,TSSK1B,kept,reference construct for TSSK1B
+422,TTK,TTK,kept,reference construct for TTK
+423,TXK,TXK,kept,reference construct for TXK
+424,TYK2(JH1domain-catalytic),TYK2,kept,reference construct for TYK2
+425,TYK2(JH2domain-pseudokinase),TYK2,removed,another construct of TYK2 is the reference (TYK2(JH1domain-catalytic))
+426,TYRO3,TYRO3,kept,reference construct for TYRO3
+427,ULK1,ULK1,kept,reference construct for ULK1
+428,ULK2,ULK2,kept,reference construct for ULK2
+429,ULK3,ULK3,kept,reference construct for ULK3
+430,VEGFR2,VEGFR2,kept,reference construct for VEGFR2
+431,VRK2,VRK2,kept,reference construct for VRK2
+432,WEE1,WEE1,kept,reference construct for WEE1
+433,WEE2,WEE2,kept,reference construct for WEE2
+434,YANK1,YANK1,kept,reference construct for YANK1
+435,YANK2,YANK2,kept,reference construct for YANK2
+436,YANK3,YANK3,kept,reference construct for YANK3
+437,YES,YES,kept,reference construct for YES
+438,YSK1,YSK1,kept,reference construct for YSK1
+439,YSK4,YSK4,kept,reference construct for YSK4
+440,ZAK,ZAK,kept,reference construct for ZAK
+441,ZAP70,ZAP70,kept,reference construct for ZAP70

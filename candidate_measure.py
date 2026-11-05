@@ -175,7 +175,7 @@ assert orient_r < -0.3, f"candidate is inverted: corr(selectivity, n_active) = {
 print(f"Orientation check (Klaeger): corr(candidate selectivity, n_active) = {orient_r:+.3f} (must be negative)")
 
 # D3: baseline robustness
-betas = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] = [5.0, 6.0] (Methods, D3)
+betas = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] = [5.0, 6.0] (Methods, D2)
 def worst_pair(fn):
     rr = np.array([to_ranks(fn(b)) for b in betas])
     return min(spearmanr(rr[i], rr[j])[0] for i in range(len(betas)) for j in range(i + 1, len(betas)))
@@ -209,7 +209,7 @@ for ax, ds in zip(axes.ravel(), DATASETS):
     print("   the least-bound compounds, which are also the hardest to rank, so part of any")
     print("   improvement is selection rather than a property of the gate)")
 
-    # Candidate vs entropy: how much do the four properties change the ranking?
+    # Candidate vs entropy: how much do the gate and the hinge change the ranking?
     # Over the compounds both score: the candidate (D1) scores those with a kinase
     # above tau*, all of which the entropy at beta = x0 also scores.
     scored = (M > ds['threshold']).sum(1) > 0

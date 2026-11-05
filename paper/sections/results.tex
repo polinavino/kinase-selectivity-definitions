@@ -1,85 +1,130 @@
 \section{Results}
 \label{sec:results}
 
-\subsection{Selectivity Definitions Cluster into Two Families}
+\subsection{Agreement Between Definitions Depends on Analysis Choices}
 \label{sec:results:families}
 
-Across the 30 parameter configurations (Methods), compound rankings
-were computed for all drugs in both datasets.
-Spearman correlations between the median ranking of each definition family
-reveal a two-family structure (Table~\ref{tab:correlations}).
-On the Davis dataset, S-score, entropy, and Gini are mutually correlated
-($r = 0.963$--$0.999$), while ratio correlates substantially less with each
-($r = 0.51$--$0.56$).
-On the larger Klaeger dataset, the structure holds among the 200 compounds
-with an active kinase: the S-score, entropy and Gini correlate at
-$0.90$--$0.997$, and the ratio with each at $0.39$--$0.64$. With all 222
-compounds included, it does not hold for the Gini, which then correlates more
-with the ratio ($0.66$) than with the S-score ($0.51$). The difference comes
-from the 22 compounds with no active kinase (Type~1, below). We tested whether
-the Gini sits closer to the S-score than to the ratio by bootstrapping the
-difference between its two correlations (1{,}000 resamples of compounds with
-replacement). With all compounds included, the difference is not significant
-($95\%$ interval $[-0.35, 0.06]$). Among the 200 compounds with an active
-kinase, the Gini sits significantly closer to the S-score ($0.90$ against
-$0.64$, interval $[0.17, 0.36]$).
+Three analysis choices change how the definitions' median rankings relate
+(Table~\ref{tab:correlations}): which compounds are included, how the entropy
+weights affinities, and how pairs coded at the floor are treated.
+
+With the entropy and Gini in their log-affinity forms, the S-score, entropy and
+Gini agree more with one another than with the ratio among compounds with an
+active kinase. On Davis, where every compound has one, they correlate at
+$0.963$--$0.999$, and the ratio with each at $0.51$--$0.56$. Among the 200
+Klaeger compounds with an active kinase, they correlate at $0.89$--$0.997$, and
+the ratio with each at $0.38$--$0.64$. With all 222 Klaeger compounds included,
+the Gini correlates more with the ratio ($0.66$) than with the S-score
+($0.51$). The difference comes from the 22 compounds with no active kinase,
+which each definition scores by its own convention (Type~1, below). We tested
+whether the Gini sits closer to the S-score than to the ratio by bootstrapping
+the difference between its two correlations (1{,}000 resamples of compounds
+with replacement). With all compounds included, the difference is not
+significant ($95\%$ interval $[-0.35, 0.06]$). Among the 200 compounds with an
+active kinase, the Gini sits significantly closer to the S-score ($0.89$
+against $0.64$, interval $[0.16, 0.36]$). On the log-affinity scale, the
+S-score, entropy, and Gini all quantify the concentration of activity across
+the full panel, while the ratio quantifies the gap between the primary target
+and one off-target and ignores the rest of the profile.
 
 \begin{table}[h]
   \centering
-  \caption{Spearman correlations between median rankings by definition family.
-           Upper triangle: Davis ($n=68$). Lower triangle: Klaeger ($n=222$).}
+  \caption{Spearman correlations between median rankings by definition. S:
+           S-score; E: entropy; G: Gini; R: ratio, with the entropy and Gini in
+           their log-affinity forms. E$_{K_a}$: the published entropy, with
+           association-constant weighting, with floor-coded pairs given no
+           weight and, in parentheses, kept at the floor. Every Davis compound
+           has an active kinase.}
   \label{tab:correlations}
-  \begin{tabular}{lcccc}
+  \begin{tabular}{lccc}
     \toprule
-                & S-score & Entropy & Gini  & Ratio \\
+         & Davis & \multicolumn{2}{c}{Klaeger} \\
+    \cmidrule(lr){3-4}
+    Pair & all ($n = 68$) & all ($n = 222$) & active ($n = 200$) \\
     \midrule
-    S-score     & ---     & 0.963   & 0.963 & 0.563 \\
-    Entropy     & 0.898   & ---     & 0.999 & 0.513 \\
-    Gini        & 0.511   & 0.657   & ---   & 0.510 \\
-    Ratio       & 0.085   & 0.344   & 0.657 & ---   \\
+    S--E & 0.963 & 0.896 & 0.897 \\
+    S--G & 0.963 & 0.508 & 0.892 \\
+    E--G & 0.999 & 0.658 & 0.997 \\
+    S--R & 0.563 & 0.078 & 0.378 \\
+    E--R & 0.513 & 0.344 & 0.622 \\
+    G--R & 0.510 & 0.655 & 0.635 \\
+    \midrule
+    E$_{K_a}$--S & 0.738 (0.344) & 0.571 ($-0.597$) & 0.564 ($-0.412$) \\
+    E$_{K_a}$--G & 0.736 (0.368) & 0.530 (0.077)    & 0.782 ($-0.094$) \\
+    E$_{K_a}$--R & 0.861 (0.688) & 0.657 (0.648)    & 0.916 (0.591) \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-On the common log-affinity scale (Methods), the S-score, entropy, and Gini all
-quantify the concentration of activity across the full kinase panel, and the
-entropy and Gini are computed from the same baseline-subtracted profile. The
-ratio quantifies the gap between the primary target and one off-target and
-ignores the rest of the profile.
+In its published form, with association-constant weighting, the entropy
+correlates most with the ratio on Davis and Klaeger, whichever compounds are
+included and whether floor-coded pairs are kept at the floor or given no weight
+(Table~\ref{tab:correlations}). The same holds on Metz (Supporting
+Information, Table~S3). How far it is from the S-score and Gini depends on the
+floor-coded pairs, which make up $71\%$ of the Davis matrix. On Davis, its
+correlation with the S-score is $0.34$ with these pairs at the floor and $0.74$
+with them given no weight. Against our log-affinity forms, the published
+entropy correlates at $r = 0.37$ (Davis) and $-0.31$ (Klaeger) with
+floor-coded pairs at the floor, and at $0.74$ and $0.79$ with them given no
+weight (Figure~\ref{fig:fidelity}). For the Gini of the association constants,
+the corresponding values are $0.01$ and $-0.20$, and $0.83$ and $0.71$. On
+Anastassiadis, the native percent-inhibition Gini correlates with the entropy
+($r = 0.63$), and weakly and about equally with the S-score ($0.34$) and the
+ratio ($0.33$).
 
-\subsection{The Two-Family Structure Across Assay Technologies}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{figures/metric_fidelity}
+  \caption{Entropy (top) and Gini coefficient (bottom) rankings on Davis and Klaeger
+           under two operationalizations: association-constant weighting, the
+           published form of the entropy ($x$-axis), and the
+           baseline-subtracted log-affinity form used throughout ($y$-axis,
+           median rank over the baseline sweep). Grey: floor-coded pairs kept at
+           the floor; blue: floor-coded pairs given no weight. Spearman $r$
+           above each panel.}
+  \label{fig:fidelity}
+\end{figure}
+
+The two-family structure is therefore a property of the log-affinity
+operationalization and of the compounds included. It does not hold for the
+entropy as originally published. The weighting and the treatment of
+floor-coded pairs are themselves sources of definitional instability, in
+addition to the three characterized below.
+
+\subsection{Agreement on Anastassiadis and Metz}
 \label{sec:results:replication}
 
-The Davis and Klaeger pattern of Table~\ref{tab:correlations} extends to the two
-further datasets, across three assay technologies and both readout types
-(Figure~\ref{fig:crossdataset}).
-Among compounds with an active kinase, the S-score, entropy, and Gini remain
-mutually correlated on all four datasets (Spearman $r = 0.81$--$0.999$), while
-the ratio is the outlier. With all compounds included, its correlation with the
+Among compounds with an active kinase, the pattern extends to the two further
+datasets, across three assay technologies and both readout types
+(Figure~\ref{fig:crossdataset}). The S-score, entropy, and Gini remain mutually
+correlated on all four datasets (Spearman $r = 0.81$--$0.999$), while the ratio
+is the outlier. With all compounds included, its correlation with the
 distribution-based family is $0.48$--$0.55$ on the Anastassiadis
 functional-activity dataset and only $0.14$--$0.19$ on the Metz
 $\mathrm{p}K_i$ dataset. On Anastassiadis, the separation comes mainly from the
 45 compounds with no active kinase (Type~1, below). Among the other 133, the
 ratio's correlation with the family rises to $0.79$--$0.84$, against
-$0.87$--$0.999$ within it. On Metz the low agreement largely reflects coverage
-(Methods).
+$0.87$--$0.999$ within it. Metz shows the effect of missing measurements. A
+median compound is measured against 64 of the 172 kinases, the rest are set to
+the floor, and the entropy and Gini rankings largely follow how many kinases
+were measured (Methods). Metz therefore shows how floor imputation changes
+rankings, not how the definitions relate on complete profiles.
 
-The instability findings largely replicate.
+The instability findings hold on these datasets, with qualifications.
 Pooled across the definitions' sweeps, compounds with no active kinase
 have higher rank instability than active compounds wherever
 they occur (mean rank $\sigma = 36.6$ vs.\ $21.8$ on Anastassiadis and $178.5$
 vs.\ $108.1$ on Metz; for Klaeger see D1, below). On
 each dataset the contrast comes mainly from the definitions disagreeing with
 one another rather than from each definition's own parameter sweep (Type~1,
-below). Within a single sweep, it is significant for
-the Gini on Klaeger and Anastassiadis, and for the entropy and the ratio on
-Anastassiadis. It reverses for the S-score on Klaeger ($\sigma = 18.8$ vs.\
-$25.6$) and Metz ($7.8$ vs.\ $71.2$), and for the entropy and Gini on Metz
-($11.0$ vs.\ $24.5$ and $5.4$ vs.\ $24.2$; all $p < 0.05$).
+below). Within a single sweep, it is significant for the Gini, the entropy and
+the ratio on Anastassiadis. It reverses for the S-score, the entropy and the
+Gini on Metz ($\sigma = 7.8$ vs.\ $71.2$, $11.0$ vs.\ $24.5$ and $5.4$ vs.\
+$24.2$; all $p < 0.05$).
 The number of active kinases correlates negatively with entropy instability on
-every dataset ($r = -0.30$ to $-0.43$; on Davis only nominally, $p = 0.01$).
+every dataset ($r = -0.30$ to $-0.42$; on Davis only nominally, $p = 0.01$).
 The top$_1$--top$_2$ affinity gap is associated with ratio instability on
-Davis, Klaeger and Metz ($r = -0.45$, $-0.33$, and $-0.27$, all $p < 0.001$),
+Davis, Klaeger and Metz ($r = -0.44$, $-0.34$, and $-0.27$, all $p < 0.001$),
 and on Anastassiadis once the compounds saturated at the $100\%$ inhibition
 ceiling are excluded (below).
 
@@ -88,7 +133,8 @@ ceiling are excluded (below).
   \includegraphics[width=\textwidth]{figures/cross_dataset_correlations}
   \caption{Spearman correlations between the median rankings of the four selectivity
            definitions on each dataset (compounds $\times$ targets above each
-           panel). S: S-score; Ent: entropy.}
+           panel). S: S-score; Ent: entropy. On Metz, rankings largely follow
+           how many kinases each compound was measured against (Methods).}
   \label{fig:crossdataset}
 \end{figure}
 
@@ -109,7 +155,7 @@ ceiling are excluded (below).
 \label{sec:results:instability}
 
 Overall rank instability varies substantially across
-compounds (Klaeger: mean $\sigma = 36.6$, range $8.5$--$94.1$;
+compounds (Klaeger: mean $\sigma = 36.7$, range $8.7$--$94.0$;
 Davis: mean $\sigma = 7.5$, range $2.1$--$16.4$).
 Instability is not uniformly distributed: within each definition family,
 specific binding profile features are associated with which compounds receive
@@ -128,20 +174,19 @@ stable across baseline choices. Compounds with few active kinases are sensitive
 to the baseline because small changes can move targets in or out of the active
 set, altering the distribution substantially.
 Consistent with this, the share of a compound's above-floor kinases that cross
-some baseline in the sweep correlates with its entropy instability ($r = 0.22$,
-$p = 0.002$ on Klaeger).
+some baseline in the sweep correlates with its entropy instability ($r = 0.21$,
+$p = 0.004$ on Klaeger).
 The active affinity range is also associated with S-score and entropy
-instability on Klaeger ($r = -0.37$ and $-0.21$, $p < 0.001$ and $p = 0.003$).
-For the Gini it is not ($r = -0.04$, $p = 0.57$). Range rises with the number
+instability on Klaeger ($r = -0.37$ and $-0.25$, both $p < 0.001$).
+For the Gini it is not ($r = -0.05$, $p = 0.45$). Range rises with the number
 of active kinases (Spearman $0.76$). Holding that number fixed, range is still
 associated with S-score instability (partial $r = -0.28$, $p < 0.001$) and no
-longer with entropy instability ($r = 0.11$, $p = 0.11$).
+longer with entropy instability ($r = 0.08$, $p = 0.24$).
 
 Gini instability's strongest correlate on Klaeger
-($r = +0.277$, $p < 0.001$) is skewness.
-Unlike the other features above, it
-targets what Gini measures directly, i.e. the shape of
-the active-affinity distribution's inequality.
+($r = +0.262$, $p < 0.001$) is skewness.
+Unlike the other features above, it describes the shape of the active-affinity
+distribution, whose inequality the Gini measures.
 Right-skewed active distributions are the least stable. In such profiles most
 active kinases sit just above the threshold, with one or a few much more potent
 outliers. A shift in $\beta$ therefore moves much of the weight in or out of the
@@ -157,10 +202,10 @@ This S-score pattern is specific to Klaeger: on Davis, no profile feature is
 significantly associated with S-score instability (all $|r| \le 0.21$,
 Table~\ref{tab:predictors}, right). On the 46 compounds profiled in both, the
 association with active affinity range is weak on both datasets (Klaeger
-$r = -0.31$, $p = 0.06$, for the 37 with at least two active kinases; Davis
+$r = -0.28$, $p = 0.09$, for the 37 with at least two active kinases; Davis
 $r = -0.16$, $p = 0.30$), so these data cannot tell whether the difference
-comes from the compounds or the assays. The same compounds have a median of 4
-active kinases on Klaeger and 32 on Davis.
+comes from the compounds or the assays (the same compounds have a median of 4
+active kinases on Klaeger and 32 on Davis).
 Two relations in Table~\ref{tab:predictors} are significant on both
 pK$_d$ datasets: the ratio's dependence on the top$_1$--top$_2$ gap and the
 entropy's dependence on the number of active kinases. With a Bonferroni
@@ -188,12 +233,12 @@ Davis ($r = -0.31$) and not on Klaeger ($r = -0.07$).
     & \multicolumn{4}{c}{Klaeger ($n=200$)} & \multicolumn{4}{c}{Davis ($n=68$)} \\
     Feature & S & E & G & R & S & E & G & R \\
     \midrule
-    $n_\mathrm{active}$      & $-0.259^{***}$ & $-0.369^{***}$ & $-0.066$       & $-0.019$       & $-0.210$ & $-0.301^{*}$ & $-0.313^{**}$ & $+0.007$ \\
-    top$_1$--top$_2$ gap     & $+0.023$       & $+0.066$       & $+0.048$       & $-0.333^{***}$ & $+0.043$ & $+0.074$     & $+0.058$      & $-0.445^{***}$ \\
-    Active affinity std      & $-0.307^{***}$ & $-0.090$       & $-0.042$       & $-0.108$       & $-0.017$ & $+0.020$     & $+0.035$      & $-0.176$ \\
-    Active affinity range    & $-0.370^{***}$ & $-0.210^{**}$  & $-0.040$       & $-0.102$       & $-0.023$ & $-0.065$     & $-0.076$      & $-0.240^{*}$ \\
-    top$_2$ $\mathrm{p}K_d$  & $-0.307^{***}$ & $-0.202^{**}$  & $-0.205^{**}$  & $+0.231^{***}$ & $-0.174$ & $-0.186$     & $-0.190$      & $+0.147$ \\
-    Active affinity skew     & $-0.210^{**}$  & $-0.060$       & $+0.277^{***}$ & $-0.119$       & $+0.041$ & $+0.195$     & $+0.176$      & $-0.113$ \\
+    $n_\mathrm{active}$      & $-0.253^{***}$ & $-0.394^{***}$ & $-0.075$       & $-0.025$       & $-0.210$ & $-0.301^{*}$ & $-0.313^{**}$ & $+0.007$ \\
+    top$_1$--top$_2$ gap     & $+0.016$       & $+0.057$       & $+0.057$       & $-0.342^{***}$ & $+0.043$ & $+0.074$     & $+0.058$      & $-0.445^{***}$ \\
+    Active affinity std      & $-0.308^{***}$ & $-0.132$       & $-0.056$       & $-0.121$       & $-0.017$ & $+0.020$     & $+0.035$      & $-0.176$ \\
+    Active affinity range    & $-0.370^{***}$ & $-0.247^{***}$ & $-0.054$       & $-0.113$       & $-0.023$ & $-0.065$     & $-0.076$      & $-0.240^{*}$ \\
+    top$_2$ $\mathrm{p}K_d$  & $-0.300^{***}$ & $-0.230^{**}$  & $-0.219^{**}$  & $+0.221^{**}$  & $-0.174$ & $-0.186$     & $-0.190$      & $+0.147$ \\
+    Active affinity skew     & $-0.236^{***}$ & $-0.096$       & $+0.262^{***}$ & $-0.107$       & $+0.041$ & $+0.195$     & $+0.176$      & $-0.113$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -204,8 +249,8 @@ it has fewer than two. Table~\ref{tab:predictors} assigns these compounds the
 value $0$ (the vertical clusters at zero in Figure~\ref{fig:instability}).
 Recomputing each correlation over only the compounds for which the feature is
 defined strengthens every Klaeger association reported above (Gini--skewness
-$r = +0.384$; range against S-score and entropy instability $r = -0.468$ and
-$-0.376$, all $p < 0.001$) and changes no Davis correlation materially.
+$r = +0.381$; range against S-score and entropy instability $r = -0.466$ and
+$-0.417$, all $p < 0.001$) and changes no Davis correlation materially.
 
 Five further features, including two concentration indices from
 industrial-organization economics, were either near-collinear with
@@ -233,7 +278,7 @@ Examination of the most unstable compounds in the Klaeger dataset reveals
 three structurally distinct sources of rank instability, each implicating a
 different aspect of how the definitions are constructed. All 20 most unstable
 Klaeger compounds have no active kinase (Type~1). Among the 20 most unstable
-compounds with an active kinase, six have a top$_1$--top$_2$ gap below $0.1$
+compounds with an active kinase, five have a top$_1$--top$_2$ gap below $0.1$
 (Type~2) and eight have at least 10 active kinases (Type~3).
 Figure~\ref{fig:profiles} shows example profiles from Davis (the
 extremes are easier to see on the complete matrix there).
@@ -241,7 +286,7 @@ extremes are easier to see on the complete matrix there).
 \textbf{Type~1: Zero-active compounds.}
 The most unstable Klaeger compounds all have zero active kinases at the
 $\mathrm{p}K_d > 6$ threshold. Six of them (AZD-2014, AZD-8055, AZD-8186,
-BMS-911543, SGX-523, and volitinib; rank $\sigma = 94.1$) show no binding to any
+BMS-911543, SGX-523, and volitinib; rank $\sigma = 94.0$) show no binding to any
 protein kinase on the panel.
 Their zero activity is an assay result: all six are established inhibitors of
 specific targets (mTOR, mTOR, PI3K$\beta$, JAK2, MET, and MET, respectively),
@@ -250,15 +295,16 @@ screen. For three of them (AZD-2014, AZD-8055, AZD-8186), the target was not
 quantified for any of the 229 compounds with a fitted target in the Kinobeads
 table. This is consistent with low expression or poor capture of those
 kinases in the cell lysates.
-For the other three, this explanation does not hold: JAK2 and MET were
-quantified for 7 and 32 other compounds (up to $\mathrm{p}K_d = 8.3$ and $9.5$),
-yet no binding was detected for BMS-911543, SGX-523, or volitinib.
+For the other three, the target was quantified for other compounds: JAK2 for 7
+and MET for 32 (up to $\mathrm{p}K_d = 8.3$ and $9.5$). Absence of the target
+from the lysate therefore does not explain why no binding was detected for
+BMS-911543, SGX-523, or volitinib. These data cannot tell whether
+compound-specific capture, competition or curve fitting does.
 
 All four definitions nonetheless score
 the 22 zero-active compounds from sub-threshold values alone, and they disagree
 about them. The S-score and entropy rank them among the most selective (median
-ranks 23 and 20 of 222), and the ratio, which Bosc et al.'s convention would
-leave undefined for them, near the bottom (182). The Gini ranks them near the
+ranks 24 and 20 of 222), and the ratio near the bottom (182). The Gini ranks them near the
 top where its score is defined, and near the bottom where the convention for
 undefined scores applies (Methods; mean ranks 32 and 212). Their pooled rank
 instability is therefore high (D1, below). Davis has no such compounds.
@@ -267,9 +313,9 @@ instability is therefore high (D1, below). Davis has no such compounds.
 When an active compound's two best-bound kinases have near-identical
 affinities, the ratio depends heavily on $k$. $R(1)$ compares the two near-tied
 kinases and is close to zero, and $R(2)$, which skips past the tie, can be
-large. On the 23 Klaeger compounds with an active kinase and a
+large. On the 22 Klaeger compounds with an active kinase and a
 top$_1$--top$_2$ gap below $0.05$, mean $R(1) = 0.02$ against mean
-$R(2) = 0.48$. The two values answer different questions: $R(1)$ treats the
+$R(2) = 0.50$. The two values answer different questions: $R(1)$ treats the
 second kinase as an off-target, and $R(2)$ treats it as a co-target. On Davis,
 fedratinib, with JAK2 and GAK tied, has the most unstable ratio ranking
 (Figure~\ref{fig:profiles}, right).
@@ -284,61 +330,3 @@ ratio ranks these as far more selective than the entropy and Gini do
 Which compounds have the most stable overall ranking differs between datasets:
 on Klaeger the most promiscuous, and on Davis, on average, those with few active
 kinases (Supporting Information, Section~S6).
-
-\subsection{Panel Size Dependence of Selectivity Rankings}
-\label{sec:results:panelsize}
-
-Karaman et al.\cite{Karaman2008} scored each compound's S-score on 500 random
-subpanels of each size and found that it varies more as panels shrink,
-concluding that a single small panel is unlikely to rank compounds reliably by
-overall selectivity. We test that conclusion by measuring how well
-each definition's ranking on a random subpanel agrees with its full-panel
-ranking, done for all four definitions on
-all four datasets.
-
-For each panel size, in steps of 30 from $p=50$ targets up to the full panel
-(363 targets on Davis, 219 on Klaeger, 291 on Anastassiadis, and 172 on Metz), we
-drew 50 random subsets of $p$ targets from the full panel, computed each
-selectivity definition on the subpanel, and measured agreement with the
-full-panel ranking using Spearman correlation. Each definition uses the
-dataset's floor $x_0$ (Methods; $20\%$ on Anastassiadis) as its baseline
-(entropy, Gini) or fallback (ratio, $k = 1$), and the activity threshold as
-the S-score cutoff.
-We write $p^*$ for the smallest panel size at which this mean correlation
-exceeds $0.90$, a bar borrowed from the ``excellent'' range of
-intraclass-correlation guidelines.\cite{Koo2016}
-Changing the bar within $[0.80, 0.95]$ changes the $p^*$ values but never
-reverses the order of two definitions on any dataset (Supporting Information,
-Table~S1).
-
-The four definitions differ substantially in their panel size requirements
-(Figure~\ref{fig:panelsize}). Selectivity entropy and the S-score recover the
-full-panel ranking fastest on every dataset: at 50 targets, the smallest panel
-in this analysis, on Davis and Anastassiadis, at 80 on Klaeger, and at 80
-(entropy) and 50 (S-score) on Metz. The ratio is the slowest everywhere,
-needing 350 of 363 targets on Davis, 260 of 291 on Anastassiadis, 170 of 172 on
-Metz, and the complete panel on Klaeger, where it reaches only $r = 0.874$ at
-200 targets. The Gini coefficient falls in between: it needs 110 targets on
-Davis and 200 on Anastassiadis and Klaeger, but matches the entropy on Metz
-(80). Its slower recovery comes from compounds whose Gini is undefined on the
-subpanel, which the convention ranks least selective (Methods). Excluding
-them gives the Gini $p^*$ values of 50, 80, 50, and 80 targets.
-
-On a 50-target subpanel, entropy- and S-score-based rankings are reasonably
-stable on every dataset ($r = 0.85$--$0.97$). Ratio rankings are nearly
-uncorrelated with the full-panel ranking ($r \leq 0.17$), and Gini rankings
-range from close agreement on Metz ($r = 0.87$) to almost none on Klaeger
-($r = 0.10$). The practical consequence is that the smaller the panel, the more
-the choice of definition determines the answer.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=\textwidth]{figures/panel_size_stability}
-  \caption{Mean Spearman correlation between rankings computed on random target
-           subpanels and rankings on the full panel, as a function of subpanel
-           size, on all four datasets.
-           Shaded bands indicate $\pm 1$ standard deviation across 50 subsamples;
-           the dashed line marks $r = 0.90$, and $p^*$ (legend) is the smallest
-           panel reaching mean $r > 0.90$.}
-  \label{fig:panelsize}
-\end{figure}

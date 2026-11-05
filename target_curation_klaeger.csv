@@ -1,0 +1,344 @@
+target,status,reason
+AAK1,kept,annotated as a protein kinase
+ABL1,kept,annotated as a protein kinase
+ABL2,kept,annotated as a protein kinase
+ACAD10,removed,not annotated as a kinase (possibly co-enriched with NTRK3)
+ACAD11,removed,not annotated as a kinase (possibly co-enriched with STK25)
+ACOX3,removed,not annotated as a kinase
+ACTR3,removed,not annotated as a kinase (possibly co-enriched with LRRK2|NTRK1|TP53RK|PRKACB)
+ACVR1,kept,annotated as a protein kinase
+ACVR1B,kept,annotated as a protein kinase
+ACVR2B,kept,annotated as a protein kinase
+ACVRL1,kept,annotated as a protein kinase
+ADCK1,kept,annotated as a protein kinase
+ADCK3,kept,annotated as a protein kinase
+ADK,removed,not annotated as a kinase
+ADRBK1,kept,annotated as a protein kinase
+AFF1,removed,not annotated as a kinase (possibly co-enriched with CDK9|PIP4K2A|CAMKV)
+AFF4,removed,not annotated as a kinase (possibly co-enriched with CDK9|CAMKV|PIP4K2A|CDK15|GRK5)
+AIMP1,removed,not annotated as a kinase
+AK2,removed,not annotated as a kinase
+AKT1,kept,annotated as a protein kinase
+AKT2,kept,annotated as a protein kinase
+AKT3,kept,annotated as a protein kinase
+AP1G1,removed,not annotated as a kinase
+AP2A1,removed,not annotated as a kinase (possibly co-enriched with AAK1|EGFR|GAK|NTRK1|ABL1|CRK|GRK5|CSNK1E|EPHA2)
+AP2A2,removed,not annotated as a kinase (possibly co-enriched with EGFR|NTRK1|GAK|GRK5|PIP5K1C)
+AP2B1,removed,not annotated as a kinase (possibly co-enriched with EGFR|TGFBR2|BUB1B|NTRK1|AAK1|GAK|EPHA2|ABL1|ERBB2|TGFBR1|PIP5K1C)
+AP2M1,removed,not annotated as a kinase (possibly co-enriched with EGFR|AAK1|(BCR)|BMP2K|GAK|MARK2|PRKACB|ABL1|CSNK1E|CDK11B|STK11|EPHA2|PRKDC)
+ARAF,kept,annotated as a protein kinase
+AURKA,kept,annotated as a protein kinase
+AURKB,kept,annotated as a protein kinase
+AZI2,removed,not annotated as a kinase (possibly co-enriched with TBK1|IKBKE)
+BCR,removed,not annotated as a kinase (possibly co-enriched with ABL1)
+BMP2K,kept,annotated as a protein kinase
+BMPR1A,kept,annotated as a protein kinase
+BMPR1B,kept,annotated as a protein kinase
+BMPR2,kept,annotated as a protein kinase
+BRAF,kept,annotated as a protein kinase
+BTK,kept,annotated as a protein kinase
+BUB1,kept,annotated as a protein kinase
+C2CD5,removed,not annotated as a kinase (possibly co-enriched with CDK5|CDK2|NTRK1|LCK)
+CAB39,removed,not annotated as a kinase (possibly co-enriched with STK11|STRADB|STRADA|STK25|PIP4K2A)
+CABLES1,removed,not annotated as a kinase (possibly co-enriched with CDK5)
+CAMK1G,kept,annotated as a protein kinase
+CAMK2D,kept,annotated as a protein kinase
+CAMK2G,kept,annotated as a protein kinase
+CAMK4,kept,annotated as a protein kinase
+CAMKK2,kept,annotated as a protein kinase
+CARS,removed,not annotated as a kinase (possibly co-enriched with NTRK1)
+CCAR2,removed,not annotated as a kinase (possibly co-enriched with CDK9|NTRK1|CHEK2|CDK7|NEK6)
+CCNA2,removed,not annotated as a kinase (possibly co-enriched with CDK2|CDK1|CDK7|CDK4|CDK5|CDK3|PKMYT1|CDK1|CDK6|TP53|DYRK1A|DYRK1B)
+CCNB1,removed,not annotated as a kinase (possibly co-enriched with CDK1|CDK2|CDK5|CDK7|PRKDC|PKMYT1|TGFBR2|CDK3)
+CCNB2,removed,not annotated as a kinase (possibly co-enriched with CDK1|CDK2|CDK7|PKMYT1|ATR|TGFBR2|)
+CCNE1,removed,not annotated as a kinase (possibly co-enriched with CDK2|CDK1|GSK3B|CDK3|CDK5|CDK7|CDK4|CDK6)
+CCNH,removed,not annotated as a kinase (possibly co-enriched with CDK7|CDK2|CDK2|CDK8|CDK9)
+CCNI,removed,not annotated as a kinase (possibly co-enriched with CDK5|AKT1)
+CCNK,removed,not annotated as a kinase (possibly co-enriched with CDK9|CDK12|CDK13|CDK1|CDK18)
+CCNT1,removed,not annotated as a kinase (possibly co-enriched with CDK9|CDK6|NTRK1|PIP4K2A|)
+CCNT2,removed,not annotated as a kinase (possibly co-enriched with CDK9|PKN1|CDK6|)
+CDC42BPA,kept,annotated as a protein kinase
+CDC42BPB,kept,annotated as a protein kinase
+CDC42BPG,kept,annotated as a protein kinase
+CDC7,kept,annotated as a protein kinase
+CDK1,kept,annotated as a protein kinase
+CDK12,kept,annotated as a protein kinase
+CDK13,kept,annotated as a protein kinase
+CDK16,kept,annotated as a protein kinase
+CDK17,kept,annotated as a protein kinase
+CDK18,kept,annotated as a protein kinase
+CDK2,kept,annotated as a protein kinase
+CDK3,kept,annotated as a protein kinase
+CDK4,kept,annotated as a protein kinase
+CDK5,kept,annotated as a protein kinase
+CDK6,kept,annotated as a protein kinase
+CDK7,kept,annotated as a protein kinase
+CDK9,kept,annotated as a protein kinase
+CDKL5,kept,annotated as a protein kinase
+CERS2,removed,not annotated as a kinase
+CHEK1,kept,annotated as a protein kinase
+CIT,kept,annotated as a protein kinase
+CKAP5,removed,not annotated as a kinase (possibly co-enriched with NTRK1|CLK1|GRK5|CDK9|EPHA1)
+CKS1B,removed,not annotated as a kinase (possibly co-enriched with CDK2|CDK1|CDK3|ICK|PKMYT1)
+CLK1,kept,annotated as a protein kinase
+CLK2,kept,annotated as a protein kinase
+CLK3,kept,annotated as a protein kinase
+CLK4,kept,annotated as a protein kinase
+CMPK1,removed,not annotated as a kinase
+COMT,removed,not annotated as a kinase
+CSK,kept,annotated as a protein kinase
+CSNK1A1,kept,annotated as a protein kinase
+CSNK1D,kept,annotated as a protein kinase
+CSNK1E,kept,annotated as a protein kinase
+CSNK1G1,kept,annotated as a protein kinase
+CSNK1G2,kept,annotated as a protein kinase
+CSNK1G3,kept,annotated as a protein kinase
+CSNK2A1;CSNK2A3,removed,protein group
+CSNK2A2,kept,annotated as a protein kinase
+CSNK2B,removed,not annotated as a kinase (possibly co-enriched with CSNK2A1|CSNK2A2)
+DCAF7,removed,not annotated as a kinase (possibly co-enriched with DYRK1A|DYRK1B|HIPK2|MAP3K1|CSNK2A1|CSNK2A2|DYRK2|AURKA|PRKACB|PRKACA|LATS2)
+DCK,removed,not annotated as a kinase (possibly co-enriched with NTRK1)
+DCTPP1,removed,not annotated as a kinase (possibly co-enriched with PLK1)
+DDB1,removed,not annotated as a kinase (possibly co-enriched with CHEK1|GRK5|AURKB|DYRK1B|AURKA|NTRK1|ATM|MTOR|ABL1|GRK6)
+DDR1,kept,annotated as a protein kinase
+DDR2,kept,annotated as a protein kinase
+DHCR24,removed,not annotated as a kinase (possibly co-enriched with IKBK|EGFR)
+DNAJA1,removed,not annotated as a kinase
+DYNLL1,removed,not annotated as a kinase (possibly co-enriched with PAK1|NEK9|PRKACB|PRKCZ|TLK1|TLK2|MASTL|MAST1|NEK6|DYRK1B|DYRK1A|GSK3B|STK26|STK24|CSNK1A1|PRKACA|STK25)
+DYNLL2,removed,not annotated as a kinase (possibly co-enriched with PAK1|NEK9|CSNK1A1|DYRK1A)
+DYRK1A,kept,annotated as a protein kinase
+EGFR,kept,annotated as a protein kinase
+EIF2AK1,kept,annotated as a protein kinase
+EIF3J,removed,not annotated as a kinase (possibly co-enriched with CSNK2A1|CSNK2A2|NTRK1)
+EIF4G1,removed,not annotated as a kinase
+EPHA1,kept,annotated as a protein kinase
+EPHA2,kept,annotated as a protein kinase
+EPHA4,kept,annotated as a protein kinase
+EPHA5,kept,annotated as a protein kinase
+EPHA7,kept,annotated as a protein kinase
+EPHB2,kept,annotated as a protein kinase
+EPHB3,kept,annotated as a protein kinase
+EPHB4,kept,annotated as a protein kinase
+EPHB6,kept,annotated as a protein kinase
+ERCC2,removed,not annotated as a kinase (possibly co-enriched with CDK7|NTRK1)
+ERN1,kept,annotated as a protein kinase
+ERN2,kept,annotated as a protein kinase
+EXOC4,removed,not annotated as a kinase (possibly co-enriched with NTRK1|EGFR)
+FAM58A;FAM58BP,removed,not annotated as a kinase (possibly co-enriched with CDK10)
+FAM83A,removed,not annotated as a kinase (possibly co-enriched with nan)
+FAM83B,removed,not annotated as a kinase (possibly co-enriched with GAK|CSNK1E|CSNK1A1)
+FANCI,removed,not annotated as a kinase (possibly co-enriched with ILK|NTRK1|ATM|NEK6|CAMKK2)
+FECH,removed,not annotated as a kinase (possibly co-enriched with ATM)
+FER,kept,annotated as a protein kinase
+FES,kept,annotated as a protein kinase
+FGFR1,kept,annotated as a protein kinase
+FGR,kept,annotated as a protein kinase
+FIBP,removed,not annotated as a kinase (possibly co-enriched with CDK5|GSK3B)
+FLT3,kept,annotated as a protein kinase
+FRK,kept,annotated as a protein kinase
+FYN,kept,annotated as a protein kinase
+GAK,kept,annotated as a protein kinase
+GAPVD1,removed,not annotated as a kinase (possibly co-enriched with CSNK1E|CSNK1D|AURKA|FGFR2|CSNK1A1|NTRK1|TSSK1B)
+GARS,removed,not annotated as a kinase
+GRAMD1A,removed,not annotated as a kinase
+GRB2,removed,not annotated as a kinase (possibly co-enriched with cell surface growth facotr receptors)
+GSK3A,kept,annotated as a protein kinase
+GSK3B,kept,annotated as a protein kinase
+GSKIP,removed,not annotated as a kinase (possibly co-enriched with GSK3B|GSK3A)
+HCK,kept,annotated as a protein kinase
+HSP90AB2P,removed,not annotated as a kinase
+ICK,kept,annotated as a protein kinase
+IGF1R,kept,annotated as a protein kinase
+IKBKE,kept,annotated as a protein kinase
+INCENP,removed,not annotated as a kinase (possibly co-enriched with AURKA|AURKB)
+INPPL1,removed,not annotated as a kinase (possibly co-enriched with ABL1|INSR|EGFR|NTRK1|MAP3K13|MET|LRRK1)
+INSR,kept,annotated as a protein kinase
+IPO7,removed,not annotated as a kinase (possibly co-enriched with RPS6KB2|NTRK1|CDK2|ILK)
+IRAK1,kept,annotated as a protein kinase
+IRAK3,kept,annotated as a protein kinase
+IRAK4,kept,annotated as a protein kinase
+JAK1,kept,annotated as a protein kinase
+JAK2,kept,annotated as a protein kinase
+KIAA0195,removed,not annotated as a kinase (possibly co-enriched with CDK5)
+KIT,kept,annotated as a protein kinase
+KLHL6,removed,not annotated as a kinase
+LAGE3,removed,not annotated as a kinase (possibly co-enriched with TP53RK)
+LASP1,removed,not annotated as a kinase (possibly co-enriched with ILK)
+LATS1,kept,annotated as a protein kinase
+LCK,kept,annotated as a protein kinase
+LIMK1,kept,annotated as a protein kinase
+LIMK2,kept,annotated as a protein kinase
+LYN,kept,annotated as a protein kinase
+MAP2K1,kept,annotated as a protein kinase
+MAP2K2,kept,annotated as a protein kinase
+MAP2K3,kept,annotated as a protein kinase
+MAP2K5,kept,annotated as a protein kinase
+MAP2K6,kept,annotated as a protein kinase
+MAP3K1,kept,annotated as a protein kinase
+MAP3K11,kept,annotated as a protein kinase
+MAP3K2,kept,annotated as a protein kinase
+MAP3K3,kept,annotated as a protein kinase
+MAP3K4,kept,annotated as a protein kinase
+MAP3K5,kept,annotated as a protein kinase
+MAP3K6,kept,annotated as a protein kinase
+MAP4K1,kept,annotated as a protein kinase
+MAP4K2,kept,annotated as a protein kinase
+MAP4K3,kept,annotated as a protein kinase
+MAP4K4,kept,annotated as a protein kinase
+MAP4K5,kept,annotated as a protein kinase
+MAPK1,kept,annotated as a protein kinase
+MAPK10,kept,annotated as a protein kinase
+MAPK11,kept,annotated as a protein kinase
+MAPK14,kept,annotated as a protein kinase
+MAPK15,kept,annotated as a protein kinase
+MAPK3,kept,annotated as a protein kinase
+MAPK7,kept,annotated as a protein kinase
+MAPK8,kept,annotated as a protein kinase
+MAPK9,kept,annotated as a protein kinase
+MAPKAPK2,kept,annotated as a protein kinase
+MAPKAPK3,kept,annotated as a protein kinase
+MAPKAPK5,kept,annotated as a protein kinase
+MARK2,kept,annotated as a protein kinase
+MARK3,kept,annotated as a protein kinase
+MARK4,kept,annotated as a protein kinase
+MAT2A,removed,not annotated as a kinase (possibly co-enriched with NTRK1|GRK5)
+MELK,kept,annotated as a protein kinase
+MET,kept,annotated as a protein kinase
+MINK1,kept,annotated as a protein kinase
+MNAT1,removed,not annotated as a kinase (possibly co-enriched with CDK7|CDK2|ICK)
+MOB1A;MOB1B,removed,not annotated as a kinase (possibly co-enriched with LATS1|LATS2|STK38L|STK38|STK3|STK4)
+MST1R,kept,annotated as a protein kinase
+MYH10,removed,not annotated as a kinase (possibly co-enriched with BMP2K|DAPK3|PIK3C2A|LYN)
+MYLK,kept,annotated as a protein kinase
+MYLK3,kept,annotated as a protein kinase
+NEK1,kept,annotated as a protein kinase
+NEK3,kept,annotated as a protein kinase
+NEK7,kept,annotated as a protein kinase
+NEK9,kept,annotated as a protein kinase
+NLK,kept,annotated as a protein kinase
+NME2,removed,not annotated as a kinase
+NPM1,removed,not annotated as a kinase (possibly co-enriched with CDKN2A|PRKCA|AURKA|RPS6KB2|NTRK1)
+NQO2,removed,not annotated as a kinase (possibly co-enriched with RPS6KA2)
+NTRK1,kept,annotated as a protein kinase
+NUAK2,kept,annotated as a protein kinase
+OSBPL3,removed,not annotated as a kinase (possibly co-enriched with AURKA)
+OSGEP,removed,not annotated as a kinase (possibly co-enriched with TP53RK|RYK|EEF2K)
+PAG1,removed,not annotated as a kinase (possibly co-enriched with CSK|ABL1|FYN|NTRK3|ZAP7|LCK|LYN|SYK)
+PAK2,kept,annotated as a protein kinase
+PAK4,kept,annotated as a protein kinase
+PAK6,kept,annotated as a protein kinase
+PDCD10,removed,not annotated as a kinase (possibly co-enriched with STK24|STK25|STK26)
+PDCD11,removed,not annotated as a kinase (possibly co-enriched with NTRK1)
+PDGFRB,kept,annotated as a protein kinase
+PDPK1;PDPK2P,removed,protein group
+PDXK,removed,not annotated as a kinase
+PFKP,removed,not annotated as a kinase
+PHKA2,removed,not annotated as a kinase (possibly co-enriched with RAF1|PHKG2)
+PHKG2,kept,annotated as a protein kinase
+PIM1,kept,annotated as a protein kinase
+PIM2,kept,annotated as a protein kinase
+PIP4K2A,removed,lipid kinase
+PIP4K2A;PIP4K2B,removed,lipid kinase
+PIP4K2C,removed,lipid kinase
+PKMYT1,kept,annotated as a protein kinase
+PKN1,kept,annotated as a protein kinase
+PKN2,kept,annotated as a protein kinase
+PLA2G2A,removed,not annotated as a kinase
+PLK1,kept,annotated as a protein kinase
+PLK4,kept,annotated as a protein kinase
+PRKAA1,kept,annotated as a protein kinase
+PRKAB1,removed,not annotated as a kinase (possibly co-enriched with PRKAA1|PRKAA2|ULK1|MAP3K7|MAPK6|MAST3|NEK4)
+PRKAB2,removed,not annotated as a kinase (possibly co-enriched with PRKAA1|PRKAA2|PHKG2|ULK1|MAP3K15|MAP3K6|MAP3K5|MAST3|PRKDC)
+PRKACA,kept,annotated as a protein kinase
+PRKACB,kept,annotated as a protein kinase
+PRKACG,kept,annotated as a protein kinase
+PRKAG1,removed,not annotated as a kinase
+PRKAG2,removed,not annotated as a kinase
+PRKAR2A,removed,not annotated as a kinase (possibly co-enriched with PRKACB|PRKACA|GSK3B|CSNK1E)
+PRKCA,kept,annotated as a protein kinase
+PRKCB,kept,annotated as a protein kinase
+PRKCD,kept,annotated as a protein kinase
+PRKCE;PRKCH,removed,protein group
+PRKCI,kept,annotated as a protein kinase
+PRKCQ,kept,annotated as a protein kinase
+PRKD2,kept,annotated as a protein kinase
+PRKD3,kept,annotated as a protein kinase
+PRKG1,kept,annotated as a protein kinase
+PRKX,kept,annotated as a protein kinase
+PRKX;PRKY,removed,protein group
+PSMG1,removed,not annotated as a kinase
+PTK2,kept,annotated as a protein kinase
+PTK2B,kept,annotated as a protein kinase
+PTK6,kept,annotated as a protein kinase
+PTPN1,removed,not annotated as a kinase (possibly co-enriched with EGFR|JAK2|IGF1R|INSR|NTRK1|TYK2|LTK|NTRK3|NTRK2|CSNK2A1|SRC|GSK3B)
+PYGB,removed,not annotated as a kinase
+PYGL,removed,not annotated as a kinase
+Q6ZSR9,removed,"uncharacterized protein with no kinase domain, encoded in the 3'-UTR of AAK1 (UniProt)"
+RASSF2,removed,not annotated as a kinase (possibly co-enriched with STK3|STK4)
+RASSF3,removed,not annotated as a kinase (possibly co-enriched with STK3|STK4)
+RASSF5,removed,not annotated as a kinase (possibly co-enriched with STK3|STK4|HIPK1)
+RET,kept,annotated as a protein kinase
+RIPK2,kept,annotated as a protein kinase
+RIPK3,kept,annotated as a protein kinase
+ROCK1,kept,annotated as a protein kinase
+ROCK2,kept,annotated as a protein kinase
+RPL10,removed,not annotated as a kinase
+RPL35A,removed,not annotated as a kinase
+RPL4,removed,not annotated as a kinase
+RPS4X,removed,not annotated as a kinase (possibly co-enriched with AURKB|RPS6KB2|AURKA|NTRK1|CDK9|CDK2|CAMK2D)
+RPS6KA1,kept,annotated as a protein kinase
+RPS6KA3,kept,annotated as a protein kinase
+RPS6KA4,kept,annotated as a protein kinase
+RPS6KA5,kept,annotated as a protein kinase
+RPS6KA6,kept,annotated as a protein kinase
+RPS6KB1,kept,annotated as a protein kinase
+S100A8,removed,not annotated as a kinase (possibly co-enriched with CDK2|LLRK1|NUAK1|)
+SAV1,removed,not annotated as a kinase (possibly co-enriched with STK3|STK4|LATS2|CSNK1E|LATS1)
+SIK2,kept,annotated as a protein kinase
+SIK3,kept,annotated as a protein kinase
+SLC16A3,removed,not annotated as a kinase
+SLC25A5,removed,not annotated as a kinase (possibly co-enriched with ERBB3|RPS6KB2|NTRK1)
+SLC5A1,removed,not annotated as a kinase
+SLK,kept,annotated as a protein kinase
+SMARCC1,removed,not annotated as a kinase (possibly co-enriched with AURKB|NTRK1|Rock1|CDK8|STK11)
+SMC2,removed,not annotated as a kinase (possibly co-enriched with EGFR|NTRK1|AURKA|EPHA1|CDK9)
+SNRNP200,removed,not annotated as a kinase (possibly co-enriched with NTRK1|IRAK1|IRAK2)
+SNRPF,removed,not annotated as a kinase (possibly co-enriched with CDK2|EGFR)
+SRC,kept,annotated as a protein kinase
+STK10,kept,annotated as a protein kinase
+STK11,kept,annotated as a protein kinase
+STK16,kept,annotated as a protein kinase
+STK24,kept,annotated as a protein kinase
+STK26,kept,annotated as a protein kinase
+STK3,kept,annotated as a protein kinase
+STK38L,kept,annotated as a protein kinase
+STK4,kept,annotated as a protein kinase
+SYK,kept,annotated as a protein kinase
+SYNGR2,removed,not annotated as a kinase
+TANK,removed,not annotated as a kinase (possibly co-enriched with TBK1|IKBKE)
+TAOK1,kept,annotated as a protein kinase
+TAOK2,kept,annotated as a protein kinase
+TAOK3,kept,annotated as a protein kinase
+TBK1,kept,annotated as a protein kinase
+TBKBP1,removed,not annotated as a kinase (possibly co-enriched with TBK1|IKBKE|LATS2)
+TEC,kept,annotated as a protein kinase
+TESK1,kept,annotated as a protein kinase
+TEX264,removed,not annotated as a kinase (possibly co-enriched with CSNK1D|CSNK1E|CHEK2|CSNK1A1|MAP4K4|MINK1)
+TGFBR1,kept,annotated as a protein kinase
+TGFBR2,kept,annotated as a protein kinase
+TNIK,kept,annotated as a protein kinase
+TNK1,kept,annotated as a protein kinase
+TNK2,kept,annotated as a protein kinase
+TOP2B,removed,not annotated as a kinase (possibly co-enriched with NTRK1|CSNK2B)
+TP53RK,kept,annotated as a protein kinase
+TPRKB,removed,not annotated as a kinase (possibly co-enriched with TP53RK|PRKACB)
+TRRAP,removed,not annotated as a kinase (possibly co-enriched with CDK8)
+TYK2,kept,annotated as a protein kinase
+U2AF1;U2AF1L4,removed,not annotated as a kinase
+UBASH3B,removed,not annotated as a kinase (possibly co-enriched with EGFR|SYK|AURKB|ABL1|MAP3K1|CSK)
+ULK1,kept,annotated as a protein kinase
+ULK3,kept,annotated as a protein kinase
+UNC119,removed,not annotated as a kinase (possibly co-enriched with LYN|LCK|FYN|RPS6KA5|ZAK|HCK|PSKH1|PRKG2|PSKH2|LIMK2|(BCR)|MAPK1)
+WEE1,kept,annotated as a protein kinase
+YES1,kept,annotated as a protein kinase
+ZAK,kept,annotated as a protein kinase

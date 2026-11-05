@@ -7,18 +7,20 @@ human protein kinase, we show that their rankings depend on choices usually
 left implicit. Moving the activity boundary between the assay floor and the
 activity threshold reverses 8--13\% of compound pairs under the S-score,
 entropy and Gini on three datasets, and over 20\% on the fourth. The ratio
-depends strongly on which off-target it references. With entropy and Gini on a common log-affinity scale, the S-score,
-entropy and Gini agree more with one another than with the ratio, but not for
-the entropy as originally published. We state three properties for a
-selectivity measure: a reliability threshold, consistency across placements of
-the activity boundary, and monotonicity when a weakly bound kinase is added. No
-measure examined satisfies the second, so the boundary must be fixed in the
-analysis protocol. Monotonicity holds for simple measures such as a count of
-active kinases, but not for the S-score, the Gini, or the entropy with a low
-baseline. A gated, smooth-hinge entropy is monotone while still weighting weak
-binding, and ranks these datasets almost identically to the entropy. On small
-random panels, the share of compounds that can be scored limits recovery more
-than the choice of measure.
+depends strongly on which off-target it references. With entropy and Gini on a
+common log-affinity scale, the S-score, entropy and Gini agree more with one
+another than with the ratio among compounds with an active kinase. This
+grouping fails for the entropy as originally published. We state three
+properties for a selectivity measure: a reliability threshold, consistency
+across placements of the activity boundary, and monotonicity when a weakly
+bound kinase is added. No measure we assess satisfies the second, so the
+boundary must be fixed in the analysis protocol. Monotonicity holds for simple
+measures such as a count of active kinases, but not for the Gini or the entropy
+with a low baseline. A gated, smooth-hinge entropy is monotone, but ranks
+compounds almost identically to the share of targets with detected binding. On
+small random panels, measures that follow this share recover rankings from
+fewer targets than the ratio and the published entropy. Recovery is limited
+mainly by the share of compounds that can still be scored.
 \end{abstract}
 
 \noindent\textbf{Keywords:} binding selectivity,

@@ -5,7 +5,7 @@ Polina Vinogradova*
 
 On four kinase profiling datasets, the rankings given by the S-score, entropy,
 Gini coefficient and fold-selectivity ratio depend on choices usually left
-implicit, such as where the activity boundary is placed. No measure examined is
-robust to that boundary, so it must be fixed by protocol. A gated, smooth-hinge
-entropy is monotone when a weakly bound kinase is added while still weighting
-weak binding, and ranks compounds almost as the entropy does.
+implicit, such as where the activity boundary is placed. No measure we assess
+is robust to that boundary, so it must be fixed by protocol. Measures that
+follow the share of targets with detected binding recover rankings from small
+panels better than the ratio or the published entropy.

@@ -2,10 +2,10 @@ Shared Davis/Klaeger compounds (PubChem CID match): n = 46
 (supersedes the manuscript's previous, unverified claim of 'at most 19')
 
 Platform effect: Spearman r between Davis-rank and Klaeger-rank, same definition, same 46 compounds:
-  s_score : r = +0.758 (p = 1.1e-09)
-  entropy : r = +0.811 (p = 8.0e-12)
-  gini    : r = +0.386 (p = 8.0e-03)
-  ratio   : r = +0.136 (p = 3.7e-01)
+  s_score : r = +0.765 (p = 6.2e-10)
+  entropy : r = +0.813 (p = 6.4e-12)
+  gini    : r = +0.386 (p = 8.1e-03)
+  ratio   : r = +0.141 (p = 3.5e-01)
 
 Definition effect: Spearman r between definitions, within platform, same 46 compounds:
   Davis:
@@ -16,21 +16,28 @@ Definition effect: Spearman r between definitions, within platform, same 46 comp
     entropy  vs ratio   : r = +0.379
     gini     vs ratio   : r = +0.383
   Klaeger:
-    s_score  vs entropy : r = +0.928
-    s_score  vs gini    : r = +0.339
-    s_score  vs ratio   : r = -0.041
-    entropy  vs gini    : r = +0.429
-    entropy  vs ratio   : r = +0.165
-    gini     vs ratio   : r = +0.652
+    s_score  vs entropy : r = +0.923
+    s_score  vs gini    : r = +0.322
+    s_score  vs ratio   : r = -0.050
+    entropy  vs gini    : r = +0.427
+    entropy  vs ratio   : r = +0.175
+    gini     vs ratio   : r = +0.655
 
-Summary: platform-effect r range = 0.14-0.81 (mean 0.52)
-         definition-effect r range = -0.04-1.00 (mean 0.55)
+Summary: platform-effect r range = 0.14-0.81 (mean 0.53)
+         definition-effect r range = -0.05-1.00 (mean 0.55)
 Lower r = more disagreement. Comparing the two ranges shows which source of ranking disagreement -- assay platform or scoring definition -- is larger on this shared-compound set.
 
-Shared panel: 200 genes profiled on both platforms (of 363 Davis genes and 219 Klaeger targets)
+Shared panel: 200 genes profiled on both platforms (of 363 Davis genes and 217 Klaeger targets)
   compounds with no active target on the shared panel: Davis 0, Klaeger 6
-  platform effect, s_score : r = +0.781 (p = 1.5e-10)
+  platform effect, s_score : r = +0.781 (p = 1.48e-10)
   platform effect, entropy : r = +0.843 (p = 1.9e-13)
-  platform effect, gini    : r = +0.454 (p = 1.5e-03)
-  platform effect, ratio   : r = +0.331 (p = 2.5e-02)
+  platform effect, gini    : r = +0.454 (p = 0.00152)
+  platform effect, ratio   : r = +0.331 (p = 0.0248)
 Summary on the shared panel: platform-effect r range = 0.33-0.84 (mean 0.60); definition-effect r range = -0.09-1.00 (mean 0.56)
+
+Shared panel, the 40 compounds active on both platforms:
+  platform effect, s_score : r = +0.739
+  platform effect, entropy : r = +0.847
+  platform effect, gini    : r = +0.841
+  platform effect, ratio   : r = +0.446
+Summary: platform-effect r range = 0.45-0.85 (mean 0.72); definition-effect r range = 0.22-1.00 (mean 0.73)

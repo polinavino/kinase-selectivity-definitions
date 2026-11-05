@@ -12,10 +12,10 @@
    ARRY-380    -> ERBB2: fitted for  0 compounds (0 high-confidence rows, max pKd nan); for ARRY-380: no
 
 2. Klaeger within-family correlations, all compounds vs compounds with an active kinase
-   all 222           : S-E 0.898  S-G 0.511  E-G 0.657  | S-R 0.085  E-R 0.344  G-R 0.657
-   active only (200) : S-E 0.901  S-G 0.897  E-G 0.997  | S-R 0.391  E-R 0.621  G-R 0.637
-   all 222           : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI [-0.345353, +0.056531]
-   active only (200) : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI [+0.165267, +0.359458]
+   all 222           : S-E 0.896  S-G 0.508  E-G 0.658  | S-R 0.078  E-R 0.344  G-R 0.655
+   active only (200) : S-E 0.897  S-G 0.892  E-G 0.997  | S-R 0.378  E-R 0.622  G-R 0.635
+   all 222           : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI [-0.346433, +0.057819]
+   active only (200) : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI [+0.158240, +0.355111]
 
 3. Table 1 cells with mean instead of median ranks: largest change per dataset
    Davis        : max |median-based - mean-based| = 0.036
@@ -30,11 +30,11 @@
 5. Klaeger: ten largest entropy-ratio disagreements among active compounds
    Dovitinib      n_active =  22  top1-top2 gap = 1.93
    BMS-690514     n_active =  20  top1-top2 gap = 1.98
-   MK-5108        n_active =  18  top1-top2 gap = 1.67
+   MK-5108        n_active =  17  top1-top2 gap = 1.67
    PF-477736      n_active =  27  top1-top2 gap = 0.90
+   SB-1317        n_active =  14  top1-top2 gap = 1.54
    PF-562271      n_active =  14  top1-top2 gap = 1.89
    Momelotinib    n_active =  22  top1-top2 gap = 1.73
-   SB-1317        n_active =  14  top1-top2 gap = 1.54
    Cerdulatinib   n_active =  26  top1-top2 gap = 0.18
    Sunitinib      n_active =  18  top1-top2 gap = 0.23
    Defactinib     n_active =   9  top1-top2 gap = 2.86
@@ -42,21 +42,21 @@
 
 6. Klaeger: the 20 most unstable compounds (overall rank sigma) by type
    Type 1 (no active kinase): 20
-   20 most unstable compounds with an active kinase: Type 3 (>= 10 active): 8; Type 2 (top1-top2 gap < 0.1): 6; other: 6; sigma 47.6-62.6
+   20 most unstable compounds with an active kinase: Type 3 (>= 10 active): 8; other: 7; Type 2 (top1-top2 gap < 0.1): 5; sigma 48.1-62.5
 
 7. Mean overall rank sigma by number of active kinases
-   Klaeger : 1-2: 33.1 (n=50); 3-5: 32.5 (n=50); 6-10: 35.2 (n=31); 11-20: 32.4 (n=40); 21-40: 29.6 (n=19); 41-+: 18.7 (n=10)
+   Klaeger : 1-2: 33.5 (n=52); 3-5: 32.5 (n=50); 6-10: 35.8 (n=31); 11-20: 32.1 (n=38); 21-40: 29.4 (n=19); 41-+: 19.3 (n=10)
    Davis   : 1-2: 3.9 (n=5); 3-5: 4.5 (n=3); 6-10: 10.1 (n=4); 11-20: 9.7 (n=11); 21-40: 7.4 (n=13); 41-+: 7.3 (n=32)
 
 8. Klaeger: entropy instability vs the share of above-floor kinases crossing the baseline sweep
-   active compounds: r = +0.216 (p = 0.0021)
+   active compounds: r = +0.205 (p = 0.0036)
 
 9. The 46 compounds profiled in both Davis and Klaeger
-   mean active fraction of the panel: Davis 15.0%, Klaeger 3.9%; paired Spearman of n_active +0.79
-   s_score : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.11, Klaeger -0.13
-   entropy : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.19, Klaeger -0.21
-   gini    : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.07, Klaeger +0.09
-   ratio   : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.04, Klaeger +0.23
+   mean active fraction of the panel: Davis 15.0%, Klaeger 3.9%; paired Spearman of n_active +0.78
+   s_score : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.05, Klaeger -0.13
+   entropy : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.18, Klaeger -0.16
+   gini    : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis -0.08, Klaeger +0.12
+   ratio   : Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): Davis +0.01, Klaeger +0.17
 
 10. Metz: dependence on per-compound coverage (untested pairs set to the floor)
    measured entries above the 4.0 floor: 99.9%
@@ -70,13 +70,13 @@
 
 11. Within-family (S-score, entropy, Gini) correlations of median ranks, per dataset
    Davis        : 0.963-0.999 | ratio vs family 0.510-0.563
-   Klaeger      : 0.511-0.898 | ratio vs family 0.085-0.657
+   Klaeger      : 0.508-0.896 | ratio vs family 0.078-0.655
    Anastassiadis: 0.859-0.988 | ratio vs family 0.478-0.553
    Metz         : 0.810-0.994 | ratio vs family 0.138-0.193
-   across all four datasets: 0.511-0.999
+   across all four datasets: 0.508-0.999
    compounds with an active kinase, re-ranked among themselves: within-family | ratio vs family
    Davis         (68 of 68): 0.963-0.999 | 0.510-0.563
-   Klaeger       (200 of 222): 0.897-0.997 | 0.391-0.637
+   Klaeger       (200 of 222): 0.892-0.997 | 0.378-0.635
    Anastassiadis (133 of 178): 0.870-0.999 | 0.793-0.843
    Metz          (699 of 704): 0.806-0.994 | 0.147-0.203
 
@@ -85,7 +85,7 @@
 
 13. Zero-active vs active mean rank sigma within each definition's own sweep
    Davis        : no zero-active compounds
-   Klaeger       (22 zero-active): s_score 18.8 vs 25.6 (p=0.01); entropy 11.8 vs 12.5 (p=0.81); gini 65.0 vs 16.0 (p=2.7e-05); ratio 17.3 vs 19.2 (p=0.5)
+   Klaeger       (22 zero-active): s_score 19.0 vs 25.7 (p=0.011); entropy 11.9 vs 12.6 (p=0.91); gini 65.0 vs 16.3 (p=2.3e-05); ratio 17.5 vs 19.1 (p=0.51)
    Anastassiadis (45 zero-active): s_score 6.9 vs 9.4 (p=0.4); entropy 21.3 vs 13.0 (p=3.8e-05); gini 43.2 vs 15.8 (p=1.1e-16); ratio 14.8 vs 12.9 (p=0.0032)
    Metz          (5 zero-active): s_score 7.8 vs 71.2 (p=1.2e-06); entropy 11.0 vs 24.5 (p=0.037); gini 5.4 vs 24.2 (p=0.0094); ratio 58.3 vs 63.7 (p=0.93)
 
@@ -98,23 +98,23 @@
 
 15. Klaeger active compounds: active affinity range vs per-family instability,
     holding the number of active kinases fixed (partial Spearman)
-   Spearman(range, n_active) = +0.756 (n=200)
-   s_score : r(range, sigma) = -0.370 (p = 7.2e-08); partial on n_active = -0.275 (p = 8.2e-05)
-   entropy : r(range, sigma) = -0.210 (p = 0.0028); partial on n_active = +0.113 (p = 0.11)
-   gini    : r(range, sigma) = -0.040 (p = 0.57); partial on n_active = +0.015 (p = 0.83)
+   Spearman(range, n_active) = +0.757 (n=200)
+   s_score : r(range, sigma) = -0.370 (p = 6.7e-08); partial on n_active = -0.2835 (p = 4.7e-05)
+   entropy : r(range, sigma) = -0.247 (p = 0.00041); partial on n_active = +0.0843 (p = 0.24)
+   gini    : r(range, sigma) = -0.054 (p = 0.45); partial on n_active = +0.0048 (p = 0.95)
 
 16. Klaeger compounds with >= 3 active kinases: skewness, the weight the beta sweep
     crosses, and Gini instability
-   n = 150; Spearman(skewness, weight share crossed) = +0.370 (p = 3.2e-06)
-   partial(weight share crossed, Gini sigma | n_active) = +0.710 (p = 2.6e-24)
-   partial(skewness, Gini sigma | n_active) = +0.508 (p = 3.2e-11); also holding the weight share fixed = +0.287 (p = 0.00037)
+   n = 148; Spearman(skewness, weight share crossed) = +0.377 (p = 2.3e-06)
+   partial(weight share crossed, Gini sigma | n_active) = +0.700 (p = 4.4e-23)
+   partial(skewness, Gini sigma | n_active) = +0.500 (p = 9.8e-11); also holding the weight share fixed = +0.276 (p = 0.0007)
 
 17. The 46 shared Davis/Klaeger compounds: active affinity range vs S-score instability
    Davis   : median n_active over all 46 = 32; 46 with >= 2 active: Spearman(range, S-score sigma) = -0.156 (p = 0.3)
-   Klaeger : median n_active over all 46 = 4; 37 with >= 2 active: Spearman(range, S-score sigma) = -0.308 (p = 0.063)
+   Klaeger : median n_active over all 46 = 4; 37 with >= 2 active: Spearman(range, S-score sigma) = -0.282 (p = 0.09)
 
 18. Most stable compounds: median rank under each definition (rank 1 = most selective)
-   Klaeger XL-228      : n_active  50, sigma   8.5 | s_score 218.5  entropy 218.0  gini 203.0  ratio 214.0
+   Klaeger XL-228      : n_active  49, sigma   8.7 | s_score 218.5  entropy 218.0  gini 203.0  ratio 214.0
    Klaeger PF-03814735 : n_active  40, sigma   9.9 | s_score 212.0  entropy 214.0  gini 199.0  ratio 211.0
    Davis most stable (row 66, Drug_Index 66): n_active 153, sigma 2.1 | s_score  62.0  entropy  62.0  gini  62.0  ratio  59.0
    Davis broad (row 56): n_active 308, sigma   8.0 | s_score  68.0  entropy  68.0  gini  68.0  ratio  46.0
@@ -145,19 +145,19 @@
       all sub-threshold         :   0.0% (beta = 5) |  0.0% | 3210
       one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 3210
    Klaeger        50-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
-      +1                        :   0.0% (beta = 5) |  0.0% | 6534
-      +5                        :   0.0% (beta = 5) |  0.0% | 5181
-      +10                       :   0.0% (beta = 5) |  0.0% | 4163
-      +30                       :   0.0% (beta = 5) |  0.0% | 2329
-      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 7060
-      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 7060
+      +1                        :   0.0% (beta = 5) |  0.0% | 6723
+      +5                        :   0.0% (beta = 5) |  0.0% | 5431
+      +10                       :   0.0% (beta = 5) |  0.0% | 4479
+      +30                       :   0.0% (beta = 5) |  0.0% | 2494
+      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 6934
+      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 6934
    Klaeger       100-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
-      +1                        :   0.0% (beta = 5) |  0.0% | 8230
-      +5                        :   0.0% (beta = 5) |  0.0% | 6794
-      +10                       :   0.0% (beta = 5) |  0.0% | 5621
-      +30                       :   0.0% (beta = 5) |  0.0% | 3358
-      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 8681
-      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 8681
+      +1                        :   0.0% (beta = 5) |  0.0% | 8196
+      +5                        :   0.0% (beta = 5) |  0.0% | 6721
+      +10                       :   0.0% (beta = 5) |  0.0% | 5611
+      +30                       :   0.0% (beta = 5) |  0.0% | 3370
+      all sub-threshold         :   0.0% (beta = 5) |  0.0% | 8504
+      one at tau* (worst case)  :   0.0% (beta = 5) |  0.0% | 8504
    Anastassiadis  50-kinase panels (50 per size): entropy rises at its worst baseline | candidate rises | eligible pairs
       +1                        :   0.0% (beta = 0) |  0.0% | 4427
       +5                        :   0.0% (beta = 0) |  0.0% | 3088
@@ -192,10 +192,10 @@
 
 20. Zero-active compounds: where each definition ranks them, and the pooled rank sigma
     with the undefined entropy/Gini configurations dropped (rank 1 = most selective)
-   Klaeger (22 zero-active of 222): median of their median ranks: s_score 23  entropy 20  gini 206  ratio 182; entropy/Gini undefined in 66% of their configurations (mean Gini rank when undefined: 212; when defined: 32)
-      pooled sigma, all configurations             : zero-active  78.0  active  32.1  (Mann-Whitney p=1e-14)
-      pooled sigma, undefined entropy/Gini dropped : zero-active  66.3  active  31.6  (Mann-Whitney p=2e-13)
-      pooled sigma, S-score and ratio only         : zero-active  70.7  active  37.6  (Mann-Whitney p=5e-12)
+   Klaeger (22 zero-active of 222): median of their median ranks: s_score 24  entropy 20  gini 206  ratio 182; entropy/Gini undefined in 66% of their configurations (mean Gini rank when undefined: 212; when defined: 32)
+      pooled sigma, all configurations             : zero-active  77.9  active  32.2  (Mann-Whitney p=1e-14)
+      pooled sigma, undefined entropy/Gini dropped : zero-active  66.2  active  31.7  (Mann-Whitney p=2e-13)
+      pooled sigma, S-score and ratio only         : zero-active  70.6  active  37.7  (Mann-Whitney p=5e-12)
    Anastassiadis (45 zero-active of 178): median of their median ranks: s_score 32  entropy 30  gini 32  ratio 94; entropy/Gini undefined in 10% of their configurations (mean Gini rank when undefined: 169; when defined: 44)
       pooled sigma, all configurations             : zero-active  36.6  active  21.8  (Mann-Whitney p=1e-11)
       pooled sigma, undefined entropy/Gini dropped : zero-active  32.7  active  21.8  (Mann-Whitney p=1e-08)
@@ -207,22 +207,23 @@
 
 21. Table 2 (feature vs within-family instability) with a Bonferroni correction for the
     24 tests per dataset (two-tailed Spearman p from r and n)
-   klaeger  (n=200, cutoff p < 0.0021): 8 of 12 nominally significant survive: n_active/s_score (p=0.0002), n_active/entropy (p=7e-08), top1_top2_gap/ratio (p=1e-06), active_std/s_score (p=9e-06), active_range/s_score (p=7e-08), top2_pkd/s_score (p=9e-06), top2_pkd/ratio (p=0.001), active_skew/gini (p=7e-05)
+   klaeger  (n=200, cutoff p < 0.0021): 12 of 12 nominally significant survive: n_active/s_score (p=0.0003), n_active/entropy (p=8e-09), top1_top2_gap/ratio (p=7e-07), active_std/s_score (p=9e-06), active_range/s_score (p=7e-08), active_range/entropy (p=0.0004), top2_pkd/s_score (p=2e-05), top2_pkd/entropy (p=0.001), top2_pkd/gini (p=0.002), top2_pkd/ratio (p=0.002), active_skew/s_score (p=0.0008), active_skew/gini (p=0.0002)
    davis    (n=68, cutoff p < 0.0021): 1 of 4 nominally significant survive: top1_top2_gap/ratio (p=0.0001)
 
 22. The candidate's dependence on the activity threshold tau*, which sets its D1 gate and
     T = tau* - x0: compounds scored, and Spearman with the default ranking on compounds
     scored at both values
    Davis         (default tau*=6: 68 of 68 scored): tau*=5.5: 68 scored, r=0.9995; tau*=6.5: 68 scored, r=0.9995; tau*=7: 65 scored, r=0.9993
-   Klaeger       (default tau*=6: 200 of 222 scored): tau*=5.5: 213 scored, r=0.9997; tau*=6.5: 190 scored, r=0.9999; tau*=7: 159 scored, r=0.9999
+   Klaeger       (default tau*=6: 200 of 222 scored): tau*=5.5: 213 scored, r=0.9997; tau*=6.5: 189 scored, r=0.9999; tau*=7: 157 scored, r=0.9998
    Anastassiadis (default tau*=50: 133 of 178 scored): tau*=40: 140 scored, r=0.9998; tau*=60: 125 scored, r=0.9999; tau*=70: 116 scored, r=0.9998
    Metz          (default tau*=6: 699 of 704 scored): tau*=5.5: 704 scored, r=0.9999; tau*=6.5: 690 scored, r=0.9999; tau*=7: 680 scored, r=0.9999
 
-23. Measurement noise near the gate: Spearman between the noise-free and noisy rankings of the
-    scored compounds, 50 draws, candidate (gate at x0) vs entropy at beta = x0. pK datasets:
-    measured (above-floor) values perturbed, and set to the floor if pushed below it;
-    Anastassiadis: every entry perturbed and clipped to [0, 100]%
-   Davis        : sd=0.1: candidate mean 0.999 (min 0.999), entropy mean 1.000 (min 1.000); sd=0.3: candidate mean 0.998 (min 0.998), entropy mean 0.999 (min 0.998)
-   Klaeger      : sd=0.1: candidate mean 1.000 (min 0.999), entropy mean 1.000 (min 1.000); sd=0.3: candidate mean 0.999 (min 0.998), entropy mean 0.998 (min 0.997)
-   Anastassiadis: sd=3: candidate mean 0.997 (min 0.995), entropy mean 0.999 (min 0.999); sd=9: candidate mean 0.985 (min 0.975), entropy mean 0.988 (min 0.982)
-   Metz         : sd=0.1: candidate mean 1.000 (min 1.000), entropy mean 1.000 (min 1.000); sd=0.3: candidate mean 0.999 (min 0.998), entropy mean 0.999 (min 0.999)
+23. Measurement noise near the gate: Spearman between the noise-free and noisy rankings, 50 draws,
+    candidate (gate at x0) vs entropy at beta = x0, over the compounds scored (D1) both without
+    and with noise; the D1 gate is reapplied to the noisy profiles. pK datasets: measured
+    (above-floor) values perturbed, and set to the floor if pushed below it; Anastassiadis:
+    every entry perturbed and clipped to [0, 100]%
+   Davis        : sd=0.1: candidate mean 0.999 (min 0.999), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 0.0, max 0 of 68 scored; sd=0.3: candidate mean 0.998 (min 0.998), entropy mean 0.999 (min 0.998); compounds changing D1 status: mean 0.0, max 0 of 68 scored
+   Klaeger      : sd=0.1: candidate mean 1.000 (min 0.999), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 2.1, max 4 of 200 scored; sd=0.3: candidate mean 0.998 (min 0.998), entropy mean 0.998 (min 0.998); compounds changing D1 status: mean 5.8, max 11 of 200 scored
+   Anastassiadis: sd=3: candidate mean 0.996 (min 0.995), entropy mean 0.999 (min 0.998); compounds changing D1 status: mean 1.0, max 3 of 133 scored; sd=9: candidate mean 0.984 (min 0.978), entropy mean 0.988 (min 0.983); compounds changing D1 status: mean 5.2, max 10 of 133 scored
+   Metz         : sd=0.1: candidate mean 1.000 (min 1.000), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 0.4, max 2 of 699 scored; sd=0.3: candidate mean 0.999 (min 0.998), entropy mean 0.999 (min 0.999); compounds changing D1 status: mean 2.2, max 5 of 699 scored

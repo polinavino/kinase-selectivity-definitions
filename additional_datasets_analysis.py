@@ -5,7 +5,8 @@ Replicates the two-family clustering and rank-instability analyses of the main
 paper on two further kinase profiling datasets that use different assay
 technologies from Davis (pKd binding) and Klaeger (pKd chemoproteomics):
 
-  * Anastassiadis et al., Nat. Biotechnol. 2011 -- 178 inhibitors x 300 kinases,
+  * Anastassiadis et al., Nat. Biotechnol. 2011 -- 178 inhibitors x 300 kinases
+    (291 after curate_panels.py),
     single-concentration (0.5 uM) functional activity assay reported as percent
     residual kinase activity.  Converted here to percent inhibition
     (100 - residual, clipped to [0,100]); higher = more potent.
@@ -156,12 +157,12 @@ for r in results:
     gap_r, gap_p = r['fc']('top1_top2_gap', 'ratio')
     na_r, na_p = r['fc']('n_active', 'entropy')
     print(f"{r['label']:32s}{r['n_cpd']:>7d}{r['n_kin']:>7d}{distr:>10.3f}"
-          f"{rd_lo:>8.2f}-{rd_hi:<5.2f}{gap_r:>10.3f}  {na_r:>10.3f}")
+          f"{rd_lo:>8.2f}-{rd_hi:<5.2f}{gap_r:>10.4f}  {na_r:>10.4f}")
     rows.append(dict(dataset=r['label'], n_cpd=r['n_cpd'], n_kin=r['n_kin'],
                      within_distr_r=round(distr, 3),
                      ratio_vs_distr_min=round(rd_lo, 3), ratio_vs_distr_max=round(rd_hi, 3),
-                     gap_ratio_r=round(gap_r, 3), gap_ratio_p=gap_p,
-                     nactive_entropy_r=round(na_r, 3), nactive_entropy_p=na_p,
+                     gap_ratio_r=round(gap_r, 4), gap_ratio_p=gap_p,
+                     nactive_entropy_r=round(na_r, 4), nactive_entropy_p=na_p,
                      zero_active=int((~r['has_active']).sum()),
                      rankstd_zeroactive=round(float(r['rank_std'][~r['has_active']].mean()), 1)
                          if (~r['has_active']).any() else np.nan,

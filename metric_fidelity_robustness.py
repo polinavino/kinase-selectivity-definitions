@@ -17,7 +17,7 @@ operationalizations produce substantially different rankings, so the choice of
 operationalization is itself a source of the definitional instability the paper
 characterizes.  The manuscript adopts the baseline-subtracted log-affinity forms
 because they place all four metrics on a single comparable scale and expose the
-baseline parameter beta whose under-specification motivates property D3.
+baseline parameter beta whose under-specification motivates property D2.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -32,9 +32,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 def to_ranks(s):
     return rankdata(-np.asarray(s), method='average')          # rank 1 = most selective
 
-def entropy_literal(M, eps=1e-12):                  # Uitdehaag: p ~ Ka = 1/Kd
+FLOOR = 5.0
+
+def ka(M, floor_weight):
+    """Association constants; floor-coded entries (no binding detected) kept at the
+    floor value or given zero weight."""
     Ka = np.power(10.0, M - 9.0)
-    p = Ka / Ka.sum(1, keepdims=True)
+    return Ka if floor_weight else np.where(M > FLOOR, Ka, 0.0)
+
+def entropy_literal(M, floor_weight=True):          # Uitdehaag: p ~ Ka = 1/Kd
+    Ka = ka(M, floor_weight)
+    tot = Ka.sum(1, keepdims=True)
+    p = Ka / np.where(tot == 0, 1.0, tot)
     return -(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)   # low entropy = selective
 
 def entropy_manuscript(M, b, eps=1e-10):            # manuscript: p ~ max(pKd - b, 0)
@@ -57,35 +66,30 @@ datasets['Davis'] = aff.pivot(index='Drug_Index', columns='Protein_Index',
 datasets['Klaeger'] = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0).values
 
 base = np.arange(5.0, 6.75, 0.25)
-print(f"{'Dataset':10s}{'entropy: r(literal, manuscript)':>34s}{'Gini: r(literal, manuscript)':>32s}")
+print(f"{'Dataset':10s}{'floor-coded entries':>22s}{'entropy: r(literal, manuscript)':>34s}{'Gini: r(literal, manuscript)':>32s}")
 fig, axes = plt.subplots(2, 2, figsize=(10, 8.5))
+STYLE = {True: dict(color='#888888', marker='o', label='floor-coded entries at the floor'),
+         False: dict(color='#2a78d6', marker='s', label='floor-coded entries given no weight')}
 for col, (name, M) in enumerate(datasets.items()):
-    ent_lit = to_ranks(-entropy_literal(M))                                   # rank1=selective
     ent_man = np.median(np.array([to_ranks(-entropy_manuscript(M, b)) for b in base]), 0)
-    r_ent, _ = spearmanr(ent_lit, ent_man)
-
-    gini_lit = to_ranks(gini(np.power(10.0, M - 9.0)))                         # Gini of Ka
     gini_man = np.median(np.array([to_ranks(gini(np.maximum(M - b, 0))) for b in base]), 0)
-    r_gini, _ = spearmanr(gini_lit, gini_man)
-
-    print(f"{name:10s}{r_ent:>28.3f}{r_gini:>32.3f}")
-
-    ax = axes[0, col]
-    ax.scatter(ent_lit, ent_man, s=14, alpha=0.6, edgecolors='k', linewidths=0.2)
-    ax.set_xlabel("entropy rank: literal (1/Kd)")
-    ax.set_ylabel("entropy rank: manuscript (pKd-baseline)")
-    ax.set_title(f"{name}: entropy selectivity ranking\nSpearman r = {r_ent:.2f}")
-
-    ax = axes[1, col]
-    ax.scatter(gini_lit, gini_man, s=14, alpha=0.6, edgecolors='k', linewidths=0.2,
-               color='tab:green')
-    ax.set_xlabel("Gini rank: literal (1/Kd)")
-    ax.set_ylabel("Gini rank: manuscript (pKd-baseline)")
-    ax.set_title(f"{name}: Gini selectivity ranking\nSpearman r = {r_gini:.2f}")
+    r = {}
+    for fw in (True, False):
+        ent_lit = to_ranks(-entropy_literal(M, fw))                           # rank1=selective
+        gini_lit = to_ranks(gini(ka(M, fw)))                                  # Gini of Ka
+        r[fw] = (spearmanr(ent_lit, ent_man)[0], spearmanr(gini_lit, gini_man)[0])
+        print(f"{name:10s}{'at the floor' if fw else 'no weight':>22s}{r[fw][0]:>28.3f}{r[fw][1]:>32.3f}")
+        axes[0, col].scatter(ent_lit, ent_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
+        axes[1, col].scatter(gini_lit, gini_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
+    for row, what in enumerate(("entropy", "Gini")):
+        ax = axes[row, col]
+        ax.set_xlabel(f"{what} rank: association constants (1/Kd)")
+        ax.set_ylabel(f"{what} rank: log-affinity (pKd - baseline)")
+        ax.set_title(f"{name}: {what} ranking\nSpearman r = {r[True][row]:.2f} (grey), {r[False][row]:.2f} (blue)")
+axes[0, 0].legend(fontsize=8, loc='lower right', frameon=False)
 plt.tight_layout()
 out = os.path.join(HERE, "metric_fidelity.png")
 plt.savefig(out, dpi=150, bbox_inches='tight')
 print(f"\nSaved {out}")
-print("Two reasonable operationalizations of the same named metric give substantially")
-print("different rankings (entropy even reverses on Klaeger): the operationalization")
-print("choice is itself a source of definitional instability.")
+print("Both the weighting and the treatment of floor-coded entries change the rankings;")
+print("the negative Klaeger correlations come from the floor-coded entries.")

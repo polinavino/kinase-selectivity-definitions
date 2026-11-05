@@ -1,8 +1,8 @@
 Dataset                           n_cpd  n_kin   distr.r  ratio-distr.r   gap~ratio  nact~entropy
-Davis (pKd binding)                  68    363     0.975    0.51-0.56     -0.445      -0.301
-Klaeger (pKd chemoproteomics)       222    219     0.688    0.09-0.66     -0.333      -0.369
-Anastassiadis (% inhibition)        178    291     0.909    0.48-0.55     -0.132      -0.369
-Metz (pKi)                          704    172     0.875    0.14-0.19     -0.267      -0.425
+Davis (pKd binding)                  68    363     0.975    0.51-0.56    -0.4445     -0.3012
+Klaeger (pKd chemoproteomics)       222    217     0.687    0.08-0.66    -0.3416     -0.3936
+Anastassiadis (% inhibition)        178    291     0.909    0.48-0.55    -0.1324     -0.3688
+Metz (pKi)                          704    172     0.875    0.14-0.19    -0.2673     -0.4246
 
 Saved cross_dataset_summary.csv
 Saved /Users/polina/Documents/BioInfStuff/selectivity/cross_dataset_correlations.png

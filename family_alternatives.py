@@ -1,6 +1,6 @@
 """
 Two more candidate-family variants beyond the two axes in family_construction.py
-(Renyi order, quantile floor). Both are checked against D1-D4 and against the
+(Renyi order, quantile floor). Both are checked against the properties and against the
 alpha=1 candidate, and both are negative results kept here for the record rather
 than proposed as usable alternatives:
 
@@ -10,9 +10,9 @@ than proposed as usable alternatives:
   2. Rank-based weights. w_i depends only on the rank position of an active
      kinase, not its affinity value, so two profiles with the same active-set
      ranks score identically regardless of the gap between them. This is a
-     deliberate stress test of D2: D2 requires bounded gap sensitivity, not zero
-     gap sensitivity, and a measure that discards gap size entirely is a
-     degenerate satisfier of the property as stated.
+     deliberate stress test of an earlier property (bounded gap sensitivity,
+     since removed from the paper): a measure that discards gap size entirely
+     satisfies it trivially.
 """
 import script_logging; script_logging.capture(__file__)
 import os

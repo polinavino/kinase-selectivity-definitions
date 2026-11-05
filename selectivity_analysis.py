@@ -16,7 +16,7 @@ proteins = pd.read_csv("davis_proteins.csv")
 
 matrix = affinity.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity')
 matrix = matrix.fillna(5.0)
-M = matrix.values          # shape (68, 433)
+M = matrix.values          # shape (68, 363): curated panel (curate_panels.py)
 n_drugs, n_kinases = M.shape
 
 

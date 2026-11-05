@@ -9,14 +9,20 @@ I am grateful to the reviewer for a second constructive assessment. In
 response, the manuscript has been revised as follows:
 
   - the analyses now use one reference target per human protein kinase,
-    removing mutant and domain constructs of the same gene from Davis and
-    non-kinase proteins from Klaeger;
+    removing mutant and domain constructs of the same gene from Davis,
+    duplicate complexes from Anastassiadis, and targets that Klaeger et al.
+    do not annotate as protein kinases from Klaeger;
+
+  - Results now opens with the analysis choices that change how the
+    definitions relate, including the published entropy under two treatments
+    of pairs without detected binding;
 
   - the motivated properties and the candidate measure are defined formally
-    in Methods and evaluated in Results, against two simple comparators, and
-    the claims are narrowed accordingly: no measure examined is robust to the
+    in Methods and evaluated in Results, against three simple comparators, and
+    the claims are narrowed accordingly: no measure we assess is robust to the
     placement of the activity boundary, and the candidate is presented as a
-    monotone measure that still weights weak binding;
+    monotone entropy that ranks compounds almost as a count of detected
+    targets does;
 
   - every robustness check the reviewer requested has been added, including
     correlation matrices under the published forms of the entropy and Gini,
@@ -24,8 +30,9 @@ response, the manuscript has been revised as follows:
     convention for undefined scores, and a comparison of dataset and
     definition effects on compounds shared by Davis and Klaeger;
 
-  - recovery from small panels is evaluated for all measures with the share
-    of compounds that can still be scored; and
+  - recovery from small panels is evaluated for all measures, including the
+    published entropy, with the share of compounds that can still be scored;
+    and
 
   - a Supporting Information file now holds the results previously available
     only in the code repository, with a table giving the script behind every

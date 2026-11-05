@@ -1,16 +1,16 @@
 
-=== Klaeger: 222 drugs x 219 kinases; active drugs n=200 ===
+=== Klaeger: 222 drugs x 217 kinases; active drugs n=200 ===
 Feature                 s_score       entropy          gini         ratio
-n_active              -0.259***     -0.369***        -0.066        -0.019
-top1_top2_gap            +0.023        +0.066        +0.048     -0.333***
-active_std            -0.307***        -0.090        -0.042        -0.108
-active_range          -0.370***      -0.210**        -0.040        -0.102
-top2_pkd              -0.307***      -0.202**      -0.205**     +0.231***
-active_skew            -0.210**        -0.060     +0.277***        -0.119
+n_active              -0.253***     -0.394***        -0.075        -0.025
+top1_top2_gap            +0.016        +0.057        +0.057     -0.342***
+active_std            -0.308***        -0.132        -0.056        -0.121
+active_range          -0.370***     -0.247***        -0.054        -0.113
+top2_pkd              -0.300***      -0.230**      -0.219**      +0.221**
+active_skew           -0.236***        -0.096     +0.262***        -0.107
 best predictor s_score   : active_range   r=-0.370 p=0.000
-best predictor entropy   : n_active       r=-0.369 p=0.000
-best predictor gini      : active_skew    r=+0.277 p=0.000
-best predictor ratio     : top1_top2_gap  r=-0.333 p=0.000
+best predictor entropy   : n_active       r=-0.394 p=0.000
+best predictor gini      : active_skew    r=+0.262 p=0.000
+best predictor ratio     : top1_top2_gap  r=-0.342 p=0.000
 
 Saved instability_by_family.png
 

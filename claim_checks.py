@@ -24,7 +24,7 @@ Each section prints the numbers cited in the text for one claim:
  13. Zero-active vs active rank instability per definition, on every dataset with
      zero-active compounds (Results, replication).
  14. Gini panel-size p* on every dataset when only compounds whose Gini is undefined
-     on the subpanel or the full panel are excluded (Results, gated panel size).
+     on the subpanel or the full panel are excluded (Results, panel size).
  15. Klaeger: does the active affinity range predict instability once the number
      of active kinases is held fixed? (Results, instability predictors)
  16. Klaeger: does the weight near the threshold explain the skewness-Gini
@@ -320,7 +320,7 @@ for f in ['s_score', 'entropy', 'gini']:
     r0 = spearmanr(rng_k, sig)
     r1 = partial_spearman(rng_k, sig, na_act)
     print(f"   {f:8s}: r(range, sigma) = {r0[0]:+.3f} (p = {r0[1]:.2g}); "
-          f"partial on n_active = {r1[0]:+.3f} (p = {r1[1]:.2g})")
+          f"partial on n_active = {r1[0]:+.4f} (p = {r1[1]:.2g})")
 
 
 def partial_spearman_multi(x, y, covs):
@@ -516,26 +516,31 @@ for ds, M, x0, tau, _ in D4SETS:
         both = ok & ref_ok
         parts.append(f"tau*={t:g}: {ok.sum()} scored, r={spearmanr(c[both], ref[both])[0]:.4f}")
     print(f"   {ds:13s} (default tau*={tau:g}: {ref_ok.sum()} of {len(M)} scored): " + "; ".join(parts))
-print("\n23. Measurement noise near the gate: Spearman between the noise-free and noisy rankings of the"
-      "\n    scored compounds, 50 draws, candidate (gate at x0) vs entropy at beta = x0. pK datasets:"
-      "\n    measured (above-floor) values perturbed, and set to the floor if pushed below it;"
-      "\n    Anastassiadis: every entry perturbed and clipped to [0, 100]%")
+print("\n23. Measurement noise near the gate: Spearman between the noise-free and noisy rankings, 50 draws,"
+      "\n    candidate (gate at x0) vs entropy at beta = x0, over the compounds scored (D1) both without"
+      "\n    and with noise; the D1 gate is reapplied to the noisy profiles. pK datasets: measured"
+      "\n    (above-floor) values perturbed, and set to the floor if pushed below it; Anastassiadis:"
+      "\n    every entry perturbed and clipped to [0, 100]%")
 rng23 = np.random.default_rng(0)
 for ds, M, x0, tau, _ in D4SETS:
     pct = ds == 'Anastassiadis'
     ok = (M > tau).any(1)
-    c0, e0 = cand_score(M, x0, tau - x0)[ok], ent(M, x0)[ok]
+    c0, e0 = cand_score(M, x0, tau - x0), ent(M, x0)
     parts = []
     for sd in ((3.0, 9.0) if pct else (0.1, 0.3)):
-        rc, re_ = [], []
+        rc, re_, moved = [], [], []
         for _ in range(50):
             if pct:
                 P = np.clip(M + rng23.normal(0, sd, M.shape), 0, 100)
             else:
                 P = np.where(M > x0, M + rng23.normal(0, sd, M.shape), M)
                 P = np.where((M > x0) & (P <= x0), x0, P)
-            rc.append(spearmanr(c0, cand_score(P, x0, tau - x0)[ok])[0])
-            re_.append(spearmanr(e0, ent(P, x0)[ok])[0])
+            okP = (P > tau).any(1)
+            both = ok & okP
+            moved.append(int((ok != okP).sum()))
+            rc.append(spearmanr(c0[both], cand_score(P, x0, tau - x0)[both])[0])
+            re_.append(spearmanr(e0[both], ent(P, x0)[both])[0])
         parts.append(f"sd={sd:g}: candidate mean {np.mean(rc):.3f} (min {np.min(rc):.3f}), "
-                     f"entropy mean {np.mean(re_):.3f} (min {np.min(re_):.3f})")
+                     f"entropy mean {np.mean(re_):.3f} (min {np.min(re_):.3f}); "
+                     f"compounds changing D1 status: mean {np.mean(moved):.1f}, max {max(moved)} of {ok.sum()} scored")
     print(f"   {ds:13s}: " + "; ".join(parts))

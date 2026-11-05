@@ -1,18 +1,18 @@
 
 === Klaeger: 222 drugs ===
 feature       family        placeholder 0 (paper)               defined only
-active_std    s_score    r=-0.307 p=9.5e-06 n=200   r=-0.388 p=1.1e-07 n=176
-active_std    entropy    r=-0.090 p=2.0e-01 n=200   r=-0.231 p=2.0e-03 n=176
-active_std    gini       r=-0.042 p=5.6e-01 n=200   r=-0.164 p=2.9e-02 n=176
-active_std    ratio      r=-0.108 p=1.3e-01 n=200   r=-0.278 p=1.9e-04 n=176
-active_range  s_score    r=-0.370 p=7.2e-08 n=200   r=-0.468 p=5.6e-11 n=176
-active_range  entropy    r=-0.210 p=2.8e-03 n=200   r=-0.376 p=2.6e-07 n=176
-active_range  gini       r=-0.040 p=5.7e-01 n=200   r=-0.164 p=3.0e-02 n=176
-active_range  ratio      r=-0.102 p=1.5e-01 n=200   r=-0.271 p=2.7e-04 n=176
-active_skew   s_score    r=-0.210 p=2.9e-03 n=200   r=-0.239 p=3.3e-03 n=150
-active_skew   entropy    r=-0.060 p=4.0e-01 n=200   r=+0.002 p=9.8e-01 n=150
-active_skew   gini       r=+0.277 p=7.3e-05 n=200   r=+0.384 p=1.2e-06 n=150
-active_skew   ratio      r=-0.119 p=9.2e-02 n=200   r=-0.195 p=1.7e-02 n=150
+active_std    s_score    r=-0.308 p=9.4e-06 n=200   r=-0.384 p=1.4e-07 n=176
+active_std    entropy    r=-0.132 p=6.2e-02 n=200   r=-0.276 p=2.1e-04 n=176
+active_std    gini       r=-0.056 p=4.3e-01 n=200   r=-0.184 p=1.5e-02 n=176
+active_std    ratio      r=-0.121 p=8.9e-02 n=200   r=-0.292 p=8.3e-05 n=176
+active_range  s_score    r=-0.370 p=6.7e-08 n=200   r=-0.466 p=7.2e-11 n=176
+active_range  entropy    r=-0.247 p=4.1e-04 n=200   r=-0.417 p=8.4e-09 n=176
+active_range  gini       r=-0.054 p=4.5e-01 n=200   r=-0.183 p=1.5e-02 n=176
+active_range  ratio      r=-0.113 p=1.1e-01 n=200   r=-0.284 p=1.4e-04 n=176
+active_skew   s_score    r=-0.236 p=7.7e-04 n=200   r=-0.269 p=9.3e-04 n=148
+active_skew   entropy    r=-0.096 p=1.7e-01 n=200   r=-0.036 p=6.6e-01 n=148
+active_skew   gini       r=+0.262 p=1.7e-04 n=200   r=+0.381 p=1.7e-06 n=148
+active_skew   ratio      r=-0.107 p=1.3e-01 n=200   r=-0.185 p=2.4e-02 n=148
 
 === Davis: 68 drugs ===
 feature       family        placeholder 0 (paper)               defined only

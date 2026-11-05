@@ -22,17 +22,18 @@ COVER LETTER
   cover_letter.txt
 
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
-  Figure1.png  = operationalization sensitivity of entropy & Gini
+  Figure1.png  = published vs log-affinity entropy and Gini, two treatments
+                 of floor-coded pairs
   Figure2.png  = correlations between definitions, four datasets
   Figure3.png  = profile feature most associated with instability per family
   Figure4.png  = binding profiles of the most stable, most unstable and most
                  ratio-sensitive Davis compounds
-  Figure5.png  = panel-size stability of existing definitions
-  Figure6.png  = rank instability for D1 and D2 (Klaeger)
-  Figure7.png  = recovery from random subpanels, with coverage, all measures
+  Figure5.png  = rank instability for D1 and D2 (Klaeger)
+  Figure6.png  = recovery from random subpanels, with coverage, all measures
 
 TABLES  (one file per table, separate slot each)  -> submission_tables/
-  Table1.docx  = cross-family Spearman correlations
+  Table1.docx  = Spearman correlations between definitions, including the
+                 published entropy
   Table2.docx  = profile-feature vs. instability correlations
   Table3.docx  = property satisfaction by definition
 
@@ -42,10 +43,10 @@ GRAPHICAL ABSTRACT / TOC
 
 SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
-  Tables S1-S4, Sections S5-S6 (with Tables S5-S6) and Table S7: panel-size p*
-  sensitivity to the correlation-cutoff bar; Bosc et al./CATDS comparison;
-  cross-definition correlations under the original metric operationalizations;
-  candidate-measure cross-dataset validation; variants of the candidate
+  Section S1 (Figure S1, Table S1), Tables S2-S4, Sections S5-S6 (with
+  Tables S5-S6) and Table S7: panel size without the D1 gate; Bosc et
+  al./CATDS comparison; correlations under the published operationalizations;
+  candidate-measure validation and D2 per dataset; variants of the candidate
   measure; released versus curated panels and further analyses; the script
   behind every result in the main text. Referenced from
   Methods, Results and Discussion as "Supporting Information, Table S<n>" or
@@ -57,7 +58,8 @@ LATEX SOURCE (optional — "Production"/"Supplementary for review" slot)
 Notes
 -----
 - Figures are PNG, 1480-2980 px wide (about 210-430 dpi at a 7-inch print
-  width; Figures 1 and 6 are the narrowest). If the system requires TIFF/EPS or
-  a higher nominal dpi, the plotting scripts can re-export. Figures 5 and 7 use
-  random subsampling with a fixed seed, so a re-run reproduces them exactly.
+  width; Figures 1 and 5 are the narrowest). If the system requires TIFF/EPS or
+  a higher nominal dpi, the plotting scripts can re-export. Figure 6 and
+  Supporting Figure S1 use random subsampling with a fixed seed, so a re-run
+  reproduces them exactly.
 - The Tables .docx files are editable Word tables, each with its caption.

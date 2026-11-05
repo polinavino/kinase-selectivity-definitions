@@ -3,18 +3,31 @@
 \usepackage{amsmath,amssymb}
 \pagestyle{empty}
 \begin{document}
-\begin{table}
+\begin{table}[h]
   \centering
-  \caption{Table 1. Spearman correlations between median rankings by definition family.
-           Upper triangle: Davis ($n=68$). Lower triangle: Klaeger ($n=222$).}
-  \begin{tabular}{lcccc}
+  \caption{Spearman correlations between median rankings by definition. S:
+           S-score; E: entropy; G: Gini; R: ratio, with the entropy and Gini in
+           their log-affinity forms. E$_{K_a}$: the published entropy, with
+           association-constant weighting, with floor-coded pairs given no
+           weight and, in parentheses, kept at the floor. Every Davis compound
+           has an active kinase.}
+  \label{tab:correlations}
+  \begin{tabular}{lccc}
     \toprule
-                & S-score & Entropy & Gini  & Ratio \\
+         & Davis & \multicolumn{2}{c}{Klaeger} \\
+    \cmidrule(lr){3-4}
+    Pair & all ($n = 68$) & all ($n = 222$) & active ($n = 200$) \\
     \midrule
-    S-score     & ---     & 0.963   & 0.963 & 0.563 \\
-    Entropy     & 0.898   & ---     & 0.999 & 0.513 \\
-    Gini        & 0.511   & 0.657   & ---   & 0.510 \\
-    Ratio       & 0.085   & 0.344   & 0.657 & ---   \\
+    S--E & 0.963 & 0.896 & 0.897 \\
+    S--G & 0.963 & 0.508 & 0.892 \\
+    E--G & 0.999 & 0.658 & 0.997 \\
+    S--R & 0.563 & 0.078 & 0.378 \\
+    E--R & 0.513 & 0.344 & 0.622 \\
+    G--R & 0.510 & 0.655 & 0.635 \\
+    \midrule
+    E$_{K_a}$--S & 0.738 (0.344) & 0.571 ($-0.597$) & 0.564 ($-0.412$) \\
+    E$_{K_a}$--G & 0.736 (0.368) & 0.530 (0.077)    & 0.782 ($-0.094$) \\
+    E$_{K_a}$--R & 0.861 (0.688) & 0.657 (0.648)    & 0.916 (0.591) \\
     \bottomrule
   \end{tabular}
 \end{table}

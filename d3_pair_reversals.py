@@ -8,7 +8,12 @@ target above tau* (those the reliability gate scores).
 
 Parameters swept over B: the S-score's threshold tau, the entropy's and Gini's
 baseline beta, the candidate's emphasis baseline beta (gate fixed at x0) and its
-gate x0 (beta pinned to the gate), and the ratio's floor fallback (each k).
+gate x0 (beta pinned to the gate, smoothing width T held at tau* - x0 of the fixed
+floor), and the ratio's clipping level b in R_b(k) = x_(1) - max(x_(k+1), b), which
+replaces any off-target affinity below b, measured or missing, by b (each k).
+
+Aggregate rule: a measure satisfies D2 only if at most eps of pairs reverse on every
+dataset, and, for the ratio, for every k.
 
 The S-score is a step function of tau, so it is evaluated exactly, at every
 observed affinity in B and between consecutive ones. The other parameters are
@@ -91,7 +96,7 @@ def sweeps(M, x0, tau, n_grid):
         "candidate (emphasis beta)": [candidate(M, x0, T, b) for b in B],
         "candidate (gate x0)":       [candidate(M, b, T, b) for b in B],
     }
-    rows.update({f"ratio (floor fallback, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
+    rows.update({f"ratio (clipping level, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
     return rows
 
 

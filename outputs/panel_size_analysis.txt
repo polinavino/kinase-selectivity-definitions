@@ -20,21 +20,21 @@ Minimum panel size for mean r > 0.90:
   s_score: 50 kinases
   ratio: 350 kinases
 
-=== Klaeger (222 drugs x 219 kinases) ===
+=== Klaeger (222 drugs x 217 kinases) ===
 Panel size stability (mean Spearman r vs full panel):
   Panel size    entropy       gini    s_score      ratio
-          50  +0.893  +0.098  +0.851  -0.003
-          80  +0.942  +0.381  +0.904  +0.164
-         110  +0.966  +0.613  +0.942  +0.333
-         140  +0.980  +0.721  +0.965  +0.491
-         170  +0.988  +0.850  +0.980  +0.672
-         200  +0.997  +0.941  +0.994  +0.874
-         219  +1.000  +1.000  +1.000  +1.000
+          50  +0.892  +0.087  +0.843  +0.031
+          80  +0.943  +0.373  +0.906  +0.151
+         110  +0.966  +0.594  +0.940  +0.344
+         140  +0.979  +0.737  +0.964  +0.513
+         170  +0.988  +0.834  +0.979  +0.647
+         200  +0.996  +0.959  +0.994  +0.887
+         217  +1.000  +1.000  +1.000  +1.000
 Minimum panel size for mean r > 0.90:
   entropy: 80 kinases
   gini: 200 kinases
   s_score: 80 kinases
-  ratio: 219 kinases
+  ratio: 217 kinases
 
 === Anastassiadis (178 drugs x 291 kinases) ===
 Panel size stability (mean Spearman r vs full panel):

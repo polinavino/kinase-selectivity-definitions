@@ -1,7 +1,8 @@
 """
-D4 (monotonicity under weak off-target addition) for the entropy and the candidate.
+Monotonicity under weak off-target addition (the paper's D3; labelled D4 in this
+script's output) for the entropy and the candidate.
 
-D4 as stated in Methods: adding a kinase with affinity at most tau* must not raise
+As stated in Methods: adding a kinase with affinity in (x0, tau*] must not raise
 a compound's selectivity score. This script supports the "Why the smooth hinge
 matters" subsection:
 

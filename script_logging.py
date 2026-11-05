@@ -30,9 +30,9 @@ FIGURE_MAP = {
     "cross_dataset_correlations.png": "Figure2.png",
     "instability_by_family.png": "Figure3.png",
     "binding_profiles.png": "Figure4.png",
-    "panel_size_stability.png": "Figure5.png",
-    "failure_modes.png": "Figure6.png",
-    "panel_recovery.png": "Figure7.png",
+    "panel_size_stability.png": None,      # Supporting Information, Figure S1
+    "failure_modes.png": "Figure5.png",
+    "panel_recovery.png": "Figure6.png",
 }
 
 
@@ -57,7 +57,8 @@ def _mirror_figures(repo, before):
         os.makedirs(fig_dir, exist_ok=True)
         os.makedirs(sub_dir, exist_ok=True)
         shutil.copyfile(src, os.path.join(fig_dir, name))
-        shutil.copyfile(src, os.path.join(sub_dir, journal_name))
+        if journal_name:
+            shutil.copyfile(src, os.path.join(sub_dir, journal_name))
 
 
 def capture(script_path):

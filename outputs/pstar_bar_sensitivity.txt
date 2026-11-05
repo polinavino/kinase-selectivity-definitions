@@ -6,12 +6,12 @@
   0.90        50       110        50       350
   0.95        50       170        80       350
 
-=== Klaeger (222 drugs x 219 kinases) ===
+=== Klaeger (222 drugs x 217 kinases) ===
    bar   entropy      gini   s_score     ratio
   0.80        50       170        50       200
-  0.85        50       200        50       200
-  0.90        80       200        80       219
-  0.95       110       219       140       219
+  0.85        50       200        80       200
+  0.90        80       200        80       217
+  0.95       110       200       140       217
 
 === Anastassiadis (178 drugs x 291 kinases) ===
    bar   entropy      gini   s_score     ratio

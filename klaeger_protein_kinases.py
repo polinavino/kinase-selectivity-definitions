@@ -5,10 +5,10 @@ The 343 Klaeger targets are the proteins the Kinobeads pulldown quantified, not
 only kinases: they include cyclins and other subunits of kinase complexes,
 co-captured with their kinase partners, as well as small-molecule and lipid
 kinases and unrelated proteins. A CDK hit can therefore also count its cyclin.
-This script classifies the columns (the classification curate_panels.py uses)
-and recomputes the main Klaeger results on the released panel, printed beside
-the curated panel (219 protein kinases, no protein-group columns), which is the
-panel every other analysis uses.
+This script groups the columns that curate_panels.py removes, by kind, and
+recomputes the main Klaeger results on the released panel, printed beside
+the curated panel (217 protein kinases, no protein-group columns; curate_panels.py),
+which is the panel every other analysis uses.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -39,9 +39,13 @@ NON_PK = {
         "ACTR3", "AIMP1", "C2CD5", "CKAP5", "DDB1", "DNAJA1", "DYNLL1", "DYNLL2", "EIF3J",
         "EIF4G1", "EXOC4", "FANCI", "FIBP", "GAPVD1", "GRAMD1A", "GRB2", "HSP90AB2P",
         "IPO7", "KIAA0195", "KLHL6", "LASP1", "MYH10", "NPM1", "OSBPL3", "PAG1", "PDCD11",
-        "PSMG1", "Q6ZSR9", "RPL10", "RPL35A", "RPL4", "RPS4X", "S100A8", "SLC16A3",
+        "PSMG1", "RPL10", "RPL35A", "RPL4", "RPS4X", "S100A8", "SLC16A3",
         "SLC25A5", "SLC5A1", "SMARCC1", "SMC2", "SNRNP200", "SNRPF", "SYNGR2", "TEX264",
         "U2AF1;U2AF1L4", "UNC119"],
+    "not annotated as kinases by Klaeger et al. and flagged as possibly co-enriched with a kinase": [
+        "BCR", "TRRAP"],
+    "annotated as a kinase by Klaeger et al. but with no kinase domain (UniProt: encoded in the 3'-UTR of AAK1)": [
+        "Q6ZSR9"],
 }
 
 
@@ -157,18 +161,12 @@ def summarize(M):
         out[f"Table 2: {lab}"] = r
         out[f"Table 2: {lab} (p)"] = p
 
-    B = np.arange(X0, TAU + 0.125, 0.25)
-    out["D3 rev %, S-score"] = 100 * reversals([s_score(M, b) for b in B], act)
-    out["D3 rev %, entropy"] = 100 * reversals([entropy(M, b) for b in B], act)
-    out["D3 rev %, Gini"] = 100 * reversals([gini(M, b) for b in B], act)
-    out["D3 rev %, candidate (emphasis beta)"] = 100 * reversals([candidate(M, X0, b) for b in B], act)
-    out["D3 rev %, candidate (gate x0)"] = 100 * reversals([candidate(M, b, b) for b in B], act)
 
     c = candidate(M)
     out["candidate vs n_active (orientation)"] = spearmanr(c, n_act)[0]
     out["candidate vs entropy, scored compounds"] = spearmanr(c[act], entropy(M, X0)[act])[0]
     added = candidate(np.hstack([M, np.full((M.shape[0], 1), TAU)]))
-    out["D4 at tau*: % non-increasing (scored)"] = 100 * (added[act] <= c[act] + 1e-12).mean()
+    out["D3 at tau*: % non-increasing (scored)"] = 100 * (added[act] <= c[act] + 1e-12).mean()
     for k, v in pstars(M).items():
         out[f"p* {k}"] = v
     return out
@@ -183,7 +181,7 @@ M_all = matrix.values
 M_pk = matrix[pk].values
 
 print(f"Klaeger panel: {len(cols)} targets, {len(cols) - len(non_pk)} protein kinases ({len(pk)} curated, "
-      f"without protein-group columns), {len(non_pk)} other proteins")
+      f"without protein-group columns), {len(non_pk)} other targets")
 for group, names in NON_PK.items():
     print(f"  {group} ({len(names)}): {', '.join(names)}")
 
@@ -196,7 +194,7 @@ print(f"Compounds whose only active targets are non-kinases: {int(only_np.sum())
       + (f" ({', '.join(matrix.index[only_np])})" if only_np.any() else ""))
 
 full, prot = summarize(M_all), summarize(M_pk)
-print(f"\n{'Result':48s} {'all 343':>10s} {'curated 219':>16s}")
+print(f"\n{'Result':48s} {'all 343':>10s} {'curated ' + str(len(pk)):>16s}")
 for k in full:
     a, b = full[k], prot[k]
     fmt = (lambda v: f"{v:.3g}") if "(p)" in k or "Mann" in k else \

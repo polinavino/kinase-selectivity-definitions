@@ -3,25 +3,33 @@
 \usepackage{amsmath,amssymb}
 \pagestyle{empty}
 \begin{document}
-\begin{table}
+\begin{table}[h]
   \centering
-  \caption{Table 3. Satisfaction of the three motivated properties by the existing
-           selectivity definitions, two comparators, and the candidate measure.
-           $\checkmark$: satisfied. $\times$: violated. D1 is assessed from each
-           measure's reporting rule (any measure can adopt the gate), D2
-           empirically on the four datasets for the parameter that places the
-           activity boundary, and D3 from the functional form. The candidate's
-           emphasis baseline, with its gate fixed, satisfies D2.}
+  \caption{Satisfaction of the three motivated properties by the existing
+           selectivity definitions, three comparators, and the candidate
+           measure. $\checkmark$: satisfied. $\times$: violated. D1 is assessed
+           from each measure's reporting rule. The comparators (S-score with
+           $\tau = x_0$, count, entropy with $\beta = \tau^*$) are reported only
+           for compounds with an active target, and any measure can adopt this
+           gate. D2 is assessed empirically, with the parameter that places the
+           activity boundary swept over $B$; a comparator is assessed with the
+           parameter it fixes swept. A measure satisfies D2 only if at most
+           $\varepsilon$ of pairs reverse on every dataset (for the ratio, for
+           every $k$). D3 is assessed from the functional form. With the
+           candidate's gate fixed, its emphasis baseline stays within
+           $\varepsilon$.}
+  \label{tab:desiderata}
   \small
-  \setlength{\tabcolsep}{4pt}
-  \begin{tabular}{lccccccc}
+  \setlength{\tabcolsep}{3.5pt}
+  \begin{tabular}{lcccccccc}
     \toprule
-    & S-score & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Candidate \\
-    &         &       & $\beta = x_0$ & $\beta = \tau^*$ & & & \\
+    & \multicolumn{2}{c}{S-score} & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Candidate \\
+    \cmidrule(lr){2-3}\cmidrule(lr){5-6}
+    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & & & \\
     \midrule
-    D1 (reliability threshold)         & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
-    D2 (distributional consistency)    & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
-    D3 (monotonicity, weak off-target) & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+    D1 (reliability)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
+    D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
+    D3 (monotonicity)  & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}
