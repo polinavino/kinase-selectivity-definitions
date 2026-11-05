@@ -1,8 +1,8 @@
 """
 Illustrates the two failure modes the candidate measure is built to repair
-(D1: arbitrary scores for non-binders, D3: baseline-driven instability), using
+(D1: arbitrary scores for non-binders, D2: baseline-driven instability), using
 the same Klaeger computations that produced the numbers quoted in the paper
-(paper/sections/desiderata.tex, D1 and D3 motivation paragraphs).
+(paper/sections/desiderata.tex, D1 and D2 paragraphs).
 
 Left panel (D1): pooled rank instability (std across all four existing
 definitions' parameter sweeps) for compounds with no binding above the pK_d > 6
@@ -20,7 +20,7 @@ zero-active compound at thresholds of pK_d 6 or above, so its ranks are stable
 by degeneracy rather than by reliability). The paper reports the decomposition rather than claiming the effect
 holds "under all four definitions".
 
-Right panel (D3): per-compound rank instability vs. n_active, for active
+Right panel (D2): per-compound rank instability vs. n_active, for active
 compounds, under three different sweeps (Reviewer 1, Molecular Informatics
 revision: the original version of this panel compared entropy's sensitivity to
 its gate/baseline against only the candidate's emphasis parameter, which does
@@ -38,7 +38,7 @@ flagged). All three series are swept over B = [x0, tau*] = [5.0, 6.0]:
       floor (x0 = 5.0, as used throughout the rest of this paper) -- the
       candidate's only remaining free parameter once x0 is fixed by
       declaration rather than left free. This is the comparison that
-      motivates D3: not that the candidate is insensitive to its gate, but
+      motivates D2: not that the candidate is insensitive to its gate, but
       that its gate is removed from the free-parameter space entirely, and
       what remains is empirically robust.
 """
@@ -116,8 +116,8 @@ for name, ranks in per_def.items():
 print("  (the S-score reverses because its score is exactly 0 for every zero-active")
 print("   compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)")
 
-# ---------------- D3: per-compound instability under three different sweeps ----------------
-# one grid for all three sweeps: B = [x0, tau*] = [5.0, 6.0] (Methods, D3), so the
+# ---------------- D2: per-compound instability under three different sweeps ----------------
+# one grid for all three sweeps: B = [x0, tau*] = [5.0, 6.0] (Methods, D2), so the
 # candidate's gate is swept over exactly the entropy's range
 sweep = np.arange(5.0, 6.01, 0.25)
 ent_ranks_b = np.array([to_ranks(entropy(M, b)) for b in sweep])
@@ -132,12 +132,12 @@ cand_emph_instab = cand_emph_ranks.std(axis=0)
 r_ent, p_ent = spearmanr(n_active[has_active], ent_instab[has_active])
 r_cand_floor, p_cf = spearmanr(n_active[has_active], cand_floor_instab[has_active])
 r_cand_emph, p_ce = spearmanr(n_active[has_active], cand_emph_instab[has_active])
-print(f"D3: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}); "
+print(f"D2: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}); "
       f"candidate-floor-swept r={r_cand_floor:+.3f} (p={p_cf:.1e}); "
       f"candidate-emphasis-swept (gate fixed) r={r_cand_emph:+.3f} (p={p_ce:.1e})")
 ratio_gate = cand_floor_instab[has_active].mean() / ent_instab[has_active].mean()
 ratio_emph = ent_instab[has_active].mean() / cand_emph_instab[has_active].mean()
-print(f"D3: mean instability over B=[5.0,6.0] -- entropy (baseline swept) {ent_instab[has_active].mean():.2f}; "
+print(f"D2: mean instability over B=[5.0,6.0] -- entropy (baseline swept) {ent_instab[has_active].mean():.2f}; "
       f"candidate (gate/floor swept, true equivalent) {cand_floor_instab[has_active].mean():.2f} "
       f"({ratio_gate:.2f}x the entropy's); "
       f"candidate (emphasis swept, gate fixed by declaration) {cand_emph_instab[has_active].mean():.2f} "
@@ -165,7 +165,7 @@ axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2
 axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
             label=f'candidate, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
 axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
-axR.set_title('D3: rank instability under each parameter sweep (Klaeger)')
+axR.set_title('D2: rank instability under each parameter sweep (Klaeger)')
 axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)
 axR.text(0.97, 0.55, f"mean: entropy {ent_instab[has_active].mean():.1f}, "
           f"gate {cand_floor_instab[has_active].mean():.1f}, "

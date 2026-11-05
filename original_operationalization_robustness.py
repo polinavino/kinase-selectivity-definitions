@@ -122,12 +122,16 @@ raw = pd.read_excel(os.path.join(HERE, "aan4368_Table_S2.xlsx"), sheet_name='Kin
 raw['pKd'] = 9 - np.log10(raw['Apparent Kd'])
 raw = raw.dropna(subset=['pKd'])
 high = raw[raw['Target Classification'] == 'High confidence']
-M_klaeger = high.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack(fill_value=5.0)
+# curated protein-kinase panel (curate_panels.py)
+M_klaeger = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0)
+high = high[high['Gene Name'].isin(M_klaeger.columns)]
 drugs = M_klaeger.index.tolist()
 by_drug = high.groupby('Drug')['pKd'].apply(list)
 pkd_rows = [by_drug.get(d, []) for d in drugs]
-assert all(len(r) > 0 for r in pkd_rows), "every Klaeger drug must have >=1 measured target"
-ent_lit_klaeger = entropy_literal_sparse(pkd_rows)
+# a compound with no measured curated target has an undefined entropy, scored 0 as elsewhere
+ent_lit_klaeger = np.array([entropy_literal_sparse([r])[0] if len(r) else 0.0 for r in pkd_rows])
+print(f"Klaeger compounds with no measured curated target (entropy undefined, set to 0): "
+      f"{sum(len(r) == 0 for r in pkd_rows)}")
 corr_klaeger = corr_with_literal_entropy(M_klaeger.values, ent_lit_klaeger)
 print_matrix("Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy "
              "(measured high-confidence entries only, per compound)", corr_klaeger)

@@ -1,23 +1,20 @@
-Kinase inhibitor selectivity is quantified using several competing
-definitions, including the S-score, selectivity entropy, Gini coefficient, and
-ratio-based measures, which are often used interchangeably. We propose four
-properties that a well-formed selectivity measure should satisfy: a
-reliability threshold, bounded sensitivity to the reference off-target,
-consistency across placements of the activity boundary, and monotonicity when
-a weakly bound kinase is added. None of the four definitions satisfies all of
-them, nor even the second and fourth together: the ratio fails bounded
-sensitivity, and the others fail monotonicity. The properties are motivated by
-four profiling datasets spanning three assay technologies. Moving the activity
-boundary between the assay floor and the activity threshold reverses 8-12% of
-compound pairs under the S-score, entropy and Gini on three of the datasets,
-and over 20% on the fourth. Rank instability is associated with binding
-profile shape, and the most unstable compounds have no binding above the
-activity threshold, which the definitions score inconsistently, near-tied top
-targets, or broad profiles, often with one dominant target. With entropy and
-Gini on a common log-affinity scale, the S-score, entropy and Gini agree more
-with one another than with the fold-selectivity ratio, most clearly on the two
-pKd datasets, but not for the entropy as originally published. A gated,
-smooth-hinge variant of the entropy satisfies all four properties, the second
-vacuously and the third with its activity boundary fixed. It ranks these
-datasets almost identically to the entropy but, unlike it, provably satisfies
-monotonicity.
+Kinase inhibitor selectivity is quantified using several competing definitions,
+including the S-score, selectivity entropy, Gini coefficient, and ratio-based
+measures, which are often used interchangeably. On four profiling datasets
+spanning three assay technologies, each curated to one reference target per
+human protein kinase, we show that their rankings depend on choices usually
+left implicit. Moving the activity boundary between the assay floor and the
+activity threshold reverses 8-13% of compound pairs under the S-score, entropy
+and Gini on three datasets, and over 20% on the fourth. The ratio depends
+strongly on which off-target it references. With entropy and Gini on a common
+log-affinity scale, the S-score, entropy and Gini agree more with one another
+than with the ratio, but not for the entropy as originally published. We state
+three properties for a selectivity measure: a reliability threshold,
+consistency across placements of the activity boundary, and monotonicity when a
+weakly bound kinase is added. No measure examined satisfies the second, so the
+boundary must be fixed in the analysis protocol. Monotonicity holds for simple
+measures such as a count of active kinases, but not for the S-score, the Gini,
+or the entropy with a low baseline. A gated, smooth-hinge entropy is monotone
+while still weighting weak binding, and ranks these datasets almost identically
+to the entropy. On small random panels, the share of compounds that can be
+scored limits recovery more than the choice of measure.

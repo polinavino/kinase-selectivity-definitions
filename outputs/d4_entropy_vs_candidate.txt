@@ -28,10 +28,10 @@
 4. Real data: add one kinase at tau* to every compound with an active kinase
    Davis          n=  68  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
                   entropy rises, by baseline: 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%, 5.75: 0.0%, 6: 0.0%, 6.25: 0.0%, 6.5: 0.0%
-   Klaeger        n= 206  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+   Klaeger        n= 200  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
                   entropy rises, by baseline: 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%, 5.75: 0.0%, 6: 0.0%, 6.25: 0.0%, 6.5: 0.0%
-   Anastassiadis  n= 134  entropy rises:   0.0% at beta = floor,  34.3% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
-                  entropy rises, by baseline: 0: 34.3%, 5: 15.7%, 10: 1.5%, 15: 0.0%, 20: 0.0%, 25: 0.0%, 30: 0.0%
+   Anastassiadis  n= 133  entropy rises:   0.0% at beta = floor,  33.1% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+                  entropy rises, by baseline: 0: 33.1%, 5: 15.8%, 10: 2.3%, 15: 0.0%, 20: 0.0%, 25: 0.0%, 30: 0.0%
    Metz           n= 699  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
                   entropy rises, by baseline: 4: 0.0%, 4.25: 0.0%, 4.5: 0.0%, 4.75: 0.0%, 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%
 

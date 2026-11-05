@@ -1,30 +1,30 @@
 
 === Klaeger: 222 drugs ===
 feature       family        placeholder 0 (paper)               defined only
-active_std    s_score    r=-0.281 p=4.2e-05 n=206   r=-0.386 p=8.8e-08 n=180
-active_std    entropy    r=-0.174 p=1.3e-02 n=206   r=-0.275 p=1.8e-04 n=180
-active_std    gini       r=-0.117 p=9.5e-02 n=206   r=-0.202 p=6.5e-03 n=180
-active_std    ratio      r=-0.107 p=1.2e-01 n=206   r=-0.263 p=3.6e-04 n=180
-active_range  s_score    r=-0.354 p=1.8e-07 n=206   r=-0.479 p=1.0e-11 n=180
-active_range  entropy    r=-0.271 p=7.9e-05 n=206   r=-0.396 p=3.8e-08 n=180
-active_range  gini       r=-0.102 p=1.4e-01 n=206   r=-0.180 p=1.5e-02 n=180
-active_range  ratio      r=-0.116 p=9.6e-02 n=206   r=-0.276 p=1.8e-04 n=180
-active_skew   s_score    r=-0.162 p=2.0e-02 n=206   r=-0.153 p=5.3e-02 n=161
-active_skew   entropy    r=-0.028 p=6.8e-01 n=206   r=+0.039 p=6.2e-01 n=161
-active_skew   gini       r=+0.346 p=3.4e-07 n=206   r=+0.482 p=9.8e-11 n=161
-active_skew   ratio      r=-0.108 p=1.2e-01 n=206   r=-0.170 p=3.1e-02 n=161
+active_std    s_score    r=-0.307 p=9.5e-06 n=200   r=-0.388 p=1.1e-07 n=176
+active_std    entropy    r=-0.090 p=2.0e-01 n=200   r=-0.231 p=2.0e-03 n=176
+active_std    gini       r=-0.042 p=5.6e-01 n=200   r=-0.164 p=2.9e-02 n=176
+active_std    ratio      r=-0.108 p=1.3e-01 n=200   r=-0.278 p=1.9e-04 n=176
+active_range  s_score    r=-0.370 p=7.2e-08 n=200   r=-0.468 p=5.6e-11 n=176
+active_range  entropy    r=-0.210 p=2.8e-03 n=200   r=-0.376 p=2.6e-07 n=176
+active_range  gini       r=-0.040 p=5.7e-01 n=200   r=-0.164 p=3.0e-02 n=176
+active_range  ratio      r=-0.102 p=1.5e-01 n=200   r=-0.271 p=2.7e-04 n=176
+active_skew   s_score    r=-0.210 p=2.9e-03 n=200   r=-0.239 p=3.3e-03 n=150
+active_skew   entropy    r=-0.060 p=4.0e-01 n=200   r=+0.002 p=9.8e-01 n=150
+active_skew   gini       r=+0.277 p=7.3e-05 n=200   r=+0.384 p=1.2e-06 n=150
+active_skew   ratio      r=-0.119 p=9.2e-02 n=200   r=-0.195 p=1.7e-02 n=150
 
 === Davis: 68 drugs ===
 feature       family        placeholder 0 (paper)               defined only
-active_std    s_score     r=+0.009 p=9.4e-01 n=68    r=+0.009 p=9.4e-01 n=68
-active_std    entropy     r=-0.015 p=9.0e-01 n=68    r=-0.015 p=9.0e-01 n=68
-active_std    gini        r=+0.005 p=9.7e-01 n=68    r=+0.005 p=9.7e-01 n=68
-active_std    ratio       r=+0.040 p=7.4e-01 n=68    r=+0.040 p=7.4e-01 n=68
-active_range  s_score     r=+0.011 p=9.3e-01 n=68    r=+0.011 p=9.3e-01 n=68
-active_range  entropy     r=-0.111 p=3.7e-01 n=68    r=-0.111 p=3.7e-01 n=68
-active_range  gini        r=-0.098 p=4.2e-01 n=68    r=-0.098 p=4.2e-01 n=68
-active_range  ratio       r=+0.134 p=2.8e-01 n=68    r=+0.134 p=2.8e-01 n=68
-active_skew   s_score     r=+0.026 p=8.3e-01 n=68    r=-0.054 p=6.7e-01 n=65
-active_skew   entropy     r=+0.066 p=5.9e-01 n=68    r=+0.026 p=8.4e-01 n=65
-active_skew   gini        r=+0.043 p=7.3e-01 n=68    r=+0.006 p=9.6e-01 n=65
-active_skew   ratio       r=+0.069 p=5.8e-01 n=68    r=+0.020 p=8.8e-01 n=65
+active_std    s_score     r=-0.017 p=8.9e-01 n=68    r=-0.017 p=8.9e-01 n=68
+active_std    entropy     r=+0.020 p=8.7e-01 n=68    r=+0.020 p=8.7e-01 n=68
+active_std    gini        r=+0.035 p=7.8e-01 n=68    r=+0.035 p=7.8e-01 n=68
+active_std    ratio       r=-0.176 p=1.5e-01 n=68    r=-0.176 p=1.5e-01 n=68
+active_range  s_score     r=-0.023 p=8.6e-01 n=68    r=-0.023 p=8.6e-01 n=68
+active_range  entropy     r=-0.065 p=6.0e-01 n=68    r=-0.065 p=6.0e-01 n=68
+active_range  gini        r=-0.076 p=5.4e-01 n=68    r=-0.076 p=5.4e-01 n=68
+active_range  ratio       r=-0.240 p=4.9e-02 n=68    r=-0.240 p=4.9e-02 n=68
+active_skew   s_score     r=+0.041 p=7.4e-01 n=68    r=-0.084 p=5.1e-01 n=63
+active_skew   entropy     r=+0.195 p=1.1e-01 n=68    r=+0.127 p=3.2e-01 n=63
+active_skew   gini        r=+0.176 p=1.5e-01 n=68    r=+0.101 p=4.3e-01 n=63
+active_skew   ratio       r=-0.113 p=3.6e-01 n=68    r=-0.215 p=9.0e-02 n=63

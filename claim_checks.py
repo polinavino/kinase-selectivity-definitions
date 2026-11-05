@@ -43,6 +43,8 @@ Each section prints the numbers cited in the text for one claim:
      instability predictors)
  22. The candidate's sensitivity to the activity threshold tau*, which sets its D1
      gate and smoothing width (Results, candidate measure)
+ 23. The candidate's gate is discontinuous at x0: rank stability of the candidate and
+     the entropy under measurement noise (Methods, candidate measure)
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -117,7 +119,10 @@ gap_k = sk[:, 0] - sk[:, 1]
 print("1. Type 1 compounds: were their known targets quantified for any Klaeger compound?")
 kb = pd.read_excel(f"{HERE}/aan4368_Table_S2.xlsx", sheet_name='Kinobeads')
 kb['pKd'] = 9 - np.log10(kb['Apparent Kd'])
-known = {'AZD-8055': 'MTOR', 'BMS-911543': 'JAK2', 'Vatalanib': 'KDR', 'Filgotinib': 'JAK1', 'ARRY-380': 'ERBB2'}
+known = {'AZD-2014': 'MTOR', 'AZD-8055': 'MTOR', 'AZD-8186': 'PIK3CB', 'BMS-911543': 'JAK2', 'SGX-523': 'MET',
+         'Volitinib': 'MET', 'Vatalanib': 'KDR', 'Filgotinib': 'JAK1', 'ARRY-380': 'ERBB2'}
+print(f"   Klaeger compounds with no detected binding to any curated target: "
+      + ", ".join(Kl.index[(Kl.values <= 5.0).all(1)]))
 print(f"   ({kb['Drug'].nunique()} compounds in the Kinobeads table)")
 for drug, g in known.items():
     rows = kb[kb['Gene Name'] == g]
@@ -177,8 +182,14 @@ types = []
 for i in np.argsort(-sig_k)[:20]:
     types.append('Type 1 (no active kinase)' if na_k[i] == 0 else
                  'Type 2 (top1-top2 gap < 0.1)' if gap_k[i] < 0.1 else
-                 'Type 3 (>= 10 active, gap >= 1)' if na_k[i] >= 10 and gap_k[i] >= 1 else 'other')
+                 'Type 3 (>= 10 active)' if na_k[i] >= 10 else 'other')
 print("   " + "; ".join(f"{k}: {v}" for k, v in pd.Series(types).value_counts().items()))
+act_top = [i for i in np.argsort(-sig_k) if na_k[i] > 0][:20]
+t_act = ['Type 2 (top1-top2 gap < 0.1)' if gap_k[i] < 0.1 else
+         'Type 3 (>= 10 active)' if na_k[i] >= 10 else 'other' for i in act_top]
+print("   20 most unstable compounds with an active kinase: "
+      + "; ".join(f"{k}: {v}" for k, v in pd.Series(t_act).value_counts().items())
+      + f"; sigma {sig_k[act_top[-1]]:.1f}-{sig_k[act_top[0]]:.1f}")
 
 print("\n7. Mean overall rank sigma by number of active kinases")
 sig_d = np.vstack([R['Davis'][f] for f in FAM]).std(0)
@@ -437,10 +448,12 @@ for ds, M, x0, tau, betas in D4SETS:
         for mode, (er, wb, cr, n) in rows.items():
             print(f"      {mode:26s}: {er:5.1f}% (beta = {wb:g}) | {cr:4.1f}% | {n}")
 
-print("   Davis wild-type constructs, expanded by the mutant and phosphorylation-state constructs")
-names = pd.read_csv(f"{HERE}/davis_proteins.csv").set_index('Protein_Index').loc[Dv.columns, 'Gene_Name']
+print("   Davis wild-type constructs (released panel), expanded by the mutant and phosphorylation-state constructs")
+Dv_rel = pd.read_csv(f"{HERE}/davis_affinity_released.csv").pivot(
+    index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0)
+names = pd.read_csv(f"{HERE}/davis_proteins.csv").set_index('Protein_Index').loc[Dv_rel.columns, 'Gene_Name']
 variant = names.str.contains(r"phosphorylated|\([^)]*(?:[A-Z]\d+[A-Z]|del|ins)", regex=True).values
-S, V = Md[:, ~variant], Md[:, variant]
+S, V = Dv_rel.values[:, ~variant], Dv_rel.values[:, variant]
 print(f"      {(~variant).sum()} wild-type or domain constructs, {variant.sum()} mutant/phosphorylation variants")
 betas = np.arange(5.0, 6.75, .25)
 e = {b: 0 for b in betas}; c = 0; n = 0
@@ -483,7 +496,7 @@ for ds, (M, s_thr, betas, floor, tau) in SETTINGS.items():
 print("\n21. Table 2 (feature vs within-family instability) with a Bonferroni correction for the"
       "\n    24 tests per dataset (two-tailed Spearman p from r and n)")
 from scipy.stats import t as t_dist
-for ds, n in (('klaeger', 206), ('davis', 68)):
+for ds, n in (('klaeger', int((Mk > 6).any(1).sum())), ('davis', int((Md > 6).any(1).sum()))):
     tab = pd.read_csv(f"{HERE}/instability_predictors_{ds}.csv", index_col=0)
     r = tab.values
     pv = 2 * t_dist.sf(np.abs(r * np.sqrt((n - 2) / (1 - r ** 2))), n - 2)
@@ -503,3 +516,26 @@ for ds, M, x0, tau, _ in D4SETS:
         both = ok & ref_ok
         parts.append(f"tau*={t:g}: {ok.sum()} scored, r={spearmanr(c[both], ref[both])[0]:.4f}")
     print(f"   {ds:13s} (default tau*={tau:g}: {ref_ok.sum()} of {len(M)} scored): " + "; ".join(parts))
+print("\n23. Measurement noise near the gate: Spearman between the noise-free and noisy rankings of the"
+      "\n    scored compounds, 50 draws, candidate (gate at x0) vs entropy at beta = x0. pK datasets:"
+      "\n    measured (above-floor) values perturbed, and set to the floor if pushed below it;"
+      "\n    Anastassiadis: every entry perturbed and clipped to [0, 100]%")
+rng23 = np.random.default_rng(0)
+for ds, M, x0, tau, _ in D4SETS:
+    pct = ds == 'Anastassiadis'
+    ok = (M > tau).any(1)
+    c0, e0 = cand_score(M, x0, tau - x0)[ok], ent(M, x0)[ok]
+    parts = []
+    for sd in ((3.0, 9.0) if pct else (0.1, 0.3)):
+        rc, re_ = [], []
+        for _ in range(50):
+            if pct:
+                P = np.clip(M + rng23.normal(0, sd, M.shape), 0, 100)
+            else:
+                P = np.where(M > x0, M + rng23.normal(0, sd, M.shape), M)
+                P = np.where((M > x0) & (P <= x0), x0, P)
+            rc.append(spearmanr(c0, cand_score(P, x0, tau - x0)[ok])[0])
+            re_.append(spearmanr(e0, ent(P, x0)[ok])[0])
+        parts.append(f"sd={sd:g}: candidate mean {np.mean(rc):.3f} (min {np.min(rc):.3f}), "
+                     f"entropy mean {np.mean(re_):.3f} (min {np.min(re_):.3f})")
+    print(f"   {ds:13s}: " + "; ".join(parts))

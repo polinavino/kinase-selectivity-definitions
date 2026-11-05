@@ -7,23 +7,23 @@ Klaeger under two operationalizations: a form close to the original publication
 log-affinity form used throughout (y-axis). Spearman r above each panel.
 
 Figure 2. Spearman correlations between the median rankings of the four
-selectivity definitions on each dataset (compounds x kinases above each panel).
+selectivity definitions on each dataset (compounds x targets above each panel).
 S: S-score; Ent: entropy.
 
 Figure 3. Within-family rank instability against the profile feature most
 strongly correlated with it, for each definition family (Klaeger, compounds with
-an active kinase, n = 206): active-affinity range (S-score), number of active
+an active kinase, n = 200): active-affinity range (S-score), number of active
 kinases (entropy), active-affinity skewness (Gini), and top1-top2 gap (ratio).
 Spearman r above each panel.
 
-Figure 4. Binding profiles of three Davis compounds, kinases sorted by affinity.
-Left: neflamapimod (VX-745), most stable (sigma = 1.8), two active kinases.
-Center: PI-103, most unstable (sigma = 19.3), 22 active kinases with no dominant
-target. Right: GDC-0879, most ratio-sensitive (Type 2), five active kinases
-including two near-tied top targets (delta pKd = 0.023). Dashed line: pKd = 6
-activity threshold; dotted line: pKd = 5 assay floor.
+Figure 4. Binding profiles of three Davis compounds, targets sorted by
+affinity. Left: nintedanib, most stable (sigma = 2.1), 153 active targets.
+Center: PHA-665752, most unstable (sigma = 16.4), 60 active targets with one
+dominant target (Type 3). Right: fedratinib, most ratio-sensitive (Type 2):
+JAK2 and GAK tied, among 123 active targets. Dashed line: pKd = 6 activity
+threshold; dotted line: pKd = 5 assay floor.
 
-Figure 5. Mean Spearman correlation between rankings computed on random kinase
+Figure 5. Mean Spearman correlation between rankings computed on random target
 subpanels and rankings on the full panel, as a function of subpanel size, on
 all four datasets. Shaded bands indicate +/-1 standard deviation across 50
 subsamples; the dashed line marks r = 0.90, and p* (legend) is the smallest
@@ -32,14 +32,15 @@ panel reaching mean r > 0.90.
 Figure 6. Rank instability on Klaeger. Left (D1): rank standard deviation across
 the existing definitions' parameter sweeps, for compounds with no binding above
 the activity threshold and for compounds with at least one active kinase. Right
-(D3): per-compound rank standard deviation against the number of active kinases,
+(D2): per-compound rank standard deviation against the number of active kinases,
 with one parameter swept over B = [5.0, 6.0]: the entropy's baseline beta
 (orange), the candidate's gate x0 with its emphasis baseline pinned to x0
 (green), and the candidate's emphasis baseline with x0 fixed at the assay floor
 (red).
 
-Figure 7. Panel-size convergence of the candidate measure compared with the four
-existing definitions, on all four datasets (50 random subpanels per size).
-Curves show the mean Spearman correlation between the ranking computed on a
-random subpanel and the full-panel ranking; p* (legend) is the smallest panel
-reaching mean r > 0.90.
+Figure 7. Recovery from random subpanels with the D1 gate applied to every
+measure, on all four datasets (50 subpanels per size). Top: recoverability, the
+share of clearly separated full-panel pairs that are scored on the subpanel and
+keep their order. Bottom: coverage, the share of compounds scored on the full
+panel that are still scored. The S-score and the active count coincide. Dashed
+line: 0.90.

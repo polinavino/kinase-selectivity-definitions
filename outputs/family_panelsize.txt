@@ -2,7 +2,7 @@
 1. Panel-size convergence p* by Renyi order (grid and R as in candidate_measure.py)
 ==============================================================================
 
-Klaeger (222 cpd x 343 kin):
+Klaeger (222 cpd x 219 kin):
   alpha=0.01  p* = 80
   alpha=0.25  p* = 80
   alpha=0.5   p* = 80
@@ -24,13 +24,13 @@ Full convergence curves (mean +/- sd Spearman rho vs full panel), 3 seeds x R=10
 to confirm the p* gap above is not a single-seed artifact at a grid boundary:
 
 Klaeger:
-  alpha=0.01  n=50:0.862 n=80:0.919 n=110:0.946 n=140:0.962 n=170:0.973 n=200:0.980 n=230:0.986 n=260:0.990 n=290:0.994 n=320:0.998 n=343:1.000
-  alpha=0.25  n=50:0.862 n=80:0.919 n=110:0.946 n=140:0.962 n=170:0.973 n=200:0.980 n=230:0.986 n=260:0.990 n=290:0.994 n=320:0.998 n=343:1.000
-  alpha=0.5   n=50:0.862 n=80:0.919 n=110:0.946 n=140:0.962 n=170:0.972 n=200:0.980 n=230:0.986 n=260:0.990 n=290:0.994 n=320:0.998 n=343:1.000
-  alpha=0.75  n=50:0.862 n=80:0.919 n=110:0.946 n=140:0.962 n=170:0.972 n=200:0.980 n=230:0.986 n=260:0.990 n=290:0.994 n=320:0.998 n=343:1.000
-  alpha=1.0   n=50:0.862 n=80:0.919 n=110:0.946 n=140:0.962 n=170:0.972 n=200:0.980 n=230:0.986 n=260:0.990 n=290:0.994 n=320:0.998 n=343:1.000
-  alpha=2.0   n=50:0.861 n=80:0.918 n=110:0.945 n=140:0.961 n=170:0.972 n=200:0.979 n=230:0.985 n=260:0.990 n=290:0.994 n=320:0.998 n=343:1.000
-  alpha=3.0   n=50:0.860 n=80:0.917 n=110:0.944 n=140:0.960 n=170:0.971 n=200:0.979 n=230:0.985 n=260:0.990 n=290:0.994 n=320:0.997 n=343:1.000
+  alpha=0.01  n=50:0.896 n=80:0.944 n=110:0.966 n=140:0.980 n=170:0.990 n=200:0.996 n=219:1.000
+  alpha=0.25  n=50:0.896 n=80:0.944 n=110:0.966 n=140:0.980 n=170:0.990 n=200:0.996 n=219:1.000
+  alpha=0.5   n=50:0.896 n=80:0.944 n=110:0.966 n=140:0.980 n=170:0.990 n=200:0.996 n=219:1.000
+  alpha=0.75  n=50:0.896 n=80:0.944 n=110:0.966 n=140:0.980 n=170:0.990 n=200:0.996 n=219:1.000
+  alpha=1.0   n=50:0.896 n=80:0.944 n=110:0.966 n=140:0.980 n=170:0.990 n=200:0.996 n=219:1.000
+  alpha=2.0   n=50:0.895 n=80:0.943 n=110:0.966 n=140:0.980 n=170:0.990 n=200:0.996 n=219:1.000
+  alpha=3.0   n=50:0.894 n=80:0.942 n=110:0.965 n=140:0.979 n=170:0.989 n=200:0.996 n=219:1.000
 
 Metz:
   alpha=0.01  n=50:0.849 n=80:0.917 n=110:0.953 n=140:0.978 n=170:0.999 n=172:1.000
@@ -45,15 +45,15 @@ Metz:
 2. Tie diagnostic: does a faster-converging order discriminate between fewer compounds?
 ==============================================================================
 
-Klaeger (222 compounds, 16 with zero active kinases):
-  alpha=0.01  distinct scores =  203 / 222   largest tie group = 20
-  alpha=0.25  distinct scores =  203 / 222   largest tie group = 20
-  alpha=0.5   distinct scores =  203 / 222   largest tie group = 20
-  alpha=0.75  distinct scores =  203 / 222   largest tie group = 20
-  alpha=1.0   distinct scores =  203 / 222   largest tie group = 20
-  alpha=2.0   distinct scores =  203 / 222   largest tie group = 20
-  alpha=3.0   distinct scores =  203 / 222   largest tie group = 20
-  alpha=50.0  distinct scores =  203 / 222   largest tie group = 20
+Klaeger (222 compounds, 22 with zero active kinases):
+  alpha=0.01  distinct scores =  194 / 222   largest tie group = 29
+  alpha=0.25  distinct scores =  194 / 222   largest tie group = 29
+  alpha=0.5   distinct scores =  194 / 222   largest tie group = 29
+  alpha=0.75  distinct scores =  194 / 222   largest tie group = 29
+  alpha=1.0   distinct scores =  194 / 222   largest tie group = 29
+  alpha=2.0   distinct scores =  194 / 222   largest tie group = 29
+  alpha=3.0   distinct scores =  194 / 222   largest tie group = 29
+  alpha=50.0  distinct scores =  194 / 222   largest tie group = 29
 
 Metz (704 compounds, 5 with zero active kinases):
   alpha=0.01  distinct scores =  704 / 704   largest tie group = 1
@@ -69,11 +69,11 @@ Metz (704 compounds, 5 with zero active kinases):
 3. Agreement with the alpha=1 (Shannon) ranking, split by active-set size
 ==============================================================================
 
-Klaeger: 100 compounds with n_active<5 (sparse), 122 with n_active>=5 (dense):
-  alpha=0.01  sparse=1.000  dense=0.999
+Klaeger: 111 compounds with n_active<5 (sparse), 111 with n_active>=5 (dense):
+  alpha=0.01  sparse=1.000  dense=1.000
   alpha=0.5   sparse=1.000  dense=1.000
-  alpha=2.0   sparse=0.998  dense=0.999
-  alpha=50.0  sparse=0.983  dense=0.951
+  alpha=2.0   sparse=0.999  dense=0.999
+  alpha=50.0  sparse=0.988  dense=0.940
 
 Metz: 18 compounds with n_active<5 (sparse), 686 with n_active>=5 (dense):
   alpha=0.01  sparse=1.000  dense=1.000

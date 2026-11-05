@@ -1,14 +1,14 @@
 """
-Klaeger results restricted to protein kinases.
+Klaeger: the released 343-target panel against the curated protein-kinase panel.
 
 The 343 Klaeger targets are the proteins the Kinobeads pulldown quantified, not
 only kinases: they include cyclins and other subunits of kinase complexes,
 co-captured with their kinase partners, as well as small-molecule and lipid
 kinases and unrelated proteins. A CDK hit can therefore also count its cyclin.
-This script classifies the columns, drops every column that is not a protein
-kinase (typical or atypical), and recomputes the main Klaeger results on the
-remaining panel, printed beside the full-panel values (which reproduce the
-numbers reported in the paper).
+This script classifies the columns (the classification curate_panels.py uses)
+and recomputes the main Klaeger results on the released panel, printed beside
+the curated panel (219 protein kinases, no protein-group columns), which is the
+panel every other analysis uses.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -174,15 +174,16 @@ def summarize(M):
     return out
 
 
-matrix = pd.read_csv("klaeger_matrix.csv", index_col=0)
+matrix = pd.read_csv("klaeger_matrix_released.csv", index_col=0)
 cols = matrix.columns.tolist()
 non_pk = [c for group in NON_PK.values() for c in group]
 assert len(non_pk) == len(set(non_pk)) and set(non_pk) <= set(cols)
-pk = [c for c in cols if c not in non_pk]
+pk = pd.read_csv("klaeger_matrix.csv", index_col=0).columns.tolist()   # curated panel
 M_all = matrix.values
 M_pk = matrix[pk].values
 
-print(f"Klaeger panel: {len(cols)} targets, {len(pk)} protein kinases, {len(non_pk)} other proteins")
+print(f"Klaeger panel: {len(cols)} targets, {len(cols) - len(non_pk)} protein kinases ({len(pk)} curated, "
+      f"without protein-group columns), {len(non_pk)} other proteins")
 for group, names in NON_PK.items():
     print(f"  {group} ({len(names)}): {', '.join(names)}")
 
@@ -195,9 +196,24 @@ print(f"Compounds whose only active targets are non-kinases: {int(only_np.sum())
       + (f" ({', '.join(matrix.index[only_np])})" if only_np.any() else ""))
 
 full, prot = summarize(M_all), summarize(M_pk)
-print(f"\n{'Result':48s} {'all 343':>10s} {'protein kinases':>16s}")
+print(f"\n{'Result':48s} {'all 343':>10s} {'curated 219':>16s}")
 for k in full:
     a, b = full[k], prot[k]
     fmt = (lambda v: f"{v:.3g}") if "(p)" in k or "Mann" in k else \
           (lambda v: f"{v}" if isinstance(v, (int, np.integer)) or v is None else f"{v:.3f}")
     print(f"{k:48s} {fmt(a):>10s} {fmt(b):>16s}")
+
+# D2 example (top1-top2 gap < 0.05): how many near-ties involve a non-kinase column,
+# and the R(1)/R(2) contrast on the protein-kinase panel
+s_all = -np.sort(-M_all, 1)
+tied = np.where((s_all[:, 0] - s_all[:, 1]) < 0.05)[0]
+cols_arr = np.array(cols)
+with_np = [i for i in tied if set(cols_arr[np.argsort(-M_all[i])[:2]]) & set(non_pk)]
+print(f"\nCompounds with top1-top2 gap < 0.05: {len(tied)} on the full panel; "
+      f"{len(with_np)} of them tie a non-kinase column ("
+      + ", ".join(f"{matrix.index[i]}: {'/'.join(cols_arr[np.argsort(-M_all[i])[:2]])}" for i in with_np) + ")")
+for lab, M in (("full panel", M_all), ("curated panel", M_pk)):
+    s = -np.sort(-M, 1)
+    t = (s[:, 0] - s[:, 1]) < 0.05
+    print(f"  {lab}: {t.sum()} compounds with gap < 0.05; mean R(1) = {ratio(M, 1)[t].mean():.2f}, "
+          f"mean R(2) = {ratio(M, 2)[t].mean():.2f}")

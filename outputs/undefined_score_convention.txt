@@ -1,17 +1,17 @@
-Zero-active compounds (pKd>6 threshold): 16 of 222
-Current convention -- entropy: zero-active mean sigma=14.1  active mean sigma=11.9  (Mann-Whitney p=2.48e-01)
-Current convention -- gini: zero-active mean sigma=86.1  active mean sigma=15.9  (Mann-Whitney p=6.15e-11)
+Zero-active compounds (pKd>6 threshold): 22 of 222
+Current convention -- entropy: zero-active mean sigma=11.8  active mean sigma=12.5  (Mann-Whitney p=8.10e-01)
+Current convention -- gini: zero-active mean sigma=65.0  active mean sigma=16.0  (Mann-Whitney p=2.73e-05)
 
 Pooled convention (degenerate configs scored as entropy=Gini=0, included in every sweep):
-  mean rank sigma, zero-active: 81.0  active: 16.1  (Mann-Whitney p=3.03e-11)
+  mean rank sigma, zero-active: 84.2  active: 17.6  (Mann-Whitney p=1.52e-14)
 
-Per-compound number of DEFINED configurations (of 7 baselines swept): min=1, max=7
-  Zero-active (pKd>6) compounds have a defined score at 1-4 of 7 baselines (mean 3.2)
+Per-compound number of DEFINED configurations (of 7 baselines swept): min=0, max=7
+  Zero-active (pKd>6) compounds have a defined score at 0-4 of 7 baselines (mean 2.4)
 
 Alternative convention (compounds ranked only among those defined at each beta;
 rank sigma computed only over each compound's own DEFINED configs):
-  entropy: 220 of 222 compounds have >=2 defined configs (2 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=14)=9.8  active mean sigma (n=206)=12.8  (p=4.57e-02)
-  gini: 220 of 222 compounds have >=2 defined configs (2 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=14)=9.5  active mean sigma (n=206)=13.0  (p=2.77e-02)
-  pooled (entropy+gini): 220 of 222 computable; mean rank sigma, zero-active (n=14): 9.7  active (n=206): 13.0  (Mann-Whitney p=3.75e-02)
+  entropy: 216 of 222 compounds have >=2 defined configs (6 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=16)=6.9  active mean sigma (n=200)=13.2  (p=2.39e-03)
+  gini: 216 of 222 compounds have >=2 defined configs (6 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=16)=6.7  active mean sigma (n=200)=13.3  (p=1.86e-03)
+  pooled (entropy+gini): 216 of 222 computable; mean rank sigma, zero-active (n=16): 6.9  active (n=200): 13.3  (Mann-Whitney p=2.39e-03)
 
 Done.

@@ -1,28 +1,24 @@
 """
-D3 (distributional consistency) verdicts for every measure on all four datasets.
-
-D3 as stated in Methods: over the interval B = [x0, tau*] between the assay's
-detection floor and the reliability threshold, at most a fraction eps of compound
-pairs may reverse order. A pair reverses in B if f(x; b) - f(y; b) is positive at
-some b in B and negative at another. Pairs are taken among the compounds D1 allows
-to be scored (at least one kinase above tau*), so that D3 is assessed separately
-from D1.
+Distributional consistency (boundary sensitivity) for every measure on all four
+datasets: the share of compound pairs whose order reverses as a parameter moves
+across B = [x0, tau*], the interval between the assay floor and the activity
+threshold. A pair reverses in B if f(x; b) - f(y; b) is positive at some b in B
+and negative at another. Pairs are taken among the compounds with at least one
+target above tau* (those the reliability gate scores).
 
 Parameters swept over B: the S-score's threshold tau, the entropy's and Gini's
-baseline beta, and, for the candidate, either its emphasis baseline beta (gate
-fixed at x0, the featured measure) or its gate x0 itself (beta pinned to x0, the
-like-for-like comparison with the entropy's baseline). The ratio's only
-affinity-scale value is the floor it substitutes for a missing off-target; it is
-swept over B for each off-target index k.
+baseline beta, the candidate's emphasis baseline beta (gate fixed at x0) and its
+gate x0 (beta pinned to the gate), and the ratio's floor fallback (each k).
 
-The worst-case pairwise Spearman correlation between the rankings at any two
-values in B is printed alongside, for comparison with earlier versions.
+The S-score is a step function of tau, so it is evaluated exactly, at every
+observed affinity in B and between consecutive ones. The other parameters are
+evaluated on a 201-point grid; the same calculation on a 101-point grid is
+printed as a convergence check.
 """
 import script_logging; script_logging.capture(__file__)
 import os
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 EPS = 0.01
@@ -59,52 +55,70 @@ def candidate(M, x0, T, b):
     return neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - b) / T), 0.0))
 
 
-def reversals(score_rows, keep):
-    """Fraction of compound pairs whose order reverses somewhere in B, and the
-    worst-case pairwise Spearman correlation between the rankings in B."""
-    S = np.array(score_rows)[:, keep]
-    iu = np.triu_indices(S.shape[1], 1)
-    sign = np.sign(S[:, iu[0]] - S[:, iu[1]])
-    frac = ((sign.max(0) > 0) & (sign.min(0) < 0)).mean()
-    worst = min(spearmanr(S[i], S[j])[0] for i in range(len(S)) for j in range(i + 1, len(S)))
-    return frac, worst
+def reversals(S):
+    """Fraction of compound pairs whose score difference changes sign across the
+    rows of S (parameter values x compounds)."""
+    G, n = S.shape
+    chunk = max(1, int(4e7 // (G * n)))
+    count = 0
+    for i0 in range(0, n, chunk):
+        d = S[:, i0:i0 + chunk, None] - S[:, None, :]
+        rev = (d > 0).any(0) & (d < 0).any(0)
+        rows = np.arange(i0, min(i0 + chunk, n))[:, None]
+        count += int((rev & (np.arange(n)[None, :] > rows)).sum())
+    return count / (n * (n - 1) / 2)
 
 
 aff = pd.read_csv(f"{HERE}/davis_affinity.csv")
-DATA = {  # matrix, floor x0, reliability threshold tau*, grid step
+DATA = {  # matrix, floor x0, activity threshold tau*
     "Davis":         (aff.pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0).values,
-                      5.0, 6.0, 0.25),
-    "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 0.25),
-    "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0, 5.0),
-    "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0, 0.25),
+                      5.0, 6.0),
+    "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0),
+    "Anastassiadis": (pd.read_csv(f"{HERE}/anastassiadis_matrix.csv", index_col=0).values, 20.0, 50.0),
+    "Metz":          (pd.read_csv(f"{HERE}/metz_matrix.csv", index_col=0).values, 4.0, 6.0),
 }
 
-print(f"D3 over B = [x0, tau*]: fraction of pairs reversing (rev) and worst-case pairwise Spearman (rho); "
-      f"pass if rev <= {EPS:.0%}")
-largest = {}   # largest reversal fraction per swept parameter, over datasets (and k for the ratio)
-for name, (M, x0, tau, step) in DATA.items():
-    B = np.arange(x0, tau + step / 2, step)
-    keep = (M > tau).any(1)
+
+def sweeps(M, x0, tau, n_grid):
+    B = np.linspace(x0, tau, n_grid)
     T = tau - x0
+    v = np.unique(M[(M >= x0) & (M <= tau)])
+    tau_exact = np.unique(np.concatenate([[x0, tau], v, (v[:-1] + v[1:]) / 2]))
     rows = {
-        "S-score (tau)":            [s_score(M, b) for b in B],
-        "entropy (beta)":           [entropy(M, b) for b in B],
-        "Gini (beta)":              [gini(M, b) for b in B],
+        "S-score (tau, exact)":      [s_score(M, t) for t in tau_exact],
+        "entropy (beta)":            [entropy(M, b) for b in B],
+        "Gini (beta)":               [gini(M, b) for b in B],
         "candidate (emphasis beta)": [candidate(M, x0, T, b) for b in B],
-        "candidate (gate x0)":      [candidate(M, b, T, b) for b in B],
+        "candidate (gate x0)":       [candidate(M, b, T, b) for b in B],
     }
     rows.update({f"ratio (floor fallback, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
-    print(f"\n{name}: B = [{x0:g}, {tau:g}] ({len(B)} values), {keep.sum()} scored compounds")
-    for label, r in rows.items():
-        frac, worst = reversals(r, keep)
-        key = label.split(", k=")[0] + (")" if ", k=" in label else "")
-        largest[key] = max(largest.get(key, 0.0), frac)
-        print(f"  {label:27s} rev = {100 * frac:6.2f}%   rho = {worst:.3f}   {'PASS' if frac <= EPS else 'fail'}")
+    return rows
 
-print("\nLargest fraction over the four datasets (and over k for the ratio), per swept parameter:")
+
+print(f"Distributional consistency over B = [x0, tau*]: fraction of scored-compound pairs reversing; "
+      f"pass if <= {EPS:.0%}. Continuous parameters on 201 points (101 points in parentheses).")
+largest = {}
+shift = 0.0
+for name, (M, x0, tau) in DATA.items():
+    keep = (M > tau).any(1)
+    fine = sweeps(M, x0, tau, 201)
+    coarse = sweeps(M, x0, tau, 101)
+    print(f"\n{name}: B = [{x0:g}, {tau:g}], {keep.sum()} scored compounds")
+    for label in fine:
+        f = reversals(np.array(fine[label])[:, keep])
+        c = reversals(np.array(coarse[label])[:, keep])
+        if "exact" not in label:
+            shift = max(shift, abs(f - c))
+        key = label.split(", k=")[0] + (")" if ", k=" in label else "")
+        largest[key] = max(largest.get(key, 0.0), f)
+        extra = "" if "exact" in label else f" ({100 * c:5.2f}%)"
+        print(f"  {label:30s} {100 * f:6.2f}%{extra}   {'PASS' if f <= EPS else 'fail'}")
+
+print(f"\nLargest change from 101 to 201 grid points: {100 * shift:.2f} percentage points")
+print("Largest fraction over the four datasets (and over k for the ratio), per swept parameter:")
 for key, v in largest.items():
-    print(f"  {key:27s} {100 * v:6.2f}%")
+    print(f"  {key:30s} {100 * v:6.2f}%")
 swept = [v for k, v in largest.items() if k != "candidate (emphasis beta)"]
 print(f"Only the candidate's emphasis baseline stays within eps on every dataset "
-      f"({100 * largest['candidate (emphasis beta)']:.2f}%); every other swept parameter exceeds "
-      f"{100 * min(swept):.2f}% on at least one dataset, so each Table 3 D3 verdict is the same for any eps in between.")
+      f"({100 * largest['candidate (emphasis beta)']:.2f}%); every other swept parameter reaches at least "
+      f"{100 * min(swept):.2f}% on at least one dataset.")

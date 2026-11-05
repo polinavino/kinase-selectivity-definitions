@@ -130,6 +130,14 @@ if n_nan_kd:
 high_only = raw[raw['Target Classification'] == 'High confidence']
 M_high = high_only.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack(fill_value=5.0)
 M_full = raw.groupby(['Drug', 'Gene Name'])['pKd'].mean().unstack(fill_value=5.0)
+# Analyses use the curated protein-kinase panel (curate_panels.py)
+curated = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0).columns
+print(f"Restricting every matrix to the {len(curated)} curated protein-kinase targets")
+low_all = raw[raw['Target Classification'] != 'High confidence']
+print(f"  low-confidence pairs on curated targets: {int(low_all['Gene Name'].isin(curated).sum())} of {len(low_all)}")
+raw = raw[raw['Gene Name'].isin(curated)]
+M_high = M_high[curated]
+M_full = M_full[[c for c in curated if c in M_full.columns]]
 # Main variant: relax the filter on the same drug/kinase grid, so only the filter
 # changes, not the panel. Low-confidence pairs for drugs or kinases with no
 # high-confidence measurement fall outside this grid.

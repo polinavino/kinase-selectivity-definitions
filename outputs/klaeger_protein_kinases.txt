@@ -1,55 +1,59 @@
-Klaeger panel: 343 targets, 223 protein kinases, 120 other proteins
+Klaeger panel: 343 targets, 223 protein kinases (219 curated, without protein-group columns), 120 other proteins
   kinase-complex subunits (cyclins, regulatory and adaptor subunits) (46): CCNA2, CCNB1, CCNB2, CCNE1, CCNH, CCNI, CCNK, CCNT1, CCNT2, FAM58A;FAM58BP, CKS1B, CABLES1, MNAT1, CSNK2B, PRKAB1, PRKAB2, PRKAG1, PRKAG2, PRKAR2A, PHKA2, CAB39, MOB1A;MOB1B, SAV1, PDCD10, RASSF2, RASSF3, RASSF5, TPRKB, LAGE3, OSGEP, INCENP, GSKIP, DCAF7, FAM83A, FAM83B, AZI2, TANK, TBKBP1, AFF1, AFF4, CCAR2, AP1G1, AP2A1, AP2A2, AP2B1, AP2M1
   small-molecule and lipid kinases (10): ADK, AK2, CMPK1, DCK, PDXK, PFKP, NME2, PIP4K2A, PIP4K2A;PIP4K2B, PIP4K2C
   other enzymes (20): ACAD10, ACAD11, ACOX3, CARS, CERS2, COMT, DCTPP1, DHCR24, FECH, GARS, MAT2A, NQO2, PLA2G2A, PYGB, PYGL, TOP2B, PTPN1, INPPL1, ERCC2, UBASH3B
   other proteins (44): ACTR3, AIMP1, C2CD5, CKAP5, DDB1, DNAJA1, DYNLL1, DYNLL2, EIF3J, EIF4G1, EXOC4, FANCI, FIBP, GAPVD1, GRAMD1A, GRB2, HSP90AB2P, IPO7, KIAA0195, KLHL6, LASP1, MYH10, NPM1, OSBPL3, PAG1, PDCD11, PSMG1, Q6ZSR9, RPL10, RPL35A, RPL4, RPS4X, S100A8, SLC16A3, SLC25A5, SLC5A1, SMARCC1, SMC2, SNRNP200, SNRPF, SYNGR2, TEX264, U2AF1;U2AF1L4, UNC119
 
 Active entries (pKd > 6) on non-kinase columns: 519 of 2763 (18.8%), in 117 of 222 compounds
-Compounds whose only active targets are non-kinases: 5 (AZD-2014, AZD-8186, SGX-523, TG-100115, Volitinib)
+Compounds whose only active targets are non-kinases: 6 (AZD-2014, AZD-8186, NMS-1286937, SGX-523, TG-100115, Volitinib)
 
-Result                                              all 343  protein kinases
-kinases                                                 343              223
-zero-active compounds                                    16               21
+Result                                              all 343      curated 219
+kinases                                                 343              219
+zero-active compounds                                    16               22
 active share of matrix (%)                            3.629            4.533
-mean active kinases per compound                     12.446           10.108
-Table 1: s_score vs entropy                           0.910            0.897
-Table 1: s_score vs gini                              0.722            0.515
-Table 1: s_score vs ratio                             0.223            0.092
-Table 1: entropy vs gini                              0.840            0.661
-Table 1: entropy vs ratio                             0.455            0.349
-Table 1: gini vs ratio                                0.616            0.655
-Table 1, active compounds: s_score vs entropy         0.913            0.898
-Table 1, active compounds: s_score vs gini            0.911            0.896
-Table 1, active compounds: s_score vs ratio           0.418            0.381
-Table 1, active compounds: entropy vs gini            0.998            0.998
-Table 1, active compounds: entropy vs ratio           0.621            0.616
-Table 1, active compounds: gini vs ratio              0.634            0.629
-active compounds                                        206              201
-r(S,G) - r(G,R), all: 2.5%                           -0.058           -0.337
-r(S,G) - r(G,R), all: 97.5%                           0.256            0.065
-r(S,G) - r(G,R), active: 2.5%                         0.195            0.172
-r(S,G) - r(G,R), active: 97.5%                        0.375            0.370
-pooled rank sd, zero-active                          73.968           78.772
-pooled rank sd, active                               31.164           31.961
-Mann-Whitney p                                      2.8e-11         4.93e-14
+mean active kinases per compound                     12.446            9.928
+Table 1: s_score vs entropy                           0.910            0.898
+Table 1: s_score vs gini                              0.722            0.511
+Table 1: s_score vs ratio                             0.223            0.085
+Table 1: entropy vs gini                              0.840            0.657
+Table 1: entropy vs ratio                             0.455            0.344
+Table 1: gini vs ratio                                0.616            0.657
+Table 1, active compounds: s_score vs entropy         0.913            0.901
+Table 1, active compounds: s_score vs gini            0.911            0.897
+Table 1, active compounds: s_score vs ratio           0.418            0.391
+Table 1, active compounds: entropy vs gini            0.998            0.997
+Table 1, active compounds: entropy vs ratio           0.621            0.621
+Table 1, active compounds: gini vs ratio              0.634            0.637
+active compounds                                        206              200
+r(S,G) - r(G,R), all: 2.5%                           -0.058           -0.345
+r(S,G) - r(G,R), all: 97.5%                           0.256            0.057
+r(S,G) - r(G,R), active: 2.5%                         0.195            0.165
+r(S,G) - r(G,R), active: 97.5%                        0.375            0.359
+pooled rank sd, zero-active                          73.968           78.025
+pooled rank sd, active                               31.164           32.063
+Mann-Whitney p                                      2.8e-11         1.49e-14
 Table 2: n_active vs entropy instability             -0.381           -0.369
-Table 2: n_active vs entropy instability (p)       1.64e-08         7.28e-08
-Table 2: top1-top2 gap vs ratio instability          -0.341           -0.353
-Table 2: top1-top2 gap vs ratio instability (p)    5.45e-07         2.84e-07
-Table 2: active range vs S-score instability         -0.354           -0.352
-Table 2: active range vs S-score instability (p)   1.83e-07         2.98e-07
-Table 2: skewness vs Gini instability                 0.346            0.241
-Table 2: skewness vs Gini instability (p)          3.43e-07         0.000577
-D3 rev %, S-score                                     8.307            8.453
-D3 rev %, entropy                                    11.196           12.070
-D3 rev %, Gini                                       11.542           12.433
-D3 rev %, candidate (emphasis beta)                   0.540            0.398
-D3 rev %, candidate (gate x0)                        10.571           11.353
-candidate vs n_active (orientation)                  -0.936           -0.940
-candidate vs entropy, scored compounds                0.998            0.999
+Table 2: n_active vs entropy instability (p)       1.64e-08         7.48e-08
+Table 2: top1-top2 gap vs ratio instability          -0.341           -0.333
+Table 2: top1-top2 gap vs ratio instability (p)    5.45e-07         1.41e-06
+Table 2: active range vs S-score instability         -0.354           -0.370
+Table 2: active range vs S-score instability (p)   1.83e-07         7.21e-08
+Table 2: skewness vs Gini instability                 0.346            0.277
+Table 2: skewness vs Gini instability (p)          3.43e-07         7.32e-05
+D3 rev %, S-score                                     8.307            8.276
+D3 rev %, entropy                                    11.196           11.915
+D3 rev %, Gini                                       11.542           12.196
+D3 rev %, candidate (emphasis beta)                   0.540            0.422
+D3 rev %, candidate (gate x0)                        10.571           11.307
+candidate vs n_active (orientation)                  -0.936           -0.938
+candidate vs entropy, scored compounds                0.998            0.998
 D4 at tau*: % non-increasing (scored)               100.000          100.000
 p* candidate                                             80               80
 p* entropy                                               80               80
 p* gini                                                 290              200
 p* s_score                                              110               80
-p* ratio                                                343              223
+p* ratio                                                343              219
+
+Compounds with top1-top2 gap < 0.05: 17 on the full panel; 4 of them tie a non-kinase column (ARRY-380: NQO2/EGFR, MGCD-265: UNC119/LCK, MK-1775: WEE1/ADK, MLN-2480: DDR1/INPPL1)
+  full panel: 17 compounds with gap < 0.05; mean R(1) = 0.02, mean R(2) = 0.42
+  curated panel: 32 compounds with gap < 0.05; mean R(1) = 0.02, mean R(2) = 0.36

@@ -1,0 +1,9 @@
+Davis: 433 constructs -> 363 reference targets (3 non-human, 20 lipid-kinase constructs removed; 47 further mutant, state or domain constructs not used)
+  references for genes with several constructs: ABL1-phosphorylated, BRAF, EGFR, FGFR3, FLT3, JAK1(JH1domain-catalytic), KIT, LRRK2, MET, RET, RPS6KA4(Kin.Dom.1-N-terminal), RPS6KA5(Kin.Dom.1-N-terminal), RSK1(Kin.Dom.1-N-terminal), RSK3(Kin.Dom.1-N-terminal), RSK4(Kin.Dom.1-N-terminal), TYK2(JH1domain-catalytic)
+  genes with no wild-type construct: GCN2
+
+Klaeger: 343 targets -> 223 protein kinases -> 219 after removing 4 protein-group columns (CSNK2A1;CSNK2A3, PDPK1;PDPK2P, PRKCE;PRKCH, PRKX;PRKY)
+
+Anastassiadis: 300 targets -> 291 (duplicates removed: CDK1/cyclin B, CDK2/cyclin E, CDK4/cyclin D3, CDK5/p35, CDK6/cyclin D3, CDK9/cyclin T1, LYN B, PKCb2, PKG1b)
+
+Metz: unchanged (172 human protein kinases, one per column)

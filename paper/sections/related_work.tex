@@ -23,10 +23,11 @@ targets at a specified inhibitor concentration.
 Bosc et al.\cite{Bosc2017} subsequently proposed two further metrics, the
 window score and ranking score, and compared them against four previously
 published metrics (the S-score, Gini coefficient, selectivity entropy, and a
-partition index) on the Davis and Anastassiadis datasets, showing that
-compound rankings differ substantially depending on the metric applied and that
-certain compounds cannot be scored under some definitions when threshold
-conditions are not satisfied. For example, ratio-based scores are undefined
+partition index) on the Davis and Anastassiadis datasets. They showed that
+compound rankings differ substantially depending on the metric applied, computed
+several metrics at more than one parameter value (S-score thresholds, window
+widths, ranking positions), and noted that certain compounds cannot be scored
+under some definitions when threshold conditions are not satisfied. For example, ratio-based scores are undefined
 for a compound with no kinase above the activity threshold, since there is then
 no primary target or off-target to compare.
 
@@ -44,11 +45,10 @@ between a further
 named metric (the KISS score, an on-target/off-target balance) and a separate
 Gini-based score.
 
-Published comparisons evaluate each metric at fixed parameter values, so, to
-our knowledge, the sensitivity of rankings to parameter choice has not been
-characterized systematically. The present work addresses this, together with
-the question raised in the Introduction of which profile properties determine
-when the definitions agree.
+To our knowledge, how much each parameter and implementation choice moves the
+rankings across datasets and assay technologies, and which profile properties
+determine when the definitions agree, have not been characterized. The present
+work addresses both.
 
 \subsection{Axiomatic Approaches to Ranking and Measurement}
 \label{sec:related:axiomatic}
@@ -68,17 +68,13 @@ The axioms that single out Shannon entropy, such as maximality on the uniform
 distribution and additivity over independent subsystems, characterize a measure
 of uncertainty, and none of them was chosen with selectivity in mind.
 
-Arrow\cite{Arrow1951} established that no social welfare function satisfies
-simultaneously the requirements of unrestricted domain, Pareto efficiency,
-independence of irrelevant alternatives, and non-dictatorship.
-The theorem is relevant here in two respects: it shows that axiomatic analysis
-of a ranking concept can yield impossibility, and that competing ranking
-functions can reflect trade-offs between properties that cannot all be met at
-once.
-Singleton and Booth\cite{Singleton2022} applied this methodology to truth
-discovery, i.e. the problem of identifying true facts from conflicting reports of
-unknown reliability, posing it as a social choice problem, formulating
-candidate axioms, and proving that a subset cannot be jointly satisfied.
+Axiomatic analysis can also show that no function meets a set of
+requirements. Arrow\cite{Arrow1951} proved this for social welfare functions,
+and Singleton and Booth\cite{Singleton2022} for a subset of candidate axioms
+for truth discovery, the problem of identifying true facts from conflicting
+reports. Of the three properties we state for selectivity, no measure we
+examine meets the second, and several simple constructions meet the other two
+(Results).
 
 To our knowledge, this axiomatic style of analysis has not previously been
 applied to any selectivity or promiscuity measure in drug discovery.

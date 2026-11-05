@@ -32,7 +32,7 @@ FIGURE_MAP = {
     "binding_profiles.png": "Figure4.png",
     "panel_size_stability.png": "Figure5.png",
     "failure_modes.png": "Figure6.png",
-    "candidate_panel_convergence.png": "Figure7.png",
+    "panel_recovery.png": "Figure7.png",
 }
 
 

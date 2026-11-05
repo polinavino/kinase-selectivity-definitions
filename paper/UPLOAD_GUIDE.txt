@@ -24,12 +24,12 @@ COVER LETTER
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
   Figure1.png  = operationalization sensitivity of entropy & Gini
   Figure2.png  = correlations between definitions, four datasets
-  Figure3.png  = best predictor of instability per family
+  Figure3.png  = profile feature most associated with instability per family
   Figure4.png  = binding profiles of the most stable, most unstable and most
                  ratio-sensitive Davis compounds
   Figure5.png  = panel-size stability of existing definitions
-  Figure6.png  = rank instability for D1 and D3 (Klaeger)
-  Figure7.png  = panel-size convergence of the candidate measure
+  Figure6.png  = rank instability for D1 and D2 (Klaeger)
+  Figure7.png  = recovery from random subpanels, with coverage, all measures
 
 TABLES  (one file per table, separate slot each)  -> submission_tables/
   Table1.docx  = cross-family Spearman correlations
@@ -46,9 +46,8 @@ SUPPORTING INFORMATION
   sensitivity to the correlation-cutoff bar; Bosc et al./CATDS comparison;
   cross-definition correlations under the original metric operationalizations;
   candidate-measure cross-dataset validation; variants of the candidate
-  measure; additional analyses (Klaeger restricted to protein kinases, the
-  Klaeger filter, the skewness mechanism, Type 3 ranks, most stable compounds);
-  the script behind every result in the main text. Referenced from
+  measure; released versus curated panels and further analyses; the script
+  behind every result in the main text. Referenced from
   Methods, Results and Discussion as "Supporting Information, Table S<n>" or
   "Section S<n>".
 

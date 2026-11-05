@@ -114,3 +114,50 @@ print(f"         definition-effect r range = {min(defn_rs):.2f}-{max(defn_rs):.2
 print("Lower r = more disagreement. Comparing the two ranges shows which source of "
       "ranking disagreement -- assay platform or scoring definition -- is larger on "
       "this shared-compound set.")
+
+# ---------------------------------------------------------------------------
+# The two platforms profile different targets (433 Davis constructs, 343 Klaeger
+# proteins), so the comparison above mixes assay and panel. Repeat it on the
+# genes both panels share: Davis constructs collapsed to genes (best affinity per
+# gene), Davis names mapped to HGNC symbols, Klaeger columns matched on any
+# ';'-separated symbol.
+ALIAS = {
+    'AMPK-alpha1': 'PRKAA1', 'AMPK-alpha2': 'PRKAA2', 'ARK5': 'NUAK1', 'ASK1': 'MAP3K5', 'ASK2': 'MAP3K6',
+    'BIKE': 'BMP2K', 'BRK': 'PTK6', 'CDC2L5': 'CDK13', 'CTK': 'MATK', 'DLK': 'MAP3K12', 'DMPK2': 'CDC42BPG',
+    'ERK1': 'MAPK3', 'ERK2': 'MAPK1', 'ERK3': 'MAPK6', 'ERK4': 'MAPK4', 'ERK5': 'MAPK7', 'ERK8': 'MAPK15',
+    'FAK': 'PTK2', 'GCN2': 'EIF2AK4', 'HPK1': 'MAP4K1', 'IKK-alpha': 'CHUK', 'IKK-beta': 'IKBKB',
+    'IKK-epsilon': 'IKBKE', 'JNK1': 'MAPK8', 'JNK2': 'MAPK9', 'JNK3': 'MAPK10', 'LKB1': 'STK11',
+    'LOK': 'STK10', 'LZK': 'MAP3K13', 'MEK1': 'MAP2K1', 'MEK2': 'MAP2K2', 'MEK3': 'MAP2K3', 'MEK4': 'MAP2K4',
+    'MEK5': 'MAP2K5', 'MEK6': 'MAP2K6', 'MKK7': 'MAP2K7', 'MINK': 'MINK1', 'MLK1': 'MAP3K9',
+    'MLK2': 'MAP3K10', 'MLK3': 'MAP3K11', 'MRCKA': 'CDC42BPA', 'MRCKB': 'CDC42BPB', 'MST1': 'STK4',
+    'MST2': 'STK3', 'MST3': 'STK24', 'MST4': 'STK26', 'NDR1': 'STK38', 'NDR2': 'STK38L', 'PCTK1': 'CDK16',
+    'PCTK2': 'CDK17', 'PCTK3': 'CDK18', 'PFTAIRE2': 'CDK15', 'PFTK1': 'CDK14', 'PAK7': 'PAK5',
+    'PKAC-alpha': 'PRKACA', 'PKAC-beta': 'PRKACB', 'PRKR': 'EIF2AK2', 'PRP4': 'PRPF4B', 'PYK2': 'PTK2B',
+    'QSK': 'SIK3', 'RSK1': 'RPS6KA1', 'RSK2': 'RPS6KA3', 'RSK3': 'RPS6KA2', 'RSK4': 'RPS6KA6',
+    'S6K1': 'RPS6KB1', 'SIK': 'SIK1', 'SNARK': 'NUAK2', 'TAK1': 'MAP3K7', 'TIE2': 'TEK', 'TRKA': 'NTRK1',
+    'TRKB': 'NTRK2', 'TRKC': 'NTRK3', 'VEGFR2': 'KDR', 'YANK1': 'STK32A', 'YES': 'YES1', 'YSK1': 'STK25',
+    'YSK4': 'MAP3K19', 'p38-alpha': 'MAPK14', 'p38-beta': 'MAPK11', 'p38-delta': 'MAPK13',
+    'p38-gamma': 'MAPK12',
+}
+prot = pd.read_csv(os.path.join(HERE, "davis_proteins.csv")).set_index("Protein_Index")["Gene_Name"]
+names = prot.reindex(davis_full.columns)
+gene = names.str.replace(r"\(.*$", "", regex=True).str.replace(r"-(phosphorylated|nonphosphorylated)$", "", regex=True)
+gene = gene.map(lambda g: ALIAS.get(g, g))
+davis_gene = davis_full.T.groupby(gene.values).max().T
+kcol = {sym: c for c in klaeger_full.columns for sym in c.split(';')}
+common = sorted(g for g in davis_gene.columns if g in kcol)
+davis_C = davis_gene.loc[overlap['Davis_Drug_Index'].values, common].values
+klaeger_C = klaeger_full.loc[overlap['Klaeger_Name'].values, [kcol[g] for g in common]].values
+print(f"\nShared panel: {len(common)} genes profiled on both platforms "
+      f"(of {davis_gene.shape[1]} Davis genes and {klaeger_full.shape[1]} Klaeger targets)")
+print(f"  compounds with no active target on the shared panel: Davis {int((~(davis_C > 6).any(1)).sum())}, "
+      f"Klaeger {int((~(klaeger_C > 6).any(1)).sum())}")
+mdC, mkC = median_ranks(davis_C), median_ranks(klaeger_C)
+plat_C = [spearmanr(mdC[d], mkC[d])[0] for d in DEFNS]
+defn_C = [spearmanr(med[DEFNS[i]], med[DEFNS[j]])[0] for med in (mdC, mkC)
+          for i in range(4) for j in range(i + 1, 4)]
+for d, r in zip(DEFNS, plat_C):
+    print(f"  platform effect, {d:8s}: r = {r:+.3f} (p = {spearmanr(mdC[d], mkC[d])[1]:.1e})")
+print(f"Summary on the shared panel: platform-effect r range = {min(plat_C):.2f}-{max(plat_C):.2f} "
+      f"(mean {np.mean(plat_C):.2f}); definition-effect r range = {min(defn_C):.2f}-{max(defn_C):.2f} "
+      f"(mean {np.mean(defn_C):.2f})")

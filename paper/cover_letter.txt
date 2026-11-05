@@ -8,20 +8,24 @@ Research Article (Full Paper).
 I am grateful to the reviewer for a second constructive assessment. In
 response, the manuscript has been revised as follows:
 
-  - the motivated properties and the candidate measure are now defined
-    formally in Methods and evaluated in Results, the Abstract and Conclusion
-    lead with the properties, and repeated results and layered qualifications
-    have been consolidated;
+  - the analyses now use one reference target per human protein kinase,
+    removing mutant and domain constructs of the same gene from Davis and
+    non-kinase proteins from Klaeger;
+
+  - the motivated properties and the candidate measure are defined formally
+    in Methods and evaluated in Results, against two simple comparators, and
+    the claims are narrowed accordingly: no measure examined is robust to the
+    placement of the activity boundary, and the candidate is presented as a
+    monotone measure that still weights weak binding;
 
   - every robustness check the reviewer requested has been added, including
     correlation matrices under the published forms of the entropy and Gini,
     the Klaeger filter sensitivity, the Metz coverage distribution, the
-    convention for undefined scores, and a comparison of platform and
+    convention for undefined scores, and a comparison of dataset and
     definition effects on compounds shared by Davis and Klaeger;
 
-  - the candidate measure's monotonicity property is now proved, and the
-    paper states plainly that every measure, the candidate included, meets
-    distributional consistency only with its parameter fixed; and
+  - recovery from small panels is evaluated for all measures with the share
+    of compounds that can still be scored; and
 
   - a Supporting Information file now holds the results previously available
     only in the code repository, with a table giving the script behind every

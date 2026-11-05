@@ -2,32 +2,32 @@
 Renyi-order family: alpha=1 is the Shannon candidate
 ======================================================================
 
-Davis (68 cpd x 433 kin):
-  alpha=0.5  orient_r=-0.968  D3(pairs reversing in B)=0.61%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
-  alpha=1.0  orient_r=-0.969  D3(pairs reversing in B)=0.48%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
-  alpha=2.0  orient_r=-0.970  D3(pairs reversing in B)=0.92%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
-  alpha=3.0  orient_r=-0.972  D3(pairs reversing in B)=1.80%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.997
+Davis (68 cpd x 363 kin):
+  alpha=0.5  orient_r=-0.969  D3(pairs reversing in B)=0.40%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
+  alpha=1.0  orient_r=-0.968  D3(pairs reversing in B)=0.44%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=2.0  orient_r=-0.969  D3(pairs reversing in B)=0.92%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
+  alpha=3.0  orient_r=-0.971  D3(pairs reversing in B)=1.14%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.998
 
-Klaeger (222 cpd x 343 kin):
-  alpha=0.5  orient_r=-0.936  D3(pairs reversing in B)=0.13%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
-  alpha=1.0  orient_r=-0.936  D3(pairs reversing in B)=0.54%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
-  alpha=2.0  orient_r=-0.935  D3(pairs reversing in B)=1.09%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
-  alpha=3.0  orient_r=-0.935  D3(pairs reversing in B)=1.68%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.998
+Klaeger (222 cpd x 219 kin):
+  alpha=0.5  orient_r=-0.938  D3(pairs reversing in B)=0.12%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=1.0  orient_r=-0.938  D3(pairs reversing in B)=0.42%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=2.0  orient_r=-0.939  D3(pairs reversing in B)=0.96%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=1.000
+  alpha=3.0  orient_r=-0.940  D3(pairs reversing in B)=1.59%  D4(%% non-increasing)=100.0  Spearman-vs-alpha=1=0.999
 
 ======================================================================
 Quantile-referenced floor (per-compound, replaces the fixed assay floor)
 ======================================================================
 
-Davis (68 cpd x 433 kin):
-  compounds whose q-th quantile equals the fixed floor (of 68): q=0.05: 68, q=0.075: 68, q=0.1: 66, q=0.125: 66, q=0.15: 66
-  q=0.1: orient_r=-0.969  Spearman vs fixed-floor candidate = 1.000
-  D3 over q in [0.05, 0.075, 0.1, 0.125, 0.15]: pairs reversing = 0.00%, worst-case rank Spearman = +1.000
+Davis (68 cpd x 363 kin):
+  compounds whose q-th quantile equals the fixed floor (of 68): q=0.05: 68, q=0.075: 67, q=0.1: 66, q=0.125: 66, q=0.15: 66
+  q=0.1: orient_r=-0.968  Spearman vs fixed-floor candidate = 1.000
+  D3 over q in [0.05, 0.075, 0.1, 0.125, 0.15]: pairs reversing = 0.04%, worst-case rank Spearman = +1.000
   D4 (add a sub-threshold off-target): non-increasing for 100.0% of compounds; max increase = 0.0000
 
-Klaeger (222 cpd x 343 kin):
-  compounds whose q-th quantile equals the fixed floor (of 222): q=0.05: 222, q=0.075: 222, q=0.1: 222, q=0.125: 222, q=0.15: 222
-  q=0.1: orient_r=-0.936  Spearman vs fixed-floor candidate = 1.000
-  D3 over q in [0.05, 0.075, 0.1, 0.125, 0.15]: pairs reversing = 0.00%, worst-case rank Spearman = +1.000
+Klaeger (222 cpd x 219 kin):
+  compounds whose q-th quantile equals the fixed floor (of 222): q=0.05: 220, q=0.075: 222, q=0.1: 222, q=0.125: 222, q=0.15: 222
+  q=0.1: orient_r=-0.938  Spearman vs fixed-floor candidate = 1.000
+  D3 over q in [0.05, 0.075, 0.1, 0.125, 0.15]: pairs reversing = 0.54%, worst-case rank Spearman = +0.994
   D4 (add a sub-threshold off-target): non-increasing for 100.0% of compounds; max increase = 0.0000
 
 Done.

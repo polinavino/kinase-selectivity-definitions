@@ -37,37 +37,39 @@ In information theory, Shannon\cite{Shannon1948} settled which function should
 measure entropy by writing down a few properties a sensible measure must
 have and showing that only one formula satisfies them. We follow this
 precedent in part: we characterize how the competing measures behave, state
-properties a good measure should have, and propose a formula that satisfies
-them. We use four profiling datasets that span three assay technologies. Our
-contributions are as follows:
+properties a good measure should have, and examine which formulas satisfy
+them. We use four profiling datasets that span three assay technologies, each
+curated to one reference target per human protein kinase. Our contributions are
+as follows:
 
 \begin{itemize}
     \item[(i)] we show that, with entropy and Gini on a common log-affinity
 scale, the S-score, entropy and Gini (the distribution-based family) agree more
 with each other than with the fold-selectivity ratio $R(k)$, clearly on the two
 $\mathrm{p}K_d$ datasets among compounds with an active kinase and with
-qualifications on the other two. With the entropy in its
-original association-constant form, this grouping fails on all three affinity
-datasets (Methods). $R(k)$ is also the slowest to recover its full-panel
-ranking from random subpanels, on every dataset;
+qualifications on the other two. With the entropy in its original
+association-constant form, this grouping fails on all three affinity datasets
+(Methods);
 
-    \item[(ii)] we identify three sources of instability among the most
-unstable compounds: no binding above the activity threshold, which the
-definitions score inconsistently, near-tied top targets, and broad profiles,
-often with one dominant target;
+    \item[(ii)] we identify three sources of rank instability: near-tied top
+targets, broad profiles, often with one dominant target, and, for compounds with
+no binding above the activity threshold, the convention each definition uses to
+score them;
 
-    \item[(iii)] we motivate four properties, (D1) a reliability threshold, (D2)
-bounded gap sensitivity, (D3) distributional consistency and (D4) monotonicity
-under weak off-target addition, and find that none of the four definitions
-assessed satisfies all of them, nor even D2 and D4 together: the ratio fails
-D2, and the other three fail D4. All four satisfy D3 only with a parameter
-fixed: moving the S-score's threshold or the entropy's or Gini's baseline
-reverses 8--12\% of compound pairs on three datasets;
+    \item[(iii)] we state three properties, (D1) a reliability threshold, (D2)
+distributional consistency and (D3) monotonicity under weak off-target addition.
+No measure examined satisfies D2: moving the activity boundary between the
+assay floor and the activity threshold reverses 8--13\% of compound pairs under
+the S-score, entropy and Gini on three datasets. D3 holds for simple measures,
+such as a count of active kinases, but not for the S-score, the Gini, or the
+entropy with a baseline below the activity threshold;
 
-    \item[(iv)] we propose a candidate measure, a gated, smooth-hinge
-effective-target number, which shows that the four properties can be met
-together (D2 vacuously, D3 with its activity boundary fixed). It ranks these datasets almost identically to the entropy but,
-unlike it, provably cannot be made to look more selective by adding a weakly
-bound kinase.
+    \item[(iv)] we give a gated, smooth-hinge entropy that provably satisfies D3
+while still weighting binding below the activity threshold. It ranks these
+datasets almost identically to the entropy;
+
+    \item[(v)] we evaluate recovery from random subpanels separately from the
+properties. Measures that weight weak binding recover rankings from fewer
+targets on three of the four datasets, but on small panels the share of
+compounds that can be scored limits recovery more than the choice of measure.
 \end{itemize}
-

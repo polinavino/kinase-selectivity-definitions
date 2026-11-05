@@ -9,9 +9,9 @@ produce substantially different compound rankings, and
 the largest disagreements are concentrated in identifiable kinds of profiles.
 This has practical consequences: a compound that ratio-based analysis designates
 as selective may be designated as moderately promiscuous by entropy-based
-analysis, and vice versa, depending on the shape of its binding profile. Among compounds that clear the
-activity threshold, the two families disagree most on broad profiles (Type~3,
-Results).
+analysis, and vice versa, depending on the shape of its binding profile. Among
+compounds that clear the activity threshold, the two families disagree most on
+broad profiles (Type~3, Results).
 
 This coexistence may have a historical explanation.
 In classical pharmacology and analytical chemistry, selectivity is inherently
@@ -22,41 +22,46 @@ Kinome-wide profiling, however, poses a distributional question: how
 concentrated is a compound's binding across hundreds of kinases?
 Entropy and Gini address this question directly.
 
-
 \subsection{Practical Recommendations}
 
-Pending a formal resolution, three practical recommendations follow from our
+Pending a formal resolution, four practical recommendations follow from our
 findings.
 First, D1 (reliability threshold) should be adopted as a reporting
 standard.
 Compounds with no binding above the $\mathrm{p}K_d > 6$ activity threshold
 should not receive selectivity scores, or should have their scores explicitly
 flagged as unreliable.
-The 16 such Klaeger compounds (Type~1) all bind above the floor of
-$\mathrm{p}K_d = 5.0$ (maximum affinities 5.16--6.00), so only a gate at the
-activity threshold excludes them.
+Of the 22 such Klaeger compounds (Type~1), 16 bind some kinase above the floor
+of $\mathrm{p}K_d = 5.0$, so only a gate at the activity threshold excludes
+them.
 
-Second, selectivity assessments should report how rankings change with
-parameter choice, alongside the score at the chosen parameter value. Rank
-standard deviation across the parameter sweep is a compound-specific,
-interpretable quantity that identifies which compounds' assessments are robust
-to parameter choice, analogous to a confidence interval in statistical
-estimation. This rank standard deviation is not a guide to robustness across
-platforms: on the 46 compounds profiled in both Davis and Klaeger, it does not
-predict how far a compound's rank moves between the two ($|r| \leq 0.25$).
+Second, the activity boundary should be fixed in the analysis protocol, before
+the data are examined, and selectivity assessments should report how rankings
+change when it is moved. No measure we examined satisfies D2. Rank standard
+deviation across the parameter sweep is a compound-specific summary of this
+sensitivity, and its value depends on the range and spacing of the sweep. It
+is not a guide to robustness across datasets: on the 46 compounds profiled in
+both Davis and Klaeger, it is not associated with how far a compound's rank
+moves between the two ($|r| \leq 0.23$).
 
 Third, when comparing selectivity across studies that use different definitions,
 the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
 Within the distribution-based family, the S-score and our log-affinity entropy
-and Gini correlate at $r \geq 0.72$ on the full panel
-(Table~\ref{tab:correlations}); their published forms do not (Methods). They give similar rankings
-when parameters are chosen consistently and panels have similar, near-complete
-coverage. On smaller panels the Gini diverges on Davis, Klaeger, and
-Anastassiadis because of its convention for undefined scores (Results).
-Ratio-based measures, in turn, should not be compared directly with
+and Gini correlate at $0.90$--$0.999$ among compounds with an active kinase on
+Davis and Klaeger (Results); their published forms do not (Methods). They give
+similar rankings when parameters are chosen consistently and panels have
+similar, near-complete coverage. On smaller panels the Gini diverges on Davis,
+Klaeger, and Anastassiadis because of its convention for undefined scores
+(Results). Ratio-based measures, in turn, should not be compared directly with
 distribution-based measures at any panel size without acknowledging the
 conceptual distinction.
+
+Fourth, a selectivity analysis should state its unit of analysis and, for small
+panels, how many compounds remain scorable. Counting mutant constructs or
+complex subunits as separate targets changes the rankings (Supporting
+Information, Section~S6), and on random 50-target panels $12$--$29\%$ of the
+compounds on Davis, Klaeger and Anastassiadis have no active target.
 
 \subsection{Limitations}
 
@@ -72,57 +77,48 @@ from compounds with no active kinase, and on Metz it largely reflects coverage
 (Results). The two instability relations tested on all four datasets
 (ratio--gap and entropy--$n_\mathrm{active}$) replicate with the
 qualifications given in Results, and on Metz the entropy relation may also
-reflect coverage. Findings should be interpreted in light of these
+reflect coverage (Methods). Findings should be interpreted in light of these
 technological differences.
 
 Our comparison is also restricted to four widely used, historically
 established definitions. Bosc et al.'s window score and ranking
-score\cite{Bosc2017} were not included. On the same four datasets both
-correlate strongly with the ratio (Spearman $r = 0.80$--$0.96$), so they do not
-form a third cluster.
-The CATDS score\cite{Klaeger2017} was also not implemented directly, since it requires raw
-concentration-response data. A proxy computed from our baseline-subtracted
-affinity profiles correlates far more strongly with Gini and entropy than with
-$R(k)$ on all four datasets (Spearman $0.91$--$0.99$ against Gini and
-$0.82$--$0.96$ against entropy, against $0.45$--$0.70$ for $R(k)$, Supporting
-Information Table~S2).
-We did not add it as a fifth measure, because the distribution-based family is
-already represented by three members.
+score\cite{Bosc2017} were not included. The ranking score is $R(k)$ at a
+shifted rank (Methods), and the window score correlates strongly with the ratio
+on the same four datasets (Spearman $r = 0.91$--$0.96$), so neither forms a
+third cluster.
+The CATDS score\cite{Klaeger2017} was also not implemented directly, since it
+requires raw concentration-response data. A proxy computed from our
+baseline-subtracted affinity profiles correlates more strongly with the Gini
+than with $R(k)$ on all four datasets (Spearman $0.91$--$0.98$, against $0.73$ or
+less, Supporting Information Table~S2). The proxy lacks the concentration
+dependence of the published score, so this does not show how the published
+score behaves.
 
 A further axis of platform dependence that this analysis does not examine is
-cell-based versus cell-free profiling. Recent work shows that selectivity
-classifications for the same compounds can differ substantially between
-biochemical binding panels and cellular target-engagement assays. For example, several
-type II (DFG-out-binding) inhibitors show cellular interactions that
-cell-free assays miss~\cite{Binder2026,Binder2026correction}.
-A plausible contributor, not established by that work, is that the cellular
-assays report occupancy of full-length kinase in intact cells, with regulatory
-domains, binding partners, and intracellular ATP present. Many
-cell-free binding panels, instead, score isolated, recombinantly expressed
-kinase-domain constructs. This specific contrast does not map cleanly onto the
-two cell-free datasets used here. In particular, Davis profiles recombinant constructs (on
-the same competition-binding platform, Karaman et al.\ used catalytic domains for
-large multidomain kinases and full-length constructs for small single-domain
-ones\cite{Karaman2008}), while Klaeger's Kinobeads approach captures endogenous,
-full-length kinases directly from cell lysate.
+cell-based versus cell-free profiling. Selectivity classifications for the same
+compounds can differ substantially between biochemical binding panels and
+cellular target-engagement assays. For example, several type II
+(DFG-out-binding) inhibitors show cellular interactions that cell-free assays
+miss.\cite{Binder2026,Binder2026correction} Davis profiles recombinant
+constructs, and Klaeger's Kinobeads approach captures endogenous, full-length
+kinases from cell lysate, so neither dataset represents the intact cell.
 
-We compared how much the choice of assay technology and the choice of
-selectivity definition each move a compound's selectivity ranking. We
-resolved 46 compounds profiled in both Davis (competition binding) and
-Klaeger (chemoproteomics) by matching PubChem CIDs against Klaeger's drug
-names, and computed each definition's
-median rank on this fixed set of 46 compounds (separately on each platform).
-Rankings agree less across platforms than across definitions, so the
-\emph{platform effect} (same definition, Davis rank vs.\ Klaeger rank) is
-on average the larger of the two. For the same definition, the Davis and
-Klaeger rankings correlate at Spearman $r = -0.06$ to $0.69$ (mean $0.44$),
-against $r = 0.14$ to $1.00$ between definitions on the same platform (mean
-$0.60$).
-The ratio definition is the extreme case: its Davis ranking and its Klaeger
-ranking for the same 46 compounds are statistically indistinguishable from
-uncorrelated ($r = -0.06$, $p = 0.67$). This should temper any
-cross-study comparison of selectivity rankings regardless of which definition
-is used.
+We compared how much the choice of dataset and the choice of selectivity
+definition each move a compound's selectivity ranking. We resolved 46 compounds
+profiled in both Davis (competition binding) and Klaeger (chemoproteomics) by
+matching PubChem CIDs against Klaeger's drug names, restricted both panels to
+the 200 kinases they share, and computed each definition's median rank on this
+fixed set of 46 compounds (separately on each dataset). For the same
+definition, the Davis and Klaeger rankings correlate at Spearman $r = 0.33$ to
+$0.84$ (mean $0.60$), against $r = -0.09$ to $1.00$ between definitions on the
+same dataset (mean $0.56$). The choice of definition therefore moves rankings
+about as much as the change of dataset. Without restricting the panels to their
+shared kinases, the cross-dataset correlations are lower (mean $0.52$), so
+part of the difference between datasets comes from which kinases each profiles.
+The ratio is the extreme case: on the shared panel its Davis and Klaeger
+rankings for the same 46 compounds correlate at only $r = 0.33$ ($p = 0.03$).
+This should temper any cross-study comparison of selectivity rankings
+regardless of which definition is used.
 
 All four existing definitions and the candidate measure introduced above
 treat a compound's affinity
@@ -139,52 +135,39 @@ tolerated dose. A selectivity score is consequently, at best, a summary of
 \emph{binding breadth}, and go/no-go decisions should weigh it alongside
 target-specific liability knowledge and exposure modeling.
 
-We also examined whether in vitro selectivity predicts clinical toxicity,
-correlating the selectivity rankings of the FDA-approved Klaeger compounds with
-FAERS adverse-event rates ($n = 46$) and FDA-label discontinuation rates
-($n = 33$).
-None of the rate-based outcomes were significantly associated with selectivity
-under any definition (all $|r| < 0.17$, all $p > 0.27$).
-The only nominal signal is a weak correlation between raw FAERS report counts and
-the ratio ranking ($r = 0.31$, $p = 0.035$), which may reflect prescription
-volume rather than toxicity.
-We do not read the absence of a rate-based association as evidence that
-selectivity and toxicity are unrelated. FAERS report counts likely track how
-often a drug is prescribed, and label discontinuation depends on the patient
-population treated for each indication, so neither can isolate the effect of
-selectivity.
-A proper test would require indication-stratified, treatment-related
-adverse-event rates from controlled trials with matched comparators, which are
-not available in standardized form across these drugs.
+We also examined whether in vitro selectivity is associated with clinical
+safety, correlating the selectivity rankings of the FDA-approved Klaeger
+compounds with the proportions of FAERS reports that were serious, fatal, or
+involved hospitalization ($n = 46$) and with FDA-label discontinuation rates
+($n = 33$). None was significantly associated with selectivity under any
+definition (all $|r| \leq 0.20$, all $p > 0.17$). The only nominal signal is a
+weak correlation between raw FAERS report counts and the ratio ranking
+($r = 0.32$, $p = 0.03$), which may reflect prescription volume. FAERS
+proportions describe reports, not incidence among treated patients, so this
+analysis cannot isolate the effect of selectivity on toxicity.
 
-Every measure satisfies D3 only with a parameter fixed, at the floor $x_0$ for
-all but the S-score. In none of the four datasets is $x_0$ a measured detection
-limit. On Davis and Klaeger it is the value assigned to pairs
-with no detected binding, on Metz the lowest reported value (Methods), and on
-Anastassiadis a $20\%$ inhibition
-noise level that we set. Fixing $x_0$ therefore removes the analyst's choice
-only to the extent that each dataset's encoding of non-detection is accepted as
-given.
+No measure satisfies D2, so each must fix its boundary parameter in the
+protocol, at the floor for all but the S-score and the active count. In none of
+the four datasets is the floor $x_0$ a measured detection limit. On Davis and
+Klaeger it is the value assigned to pairs with no detected binding, on Metz the
+lowest reported value (Methods), and on Anastassiadis a $20\%$ inhibition noise
+level that we set. Fixing $x_0$ therefore removes the analyst's choice only to
+the extent that each dataset's encoding of non-detection is accepted as given.
 
-The D3 sweeps cover only four datasets. Whether the
-properties are jointly satisfiable only by measures within the candidate's
-family (Supporting Information, Section~S5), and whether a uniqueness result
-analogous to Shannon's holds, are left for future work. A complementary direction is a consensus ranking
-that does not commit to any single measure, that is, a partial order on which
-all existing measures agree.
+The D2 sweeps cover only four datasets. Whether D1, D3 and a stated
+recoverability target together single out a measure, and whether a uniqueness
+result analogous to Shannon's holds, are left for future work. A complementary
+direction is a consensus ranking that does not commit to any single measure,
+that is, a partial order on which all existing measures agree.
 
-The four properties are also unlikely to be the complete set, and this work
-suggests further candidates that we do not assess here. A measure should be
-correctly oriented against a crude external proxy for the concept, such as the
-number of active kinases, since a measure can satisfy D2 to D4 and still rank
-promiscuous compounds as selective. A measure should declare its scale type,
-because the four definitions report on incomparable scales and
-Figure~\ref{fig:fidelity} shows that leaving the operationalization undeclared
-can change a ranking substantially. The panel-size behaviour reported above
-could itself be stated as a property. Stability under measurement error in the
-affinities is another candidate, which the present data cannot test. Agreement
-across datasets profiling the same compounds can be tested, as the platform comparison above does.
-Klaeger and Anastassiadis share 19 compounds by name, but a comparison between an affinity assay and a
-single-concentration inhibition assay is harder to interpret. Metz identifies
-compounds only by internal ID and PubChem SID, and we did not resolve those
-against the other datasets.
+The three properties are also unlikely to be the complete set. A measure should
+be correctly oriented against a crude external proxy for the concept, such as
+the number of active kinases, since a measure can satisfy D1 and D3 and still
+rank promiscuous compounds as selective. A measure should declare its scale type
+and its unit of analysis, because both change rankings
+(Figure~\ref{fig:fidelity}; Supporting Information, Section~S6). Agreement
+across datasets profiling the same compounds can be tested, as the comparison
+above does. Klaeger and Anastassiadis share 19 compounds by name, but a
+comparison between an affinity assay and a single-concentration inhibition assay
+is harder to interpret. Metz identifies compounds only by internal ID and
+PubChem SID, and we did not resolve those against the other datasets.

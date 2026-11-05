@@ -1,65 +1,52 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have proposed four properties that a well-formed kinase inhibitor
-selectivity measure should satisfy: a reliability threshold condition,
-bounded gap sensitivity, distributional consistency, and monotonicity under
-weak off-target addition. None of the four definitions assessed satisfies all
-four, nor even bounded gap sensitivity and monotonicity together: the ratio
-fails the first, and the S-score, entropy and Gini fail the second.
+We have characterized four kinase inhibitor selectivity definitions on four
+profiling datasets, each curated to one reference target per human protein
+kinase. Their rankings depend on choices usually left implicit: where the
+activity boundary is placed, which off-target the ratio references, how
+compounds with no binding above the activity threshold are scored, how the
+entropy and Gini are operationalized, and which assay targets count as
+kinases. Rank instability is associated with binding profile shape, and among
+the most unstable compounds it has three structurally distinct sources. On a
+common log-affinity scale, the S-score, entropy and Gini agree more with one
+another than with the ratio, most clearly on the two $\mathrm{p}K_d$ datasets.
+Under the association-constant form of the original publication, the entropy
+does not cluster with the S-score and Gini.
 
-The properties come from characterizing the definitions on four datasets.
-Moving the activity boundary between the assay floor and the activity
-threshold reverses 8--12\% of compound pairs under the S-score, entropy and
-Gini on three of them, and over 20\% on the fourth. Rank instability is
-associated with binding profile shape, and the most unstable compounds have
-three structurally distinct sources of instability. How the definitions relate
-depends on how they are computed. On a common log-affinity scale, the S-score,
-entropy and Gini agree more with one another than with the ratio, most clearly
-on the two $\mathrm{p}K_d$ datasets. Under the association-constant form of the
-original publication, the entropy does not cluster with the S-score and Gini.
+We stated three properties for a selectivity measure: a reliability threshold,
+distributional consistency across placements of the activity boundary, and
+monotonicity under weak off-target addition. No measure we examined satisfies
+distributional consistency. Moving the activity boundary between the assay
+floor and the activity threshold reverses 8--13\% of compound pairs under the
+S-score, entropy and Gini on three datasets, and over 20\% on the fourth. The
+boundary must therefore be fixed in the analysis protocol and its effect
+reported. The reliability threshold is a reporting rule that any measure can
+adopt. Monotonicity separates the measures: it holds for the ratio and for
+simple measures such as a count of active kinases, but not for the S-score as a
+panel fraction, the Gini, or the entropy with a baseline below the activity
+threshold.
 
-The candidate we propose, a gated, smooth-hinge effective-target number,
-satisfies all four properties in the following ways:
+The candidate we propose, a gated, smooth-hinge entropy, satisfies the
+reliability threshold and monotonicity, which we prove, while still weighting
+binding below the activity threshold. It ranks the compounds almost identically
+to the entropy, so on these data it is not an improvement on the entropy.
+Recovery from small panels is a separate objective. Measures that weight weak
+binding, the candidate among them, recover rankings from fewer targets on three
+of the four datasets, but on small random panels the share of compounds that
+can be scored limits recovery more than the choice of measure.
 
-\begin{itemize}
-    \item[(i)] the reliability condition by a
-reporting rule;
-    \item[(ii)] bounded gap sensitivity vacuously;
-    \item[(iii)] distributional consistency, as the entropy can, by fixing
-its activity boundary at the assay floor; and
-    \item[(iv)] monotonicity under weak
-off-target addition by its functional form, which we prove.
-\end{itemize}
-
-Like the entropy, the candidate recovers its full-panel ranking from 50--80
-kinases on Davis, Klaeger, and Anastassiadis. It ranks the compounds almost
-identically to the entropy, so on these data it is not an improvement on the
-entropy. The case for the properties therefore does not rest on the candidate:
-they are requirements on the measure itself, and we propose them as checks
-that any new selectivity measure should pass.
-
-The main goal of this work is to identify criteria for judging
-a candidate that could be considered a principled, universally adopted
-choice of selectivity measure in the future. Such criteria must be justified
-(which we argue they are),
-and jointly satisfiable (which the candidate demonstrates).
-Further properties may discriminate where these four do
-not, and the candidate may separate from the entropy on panels whose active
-fractions differ from the four studied here.
-Establishing additional properties that uniquely characterize a selectivity
-measure, as Shannon's axioms do for entropy, is a natural next step, for which
-additional datasets may be required.
-
-The immediate practical implication is that selectivity assessments should
-report the sensitivity of rankings to parameter choice, and should explicitly
-flag compounds with no binding above the activity threshold as unreliable.
-The longer-term implication is that the field needs a principled basis for
-choosing among selectivity definitions.
+The immediate practical implications are that selectivity assessments should
+state their unit of analysis, fix the activity boundary in advance and report
+how rankings change with it, withhold scores from compounds with no binding
+above the activity threshold, and report how many compounds remain scorable on
+small panels. The longer-term implication is that the field needs a principled
+basis for choosing among selectivity definitions. Establishing properties that
+single out a measure, as Shannon's axioms do for entropy, is a natural next
+step, for which additional datasets may be required.
 The need for a principled measure is not specific to selectivity.
 As future and ongoing work, we are developing a general
 measurement-theoretic framework for defining and comparing the competing
 measures of one concept, reporting where they agree and which pairs they
 leave undecided, with kinase selectivity as one instance alongside cases
 as varied as biological age and variant effect prediction.
-

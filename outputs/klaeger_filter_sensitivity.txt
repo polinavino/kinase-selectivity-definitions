@@ -2,40 +2,42 @@ Raw Klaeger Kinobeads sheet: 5916 drug-target pairs with an Apparent Kd
   High confidence (kept in the manuscript matrix): 5123
   Low confidence (dropped by the filter):          793 (13.4% of all measured pairs)
   Dropping 1 row(s) with a missing/non-numeric Apparent Kd before aggregation (all Low confidence)
+Restricting every matrix to the 219 curated protein-kinase targets
+  low-confidence pairs on curated targets: 406 of 792
 
-High-confidence-only matrix: (222, 343)
-Relaxed (High+Low confidence) matrix on the same grid: (222, 343)
-Low-confidence pairs inside the high-confidence grid: 561 of 792 (the rest involve 7 drugs and 177 kinases with no high-confidence measurement)
-Full relaxed matrix, all low-confidence pairs retained: (229, 520)
-Cells changed by relaxing the filter: 561 of 76146 (0.74%)
+High-confidence-only matrix: (222, 219)
+Relaxed (High+Low confidence) matrix on the same grid: (222, 219)
+Low-confidence pairs inside the high-confidence grid: 403 of 406 (the rest involve 7 drugs and 0 kinases with no high-confidence measurement)
+Full relaxed matrix, all low-confidence pairs retained: (229, 219)
+Cells changed by relaxing the filter: 403 of 48618 (0.83%)
 
 Cross-definition Spearman correlation matrix (median ranks), High-confidence only:
         s_score entropy gini    ratio   
-s_score    1.000   0.910   0.722   0.223
-entropy    0.910   1.000   0.840   0.455
-gini       0.722   0.840   1.000   0.616
-ratio      0.223   0.455   0.616   1.000
+s_score    1.000   0.898   0.511   0.085
+entropy    0.898   1.000   0.657   0.344
+gini       0.511   0.657   1.000   0.657
+ratio      0.085   0.344   0.657   1.000
 
 Same, relaxed filter (High+Low confidence):
         s_score entropy gini    ratio   
-s_score    1.000   0.920   0.758   0.273
-entropy    0.920   1.000   0.850   0.452
-gini       0.758   0.850   1.000   0.598
-ratio      0.273   0.452   0.598   1.000
+s_score    1.000   0.901   0.589   0.129
+entropy    0.901   1.000   0.711   0.365
+gini       0.589   0.711   1.000   0.632
+ratio      0.129   0.365   0.632   1.000
 
-Max absolute change in any off-diagonal cell: 0.050
+Max absolute change in any off-diagonal cell: 0.079
 
 Same, all low-confidence pairs retained (adds drugs and kinases, so the panel changes too):
         s_score entropy gini    ratio   
-s_score    1.000   0.922   0.767   0.343
-entropy    0.922   1.000   0.857   0.494
-gini       0.767   0.857   1.000   0.627
-ratio      0.343   0.494   0.627   1.000
-Max absolute change vs high-confidence only: 0.120
+s_score    1.000   0.906   0.487   0.053
+entropy    0.906   1.000   0.608   0.280
+gini       0.487   0.608   1.000   0.653
+ratio      0.053   0.280   0.653   1.000
+Max absolute change vs high-confidence only: 0.064
 
 Panel-size p* (smallest panel reaching mean rho > 0.90), High-confidence only vs. relaxed:
   entropy  : 80 vs. 80
-  gini     : 290 vs. 290
-  s_score  : 110 vs. 110
-  ratio    : 343 vs. 343
+  gini     : 200 vs. 200
+  s_score  : 80 vs. 80
+  ratio    : 219 vs. 219
   candidate: 80 vs. 80

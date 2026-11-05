@@ -2,27 +2,35 @@ Shared Davis/Klaeger compounds (PubChem CID match): n = 46
 (supersedes the manuscript's previous, unverified claim of 'at most 19')
 
 Platform effect: Spearman r between Davis-rank and Klaeger-rank, same definition, same 46 compounds:
-  s_score : r = +0.587 (p = 1.8e-05)
-  entropy : r = +0.689 (p = 1.2e-07)
-  gini    : r = +0.548 (p = 8.2e-05)
-  ratio   : r = -0.064 (p = 6.7e-01)
+  s_score : r = +0.758 (p = 1.1e-09)
+  entropy : r = +0.811 (p = 8.0e-12)
+  gini    : r = +0.386 (p = 8.0e-03)
+  ratio   : r = +0.136 (p = 3.7e-01)
 
 Definition effect: Spearman r between definitions, within platform, same 46 compounds:
   Davis:
-    s_score  vs entropy : r = +0.891
-    s_score  vs gini    : r = +0.905
-    s_score  vs ratio   : r = +0.438
-    entropy  vs gini    : r = +0.997
-    entropy  vs ratio   : r = +0.292
-    gini     vs ratio   : r = +0.284
+    s_score  vs entropy : r = +0.934
+    s_score  vs gini    : r = +0.935
+    s_score  vs ratio   : r = +0.487
+    entropy  vs gini    : r = +0.999
+    entropy  vs ratio   : r = +0.379
+    gini     vs ratio   : r = +0.383
   Klaeger:
-    s_score  vs entropy : r = +0.940
-    s_score  vs gini    : r = +0.674
-    s_score  vs ratio   : r = +0.145
-    entropy  vs gini    : r = +0.756
-    entropy  vs ratio   : r = +0.348
-    gini     vs ratio   : r = +0.589
+    s_score  vs entropy : r = +0.928
+    s_score  vs gini    : r = +0.339
+    s_score  vs ratio   : r = -0.041
+    entropy  vs gini    : r = +0.429
+    entropy  vs ratio   : r = +0.165
+    gini     vs ratio   : r = +0.652
 
-Summary: platform-effect r range = -0.06-0.69 (mean 0.44)
-         definition-effect r range = 0.14-1.00 (mean 0.60)
+Summary: platform-effect r range = 0.14-0.81 (mean 0.52)
+         definition-effect r range = -0.04-1.00 (mean 0.55)
 Lower r = more disagreement. Comparing the two ranges shows which source of ranking disagreement -- assay platform or scoring definition -- is larger on this shared-compound set.
+
+Shared panel: 200 genes profiled on both platforms (of 363 Davis genes and 219 Klaeger targets)
+  compounds with no active target on the shared panel: Davis 0, Klaeger 6
+  platform effect, s_score : r = +0.781 (p = 1.5e-10)
+  platform effect, entropy : r = +0.843 (p = 1.9e-13)
+  platform effect, gini    : r = +0.454 (p = 1.5e-03)
+  platform effect, ratio   : r = +0.331 (p = 2.5e-02)
+Summary on the shared panel: platform-effect r range = 0.33-0.84 (mean 0.60); definition-effect r range = -0.09-1.00 (mean 0.56)

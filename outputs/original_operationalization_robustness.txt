@@ -1,17 +1,18 @@
 
 Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (complete matrix, all entries 'measured')
         s_score entropy gini    ratio   
-s_score    1.000   0.417   0.952   0.456
-entropy    0.417   1.000   0.424   0.336
-gini       0.952   0.424   1.000   0.343
-ratio      0.456   0.336   0.343   1.000
+s_score    1.000   0.344   0.963   0.563
+entropy    0.344   1.000   0.368   0.688
+gini       0.963   0.368   1.000   0.510
+ratio      0.563   0.688   0.510   1.000
+Klaeger compounds with no measured curated target (entropy undefined, set to 0): 6
 
 Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (measured high-confidence entries only, per compound)
         s_score entropy gini    ratio   
-s_score    1.000   0.570   0.722   0.223
-entropy    0.570   1.000   0.688   0.789
-gini       0.722   0.688   1.000   0.616
-ratio      0.223   0.789   0.616   1.000
+s_score    1.000   0.567   0.511   0.085
+entropy    0.567   1.000   0.532   0.661
+gini       0.511   0.532   1.000   0.657
+ratio      0.085   0.661   0.657   1.000
 
 Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (measured entries only, per compound)
         s_score entropy gini    ratio   
@@ -22,9 +23,9 @@ ratio      0.193   0.758   0.155   1.000
 
 Anastassiadis (n=178): manuscript S/entropy/ratio vs. native %inhibition Gini (no baseline subtraction)
         s_score entropy gini    ratio   
-s_score    1.000   0.881   0.345   0.489
-entropy    0.881   1.000   0.631   0.526
-gini       0.345   0.631   1.000   0.314
-ratio      0.489   0.526   0.314   1.000
+s_score    1.000   0.880   0.340   0.478
+entropy    0.880   1.000   0.629   0.524
+gini       0.340   0.629   1.000   0.326
+ratio      0.478   0.524   0.326   1.000
 
 Done: original-operationalization robustness check complete for all four datasets.

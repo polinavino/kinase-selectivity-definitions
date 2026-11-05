@@ -1,23 +1,23 @@
 
-=== Davis (68 drugs x 433 kinases) ===
+=== Davis (68 drugs x 363 kinases) ===
    bar   entropy      gini   s_score     ratio
-  0.80        50        80        50       350
-  0.85        50        80        50       380
-  0.90        50       110        50       410
-  0.95        50       170        80       410
+  0.80        50        80        50       320
+  0.85        50       110        50       320
+  0.90        50       110        50       350
+  0.95        50       170        80       350
 
-=== Klaeger (222 drugs x 343 kinases) ===
+=== Klaeger (222 drugs x 219 kinases) ===
    bar   entropy      gini   s_score     ratio
-  0.80        50       260        50       320
-  0.85        50       260        80       320
-  0.90        80       290       110       343
-  0.95       140       320       200       343
+  0.80        50       170        50       200
+  0.85        50       200        50       200
+  0.90        80       200        80       219
+  0.95       110       219       140       219
 
-=== Anastassiadis (178 drugs x 300 kinases) ===
+=== Anastassiadis (178 drugs x 291 kinases) ===
    bar   entropy      gini   s_score     ratio
   0.80        50       170        50       260
   0.85        50       170        50       260
-  0.90        50       200        50       290
+  0.90        50       200        50       260
   0.95        80       260        80       290
 
 === Metz (704 drugs x 172 kinases) ===

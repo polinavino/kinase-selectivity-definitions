@@ -1,6 +1,6 @@
 Dataset      entropy: r(literal, manuscript)    Gini: r(literal, manuscript)
-Davis                            0.419                           0.110
-Klaeger                         -0.338                          -0.452
+Davis                            0.368                           0.012
+Klaeger                         -0.311                          -0.205
 
 Saved /Users/polina/Documents/BioInfStuff/selectivity/metric_fidelity.png
 Two reasonable operationalizations of the same named metric give substantially

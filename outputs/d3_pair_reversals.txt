@@ -1,58 +1,59 @@
-D3 over B = [x0, tau*]: fraction of pairs reversing (rev) and worst-case pairwise Spearman (rho); pass if rev <= 1%
+Distributional consistency over B = [x0, tau*]: fraction of scored-compound pairs reversing; pass if <= 1%. Continuous parameters on 201 points (101 points in parentheses).
 
-Davis: B = [5, 6] (5 values), 68 scored compounds
-  S-score (tau)               rev =   7.95%   rho = 0.968   fail
-  entropy (beta)              rev =   8.82%   rho = 0.954   fail
-  Gini (beta)                 rev =   9.09%   rho = 0.950   fail
-  candidate (emphasis beta)   rev =   0.48%   rho = 0.999   PASS
-  candidate (gate x0)         rev =   8.52%   rho = 0.966   fail
-  ratio (floor fallback, k=1) rev =   0.00%   rho = 1.000   PASS
-  ratio (floor fallback, k=2) rev =   0.35%   rho = 0.999   PASS
-  ratio (floor fallback, k=3) rev =   0.40%   rho = 0.999   PASS
-  ratio (floor fallback, k=4) rev =   0.75%   rho = 0.997   PASS
-  ratio (floor fallback, k=5) rev =   1.05%   rho = 0.995   fail
+Davis: B = [5, 6], 68 scored compounds
+  S-score (tau, exact)             8.43%   fail
+  entropy (beta)                   7.90% ( 7.90%)   fail
+  Gini (beta)                      8.56% ( 8.56%)   fail
+  candidate (emphasis beta)        0.44% ( 0.44%)   PASS
+  candidate (gate x0)              9.22% ( 9.22%)   fail
+  ratio (floor fallback, k=1)      0.00% ( 0.00%)   PASS
+  ratio (floor fallback, k=2)      0.83% ( 0.83%)   PASS
+  ratio (floor fallback, k=3)      1.10% ( 1.10%)   fail
+  ratio (floor fallback, k=4)      1.71% ( 1.71%)   fail
+  ratio (floor fallback, k=5)      2.59% ( 2.59%)   fail
 
-Klaeger: B = [5, 6] (5 values), 206 scored compounds
-  S-score (tau)               rev =   8.31%   rho = 0.950   fail
-  entropy (beta)              rev =  11.20%   rho = 0.933   fail
-  Gini (beta)                 rev =  11.54%   rho = 0.928   fail
-  candidate (emphasis beta)   rev =   0.54%   rho = 1.000   PASS
-  candidate (gate x0)         rev =  10.57%   rho = 0.949   fail
-  ratio (floor fallback, k=1) rev =   3.75%   rho = 0.953   fail
-  ratio (floor fallback, k=2) rev =   6.70%   rho = 0.921   fail
-  ratio (floor fallback, k=3) rev =   9.33%   rho = 0.911   fail
-  ratio (floor fallback, k=4) rev =  10.96%   rho = 0.900   fail
-  ratio (floor fallback, k=5) rev =  12.33%   rho = 0.888   fail
+Klaeger: B = [5, 6], 200 scored compounds
+  S-score (tau, exact)             9.82%   fail
+  entropy (beta)                  12.30% (12.29%)   fail
+  Gini (beta)                     12.47% (12.47%)   fail
+  candidate (emphasis beta)        0.42% ( 0.42%)   PASS
+  candidate (gate x0)             12.73% (12.70%)   fail
+  ratio (floor fallback, k=1)      2.99% ( 2.99%)   fail
+  ratio (floor fallback, k=2)      6.27% ( 6.27%)   fail
+  ratio (floor fallback, k=3)      9.15% ( 9.15%)   fail
+  ratio (floor fallback, k=4)     11.84% (11.84%)   fail
+  ratio (floor fallback, k=5)     13.48% (13.48%)   fail
 
-Anastassiadis: B = [20, 50] (7 values), 134 scored compounds
-  S-score (tau)               rev =  10.72%   rho = 0.940   fail
-  entropy (beta)              rev =  10.27%   rho = 0.946   fail
-  Gini (beta)                 rev =  10.17%   rho = 0.946   fail
-  candidate (emphasis beta)   rev =   0.43%   rho = 1.000   PASS
-  candidate (gate x0)         rev =  12.49%   rho = 0.935   fail
-  ratio (floor fallback, k=1) rev =   2.11%   rho = 0.983   fail
-  ratio (floor fallback, k=2) rev =   3.79%   rho = 0.963   fail
-  ratio (floor fallback, k=3) rev =   5.73%   rho = 0.937   fail
-  ratio (floor fallback, k=4) rev =   7.57%   rho = 0.921   fail
-  ratio (floor fallback, k=5) rev =   9.24%   rho = 0.909   fail
+Anastassiadis: B = [20, 50], 133 scored compounds
+  S-score (tau, exact)            12.99%   fail
+  entropy (beta)                  10.58% (10.58%)   fail
+  Gini (beta)                     10.51% (10.51%)   fail
+  candidate (emphasis beta)        0.36% ( 0.36%)   PASS
+  candidate (gate x0)             14.24% (14.15%)   fail
+  ratio (floor fallback, k=1)      2.13% ( 2.13%)   fail
+  ratio (floor fallback, k=2)      4.10% ( 4.10%)   fail
+  ratio (floor fallback, k=3)      6.08% ( 6.08%)   fail
+  ratio (floor fallback, k=4)      8.17% ( 8.17%)   fail
+  ratio (floor fallback, k=5)      9.72% ( 9.72%)   fail
 
-Metz: B = [4, 6] (9 values), 699 scored compounds
-  S-score (tau)               rev =  20.64%   rho = 0.784   fail
-  entropy (beta)              rev =  22.60%   rho = 0.766   fail
-  Gini (beta)                 rev =  22.41%   rho = 0.763   fail
-  candidate (emphasis beta)   rev =   0.72%   rho = 1.000   PASS
-  candidate (gate x0)         rev =  22.45%   rho = 0.784   fail
-  ratio (floor fallback, k=1) rev =   0.04%   rho = 1.000   PASS
-  ratio (floor fallback, k=2) rev =   0.43%   rho = 0.995   PASS
-  ratio (floor fallback, k=3) rev =   0.75%   rho = 0.990   PASS
-  ratio (floor fallback, k=4) rev =   0.84%   rho = 0.988   PASS
-  ratio (floor fallback, k=5) rev =   1.03%   rho = 0.986   fail
+Metz: B = [4, 6], 699 scored compounds
+  S-score (tau, exact)            21.82%   fail
+  entropy (beta)                  22.80% (22.80%)   fail
+  Gini (beta)                     22.49% (22.49%)   fail
+  candidate (emphasis beta)        0.72% ( 0.72%)   PASS
+  candidate (gate x0)             23.59% (23.59%)   fail
+  ratio (floor fallback, k=1)      0.04% ( 0.04%)   PASS
+  ratio (floor fallback, k=2)      0.43% ( 0.43%)   PASS
+  ratio (floor fallback, k=3)      0.75% ( 0.75%)   PASS
+  ratio (floor fallback, k=4)      0.84% ( 0.84%)   PASS
+  ratio (floor fallback, k=5)      1.03% ( 1.03%)   fail
 
+Largest change from 101 to 201 grid points: 0.09 percentage points
 Largest fraction over the four datasets (and over k for the ratio), per swept parameter:
-  S-score (tau)                20.64%
-  entropy (beta)               22.60%
-  Gini (beta)                  22.41%
-  candidate (emphasis beta)     0.72%
-  candidate (gate x0)          22.45%
-  ratio (floor fallback)       12.33%
-Only the candidate's emphasis baseline stays within eps on every dataset (0.72%); every other swept parameter exceeds 12.33% on at least one dataset, so each Table 3 D3 verdict is the same for any eps in between.
+  S-score (tau, exact)            21.82%
+  entropy (beta)                  22.80%
+  Gini (beta)                     22.49%
+  candidate (emphasis beta)        0.72%
+  candidate (gate x0)             23.59%
+  ratio (floor fallback)          13.48%
+Only the candidate's emphasis baseline stays within eps on every dataset (0.72%); every other swept parameter reaches at least 13.48% on at least one dataset.

@@ -1,8 +1,7 @@
 """
-D2 near-tie sensitivity: for Klaeger compounds whose top1-top2 affinity gap is
-below 0.05 pKd units, how much does the ratio R(k) swing between k=1 and k=2?
-(Revision for Molecular Informatics pre-resubmission audit: this number was
-quoted in desiderata.tex's D2 motivation paragraph but had no backing script.)
+Reference-choice sensitivity of the ratio: for Klaeger compounds with an active
+kinase whose top1-top2 affinity gap is below 0.05 pKd units, how much does R(k)
+change between k = 1 and k = 2? (Results, Type 2.)
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -25,8 +24,10 @@ M = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0).values
 sorted_desc = np.sort(M, axis=1)[:, ::-1]
 gap = sorted_desc[:, 0] - sorted_desc[:, 1]
 
-near_tie = gap < 0.05
-print(f"Klaeger compounds with top1-top2 affinity gap < 0.05 pKd units: {near_tie.sum()} of {M.shape[0]}")
+active = (M > 6.0).any(1)
+near_tie = (gap < 0.05) & active
+print(f"Klaeger compounds with an active kinase and a top1-top2 affinity gap < 0.05 pKd units: "
+      f"{near_tie.sum()} of {active.sum()}")
 
 R1 = ratio_selectivity(M, 1)
 R2 = ratio_selectivity(M, 2)

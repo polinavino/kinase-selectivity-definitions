@@ -1,45 +1,35 @@
 """
-A candidate selectivity measure satisfying the four required properties (D1-D4),
-with empirical checks of D3 (baseline robustness), D4 (monotonicity), and of how
-quickly its compound ranking converges to the full-panel ranking.
+The candidate selectivity measure: its orientation, its agreement with the
+entropy, and checks of D2 (boundary sensitivity) and D3 (monotonicity) on
+Klaeger. Property numbers follow the paper: D1 reliability threshold, D2
+distributional consistency, D3 monotonicity under weak off-target addition.
 
 Construction.  Selectivity is the negative Shannon "effective number of targets"
-of a compound's binding profile.  Each kinase above the assay detection floor is
-weighted by a smooth (softplus) hinge of its log-affinity.  Kinases at or below
-the floor are gated out and carry zero weight:
+of a compound's binding profile.  Each kinase above the assay floor is weighted
+by a smooth (softplus) hinge of its log-affinity.  Kinases at or below the floor
+are gated out and carry zero weight:
 
     w_i = 1[x_i > x_floor] * T * log(1 + exp((x_i - beta)/T)),
     p_i = w_i / sum_j w_j,
     H(x) = - sum_i p_i log p_i,    selectivity  S(x) = -H(x),
 
-with beta = x_floor at the operating point.  The gate at the fixed floor is what
-keeps the measure correctly oriented.  Without it, the hundreds of non-binding
-kinases sitting at the floor dominate the distribution and invert the ranking.
-Scores are reported only for compounds with max_i x_i > tau* (the D1 gate).  That
-gate is a reporting rule applied in practice.  The panel-size, D3, and D4 checks
-below are computed on all compounds, since they concern ranking stability, which
-the gate does not affect.
+with beta = x_floor.  The gate keeps the measure correctly oriented: without
+it, the non-binding kinases at the floor dominate the distribution and invert
+the ranking.  Scores are reported only for compounds with max_i x_i > tau*
+(the D1 gate).
 
-Why this satisfies D1-D4:
   D1  explicit reliability gate on max_i x_i > tau*.
-  D2  fully distributional (no reference off-target), so no single pairwise
-      comparison is privileged and bounded gap sensitivity holds trivially.
-  D3  the candidate has no free activity baseline.  The active/inactive boundary
-      is the fixed assay detection floor, a constant of the assay rather than an
-      analyst's choice, so the arbitrary-baseline instability D3 targets does not
-      arise.  The remaining softplus emphasis parameter beta is one the ranking is
-      robust to (verified below: ~invariant to beta over B = [5.0, 6.0], gate fixed).
-      The boundary itself, if varied, moves the ranking like any threshold measure
-      (verified below: comparable to entropy over the same interval).  That is why it is
-      pinned to the assay floor rather than left free.
-  D4  the gated weight is zero at and below the floor and monotone above it, so
-      adding a sub-threshold off-target adds zero weight and never raises S.
-      (Verified below.)
+  D2  the gate fixes the activity boundary at the floor; swept over B it reverses
+      about as many pairs as the entropy's baseline (d3_pair_reversals.py), so
+      the candidate, like every measure examined, fails D2 when its boundary is
+      varied.  The remaining emphasis baseline, with the gate fixed, is robust.
+  D3  every gated kinase has weight above T ln 2, so an added kinase in
+      (x0, tau*] cannot raise the score when T >= 0.58 (tau* - x0)
+      (Methods, Proposition; d4_entropy_vs_candidate.py).  The weight jumps from
+      0 to T ln 2 at the floor, so the measure is discontinuous there.
 
-The smoothing width is T = tau* - x0 on every dataset (the D4 guarantee needs
-T >= 0.58 (tau* - x0); d4_entropy_vs_candidate.py).  The active/inactive
-boundary is fixed at the assay floor rather than tuned.  Panel-size convergence
-is checked on all four datasets.
+The smoothing width is T = tau* - x0 on every dataset.  Recovery from random
+subpanels, compared with every other measure, is in panel_recovery.py.
 """
 import script_logging; script_logging.capture(__file__)
 import os
