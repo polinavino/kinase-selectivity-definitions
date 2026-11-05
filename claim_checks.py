@@ -37,6 +37,10 @@ Each section prints the numbers cited in the text for one claim:
  19. D4 under realistic panel expansion: does adding real kinases that a compound
      binds below threshold to a focused panel raise the entropy's or the
      candidate's selectivity score? (Results, "Why the Smooth Hinge Matters")
+ 20. Zero-active compounds: where each definition ranks them, and their pooled rank
+     instability with the undefined entropy/Gini configurations dropped (Results, D1)
+ 21. Table 2 with a Bonferroni correction for the 24 tests per dataset (Results,
+     instability predictors)
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -473,3 +477,14 @@ for ds, (M, s_thr, betas, floor, tau) in SETTINGS.items():
         v = np.array(v)
         print(f"      pooled sigma, {k:31s}: zero-active {v[~act].mean():5.1f}  active {v[act].mean():5.1f}"
               f"  (Mann-Whitney p={mannwhitneyu(v[~act], v[act]).pvalue:.1g})")
+
+print("\n21. Table 2 (feature vs within-family instability) with a Bonferroni correction for the"
+      "\n    24 tests per dataset (two-tailed Spearman p from r and n)")
+from scipy.stats import t as t_dist
+for ds, n in (('klaeger', 206), ('davis', 68)):
+    tab = pd.read_csv(f"{HERE}/instability_predictors_{ds}.csv", index_col=0)
+    r = tab.values
+    pv = 2 * t_dist.sf(np.abs(r * np.sqrt((n - 2) / (1 - r ** 2))), n - 2)
+    cut = 0.05 / r.size
+    keep = [f"{tab.index[i]}/{tab.columns[j]} (p={pv[i, j]:.1g})" for i, j in zip(*np.where(pv < cut))]
+    print(f"   {ds:8s} (n={n}, cutoff p < {cut:.4f}): {len(keep)} of {int((pv < 0.05).sum())} nominally significant survive: {', '.join(keep)}")

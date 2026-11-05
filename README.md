@@ -47,8 +47,9 @@ which one you use?
 ### What this paper found
 
 It matters, in a structured way. The S-score, entropy, and Gini
-all ask roughly the same question (how spread out is the binding?) and mostly
-agree. The **ratio** asks a genuinely different question (how big is the gap to
+all ask roughly the same question (how spread out is the binding?) and, with
+entropy and Gini on a common log-affinity scale, agree more with one another
+than with the ratio. The **ratio** asks a genuinely different question (how big is the gap to
 the single nearest competitor?) and is the consistent outlier. So a drug that
 hits one kinase strongly and twenty others moderately looks **selective** by
 ratio but **promiscuous** by entropy — neither answer is wrong; they answer
@@ -90,7 +91,8 @@ This is a first step. In the 1940s Claude Shannon didn't just propose a formula
 for measuring information — he showed it was the *only* one satisfying a few
 reasonable requirements. The long-term goal is the analogous result for
 selectivity. This paper characterizes the mess, states the properties a solution
-should have, and offers a candidate that meets them; proving whether it is the
+should have, and offers a candidate that meets them (D3 once its floor is
+fixed); proving whether it is the
 *unique* such measure is left for future work.
 
 ---
@@ -173,7 +175,7 @@ from these files and cited in the Discussion/Limitations sections.
 | binding_profiles.py | Most stable, most unstable, and most ratio-sensitive Davis profiles (Figure 4) |
 | metric_fidelity_robustness.py | Operationalization-sensitivity check; original vs. log-affinity entropy/Gini (Figure 1) |
 | panel_size_analysis.py | Panel-size subsampling on all four datasets (Figure 5) |
-| candidate_measure.py | Candidate measure satisfying D1–D4; D3/D4 checks on Klaeger and panel-size convergence on all four datasets (Figure 7) |
+| candidate_measure.py | Candidate measure (D1–D4, D3 with its floor fixed); D3/D4 checks on Klaeger and panel-size convergence on all four datasets (Figure 7) |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical analysis, Limitations) |
 | bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (Discussion, SI Table S2) |
 | clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations, using the frozen FAERS counts and the current Klaeger median ranks (Discussion, Limitations) |
@@ -184,16 +186,16 @@ from these files and cited in the Discussion/Limitations sections.
 | original_operationalization_robustness.py | Cross-definition correlations under the original (association-constant entropy, native %inhibition Gini) operationalizations (Methods, SI Table S3) |
 | undefined_score_convention.py | States the entropy/Gini 0/0 convention for zero-active compounds and the alternative defined-configs-only rank-sigma contrast (Results, D1) |
 | pstar_bar_sensitivity.py | Panel-size p* sensitivity to the r > 0.90 recoverability bar (Results, SI Table S1) |
-| candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D3 (emphasis- and gate-swept), D4 (Results, SI Table S4) |
+| candidate_validation.py | Cross-dataset validation of the candidate measure: orientation, D3 (emphasis- and gate-swept), D4, smoothing-width sweep on Klaeger (Results, SI Table S4 and Section S5) |
 | d3_pair_reversals.py | D3 verdicts for every measure on all four datasets: share of pairs reversing over B = [x0, tau*] (Results, Table 3) |
 | davis_klaeger_overlap.py | Resolves Davis/Klaeger compound overlap via PubChem CID matching (46 compounds; Discussion) |
 | platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds (Discussion) |
 | failure_mode_illustration.py | Figure 6: D1 (zero-active instability) and D3 (gate-swept vs. emphasis-swept instability, all over B = [5.0, 6.0]) |
 | d4_entropy_vs_candidate.py | D4 for the entropy vs. the candidate: the condition on T and its sharpness, the entropy counterexample, real-data frequency, and the effect of setting T = tau* - x0 (Methods proposition; Results, "Why the Smooth Hinge Matters") |
 | feature_placeholder_sensitivity.py | Table 2 predictors recomputed without the 0 placeholder for undefined skewness/std/range (Results) |
-| claim_checks.py | Numbers for specific claims: Type 1 target capture, Klaeger correlations without zero-active compounds and bootstrap, mean vs. median ranks, the Anastassiadis ceiling, Type 3 and stability patterns, Davis/Klaeger and Klaeger/Anastassiadis overlap, the Metz coverage dependence, the zero-active contrast per definition on every dataset, the Gini panel size with undefined compounds excluded on every dataset, active affinity range vs. instability with the number of active kinases held fixed, the weight near the threshold behind the skewness–Gini association, range vs. S-score instability on the 46 shared Davis/Klaeger compounds, where each definition ranks the most stable compounds on Davis and Klaeger, and D4 under realistic panel expansion |
+| claim_checks.py | Numbers for specific claims: Type 1 target capture, Klaeger correlations without zero-active compounds and bootstrap, mean vs. median ranks, the Anastassiadis ceiling, Type 3 and stability patterns, Davis/Klaeger and Klaeger/Anastassiadis overlap, the Metz coverage dependence, the zero-active contrast per definition on every dataset, the Gini panel size with undefined compounds excluded on every dataset, active affinity range vs. instability with the number of active kinases held fixed, the weight near the threshold behind the skewness–Gini association, range vs. S-score instability on the 46 shared Davis/Klaeger compounds, where each definition ranks the most stable compounds on Davis and Klaeger, D4 under realistic panel expansion, where each definition ranks zero-active compounds, and Table 2 with a Bonferroni correction (SI Table S6 maps every result to its script and section) |
 | instability_predictor_candidates.py | Five further candidate predictors of rank instability (CR1, HHI, top1 pKd, near-tie count, active-affinity CV) against Table 2's features (Results) |
-| family_construction.py | Variants of the candidate: quantile floor, Rényi order, smoothing width; D1–D4 checks on Davis and Klaeger (SI Section S5, Table S5) |
+| family_construction.py | Variants of the candidate: quantile floor, Rényi order; D1–D4 checks on Davis and Klaeger (SI Section S5, Table S5) |
 | family_panelsize.py | Panel-size p* of the candidate by Rényi order on Klaeger and Metz (SI Section S5, Table S5) |
 | family_alternatives.py | Two further candidate variants kept as negative results (soft gate, rank-based weights); not reported in the paper |
 | script_logging.py | Shared helper imported by every script: mirrors printed output to `outputs/<script>.txt` and copies regenerated manuscript figures into `paper/figures/` and `paper/submission_figures/` |

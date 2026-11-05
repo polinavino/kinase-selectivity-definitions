@@ -4,6 +4,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
 \usepackage{caption}
 \renewcommand{\thetable}{S\arabic{table}}
 \usepackage{graphicx}
@@ -22,14 +24,15 @@
 This document reports, in full, four robustness checks summarized in the main
 text, and the variants of the candidate measure (Section~S5). All numbers are reproducible from the code repository
 (\url{https://github.com/polinavino/kinase-selectivity-definitions}); the
-script generating each table is named in its caption.
+script generating each table is named in its caption, and Table~S6 lists the
+script behind every result reported in the main text.
 
 \section*{Table S1: Panel-size recoverability under alternative correlation
 bars}
 
 The main text calls a panel size ``recovering'' the full-panel ranking once
-mean Spearman $\rho$ against the full panel exceeds $0.90$, a convention
-borrowed from reliability research's ``excellent'' reliability bar (Results). Table~S1 reports $p^*$ (the
+mean Spearman $\rho$ against the full panel exceeds $0.90$, a bar
+borrowed from the ``excellent'' range of intraclass-correlation guidelines (Results). Table~S1 reports $p^*$ (the
 smallest panel size reaching the bar) at four bars, including the main-text bar
 of $0.90$, for all four
 datasets.
@@ -121,9 +124,8 @@ Metz          & 704 & 0.910 & 0.899 & 0.447 & 0.883 / 0.906 \\
 WS and RS correlate strongly with the ratio family on every dataset ($r =
 0.80$--$0.96$), supporting their classification alongside $R(k)$. The CATDS
 proxy instead correlates more strongly with entropy and Gini than with the
-ratio on every dataset, supporting the Discussion's claim that CATDS is a
-distributional construction despite its historical classification as a ratio
-measure.
+ratio on every dataset, supporting the statement in Methods that CATDS behaves like a member of
+the distribution-based family.
 
 \clearpage
 \section*{Table S3: Cross-definition correlations under the original metric
@@ -315,5 +317,77 @@ is swept: $0.93\%$, $0.54\%$, $0.17\%$, $0.04\%$ for $T = 0.75$, $1$, $1.5$, $2$
 and narrowly fails at $T = 0.5$ ($1.94\%$), which also falls below the D4 bound
 $T \geq 0.58$. As $T \to 0$ the softplus converges to the hard cutoff,
 recovering the entropy together with its D3 and D4 failures.
+
+\section*{Table S6: Provenance of reported results}
+
+Every result in the main text is printed by a script in the code repository.
+Table~S6 gives, for each result, the script that computes it. Each script
+saves its printed output as \texttt{outputs/\allowbreak <script>.txt};
+numbers in parentheses are numbered sections of that output, and a few results
+are read from the CSV file the script writes, named in parentheses. Random steps are
+seeded, so rerunning a script reproduces its output.
+
+\small
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}}
+\caption{Provenance of reported results, grouped by manuscript section.}\\
+\toprule
+Location & Result & Script (output section) \\
+\midrule
+\endfirsthead
+\toprule
+Location & Result & Script (output section) \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Methods, Datasets; Candidate & Active fractions; stricter S-score cutoff on Davis; missing entries and noise floor on Anastassiadis; Metz coverage per compound & \texttt{dataset\_\allowbreak{}descriptive\_\allowbreak{}stats.py} \\
+Methods, Datasets & Active fractions of the 46 compounds shared by Davis and Klaeger & \texttt{claim\_\allowbreak{}checks.py} (9) \\
+Methods, Datasets & Klaeger confidence filter: rows removed, relaxed-filter sensitivity & \texttt{klaeger\_\allowbreak{}filter\_\allowbreak{}sensitivity.py} \\
+Methods, Datasets & Metz coverage distribution & \texttt{metz\_\allowbreak{}coverage.py} \\
+Methods, Datasets & Metz rankings vs number of measured kinases & \texttt{claim\_\allowbreak{}checks.py} (10) \\
+Methods, Definitions & Compounds with no kinase above the threshold; ratio off-target cap & \texttt{dataset\_\allowbreak{}descriptive\_\allowbreak{}stats.py} \\
+Methods, Ratio; Discussion & Bosc et al.\ scores and CATDS proxy (Table~S2) & \texttt{bosc\_\allowbreak{}catds\_\allowbreak{}comparison.py} \\
+Methods, Faithfulness; Figure~1 & Published-form entropy and Gini (Table~S3); operationalization scatter & \texttt{original\_\allowbreak{}operationalization\_\allowbreak{}robustness.py}, \texttt{metric\_\allowbreak{}fidelity\_\allowbreak{}robustness.py} \\
+Methods, Rank Stability & Table~1 with mean instead of median ranks & \texttt{claim\_\allowbreak{}checks.py} (3) \\
+Methods, Candidate & Gate and smoothing-width bound for D4, including every $\beta$ in $B$ & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} (1) \\
+Table~1 & Correlations between definitions (Davis, Klaeger) & \texttt{selectivity\_\allowbreak{}analysis.py}, \texttt{klaeger\_\allowbreak{}analysis.py} \\
+Results, Two Families & Klaeger correlations without zero-active compounds; Gini bootstrap & \texttt{claim\_\allowbreak{}checks.py} (2) \\
+Figure~2; Results, Replication & Correlations on four datasets; replicated instability relations & \texttt{additional\_\allowbreak{}datasets\_\allowbreak{}analysis.py} (\texttt{cross\_\allowbreak{}dataset\_\allowbreak{}summary.csv}) \\
+Results, Replication & Within-family and ratio ranges, all and active-only compounds & \texttt{claim\_\allowbreak{}checks.py} (11) \\
+Results, Replication; D1 & Zero-active contrast within each definition's sweep & \texttt{claim\_\allowbreak{}checks.py} (13) \\
+Results, Replication; Type~1; D1 & Pooled zero-active contrast, with and without undefined configurations; where each definition ranks zero-active compounds & \texttt{claim\_\allowbreak{}checks.py} (20) \\
+Table~2; Figure~3 & Profile features vs within-family instability & \texttt{instability\_\allowbreak{}by\_\allowbreak{}family.py} \\
+Results, Instability & Overall rank instability, mean and range & \texttt{klaeger\_\allowbreak{}analysis.py}, \texttt{selectivity\_\allowbreak{}analysis.py} \\
+Results, Instability & Entropy instability vs share of kinases crossing the baseline sweep & \texttt{claim\_\allowbreak{}checks.py} (8) \\
+Results, Instability & Range vs instability holding the number of active kinases fixed & \texttt{claim\_\allowbreak{}checks.py} (15) \\
+Results, Instability & Skewness association and threshold weight & \texttt{claim\_\allowbreak{}checks.py} (16) \\
+Results, Instability & Range vs S-score instability on the 46 shared compounds & \texttt{claim\_\allowbreak{}checks.py} (17) \\
+Results, Instability & Table~2 with a Bonferroni correction & \texttt{claim\_\allowbreak{}checks.py} (21) \\
+Results, Instability & Anastassiadis gap--ratio relation without saturated compounds & \texttt{claim\_\allowbreak{}checks.py} (4) \\
+Results, Instability & Undefined skewness and range: placeholder sensitivity & \texttt{feature\_\allowbreak{}placeholder\_\allowbreak{}sensitivity.py} \\
+Results, Instability & Further candidate features & \texttt{instability\_\allowbreak{}predictor\_\allowbreak{}candidates.py} \\
+Results, Sources & The 20 most unstable Klaeger compounds by type & \texttt{claim\_\allowbreak{}checks.py} (6) \\
+Results, Types~1 and~3 & Instability and median ranks of individual Klaeger compounds & \texttt{klaeger\_\allowbreak{}analysis.py} (\texttt{klaeger\_\allowbreak{}selectivity\_\allowbreak{}results.csv}) \\
+Results, Type~1 & Were the zero-active compounds' targets quantified & \texttt{claim\_\allowbreak{}checks.py} (1) \\
+Results, Type~3 & Ten largest entropy--ratio disagreements & \texttt{claim\_\allowbreak{}checks.py} (5) \\
+Results, Type~3 & Instability by number of active kinases; most stable compounds & \texttt{claim\_\allowbreak{}checks.py} (7, 18) \\
+Figure~4 & Binding profiles of three Davis compounds & \texttt{binding\_\allowbreak{}profiles.py} \\
+Figure~5; Table~S1 & Panel-size recovery and $p^*$ at four bars & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py} \\
+D1; Figure~6 & Zero-active instability under each convention; D1 and D3 panels & \texttt{undefined\_\allowbreak{}score\_\allowbreak{}convention.py}, \texttt{failure\_\allowbreak{}mode\_\allowbreak{}illustration.py} \\
+Table~3; D2 & Ratio at near-tied top targets & \texttt{d2\_\allowbreak{}near\_\allowbreak{}tie\_\allowbreak{}sensitivity.py} \\
+Table~3; D3 & Pairs reversing in $B$ & \texttt{d3\_\allowbreak{}pair\_\allowbreak{}reversals.py} \\
+Candidate; Table~S4 & Orientation, D3, D4 at $\tau^*$, smoothing-width sweep & \texttt{candidate\_\allowbreak{}validation.py} \\
+Candidate; Figure~7 & Agreement with the entropy; panel-size recovery, gated and ungated & \texttt{candidate\_\allowbreak{}measure.py} \\
+Candidate & Gini $p^*$ without compounds whose Gini is undefined & \texttt{claim\_\allowbreak{}checks.py} (14) \\
+Candidate; Section~S5 & Variants of the candidate and their panel sizes & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
+Smooth Hinge & Entropy and candidate under one added kinase at $\tau^*$; worked example & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} (2--6) \\
+Smooth Hinge & Realistic panel expansion & \texttt{claim\_\allowbreak{}checks.py} (19) \\
+Discussion & Platform vs definition on the 46 shared compounds & \texttt{davis\_\allowbreak{}klaeger\_\allowbreak{}overlap.py}, \texttt{platform\_\allowbreak{}vs\_\allowbreak{}definition.py} \\
+Discussion & Instability vs cross-platform rank change & \texttt{claim\_\allowbreak{}checks.py} (9) \\
+Discussion & Maximum affinities of the zero-active compounds & \texttt{failure\_\allowbreak{}mode\_\allowbreak{}illustration.py} \\
+Discussion & Compounds shared by Klaeger and Anastassiadis & \texttt{claim\_\allowbreak{}checks.py} (12) \\
+Discussion, Limitations & Clinical outcomes & \texttt{clinical\_\allowbreak{}outcomes\_\allowbreak{}correlation.py}, \texttt{faers\_\allowbreak{}pull.py} \\
+\end{longtable}
+\normalsize
 
 \end{document}

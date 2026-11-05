@@ -4,6 +4,7 @@
    Klaeger             1.0    1.0       1.0      1.895     1.895
    Anastassiadis      30.0   30.0      10.0      1.895     4.398
    Metz                2.0    2.0       1.0      1.895     3.069
+   emphasis baseline beta swept over B, T = tau* - x0 (any dataset): r = a/m from 1.895 (beta = x0) to 2.213 (beta = tau*)
 
 2. Sharpness on profiles with one strong target and n kinases just above the floor
    Klaeger        T = tau*-x0          T =   1.000: D4 holds

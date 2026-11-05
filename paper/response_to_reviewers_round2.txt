@@ -1,4 +1,4 @@
-Response to Reviewers — Manuscript 7756455, second revision
+Response to Reviewers — Manuscript 7756455
 
 "Definitional Instability in Kinase Inhibitor Selectivity: An Empirical
 Characterization and Motivated Properties for a Well-Formed Measure"
@@ -9,14 +9,16 @@ polina.vino@gmail.com — ORCID 0000-0003-3271-3841
 
 Dear Editor and Reviewer 1,
 
-Thank you for a second careful reading. In summary:
+Thank you for a careful reading. In summary:
 
   - The motivated properties and the candidate measure are now defined in
-    Methods and evaluated in Results. Repeated results and layered
-    qualifications have been consolidated (Major 11).
+    Methods and evaluated in Results, and the Abstract and Conclusion now
+    lead with them. Repeated results and layered qualifications have been
+    consolidated (Major 11).
   - Every requested robustness check has been added. Results that were only in
     the code repository are now in a Supporting Information file (Tables
-    S1-S4 and Section S5).
+    S1-S4 and Section S5), and Table S6 lists the script behind every
+    result in the main text.
   - D3 is restated so that each verdict follows from its definition, and
     Table 3 gives vacuous satisfaction its own symbol (Major 6 and 7).
 
@@ -147,16 +149,18 @@ affinity scale and satisfies D3 vacuously.
 
 Each property's statement now says how it is assessed: D3 empirically on all
 four datasets, D1 from the measure's reporting rule, and D2 and D4 from its
-functional form. D2 and D4 are stated for profiles with a kinase above the
-activity threshold, which is how they are assessed, and the caption of
-Table 3 marks which verdicts are empirical.
+functional form. D1 refers to the activity threshold itself, and D2 and D4
+are stated for profiles with a kinase above it, which is how they are
+assessed. The caption of Table 3 marks which verdicts are empirical.
 
 
 7. State the conclusion more directly; give vacuous satisfaction its own
 symbol.
 
-The conclusion is stated directly in the Introduction (contribution iii) and
-at the start of "Existing Definitions Against the Properties": none of the
+The Abstract and Conclusion now open with the four properties and the finding
+that none of the four definitions satisfies all of them. The full statement is
+in the Introduction (contribution iii) and in "Existing Definitions Against
+the Properties": none of the
 four definitions satisfies all four properties, the one property all four
 violate is D1, and any of them could satisfy D1 by withholding or flagging
 such scores.
@@ -172,8 +176,8 @@ Proposition).
 
 You are right that the candidate and the entropy rank these datasets almost
 identically (Spearman 0.994-0.999). The Introduction, Results and Conclusion
-now say so, and present the candidate as a demonstration that the four
-properties can be met together. The properties are the main contribution.
+now say so, and the Introduction, Methods and Conclusion present the
+candidate as a demonstration that the four properties can be met together. The properties are the main contribution.
 
 In Table 3, a check mark in parentheses denotes vacuous satisfaction (D2 for
 the S-score, entropy, Gini and candidate; D3 for the ratio), and a check mark
@@ -189,9 +193,7 @@ high-confidence sub-micromolar hit. I tested your explanation against the
 Kinobeads table. For AZD-8055, vatalanib and ARRY-380, the target was not
 quantified for any of the 229 compounds, consistent with poor expression or
 capture. For BMS-911543 and filgotinib it does not hold: JAK2 and JAK1 were
-quantified for 7 and 12 other compounds (up to pKd 8.3). The Discussion now
-describes Type 1 compounds as having no target captured above the activity
-threshold on the profiled panel.
+quantified for 7 and 12 other compounds (up to pKd 8.3).
 
 
 9. Benchmark definitional instability against platform variability.
@@ -224,7 +226,16 @@ definition, parameters, and the D4 proposition with proof). Results evaluates
 them in "Existing Definitions Against the Properties" (Table 3), "The
 Candidate Measure", and "Why the Smooth Hinge Matters". The candidate's
 variants moved to Supporting Information Section S5. Repeated results were
-reduced, and each qualification now sits next to the finding it qualifies.
+removed throughout (about 1,000 words), and each qualification now sits next
+to the finding it qualifies.
+
+The manuscript is still about 900 words (8%) longer than the version you
+read. The properties and candidate, now split between Methods and Results,
+take about 400 fewer words than before. The increase comes from the analyses
+requested in this review (the published-form matrices, the Klaeger filter and
+Metz coverage, the convention for undefined scores, the revised Type 1
+description and the skewness placeholder check) and from checks added to
+support claims that were previously stated without evidence.
 
 
 ====================================================================
@@ -243,9 +254,9 @@ it does not depend on the placeholder. The one association that weakens is
 the S-score's weak dependence on skewness (r = -0.16, p = 0.02, to -0.15,
 p = 0.05). On Davis no correlation changes materially.
 
-3. Figure 4. The caption now says that the figure shows Davis compounds, that
-Davis has no Type 1 compounds, and that the right panel illustrates Type 2.
-The text explains why Davis examples are shown. The statement that the most
+3. Figure 4. The caption now says that the figure shows Davis compounds,
+which are named, and labels the right panel Type 2. The text explains why
+Davis examples are shown and states that Davis has no Type 1 compounds. The statement that the most
 stable compounds in both datasets are highly promiscuous was wrong for Davis
 and has been corrected. On Klaeger the most stable compounds bind 55-57
 kinases and rank near the bottom under every definition. On Davis, compounds
@@ -255,14 +266,16 @@ against 63-68 under the other three definitions). The legend now reads "assay
 floor".
 
 4. "Predictable". Replaced with "associated with binding profile shape" in the
-Abstract, Conclusion and graphical abstract.
+Abstract and Conclusion, and removed from the graphical abstract.
 
 5. Results only in the repository. Supporting Information now contains
 Table S1 (panel-size p* at correlation bars from 0.80 to 0.95), Table S2
 (Bosc et al.'s window and ranking scores and the CATDS proxy), Table S3
 (correlations under the original operationalizations), Table S4 (the
 candidate's orientation, D3 and D4 on all four datasets), and Section S5
-(variants of the candidate).
+(variants of the candidate). Table S6 lists, for every result in the main
+text, the script that computes it; the script names previously given inline
+have been removed.
 
 
 ====================================================================
@@ -316,7 +329,7 @@ that the S-score, entropy and Gini "agree closely" (their lowest correlation is
 0.72, Klaeger S-score-Gini), only that they agree more with one another than
 with the ratio. Results now states that on Anastassiadis the separation comes
 mainly from the 44 compounds with no active kinase: among the other 134, the
-ratio correlates 0.79-0.84 with the family, against 0.87-0.999 within it.
+ratio correlates 0.79-0.83 with the family, against 0.87-0.999 within it.
 
 
 I hope the manuscript is now suitable for publication in Molecular

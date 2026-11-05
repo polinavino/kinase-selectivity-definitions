@@ -13,14 +13,15 @@ ratio) are used interchangeably. The paper:
 1. Characterizes where and why they disagree, on four datasets
 2. Identifies three sources of rank instability
 3. Motivates four properties (D1-D4) for a well-formed measure
-4. Shows with a candidate measure that D1-D4 can be met together
+4. Shows with a candidate measure that D1-D4 can be met together (D3 with
+   the floor fixed)
 
 ## Key findings
 - Two families, with entropy and Gini on a common baseline-subtracted
   log-affinity scale: S-score/entropy/Gini agree (within-family r = 0.72-1.00),
-  the ratio agrees with none (cross-family r = 0.14-0.62). On Anastassiadis the
+  the ratio agrees less with each (cross-family r = 0.14-0.62). On Anastassiadis the
   split comes mainly from the 44 zero-active compounds (without them the ratio
-  correlates 0.79-0.84 with the family). Under the published
+  correlates 0.79-0.83 with the family). Under the published
   association-constant entropy the grouping does not hold (SI Table S3).
 - Instability sources (Klaeger): Type 1, zero-active compounds (16 of 222;
   pooled rank sigma 74.0 vs 31.2, driven by the definitions disagreeing about
@@ -29,11 +30,12 @@ ratio) are used interchangeably. The paper:
   r = -0.341); Type 3, broad profiles, often with a dominant target.
 - Replicated relations: ratio-gap on all four datasets (Anastassiadis only
   after excluding 8 ceiling-saturated compounds); entropy-n_active on all four
-  (r = -0.28 to -0.42).
+  (r = -0.28 to -0.42; Davis p = 0.02, not significant after Bonferroni).
 - Properties: no existing definition satisfies all four; D1 is the one all four
   violate. Candidate (gated, smooth-hinge effective-target number) satisfies
   all four, D3 only with its activity boundary fixed at the assay floor; D4 is
-  proved for T >= 0.58 (tau* - x0).
+  proved for beta = x0 and T >= 0.58 (tau* - x0), and for every beta in B
+  when T = tau* - x0.
 - Candidate and entropy rank these datasets almost identically
   (Spearman 0.994-0.999); panel-size p* = 50 (Davis, Anastassiadis), 80
   (Klaeger, Metz) for both.

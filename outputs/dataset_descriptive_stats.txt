@@ -24,6 +24,7 @@ Klaeger: 26.6% of compounds have zero kinases above pKd = 7.0
 Klaeger: 55.0% of compounds have zero kinases above pKd = 8.0
 
 Anastassiadis: 566 of 53400 entries missing in the raw matrix (1.06%)
+Anastassiadis noise floor: 30.5% of entries at 0% inhibition, 54.0% in (0, 20]%, 84.5% at or below 20%; 7.2% above the 50% activity threshold
 Metz: 175 of 103919 measured entries are exactly pKi = 4.0 (0.168%)
 Metz: median per-compound coverage across all 3858 profiled compounds (before the >=50-kinase restriction) = 21 of 172 kinases
 

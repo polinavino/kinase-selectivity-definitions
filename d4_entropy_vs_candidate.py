@@ -9,7 +9,8 @@ matters" subsection:
    satisfies D4 (with emphasis baseline beta = floor x0): every gated weight is
    above m = T ln 2, an added kinase at or below tau* has weight at most
    a = T ln(1 + exp((tau* - x0)/T)), and the proof needs a/m <= e, i.e.
-   T >= (tau* - x0) / ln(2^e - 1) ~= 0.58 (tau* - x0).
+   T >= (tau* - x0) / ln(2^e - 1) ~= 0.58 (tau* - x0). With T = tau* - x0 the
+   same argument covers every beta in B = [x0, tau*], with m = T ln(1 + exp((x0 - beta)/T)).
 2. That the condition is sharp: just below it, a profile with one strong target
    and enough kinases just above the floor violates D4.
 3. A worked counterexample for the baseline-subtracted entropy.
@@ -85,6 +86,10 @@ for name, (M, x0, tau, top, grid, T_old) in data.items():
     d = tau - x0
     r = lambda T: np.logaddexp(0.0, d / T) / np.log(2.0)
     print(f"   {name:14s} {d:8.1f} {d:6.1f} {T_old:9.1f} {r(d):10.3f} {r(T_old):9.3f}")
+u = np.linspace(0.0, 1.0, 1001)   # (beta - x0) / (tau* - x0), with T = tau* - x0
+r_B = np.logaddexp(0.0, 1.0 - u) / np.logaddexp(0.0, -u)
+print(f"   emphasis baseline beta swept over B, T = tau* - x0 (any dataset): "
+      f"r = a/m from {r_B.min():.3f} (beta = x0) to {r_B.max():.3f} (beta = tau*)")
 
 print("\n2. Sharpness on profiles with one strong target and n kinases just above the floor")
 for name in ("Klaeger", "Metz", "Anastassiadis"):

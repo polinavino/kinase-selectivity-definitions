@@ -165,7 +165,7 @@ axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2
 axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
             label=f'candidate, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
 axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
-axR.set_title('D3: gate vs. emphasis-parameter instability (Klaeger)')
+axR.set_title('D3: rank instability under each parameter sweep (Klaeger)')
 axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)
 axR.text(0.97, 0.55, f"mean: entropy {ent_instab[has_active].mean():.1f}, "
           f"gate {cand_floor_instab[has_active].mean():.1f}, "

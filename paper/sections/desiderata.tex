@@ -40,23 +40,19 @@ small and not significant for the entropy ($14.1$ versus $11.9$, $p = 0.25$) and
 the ratio ($24.0$ versus $20.7$, $p = 0.08$), and reverses for the S-score
 ($18.5$ versus $24.3$, $p = 0.07$), whose score is exactly $0$ for every such
 compound at the nine thresholds at or above $\tau^*$.
-The pooled contrast is instead the result of definitions disagreeing about these
-compounds (Type~1, above). It persists with the undefined entropy and Gini
+The pooled contrast comes instead mainly from definitions disagreeing about these compounds (Type~1, above): it persists with the undefined entropy and Gini
 configurations dropped ($\sigma = 59.6$ against $30.6$) and with only the
-S-score and ratio pooled ($66.0$ against $36.7$, both $p < 0.001$,
-\texttt{claim\_checks.py}). The Gini's contrast results from the convention
-for undefined scores (Methods), which ranks these compounds least selective at
-the baselines (where their Gini is undefined). A zero-active compound's entropy
+S-score and ratio pooled ($66.0$ against $36.7$, both $p < 0.001$). The Gini's contrast results from the convention
+for undefined scores (Methods). A zero-active compound's entropy
 and Gini are defined at only 1--4 of the 7 baselines swept (mean 3.2). When instability is computed
 only over each compound's defined configurations, ranking compounds at each
 baseline among those defined there, zero-active compounds are \emph{more}
 stable than active ones (entropy: $\sigma = 9.8$ vs.\ $12.8$, $p = 0.046$;
-Gini: $\sigma = 9.5$ vs.\ $13.0$, $p = 0.028$,
-\texttt{undefined\_score\_convention.py}). This uses 14 of the 16 compounds,
+Gini: $\sigma = 9.5$ vs.\ $13.0$, $p = 0.028$). This uses 14 of the 16 compounds,
 since the other two are defined at fewer than two baselines. The case for D1 is
 therefore not that these scores are unstable within a definition, but that they
-rest on sub-threshold values alone, which each definition treats differently,
-so the definitions disagree about them. Any of
+rest on sub-threshold values alone, which each definition treats differently.
+Any of
 the four definitions could satisfy D1 by withholding or flagging such scores.
 For the ratio, the violation comes from our implementation's floor fallback
 (Methods, ``Ratio'').
@@ -64,23 +60,17 @@ For the ratio, the violation comes from our implementation's floor fallback
 \textit{D2.} The ratio violates D2 when its top two affinities are nearly tied.
 On the 17 Klaeger compounds with a top$_1$--top$_2$ gap below $0.05$, mean
 $R(1) = 0.02$ (the near-tied second kinase is treated as the off-target) against
-mean $R(2) = 0.42$ (it is treated as a co-target,
-\texttt{d2\_near\_tie\_sensitivity.py}). This is the Type~2 instability above,
-where the top$_1$--top$_2$ gap is the strongest predictor of ratio instability
-($r = -0.341$, $p < 0.001$). The S-score, entropy, Gini, and candidate have no
+mean $R(2) = 0.42$ (it is treated as a co-target). This is the Type~2 instability above. The S-score, entropy, Gini, and candidate have no
 reference off-target and satisfy D2 vacuously. The S-score's sensitivity to
 kinases near its threshold is a D3 matter.
 
 \textit{D3.} Swept over $B = [x_0, \tau^*]$, the S-score, entropy, and Gini
 each reverse the order of $8$--$23\%$ of pairs of scored compounds, on every
 dataset (S-score $7.9$--$20.6\%$, entropy $8.8$--$22.6\%$, Gini
-$9.1$--$22.4\%$; highest on Metz; \texttt{d3\_pair\_reversals.py}), far above
+$9.1$--$22.4\%$; highest on Metz), far above
 $\varepsilon = 1\%$. The candidate's emphasis baseline reverses at most
 $0.72\%$, so every verdict in Table~\ref{tab:desiderata} is the same for any
-$\varepsilon$ from $1\%$ to $7\%$. This is consistent with the
-$n_\mathrm{active}$--instability correlation of Table~\ref{tab:predictors}:
-compounds with few active kinases change their active sets as the boundary
-moves.
+$\varepsilon$ from $1\%$ to $7\%$.
 Making $\beta$ an explicit parameter is what makes this testable: the published
 originals leave it implicit ($K_a \to 0$ for the entropy, $0\%$ inhibition for
 the Gini). The ratio has no baseline and satisfies D3 vacuously.
@@ -88,20 +78,15 @@ the Gini). The ratio has no baseline and satisfies D3 vacuously.
 \textit{D4.} The S-score and Gini violate D4 by construction: both are computed
 over the full panel of size $N$, so adding a kinase the compound does not bind
 lowers the S-score's hit fraction and raises the Gini's inequality, inflating
-the apparent selectivity. A compound can therefore be made to look more
-selective simply by profiling it against more inactive kinases, which matters
-whenever panels differ in size or composition, as between Davis and Klaeger.
+the apparent selectivity. This matters whenever panels differ in size or composition, as between Davis and Klaeger.
 The ratio satisfies D4, because a sub-threshold kinase cannot displace the
 primary target and cannot lower the reference off-target's affinity. The entropy satisfies D4 only for additions at or below
-its baseline $\beta$, which carry zero weight. A kinase between $\beta$ and
-$\tau^*$ carries positive weight and can raise its selectivity score (``Why
-the Smooth Hinge Matters'', below).
+its baseline $\beta$ (``Why the Smooth Hinge Matters'', below).
 
 \subsection{The Candidate Measure}
 \label{sec:candidate}
 
-The candidate measure (Methods) is evaluated here to show that the four
-properties can be met together. It is correctly oriented: its score falls with
+The candidate measure (Methods) is correctly oriented: its score falls with
 the number of active kinases on every dataset (Spearman $-0.783$ to $-0.969$).
 The non-binder gate is what makes this so. Without it, the non-binding kinases
 at the floor dominate the profile and the score inverts, rising with the number
@@ -113,14 +98,11 @@ $0.994$--$0.999$ on all four datasets). The properties do not act by reordering
 compounds in the body of the distribution. They act on which compounds receive
 a score at all (D1, which flags 16 of 222 Klaeger compounds), on whether the
 ranking survives a shift in an analyst's parameter (D3), and on whether adding
-a sub-threshold kinase can raise a score (D4). ``Why the
-Smooth Hinge Matters'', below, gives a concrete case in which the entropy fails
-one of them on a real dataset and the candidate provably does not.
+a sub-threshold kinase can raise a score (D4).
 
 The candidate satisfies D1 by its reliability gate and D2 vacuously. For D3,
 its only free parameter is the emphasis baseline $\beta$, and sweeping it over
-$B$ reverses $0.43$--$0.72\%$ of pairs, so it passes on every dataset
-(\texttt{d3\_pair\_reversals.py}). Its activity boundary is fixed. Sweeping
+$B$ reverses $0.43$--$0.72\%$ of pairs, so it passes on every dataset. Its activity boundary is fixed. Sweeping
 the gate $x_0$ itself over $B$ reverses
 $8.5$--$22.5\%$ of pairs, against $8.8$--$22.6\%$ for the entropy's baseline,
 and the two sweeps produce similar per-compound instability on Klaeger (mean
@@ -129,8 +111,8 @@ candidate's D3 standing therefore comes entirely from declaring $x_0$ a fixed
 constant, and Table~\ref{tab:desiderata} marks it $\checkmark^{\dagger}$. D4
 holds by the proposition in Methods. It also holds on every compound in all
 four datasets when one kinase is added at $\tau^*$, which is the strongest binding
-that D4 allows (i.e. the addition most likely to raise the score)
-(\texttt{candidate\_validation.py}, Supporting Information Table~S4).
+that D4 allows (i.e. the addition most likely to raise the score;
+Supporting Information Table~S4).
 
 \begin{figure}[h]
   \centering
@@ -148,17 +130,12 @@ that D4 allows (i.e. the addition most likely to raise the score)
 \end{figure}
 
 A usable measure must also be recoverable from realistic panels. With the
-panel-size subsampling analysis above (same grid, 50 random subpanels per
-size), the candidate reaches mean Spearman $\rho > 0.90$ with its full-panel
+panel-size subsampling analysis above, the candidate reaches mean Spearman $\rho > 0.90$ with its full-panel
 ranking at $p^* = 50$ kinases on Davis and Anastassiadis (the smallest panel
 tested) and 80 on Klaeger and Metz (Figure~\ref{fig:candidate}). These values
-match the entropy on every dataset. The Gini is slower on Davis, Klaeger, and
-Anastassiadis, the ratio is slower on all four, and the S-score is slower on
-Klaeger (110) and faster on Metz (50). On Metz, 80 kinases is almost half of the
-panel, and this value carries the coverage caveat of Methods, since most of a
-typical Metz compound's entries are untested pairs imputed at the floor.
+match the entropy on every dataset.
 These $p^*$ values
-score every compound, including ones the D1 gate would refuse to score (at 50
+apply the formula without the D1 gate, so they include compounds the gate would refuse to score (at 50
 kinases, $9\%$ of Davis compounds, $42\%$ of Klaeger, $43\%$ of Anastassiadis,
 and $2\%$ of Metz, counting those with no active kinase on the full panel).
 Restricting the comparison to compounds that D1 allows to be scored on both the
@@ -167,7 +144,7 @@ unchanged and brings the Gini to the same values (50 on Davis and
 Anastassiadis, 80 on Klaeger and Metz). The Gini's gain comes from removing
 compounds whose Gini is undefined on the subpanel, which the convention ranks
 least selective (Methods). Excluding only these compounds gives the Gini the
-same $p^*$ as the gate on every dataset (\texttt{claim\_checks.py}).
+same $p^*$ as the gate on every dataset.
 
 The featured candidate is one member of a family of measures that satisfy
 D1--D4 on these data: a per-compound quantile floor in place of the fixed floor
@@ -208,29 +185,23 @@ $\mathrm{p}K_d = 6.0$ raises it to $-4.83$.
 On Davis, Klaeger, and Metz, adding one kinase at $\tau^*$ never raises the
 entropy's score for a compound with an active kinase, at any baseline in their
 sweeps. Compounds with no active kinase are left out because D1 withholds their
-scores. 
+scores.
 
 On
-Anastassiadis it does at low baselines: weighting each kinase by its raw
+Anastassiadis it does at baselines below the $20\%$ floor: weighting each kinase by its raw
 percent inhibition ($\beta = 0\%$), it raises the score for $34\%$ of the 134 compounds with an active kinase,
-and for $16\%$ at $\beta = 5\%$, although for none at $15\%$ or above
-(\texttt{d4\_entropy\_vs\_candidate.py}). Adding real kinases rarely does
+and for $16\%$ at $\beta = 5\%$, although for none at $15\%$ or above. Adding real kinases rarely does
 this: expanding random 50- or 100-kinase panels by 1 to 30 kinases that a
 compound binds below threshold raises the entropy's score in at most $0.1\%$
-of cases (\texttt{claim\_checks.py}).
+of cases.
 
-\textit{The candidate cannot violate D4.} By the proposition in Methods, with
-$T \geq 0.58\,(\tau^* - x_0)$ no sub-threshold addition can raise its score.
-The condition on $T$ is sharp: just below it, a profile with one strong target
+\textit{The candidate cannot violate D4.} By the proposition in Methods, no
+sub-threshold addition can raise its score, and its condition on $T$ is sharp: just below it, a profile with one strong target
 and enough kinases just above the floor violates D4. With $T = 1$ on Metz or
 $T = 10$ on Anastassiadis, both below the bound, constructed profiles of this
 kind violate D4 (by up to $0.014$ bits on Anastassiadis), although none of the
-real compounds does. Setting $T = \tau^* - x_0$ on every dataset satisfies the
-condition with room to spare, leaves Davis and Klaeger unchanged, and changes
+real compounds does. Setting $T = \tau^* - x_0$ (Methods) leaves Davis and Klaeger unchanged and changes
 the Metz and Anastassiadis rankings negligibly (Spearman $0.999$ against $T = 1$
 and $T = 10$, respectively).
 
-The entropy and the candidate thus differ on whether
-binding one more kinase below threshold can make a compound look more
-selective, a difference that their nearly identical rankings of these
-datasets do not reveal.
+

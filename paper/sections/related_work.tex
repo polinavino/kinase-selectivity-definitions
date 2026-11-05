@@ -11,12 +11,10 @@ defined as the fraction of tested kinases bound with a dissociation constant
 below a fixed cutoff.
 Uitdehaag and Zaman\cite{Uitdehaag2011} proposed the selectivity entropy,
 which treats the normalized binding profile as a probability distribution and
-computes its Shannon entropy. Low entropy indicates activity concentrated on
-few targets.
+computes its Shannon entropy.
 Graczyk\cite{Graczyk2010} adapted the Gini coefficient from economics, treating
 the distribution of a compound's activity across the panel as an inequality
-distribution. A value near 1 indicates activity concentrated on few kinases and
-near 0 indicates activity spread evenly.
+distribution.
 Klaeger et al.\cite{Klaeger2017} introduced the concentration- and
 target-dependent selectivity (CATDS) score, which quantifies the reduction in
 binding to a given target relative to the summed reduction across all detected
@@ -39,14 +37,12 @@ To our knowledge, attempts to reconcile the definitions have been limited.
 Bajorath et al.\cite{Bajorath2018} compared CATDS-based selectivity
 assessments from Klaeger et al.\ with activity data mined from ChEMBL for the
 same compounds, finding broad consistency between the two sources.
-The KInhibition platform\cite{KInhibition2018} explicitly acknowledged that
-multiple existing metrics yield conflicting results for the same compound, and
-addressed this by introducing its own composite score (combining on-target
+The KInhibition platform\cite{KInhibition2018} addressed conflicting results across metrics by introducing its own composite score (combining on-target
 inhibition with an off-target inhibition penalty).
 More recently, the same group built a KIRHub resource\cite{Gujral2026}
 on a
 new profiling campaign of 86 approved kinase inhibitors against 758 kinases
-and disease-associated mutant variants. This resource offers users a choice 
+and disease-associated mutant variants. This resource offers users a choice
 between a further
 named metric (the KISS score, an on-target/off-target balance) and a separate
 Gini-based score.

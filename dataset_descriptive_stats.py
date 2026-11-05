@@ -2,7 +2,8 @@
 Dataset descriptive statistics cited in Methods but not previously saved to
 any script output (flagged in the pre-resubmission audit): active fractions,
 Klaeger zero-active-at-threshold and ratio-k-cap justification numbers,
-Anastassiadis/Metz missing-entry percentages, and a robustness check for the
+Anastassiadis/Metz missing-entry percentages, the share of Anastassiadis entries
+below its 20% noise floor, and a robustness check for the
 Davis stricter-cutoff claim (pKd >= 7 leaves cross-definition agreement
 unchanged).
 """
@@ -120,6 +121,10 @@ n_total = pct_raw.size
 n_missing = np.isnan(pct_raw).sum()
 print(f"\nAnastassiadis: {n_missing} of {n_total} entries missing in the raw matrix "
       f"({100 * n_missing / n_total:.2f}%)")
+pct = pd.read_csv(os.path.join(HERE, "anastassiadis_matrix.csv"), index_col=0).values  # % inhibition, as analysed
+print(f"Anastassiadis noise floor: {100 * (pct == 0).mean():.1f}% of entries at 0% inhibition, "
+      f"{100 * ((pct > 0) & (pct <= 20)).mean():.1f}% in (0, 20]%, {100 * (pct <= 20).mean():.1f}% at or below 20%; "
+      f"{100 * (pct > 50).mean():.1f}% above the 50% activity threshold")
 
 mz = pd.read_excel(os.path.join(HERE, "metz.xls"), sheet_name=0, header=0)
 meta = ['Cmpd_ID', 'PUBCHEM_SID', 'Canonical_Smiles', 'External_Cmpd_ID', 'External_Source',

@@ -1,31 +1,29 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We have shown that commonly used kinase inhibitor selectivity definitions,
-computed on a common log-affinity scale, split into two groups (the S-score,
-entropy and Gini agree more with one another than with the ratio), and that
-the two families measure
-different properties of binding profiles. This grouping is a
-property of that common scale: under the association-constant form of the
-original publication, the entropy does not cluster with the S-score and Gini.
-We also showed that rank instability within and between families is
-associated with binding profile shape, and that three
-structurally distinct sources of instability can be identified and
-characterized.
-These findings motivate four properties that we propose a well-formed
-selectivity measure should satisfy: a reliability threshold
-condition, bounded gap sensitivity, distributional consistency, and monotonicity
-under weak off-target addition.
+We have proposed four properties that a well-formed kinase inhibitor
+selectivity measure should satisfy: a reliability threshold condition,
+bounded gap sensitivity, distributional consistency, and monotonicity under
+weak off-target addition. None of the four definitions assessed satisfies all
+four. The one property all four violate is the reliability condition, a
+reporting convention that any of them could adopt.
 
-None of the four definitions assessed satisfies all four properties. The one
-property all four violate is the reliability condition, a reporting convention
-that any of them could adopt. The candidate we propose, a gated, smooth-hinge
-effective-target number, satisfies all four in the following ways: 
+The properties come from characterizing the definitions on four datasets.
+Rank instability within and between definition families is associated with
+binding profile shape and has three structurally distinct sources. How the
+definitions relate depends on how they are computed: on a common log-affinity
+scale they split into two groups that measure different properties of binding
+profiles (the S-score, entropy and Gini agree more with one another than with
+the ratio), but under the association-constant form of the original
+publication the entropy does not cluster with the S-score and Gini.
+
+The candidate we propose, a gated, smooth-hinge effective-target number,
+satisfies all four properties in the following ways:
 
 \begin{itemize}
     \item[(i)] the reliability condition by a
 reporting rule;
-    \item[(ii)] bounded gap sensitivity vacuously; 
+    \item[(ii)] bounded gap sensitivity vacuously;
     \item[(iii)] distributional consistency
 because its activity boundary is
 fixed at the assay floor (swept as a free parameter, that boundary moves the
@@ -34,24 +32,20 @@ ranking about as much as the entropy's baseline does); and
 off-target addition by its functional form, which we prove.
 \end{itemize}
 
-The entropy fails D4 for a third of the Anastassiadis compounds with an active
-kinase when a kinase is added at the activity threshold ($0\%$ baseline), and
-almost never when real kinases are added. The candidate recovers its full-panel ranking from about
+The candidate recovers its full-panel ranking from about
 a tenth to a quarter of the panel on Davis, Klaeger, and Anastassiadis, as the
-entropy does, and it is one of several measures that satisfy the four
-properties on these data (Supporting Information, Section~S5).
-Because the candidate is a local modification of the entropy, the two rank the
-compounds they both score almost identically (Spearman $0.994$--$0.999$ on all
-four datasets), so on these data the candidate is not an improvement on the
-entropy. The case for the properties therefore does not rest on these data:
-they are requirements on every binding profile, and we propose them as checks
+entropy does, and variants of it satisfy the four properties on Davis and
+Klaeger (Supporting Information, Section~S5). It ranks the compounds almost
+identically to the entropy, so on these data it is
+not an improvement on the entropy. The case for the properties therefore does not rest on these data:
+they are requirements on the measure itself, and we propose them as checks
 that any new selectivity measure should pass.
 
-The main goal of this work is to identify criteria for judging 
-a candidate that could be considered a principled, universally adopted 
-choice of selectivity measure in the future. Such criteria must be justified 
+The main goal of this work is to identify criteria for judging
+a candidate that could be considered a principled, universally adopted
+choice of selectivity measure in the future. Such criteria must be justified
 (which we argue they are),
-and jointly satisfiable (which the candidate demonstrates). 
+and jointly satisfiable (which the candidate demonstrates).
 Further properties may discriminate where these four do
 not, and the candidate may separate from the entropy on panels whose active
 fractions differ from the four studied here.
@@ -64,7 +58,7 @@ report the sensitivity of rankings to parameter choice, and should explicitly
 flag compounds with no binding above the activity threshold as unreliable.
 The longer-term implication is that the field needs a principled basis for
 choosing among selectivity definitions.
-The need for a principled measure is not specific to selectivity. 
+The need for a principled measure is not specific to selectivity.
 As future and ongoing work, we are developing a general
 measurement-theoretic framework for defining and comparing the competing
 measures of one concept, reporting where they agree and which pairs they

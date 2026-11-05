@@ -23,6 +23,14 @@ ACTIVE_THRESHOLD = 6.0
 
 affinity = pd.read_csv("davis_affinity.csv")
 matrix = affinity.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(BASELINE)
+
+# Davis identifies compounds only by PubChem CID; name each by its first PubChem
+# synonym that is not a CAS number (cache written by davis_klaeger_overlap.py)
+import json, re
+_cid = pd.read_csv("davis_drugs.csv").set_index("Drug_Index")["CID"]
+_syn = json.load(open("davis_pubchem_synonyms_cache.json"))
+def drug_name(idx):
+    return next(s for s in _syn[str(int(_cid[idx]))] if not re.fullmatch(r"\d+-\d+-\d", s))
 M = matrix.values
 n_drugs, n_kinases = M.shape
 
@@ -103,7 +111,7 @@ def describe(idx):
 for label, idx in [("most stable", most_stable), ("most unstable", most_unstable),
                    ("most ratio-sensitive", most_ratio_sen)]:
     _, s, n_active = describe(idx)
-    print(f"{label:22s}: Drug {idx}  sigma={rank_std[idx]:.2f}  "
+    print(f"{label:22s}: Drug {idx} ({drug_name(idx)})  sigma={rank_std[idx]:.2f}  "
           f"n_active={n_active}  top1-top2 gap={s[0]-s[1]:.3f}")
 
 panels = [
@@ -120,7 +128,7 @@ for ax, (idx, title, note, color) in zip(axes, panels):
     ax.axhline(ACTIVE_THRESHOLD, ls='--', color='black', lw=1, label='pKd=6 threshold')
     ax.axhline(BASELINE, ls=':', color='gray', lw=1, label='assay floor')
     ax.set_ylim(4.8, 11)
-    ax.set_title(f"Drug {idx} — {title}\n({n_active} active kinases, {note})")
+    ax.set_title(f"{drug_name(idx)} — {title}\n({n_active} active kinases, {note})")
     ax.set_xlabel("Kinases (sorted by affinity)")
     ax.set_ylabel("pKd")
     ax.legend(loc='upper right')

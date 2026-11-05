@@ -198,3 +198,8 @@
       pooled sigma, all configurations             : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
       pooled sigma, undefined entropy/Gini dropped : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
       pooled sigma, S-score and ratio only         : zero-active 222.2  active 123.4  (Mann-Whitney p=0.0002)
+
+21. Table 2 (feature vs within-family instability) with a Bonferroni correction for the
+    24 tests per dataset (two-tailed Spearman p from r and n)
+   klaeger  (n=206, cutoff p < 0.0021): 8 of 13 nominally significant survive: n_active/s_score (p=7e-05), n_active/entropy (p=2e-08), top1_top2_gap/ratio (p=5e-07), active_std/s_score (p=4e-05), active_range/s_score (p=2e-07), active_range/entropy (p=8e-05), top2_pkd/s_score (p=4e-06), active_skew/gini (p=3e-07)
+   davis    (n=68, cutoff p < 0.0021): 1 of 5 nominally significant survive: top1_top2_gap/ratio (p=0.0001)

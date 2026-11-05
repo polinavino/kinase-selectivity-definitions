@@ -8,19 +8,19 @@ Because the human kinome is comprised of more than 500 proteins sharing a
 highly conserved ATP-binding site,\cite{Manning2002} the design of inhibitors
 with controlled target profiles remains a central challenge.
 Selectivity is a primary
-criterion in lead optimization and a key determinant in the drug approval 
+criterion in lead optimization and a key determinant in the drug approval
 process.\cite{Bhullar2018}
 
 Despite its importance, no single consistent definition of selectivity exists.
 The field employs at least four distinct quantitative measures:
 the S-score,\cite{Karaman2008} selectivity entropy,\cite{Uitdehaag2011}
-Gini coefficient,\cite{Graczyk2010} and ratio-based measures, a family to which
-the field assigns the CATDS score.\cite{Klaeger2017}
+Gini coefficient,\cite{Graczyk2010} and ratio-based measures, which compare the
+primary target with an off-target.
 These definitions are often used interchangeably, and their parameter values
 (the activity threshold in the S-score, the baseline in the entropy and Gini
 coefficient, the reference off-target in ratio-based measures) are usually set
 by convention.
-Standardizing them would make selectivity data easier to integrate across
+Standardizing them would remove one source of disagreement between
 laboratories and platforms.
 
 Bosc et al.\cite{Bosc2017} showed that these definitions can produce
@@ -35,8 +35,7 @@ inconsistent definitions make compounds hard to compare across studies.
 
 In information theory, Shannon\cite{Shannon1948} settled which function should
 measure entropy by writing down a few properties a sensible measure must
-have (e.g., that it should grow as the number of equally likely outcomes
-grows) and showing that only one formula satisfies them. We follow this
+have and showing that only one formula satisfies them. We follow this
 precedent in part: we characterize how the competing measures behave, state
 properties a good measure should have, and propose a formula that satisfies
 them. We use four profiling datasets that span three assay technologies. Our
@@ -68,7 +67,4 @@ cannot be made to look more selective by adding a weakly bound kinase. It
 recovers its full-panel ranking from about a tenth to a quarter of the panel on
 three of the four datasets.
 \end{itemize}
-
-The candidate is one of several measures that satisfy the four properties on
-these datasets (Supporting Information, Section~S5).
 

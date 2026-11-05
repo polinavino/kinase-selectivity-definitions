@@ -9,8 +9,9 @@ I am grateful to the reviewer for a second constructive assessment. In
 response, the manuscript has been revised as follows:
 
   - the motivated properties and the candidate measure are now defined
-    formally in Methods and evaluated in Results, with repeated results and
-    layered qualifications consolidated;
+    formally in Methods and evaluated in Results, the Abstract and Conclusion
+    lead with the properties, and repeated results and layered qualifications
+    have been consolidated;
 
   - every robustness check the reviewer requested has been added, including
     correlation matrices under the published forms of the entropy and Gini,
@@ -23,7 +24,8 @@ response, the manuscript has been revised as follows:
     stated plainly; and
 
   - a Supporting Information file now holds the results previously available
-    only in the code repository.
+    only in the code repository, with a table giving the script behind every
+    reported result.
 
 Re-running every analysis during this revision also found coding errors that
 change some reported numbers. These are listed at the end of the response

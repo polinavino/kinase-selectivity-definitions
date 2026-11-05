@@ -5,22 +5,13 @@ The central finding of this work is that existing kinase inhibitor selectivity
 definitions, placed on a common log-affinity scale, do not measure the same
 quantity.
 The ratio definition and the distribution-based family (S-score, entropy, Gini)
-produce substantially different compound rankings (cross-family
-$r = 0.14$--$0.62$ across four datasets, versus within-family $r > 0.72$), and
+produce substantially different compound rankings, and
 the largest disagreements are concentrated in identifiable kinds of profiles.
 This has practical consequences: a compound that ratio-based analysis designates
 as selective may be designated as moderately promiscuous by entropy-based
-analysis, and vice versa, depending on the shape of its binding profile.
-
-Among compounds that clear the activity threshold, the two families disagree
-most on broad profiles, which bind many kinases at moderate affinity, often with
-one clearly dominant target (Type~3, e.g.\ Dovitinib and BMS-690514).
-Zero-active (Type~1) compounds have no target captured above the activity
-threshold on the profiled panel, so no definition can score them on measured
-binding, and D1 excludes them from scoring. D1 addresses Type~1, D2 addresses
-Type~2 (near-tied top targets), D3 addresses the baseline sensitivity of compounds with 
-few active kinases, and D4 has to do with
-the effect of adding weakly bound kinases (Methods).
+analysis, and vice versa, depending on the shape of its binding profile. Among compounds that clear the
+activity threshold, the two families disagree most on broad profiles (Type~3,
+Results).
 
 This coexistence may have a historical explanation.
 In classical pharmacology and analytical chemistry, selectivity is inherently
@@ -29,8 +20,7 @@ binding constants for an analyte and an interferent,\cite{IUPAC2001} and
 ratio measures follow that tradition.
 Kinome-wide profiling, however, poses a distributional question: how
 concentrated is a compound's binding across hundreds of kinases?
-Entropy and Gini address this question directly. Ratio measures use only two
-points of a profile of hundreds of kinases. 
+Entropy and Gini address this question directly.
 
 
 \subsection{Practical Recommendations}
@@ -42,9 +32,7 @@ standard.
 Compounds with no binding above the $\mathrm{p}K_d > 6$ activity threshold
 should not receive selectivity scores, or should have their scores explicitly
 flagged as unreliable.
-Of the 222 Klaeger compounds, 16 (7.2\%) fall into this category and currently
-receive scores that rest on sub-threshold values alone, on which the
-definitions disagree widely. All 16 bind above the assay detection floor of $\mathrm{p}K_d = 5.0$
+Of the 222 Klaeger compounds, 16 (7.2\%) fall into this category (Type~1). All 16 bind above the assay detection floor of $\mathrm{p}K_d = 5.0$
 (maximum affinities 5.16--6.00), so the gate sits at the activity threshold.
 
 Second, selectivity assessments should report how rankings change with
@@ -54,22 +42,16 @@ interpretable quantity that identifies which compounds' assessments are robust
 to parameter choice, analogous to a confidence interval in statistical
 estimation. This rank standard deviation is not a guide to robustness across
 platforms: on the 46 compounds profiled in both Davis and Klaeger, it does not
-predict how far a compound's rank moves between the two ($|r| \leq 0.25$,
-\texttt{claim\_checks.py}).
+predict how far a compound's rank moves between the two ($|r| \leq 0.25$).
 
 Third, when comparing selectivity across studies that use different definitions,
 the comparison should be restricted to the subset of compounds and parameter
 values for which the definitions agree.
 Within the distribution-based family, the S-score, entropy, and Gini correlate
-at $r \geq 0.72$ on the full panel (Table~\ref{tab:correlations}). The
-lowest value, Klaeger S-score against Gini, rises to $0.91$ once the 16
-compounds without an active kinase are excluded. They give similar rankings
+at $r \geq 0.72$ on the full panel (Table~\ref{tab:correlations}). They give similar rankings
 when parameters are chosen consistently and panels have similar, near-complete
 coverage. On smaller panels the Gini diverges on Davis, Klaeger, and
-Anastassiadis (Results), because on a subpanel, a compound with no kinase above
-the floor has an undefined Gini, which is set to 0 and ranked least selective
-(Methods). Restricted to compounds that clear the activity threshold on both
-panels, the Gini recovers as fast as the entropy on every dataset.
+Anastassiadis because of its convention for undefined scores (Results).
 Ratio-based measures, in turn, should not be compared directly with
 distribution-based measures at any panel size without acknowledging the
 conceptual distinction.
@@ -80,17 +62,14 @@ The analysis covers four profiling datasets spanning three assay technologies
 and two readout types, but these still represent a fraction of the chemical and
 kinase space relevant to drug discovery.
 The assays report on different scales and detect different shares of active
-interactions (Methods), so every comparison between datasets is between
-rankings computed within each dataset.
+interactions (Methods).
 The two-family structure (in our common log-affinity operationalization)
-replicates across all four datasets, and so do the two instability relations
-tested on all four (ratio--gap and entropy--$n_\mathrm{active}$), the first on
-Anastassiadis once compounds saturated at the $100\%$ inhibition ceiling are
-excluded (Results). This
-indicates that the findings are not artifacts of a single assay platform. On
-Metz, however, the distribution-based rankings largely track how many kinases
-each compound was measured against (Methods), so its contribution to the
-replication is weaker than its size suggests. 
+replicates across all four datasets, and so, with the qualifications given in
+Results, do the two instability relations tested on all four (ratio--gap and
+entropy--$n_\mathrm{active}$). This indicates that the findings are not
+artifacts of a single assay platform. On Anastassiadis, however, the
+two-family separation comes mainly from compounds with no active kinase, and
+on Metz it partly reflects coverage (Results).
 Findings should still be interpreted in light of
 these technological differences.
 
@@ -99,14 +78,13 @@ established definitions. Bosc et al.'s window score and ranking
 score\cite{Bosc2017} were not included. On the same four datasets both
 correlate strongly with the ratio (Spearman $r = 0.80$--$0.96$), so they do not
 form a third cluster.
-The CATDS score,\cite{Klaeger2017} historically classified alongside the
-ratio-based measures, was also not implemented directly, since it requires raw
+The CATDS score\cite{Klaeger2017} was also not implemented directly, since it requires raw
 concentration-response data. A proxy computed from our baseline-subtracted
 affinity profiles correlates far more strongly with Gini and entropy than with
 $R(k)$ on all four datasets (Spearman $0.91$--$0.99$ against Gini and
 $0.82$--$0.96$ against entropy, against $0.45$--$0.70$ for $R(k)$, Supporting
-Information Table~S2), consistent with its normalization over the whole panel.
-We did not add it as a fifth measure, because the distribution family is
+Information Table~S2).
+We did not add it as a fifth measure, because the distribution-based family is
 already represented by three members.
 
 A further axis of platform dependence that this analysis does not examine is
@@ -130,7 +108,7 @@ We compared how much the choice of assay technology and the choice of
 selectivity definition each move a compound's selectivity ranking. We
 resolved 46 compounds profiled in both Davis (competition binding) and
 Klaeger (chemoproteomics) by matching PubChem CIDs against Klaeger's drug
-names (\texttt{davis\_klaeger\_overlap.py}), and computed each definition's
+names, and computed each definition's
 median rank on this fixed set of 46 compounds (separately on each platform).
 Rankings agree less across platforms than across definitions, so the
 \emph{platform effect} (same definition, Davis rank vs.\ Klaeger rank) is
@@ -143,7 +121,7 @@ uncorrelated ($r = -0.06$, $p = 0.67$). This should temper any
 cross-study comparison of selectivity rankings regardless of which definition
 is used.
 
-All four existing definitions and the candidate measure introduced above 
+All four existing definitions and the candidate measure introduced above
 treat a compound's affinity
 vector as an unordered multiset. Thus, two compounds with identical affinity
 distributions receive identical scores regardless of which specific kinases
@@ -178,11 +156,10 @@ not available in standardized form across these drugs.
 
 The candidate's distributional consistency rests on fixing its activity
 boundary at the assay floor $x_0$, and in none of the four datasets is $x_0$ a
-measured detection limit. On Davis and Klaeger it is the value assigned to
-pairs with no detected binding ($\mathrm{p}K_d = 5.0$), on Metz the lowest value
-reported in the released data ($\mathrm{p}K_i = 4.0$), and on Anastassiadis a
-$20\%$ inhibition noise level that we set, above the $0\%$ to which missing and
-negative values are clipped. Fixing $x_0$ therefore removes the analyst's choice
+measured detection limit. On Davis and Klaeger it is the value assigned to pairs
+with no detected binding, on Metz the lowest reported value (Methods), and on
+Anastassiadis a $20\%$ inhibition
+noise level that we set. Fixing $x_0$ therefore removes the analyst's choice
 only to the extent that each dataset's encoding of non-detection is accepted as
 given. Where that encoding is itself uncertain, the candidate's standing on D3
 is no better than the entropy's.
@@ -204,10 +181,8 @@ Figure~\ref{fig:fidelity} shows that leaving the operationalization undeclared
 can change a ranking substantially. The panel-size behaviour reported above
 could itself be stated as a property. Stability under measurement error in the
 affinities is another candidate, which the present data cannot test. Agreement
-across datasets profiling the same compounds can be tested, and the platform
-comparison above does so for the 46 compounds shared by Davis and Klaeger.
-Klaeger and Anastassiadis share 19 compounds by name
-(\texttt{claim\_checks.py}), but a comparison between an affinity assay and a
+across datasets profiling the same compounds can be tested, as the platform comparison above does.
+Klaeger and Anastassiadis share 19 compounds by name, but a comparison between an affinity assay and a
 single-concentration inhibition assay is harder to interpret. Metz identifies
 compounds only by internal ID and PubChem SID, and we did not resolve those
 against the other datasets.

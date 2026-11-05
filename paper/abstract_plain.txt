@@ -1,16 +1,19 @@
 Kinase inhibitor selectivity is quantified using several competing
-definitions, including S-score, selectivity entropy, Gini coefficient, and
-ratio-based measures, which are often used interchangeably. Across four
-profiling datasets spanning three assay technologies (68-704 compounds each),
-we show that, with entropy and Gini computed on a common log-affinity scale,
-these definitions split into two groups: the S-score, entropy and Gini agree
-more with one another than with the fold-selectivity ratio. Rank instability
-is associated with binding profile shape. We trace instability to three
-sources: convention-dependent scores for compounds with no binding above the
-activity threshold, near-tied top targets, and distribution-ratio disagreement
-for promiscuous compounds, often with a dominant target. We motivate four
-properties that a well-formed selectivity measure should satisfy. None of the
-four assessed satisfies all of them. We then propose a measure that satisfies
-all four when its activity boundary is fixed at the assay floor, recovering
-its full-panel ranking from about a tenth to a quarter of a panel on three of
-the four datasets.
+definitions, including the S-score, selectivity entropy, Gini coefficient, and
+ratio-based measures, which are often used interchangeably. We propose four
+properties that a well-formed selectivity measure should satisfy: a
+reliability threshold, bounded sensitivity to the reference off-target,
+consistency across placements of the activity boundary, and monotonicity when
+a weakly bound kinase is added. None of the four definitions satisfies all of
+them. The properties are motivated by four profiling datasets spanning three
+assay technologies (68-704 compounds each), on which rank instability is
+associated with binding profile shape and has three sources: conflicting
+scores for compounds with no binding above the activity threshold, near-tied
+top targets, and distribution-ratio disagreement for promiscuous compounds.
+With entropy and Gini on a common log-affinity scale, the S-score, entropy and
+Gini agree more with one another than with the fold-selectivity ratio, a
+grouping that fails for the entropy as originally published. A gated, smooth-
+hinge variant of the entropy satisfies all four properties when its activity
+boundary is fixed at the assay floor, ranks these datasets almost identically
+to the entropy, and recovers its full-panel ranking from about a tenth to a
+quarter of a panel on three of the four datasets.

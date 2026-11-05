@@ -17,11 +17,11 @@ kinases (entropy), active-affinity skewness (Gini), and top1-top2 gap (ratio).
 Spearman r above each panel.
 
 Figure 4. Binding profiles of three Davis compounds, kinases sorted by affinity.
-Left: Drug 64, most stable (sigma = 1.8), two active kinases. Center: Drug 42,
-most unstable (sigma = 19.3), 22 active kinases with no dominant target. Right:
-Drug 23, most ratio-sensitive (Type 2), five active kinases including two
-near-tied top targets (delta pKd = 0.023). Dashed line: pKd = 6 activity
-threshold; dotted line: pKd = 5 assay floor.
+Left: neflamapimod (VX-745), most stable (sigma = 1.8), two active kinases.
+Center: PI-103, most unstable (sigma = 19.3), 22 active kinases with no dominant
+target. Right: GDC-0879, most ratio-sensitive (Type 2), five active kinases
+including two near-tied top targets (delta pKd = 0.023). Dashed line: pKd = 6
+activity threshold; dotted line: pKd = 5 assay floor.
 
 Figure 5. Mean Spearman correlation between rankings computed on random kinase
 subpanels and rankings on the full panel, as a function of subpanel size, on
