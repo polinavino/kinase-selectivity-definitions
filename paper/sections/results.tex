@@ -287,14 +287,16 @@ it, because a weak addition cannot displace the primary target or lower the
 reference off-target. $P_{\max}$ satisfies it too: a weak addition leaves its
 numerator unchanged and raises its denominator. The entropy satisfies D3 at
 $\beta = \tau^*$, where weak binding carries zero weight. The gated entropy
-satisfies D1 through its eligibility rule and D3 by the proposition in Methods,
+satisfies D1 through its eligibility rule and D3 by Proposition 1 in Methods,
 and its
-weights vary smoothly with affinity above the gate. The proposition concerns
-adding a target, not strengthening one already in the profile. Satisfying D1
-and D3 does not make a score sensible: the active count with its sign
-reversed, which calls a compound more selective the more active kinases it
-has, satisfies both, because a kinase added at or below $\tau^*$ leaves it
-unchanged. The three criteria are therefore incomplete.
+weights vary smoothly with affinity above the gate. Proposition 1 concerns
+adding a target, not strengthening one already in the profile. The criteria do not
+fix the direction of a score. The active count with its sign reversed, which
+calls a compound more selective the more active kinases it has, satisfies D1
+and D3, because a kinase added at or below $\tau^*$ leaves it unchanged, and
+fails D2 as the count does, since reversing a score's sign does not change how
+many pairs reverse. It therefore meets the same criteria as the gated entropy,
+and the three criteria are incomplete.
 
 \emph{By construction: counterexamples.} Constructed profiles show the D3
 violations of the published entropy and of the entropy with $\beta < \tau^*$,
@@ -344,26 +346,53 @@ and still satisfies D3, as proved in Methods. On these datasets, gated entropy i
 thus not an
 empirical improvement on simpler scores.
 
-\emph{Uniqueness.} The criteria do not determine a unique score, either by
-construction or on the data. By construction, the active count, the S-score
-with $\tau = x_0$ and the entropy with $\beta = \tau^*$ satisfy D1 and D3 as
-the gated entropy does (Table~\ref{tab:desiderata}). Within the family of gated
+\subsection{Uniqueness of the Gated Entropy}
+\label{sec:results:uniqueness}
+
+The criteria do not determine a unique score. Once the gated entropy's weights
+are fixed, Shannon's conditions do.
+
+\emph{By construction, with the parameters free.} The active count, the S-score
+with $\tau = x_0$ and the entropy with $\beta = \tau^*$ satisfy D1 and D3 as the
+gated entropy does (Table~\ref{tab:desiderata}). Within the family of gated
 entropies with $\beta = x_0$, the members that satisfy D1 and D3 are exactly
-those with $T \geq 0.58\,(\tau^* - x_0)$, by the proposition, so the criteria
+those with $T \geq 0.58\,(\tau^* - x_0)$, by Proposition 1, so the criteria
 narrow the family to a range of $T$. With $T = \tau^* - x_0$, every baseline
-$\beta$ in $B$ also gives a member that satisfies D3. On the data, these and
-other variants rank compounds almost as the gated entropy does. On Klaeger,
-smoothing widths from $T = 0.5$ to $2$ give a worst pairwise Spearman
-correlation of $0.999$. On Davis and Klaeger, replacing the Shannon entropy by
-a R\'enyi entropy of order $0.5$ to $3$ gives $0.998$ or higher, and replacing
-the fixed floor by a per-compound low quantile gives $1.000$. D3 held for every
-scored compound when one kinase was added at $\tau^*$ under all of these
-variants, although it is proved only for the Shannon entropy with $T$ at or
-above the bound, which excludes $T = 0.5$ (Supporting Information,
-Section~S4). A unique score would need a further criterion, such as the
-smallest admissible $T$, which keeps the score as close as possible to the
-entropy. We do not adopt one, because on these data the choice barely changes
-the rankings.
+$\beta$ in $B$ also gives a member that satisfies D3. The proof of Proposition
+1 also applies to any weight that increases with affinity and is at most $e$
+times larger at $\tau^*$ than just above the floor, so the softplus is not the
+only admissible weight.
+
+\emph{On the data.} Variants of the gated entropy rank compounds almost as it
+does. On Klaeger, smoothing widths from $T = 0.5$ to $2$ give a worst pairwise
+Spearman correlation of $0.999$. On Davis and Klaeger, replacing the Shannon
+entropy by a R\'enyi entropy of order $0.5$ to $3$ gives $0.998$ or higher, and
+replacing the fixed floor by a per-compound low quantile gives $1.000$. D3 held
+for every scored compound when one kinase was added at $\tau^*$ under all of
+these variants, although it is proved only for the Shannon entropy with $T$ at
+or above the bound of Proposition 1, which is $0.58$ on Klaeger, so not for the
+tested width $T = 0.5$ (Supporting Information,
+Section~S4).
+
+\emph{By construction, with the weights fixed.} Once the weights are fixed,
+that is, the softplus with given $x_0$, $\beta$ and $T$, the gated entropy is
+unique in a narrow sense: by Proposition 2, which applies Shannon's uniqueness
+theorem, any score that depends on a profile only through the shares of these
+weights and satisfies Shannon's three conditions, ranks compounds as the gated
+entropy does. The criteria fix neither the shape of the weights nor their
+parameters. Requiring the smallest admissible $T$
+with $\beta = x_0$ gives $T = (\tau^* - x_0)/\ln(2^e - 1)$, but any larger $T$
+satisfies D3 as well. The slope of the softplus weight, $1/(1 + e^{-(x - \beta)/T})$,
+is an S-shaped curve in the log-affinity $x$ that rises from $0$ to $1$ around
+$\beta$. It has the same form as the fraction of a kinase occupied at a fixed
+inhibitor concentration in a two-state binding model. Matching it to that
+fraction, at concentration $10^{-\beta}$~M, sets $T = 1/\ln 10 \approx 0.43$
+$\mathrm{p}K$ units, and this contradicts D3: by
+Proposition 1, D3 then holds with $\beta = x_0$ only if
+$\tau^* - x_0 \leq \ln(2^e - 1)/\ln 10 \approx 0.75$ $\mathrm{p}K$ units,
+whereas $\tau^* - x_0$ is $1$ or $2$ on the three $\mathrm{p}K_d$ and
+$\mathrm{p}K_i$ datasets. We fix $T = \tau^* - x_0$ as a convention, under
+which D3 holds for every $\beta$ in $B$.
 
 \subsection{Recovery from Small Panels}
 \label{sec:recovery}

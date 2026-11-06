@@ -71,6 +71,7 @@ aff = pd.read_csv(os.path.join(HERE, "davis_affinity.csv"))
 M_davis = aff.pivot(index='Drug_Index', columns='Protein_Index', values='Affinity').fillna(5.0).values
 active_davis = (M_davis > 6.0).mean() * 100
 print(f"Davis: active (pKd>6) fraction = {active_davis:.2f}% of {M_davis.size} entries")
+print(f"Davis: entries at or below the activity threshold = {100 - active_davis:.1f}%")
 
 corr_55_80 = correlations(M_davis, np.arange(5.5, 8.25, .25))
 corr_65_90 = correlations(M_davis, np.arange(6.5, 9.25, .25))  # pKd>=7 stricter window, same width/step
@@ -101,6 +102,7 @@ print(f"Davis compounds pushed to zero active kinases by the stricter cutoff: "
 M_klaeger = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), index_col=0).values
 active_klaeger = (M_klaeger > 6.0).mean() * 100
 print(f"\nKlaeger: active (pKd>6) fraction = {active_klaeger:.2f}% of {M_klaeger.size} entries")
+print(f"Klaeger: entries at or below the activity threshold = {100 - active_klaeger:.1f}%")
 
 n_active_6 = (M_klaeger > 6.0).sum(axis=1)
 zero_active_6_pct = (n_active_6 == 0).mean() * 100

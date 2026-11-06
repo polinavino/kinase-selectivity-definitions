@@ -1,4 +1,5 @@
 Davis: active (pKd>6) fraction = 16.73% of 24684 entries
+Davis: entries at or below the activity threshold = 83.3%
 
 Davis stricter-cutoff robustness check (S-score tau sweep shifted up by 1.0, from [5.5,8.0] to [6.5,9.0], i.e. a pKd>=7-centered window):
 Cross-definition correlation matrix, original tau sweep [5.5, 8.0]:
@@ -18,6 +19,7 @@ Davis per-compound active-kinase count, mean at pKd>6: 60.7; at pKd>=7: 25.2 (sh
 Davis compounds pushed to zero active kinases by the stricter cutoff: 3 of 68 (0 at pKd>6 cutoff: 0)
 
 Klaeger: active (pKd>6) fraction = 4.50% of 48174 entries
+Klaeger: entries at or below the activity threshold = 95.5%
 Klaeger: median active kinases per compound (pKd>6) = 4.0; 50.5% of compounds have fewer than 5
 Klaeger: 9.9% of compounds have zero kinases above pKd = 6.0
 Klaeger: 29.3% of compounds have zero kinases above pKd = 7.0

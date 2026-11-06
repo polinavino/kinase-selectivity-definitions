@@ -15,10 +15,11 @@ Thank you for a careful reading. In summary:
 
   - The manuscript is consolidated around one question: which analysis
     choices change selectivity rankings. The Introduction and Background are
-    merged, Methods describes only what was done, and Results has four
+    merged, Methods describes only what was done, and Results has five
     sections: how analysis choices change agreement between scores, parameter
     sensitivity and profile associations, the criteria and the gated
-    entropy, and recovery from small panels. The main text is about 6,600 words, against about
+    entropy, the uniqueness of the gated entropy, and recovery from small
+    panels. The main text is about 8,300 words, against about
     11,100 in the version you read, with three figures. Supporting
     Information follows the same order (Sections S1-S8) and holds the full
     evidence for each check. The Abstract is shortened to the journal's limit
@@ -223,7 +224,7 @@ recovers rankings from subpanels no better than that S-score. What it adds is
 narrow: the entropy meets D3 only when binding below the threshold gets zero
 weight, whereas the gated entropy weights that binding and still meets D3, with
 a proof. The proof is in
-Supporting Information Section S4; Methods gives the proposition and the
+Supporting Information Section S4; Methods gives Proposition 1 and the
 reason it holds. The paper also states its limits: the score is discontinuous
 at the floor, and strengthening a target already in the profile can raise it.
 
@@ -376,6 +377,11 @@ lost on small panels are mostly those with few active targets.
 13. Wording. A group-level result about the 16 compounds with no active kinase
 is no longer stated as holding for each compound, and the Anastassiadis floor
 is described as an operational cutoff for weak inhibition, not a noise level.
+
+14. Uniqueness. A new Results section shows that the criteria do not single
+out one score: other scores and a range of gated entropies satisfy them, and
+variants rank compounds almost identically. Methods adds Proposition 2: once
+the weights are fixed, Shannon's conditions make the gated entropy unique.
 
 
 I hope the manuscript is now suitable for publication in Molecular

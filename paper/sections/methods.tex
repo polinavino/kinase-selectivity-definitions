@@ -319,6 +319,7 @@ different references answer different questions.
   w_i = \mathbf{1}[x_i > x_0]\; T \log\!\big(1 + e^{(x_i - \beta)/T}\big), \qquad
   p_i = \frac{w_i}{\sum_j w_j}, \qquad
   f(\mathbf{x}) = \sum_i p_i \log_2 p_i,
+  \label{eq:candidate}
 \end{equation}
 with the emphasis baseline $\beta = x_0$ and the smoothing width
 $T = \tau^* - x_0$ ($1$ $\mathrm{p}K$ unit on Davis and
@@ -328,18 +329,31 @@ $\mathbf{1}[x_i > x_0]$ gives floor-coded pairs zero weight. The softplus
 replaces the entropy's hard cutoff $\max(x_i - \beta, 0)$, which gives a
 kinase just above $\beta$ a weight close to zero.
 
-\textbf{Proposition.} With $\beta = x_0$, adding a kinase with a value in
+\textbf{Proposition 1 (monotonicity).} With $\beta = x_0$, adding a kinase with a value in
 $(x_0, \tau^*]$ never raises $f$ if and only if
 $T \geq (\tau^* - x_0)/\ln(2^e - 1) \approx 0.58\,(\tau^* - x_0)$. With
 $T = \tau^* - x_0$, it never raises $f$ for any $\beta \in B$.
 
-The proof (Supporting Information, Section~S4) has two parts. For the
+The proof of Proposition 1 (Supporting Information, Section~S4) has two parts. For the
 \emph{if} part, every gated target has weight above $m = T\ln 2$, and the added
 target has weight at most $e\,m$. This bound on its share of the total weight
 is enough for the entropy not to decrease. For the \emph{only if} part, for
 any smaller $T$, a profile with one strong target and many kinases just above
 the floor scores higher after a kinase is added at $\tau^*$. For $\beta \neq x_0$
 only the \emph{if} direction is known.
+
+\textbf{Proposition 2 (uniqueness for fixed weights).} Fix the weights, that
+is, $x_0$, $\beta$ and $T$ in Equation~(\ref{eq:candidate}), and let
+$\mathbf{p}$ be the shares of a profile's positive gated weights. Suppose a score has the form $-F(\mathbf{p})$, where $F$ is
+continuous, increases with $n$ when all $n$ shares are equal, and has Shannon's
+grouping property\cite{Shannon1948}: when the kinases are split into groups,
+$F$ equals its value across the groups plus the share-weighted values within
+them. Then the score is a positive multiple of the gated entropy and ranks
+compounds as the gated entropy does.
+
+The proof applies Shannon's uniqueness theorem to the weight shares
+(Supporting Information, Section~S4). R\'enyi entropies of order other than 1
+lack the grouping property, so they are excluded.
 
 Because a target at the floor has weight $0$ and any target above it has weight
 above $m = T\ln 2$, the score jumps when a target's value crosses $x_0$.
