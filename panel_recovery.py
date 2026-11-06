@@ -18,9 +18,9 @@ a target above tau* there. Measures:
   ratio        R(1), clipping level x0
   candidate    gated smooth-hinge entropy (Methods)
   entropy Ka   published association-constant entropy, p_i ~ 1/Kd_i, with the
-               floor-coded entries given no weight (affinity datasets only)
+               floor-coded entries given zero weight (affinity datasets only)
   partition Ka maximum partition index (Cheng et al. 2010), max_i Ka_i / sum_i Ka_i,
-               floor-coded entries given no weight (affinity datasets only); it
+               floor-coded entries given zero weight (affinity datasets only); it
                satisfies weak-addition monotonicity, since an addition at or below
                tau* leaves the maximum unchanged and raises the denominator
 

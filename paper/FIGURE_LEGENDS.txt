@@ -6,7 +6,7 @@ baseline-subtracted log-affinity form (y-axis; median rank over the baseline
 sweep), on Davis and Klaeger. Top: entropy, for which association-constant
 weights are the published form. Bottom: Gini, shown for comparison; its
 published form uses percent inhibition. Grey: floor-coded pairs kept at the
-floor; blue: floor-coded pairs given no weight. Spearman r above each panel.
+floor; blue: floor-coded pairs given zero weight. Spearman r above each panel.
 
 Figure 2. Binding profiles of two Davis compounds, targets sorted by affinity.
 Left: fedratinib, the most ratio-sensitive compound, with JAK2 and GAK tied
@@ -21,8 +21,5 @@ share of clearly separated full-panel pairs that are scored on the subpanel and
 keep their order. Bottom: mean Spearman correlation between subpanel and
 full-panel rankings over compounds scored on both, with +/-1 standard deviation
 across subpanels shaded. Each score is compared with its own full-panel
-ranking. The ratio is R(1). The published entropy and P_max give floor-coded
-pairs no weight and are not defined on Anastassiadis. The S-score at tau* and
-the active count coincide. The entropy and Gini with beta = x0 and the S-score
-with tau = x0 are not drawn: their curves differ from the gated entropy's by at
-most 0.015. Dashed line: 0.90.
+ranking. The published entropy and P_max give floor-coded pairs zero weight
+and are not defined on Anastassiadis. Dashed line: 0.90.

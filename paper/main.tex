@@ -7,6 +7,9 @@
 \usepackage{xcolor}
 \usepackage{microtype}
 
+% citations stay where they are written, before punctuation
+\renewcommand*\natmovechars{}
+
 \author{Polina Vinogradova}
 \affiliation{Independent Researcher}
 \altaffiliation{ORCID: 0000-0003-3271-3841}
@@ -46,6 +49,11 @@ The use of Claude does not transfer any rights over the content of this manuscri
 to Anthropic or any third party.
 \end{acknowledgement}
 
+\section*{Supporting Information}
+Sections S1--S8 of the Supporting Information, with Tables S1--S9 and Figures
+S1--S4, give the full results for each analysis, the proof of the proposition
+and the script behind every reported number.
+
 \section*{Data and Software Availability}
 All data and software used in this study are publicly available.
 The Davis kinase inhibitor profiling dataset is available at
@@ -63,6 +71,9 @@ this repository includes the code and full per-definition results for the
 secondary clinical-outcome analysis (FAERS adverse-event report rates,
 obtained via openFDA queries, and FDA-label discontinuation rates, from FDA
 product labels, for the FDA-approved Klaeger compounds).
+The analyses used Python 3 with NumPy\cite{NumPy}, pandas\cite{pandas} and
+SciPy\cite{SciPy}, and Supporting Information (Table~S9) names the script
+behind every result.
 No confidential data were used in this study.
 All results reported in this manuscript are fully reproducible from the
 publicly available data and code.

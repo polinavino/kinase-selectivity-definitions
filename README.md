@@ -178,7 +178,7 @@ from these files and cited in the Discussion/Limitations sections.
 | additional_datasets_analysis.py | Anastassiadis + Metz; correlations on four datasets, all and active compounds (SI Figure S1), and `cross_dataset_summary.csv` |
 | instability_by_family.py | Profile features against instability, active compounds ranked among themselves, with the all-compound ranking as a check (SI Table S4, Figure S3) |
 | binding_profiles.py | Most ratio-sensitive and most unstable Davis profiles (Figure 2) |
-| metric_fidelity_robustness.py | Published vs. log-affinity entropy/Gini, with floor-coded pairs at the floor or given no weight (Figure 1) |
+| metric_fidelity_robustness.py | Published vs. log-affinity entropy/Gini, with floor-coded pairs at the floor or given zero weight (Figure 1) |
 | panel_size_analysis.py | Panel-size subsampling on all four datasets without the D1 gate (SI Section S5, Figure S4) |
 | candidate_measure.py | Candidate measure: orientation, agreement with the entropy, D2/D3 checks on Klaeger |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical analysis, Limitations) |
@@ -269,7 +269,7 @@ and already committed — it does not need internet access.
 | Pairs reversing as the activity boundary moves (S-score, Davis/Klaeger/Anastassiadis) | 8.4–13.0% |
 | Recovery with D1 applied, targets to mean Spearman 0.90 (Davis/Klaeger/Anastassiadis/Metz) | S-score at floor, entropy at floor, Gini, gated entropy: 20/50/30/65; ratio: >300/200/>250/>150; published entropy: 300/200/–/150; P_max: 300/200/–/>150 |
 | Panel-size threshold without the D1 gate, entropy (SI Section S5) | 50 targets (Davis, Anastassiadis), 80 (Klaeger, Metz) |
-| Published vs. log-affinity entropy (Davis/Klaeger) | r = 0.37/−0.31 with floor-coded pairs at the floor, 0.74/0.79 with them given no weight |
+| Published vs. log-affinity entropy (Davis/Klaeger) | r = 0.37/−0.31 with floor-coded pairs at the floor, 0.74/0.79 with them given zero weight |
 
 ### Repository structure
 

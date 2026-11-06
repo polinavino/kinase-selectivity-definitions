@@ -126,8 +126,8 @@
    Davis broad (row 58): n_active 202, sigma   5.0 | s_score  66.0  entropy  66.0  gini  66.0  ratio  60.0
    Davis broad (row 47): n_active 196, sigma  10.2 | s_score  64.0  entropy  65.0  gini  65.0  ratio  37.0
    Davis broad (row 57): n_active 179, sigma  14.0 | s_score  63.0  entropy  63.0  gini  63.0  ratio  27.0
-   Davis, 32 compounds with > 40 active kinases: mean sigma 7.3 pooled over all four definitions, 3.7 without the ratio's configurations
-   Davis, 45 compounds with > 20 active kinases: mean sigma 7.3 pooled, 4.2 without the ratio's configurations; the other 23: 7.8
+   Davis, 32 compounds with > 40 active kinases: mean sigma 7.3 aggregated over all four definitions, 3.7 without the ratio's configurations
+   Davis, 45 compounds with > 20 active kinases: mean sigma 7.3 aggregated, 4.2 without the ratio's configurations; the other 23: 7.8
    Davis, 8 most stable compounds (sigma, n_active): (2.1, 153), (2.2, 2), (2.8, 106), (2.9, 4), (3.0, 2), (3.2, 6), (3.2, 97), (3.4, 41)
    Klaeger compounds with more active kinases than PF-03814735: 10
    Davis, 5 compounds with 1-2 active kinases: mean sigma 3.9; median ranks row 13: s_score   3.0  entropy   4.0  gini   3.0  ratio  19.0; row 33: s_score   4.5  entropy   4.0  gini   5.0  ratio  13.0; row 51: s_score   4.5  entropy   2.0  gini   1.5  ratio   1.0; row 54: s_score   3.0  entropy   2.0  gini   2.0  ratio  14.0; row 64: s_score   7.0  entropy   7.0  gini   7.0  ratio   7.0
@@ -194,25 +194,29 @@
       383 wild-type or domain constructs, 50 mutant/phosphorylation variants
       adding each compound's sub-threshold variants: entropy rises for beta=5: 0, beta=5.25: 0, beta=5.5: 0, beta=5.75: 0, beta=6: 0, beta=6.25: 0, beta=6.5: 0 of 68 compounds; candidate rises for 0
 
-20. Zero-active compounds: where each definition ranks them, and the pooled rank sigma
+20. Zero-active compounds: where each definition ranks them, and the aggregated rank sigma
     with the undefined entropy/Gini configurations dropped (rank 1 = most selective)
    Klaeger (22 zero-active of 222): median of their median ranks: s_score 24  entropy 20  gini 206  ratio 182; entropy/Gini undefined in 66% of their configurations (mean Gini rank when undefined: 212; when defined: 32)
-      pooled sigma, all configurations             : zero-active  77.9  active  32.2  (Mann-Whitney p=1e-14)
-      pooled sigma, undefined entropy/Gini dropped : zero-active  66.2  active  31.7  (Mann-Whitney p=2e-13)
-      pooled sigma, S-score and ratio only         : zero-active  70.6  active  37.7  (Mann-Whitney p=5e-12)
+      aggregated sigma, all configurations             : zero-active  77.9  active  32.2  (Mann-Whitney p=1e-14)
+      aggregated sigma, undefined entropy/Gini dropped : zero-active  66.2  active  31.7  (Mann-Whitney p=2e-13)
+      aggregated sigma, S-score and ratio only         : zero-active  70.6  active  37.7  (Mann-Whitney p=5e-12)
    Anastassiadis (45 zero-active of 178): median of their median ranks: s_score 32  entropy 30  gini 32  ratio 94; entropy/Gini undefined in 10% of their configurations (mean Gini rank when undefined: 169; when defined: 44)
-      pooled sigma, all configurations             : zero-active  36.6  active  21.8  (Mann-Whitney p=1e-11)
-      pooled sigma, undefined entropy/Gini dropped : zero-active  32.7  active  21.8  (Mann-Whitney p=1e-08)
-      pooled sigma, S-score and ratio only         : zero-active  32.3  active  19.9  (Mann-Whitney p=2e-07)
+      aggregated sigma, all configurations             : zero-active  36.6  active  21.8  (Mann-Whitney p=1e-11)
+      aggregated sigma, undefined entropy/Gini dropped : zero-active  32.7  active  21.8  (Mann-Whitney p=1e-08)
+      aggregated sigma, S-score and ratio only         : zero-active  32.3  active  19.9  (Mann-Whitney p=2e-07)
    Metz (5 zero-active of 704): median of their median ranks: s_score 5  entropy 6  gini 6  ratio 434; entropy/Gini undefined in 0% of their configurations (mean Gini rank when undefined: n/a; when defined: 8)
-      pooled sigma, all configurations             : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
-      pooled sigma, undefined entropy/Gini dropped : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
-      pooled sigma, S-score and ratio only         : zero-active 222.2  active 123.4  (Mann-Whitney p=0.0002)
+      aggregated sigma, all configurations             : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
+      aggregated sigma, undefined entropy/Gini dropped : zero-active 178.5  active 108.1  (Mann-Whitney p=0.001)
+      aggregated sigma, S-score and ratio only         : zero-active 222.2  active 123.4  (Mann-Whitney p=0.0002)
 
 21. SI Table S4 (feature vs within-definition instability) with a Bonferroni correction for the
-    24 tests per dataset (two-tailed Spearman p from r and n)
+    24 tests per dataset (two-tailed Spearman p from r and n); Holm and Benjamini-Hochberg as checks
    klaeger  (n=200, cutoff p < 0.0021): 8 of 13 nominally significant survive: n_active/s_score (p=0.0008), n_active/entropy (p=7e-06), n_active/gini (p=0.0003), top1_top2_gap/ratio (p=8e-05), active_std/s_score (p=0.0003), active_range/s_score (p=5e-06), top2_pkd/s_score (p=0.0001), top2_pkd/gini (p=0.002)
+     Holm: 8 survive: n_active/s_score, n_active/entropy, n_active/gini, top1_top2_gap/ratio, active_std/s_score, active_range/s_score, top2_pkd/s_score, top2_pkd/gini
+     Benjamini-Hochberg: 13 survive: n_active/s_score, n_active/entropy, n_active/gini, top1_top2_gap/ratio, active_std/s_score, active_range/s_score, active_range/entropy, active_range/gini, top2_pkd/s_score, top2_pkd/entropy, top2_pkd/gini, top2_pkd/ratio, active_skew/s_score
    davis    (n=68, cutoff p < 0.0021): 1 of 4 nominally significant survive: top1_top2_gap/ratio (p=0.0001)
+     Holm: 1 survive: top1_top2_gap/ratio
+     Benjamini-Hochberg: 1 survive: top1_top2_gap/ratio
 
 22. The candidate's dependence on the activity threshold tau*, which sets its D1 gate and
     T = tau* - x0: compounds scored, and Spearman with the default ranking on compounds

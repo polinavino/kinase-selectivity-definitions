@@ -17,12 +17,12 @@ Thank you for a careful reading. In summary:
     choices change selectivity rankings. The Introduction and Background are
     merged, Methods describes only what was done, and Results has four
     sections: how analysis choices change agreement between scores, parameter
-    sensitivity and profile associations, monotonicity under weak-target
-    addition (the criteria and the gated entropy together), and recovery
-    from small panels. The main text is about 6,600 words, against about
+    sensitivity and profile associations, the criteria and the gated
+    entropy, and recovery from small panels. The main text is about 6,600 words, against about
     11,100 in the version you read, with three figures. Supporting
     Information follows the same order (Sections S1-S8) and holds the full
-    evidence for each check.
+    evidence for each check. The Abstract is shortened to the journal's limit
+    of 1,000 characters.
   - The title is changed to match this focus (both titles are given above).
     The previous title suggested that the paper characterizes a well-formed
     measure.
@@ -81,14 +81,14 @@ The published forms are compared in Results ("Analysis Choices Change
 Agreement Between Scores"; Table 3, Figure 1), with full results in
 Supporting Information Table S2. As you requested, pairs without a measured
 affinity are excluded. On Davis such pairs are coded at the floor (71% of the
-matrix), so we report both treatments, floor-coded pairs given no weight and
+matrix), so we report both treatments, floor-coded pairs given zero weight and
 kept at the floor. Under both, the published entropy correlates more with the
 ratio than with the S-score or Gini on Davis, Klaeger and Metz. With
-floor-coded pairs given no weight, it correlates with the ratio at 0.86, 0.66
+floor-coded pairs given zero weight, it correlates with the ratio at 0.86, 0.66
 and 0.76, and with the S-score at 0.74, 0.57 and 0.29. With them at the floor,
 its correlation with the S-score on Davis is 0.34. The published and
 log-affinity entropies correlate at 0.37 (Davis) and -0.31 (Klaeger) with
-floor-coded pairs at the floor, and at 0.74 and 0.79 with them given no
+floor-coded pairs at the floor, and at 0.74 and 0.79 with them given zero
 weight. The native percent-inhibition Gini on Anastassiadis correlates with
 the entropy at 0.63 and with the S-score and ratio at 0.34 and 0.33.
 
@@ -193,15 +193,14 @@ for every k. A score that fixes a parameter is assessed with it swept. For the
 ratio, the parameter is the level b in R_b(k) = x(1) - max(x(k+1), b). The
 S-score's threshold reverses 8.4-13.0% of pairs on Davis, Klaeger and
 Anastassiadis and 21.8% on Metz, and the entropy's and Gini's baselines
-7.9-12.4% and 22.5-22.8%. The ratio's level reverses 2.1-13.7% on Klaeger and
-Anastassiadis, 0-2.6% on Davis and 0.04-1.03% on Metz. Under this rule the
+7.9-12.4% and 22.5-22.8%. The ratio's level reverses 3.0-13.7% on Klaeger and
+2.1-9.7% on Anastassiadis, 0-2.6% on Davis and 0.04-1.03% on Metz. Under this rule the
 verdicts are the same for any tolerance up to 13% (Supporting Information
 Table S3). Methods presents D2
 as a boundary-sensitivity diagnostic: a score whose question changes with the
 threshold can reasonably rank compounds differently at different thresholds,
 and fixing the boundary defines the protocol without removing the
-sensitivity. D1 is assessed from each score's reporting rule and D3 from its
-functional form.
+sensitivity. D1 and D3 are judged by construction, and D2 empirically.
 
 
 7. State the conclusion more directly; give vacuous satisfaction its own
@@ -221,8 +220,9 @@ almost as the entropy does (Spearman 0.994-0.998), and almost as the S-score
 with its threshold at the floor does (0.998-0.9997), which also satisfies D1
 and D3, as does the partition index at the most strongly bound target. It
 recovers rankings from subpanels no better than that S-score. What it adds is
-a Shannon entropy whose weights vary smoothly above a fixed gate, with a proof
-of D3. The proof is in
+narrow: the entropy meets D3 only when binding below the threshold gets zero
+weight, whereas the gated entropy weights that binding and still meets D3, with
+a proof. The proof is in
 Supporting Information Section S4; Methods gives the proposition and the
 reason it holds. The paper also states its limits: the score is discontinuous
 at the floor, and strengthening a target already in the profile can raise it.
@@ -265,8 +265,8 @@ Results, and consolidate the qualifications.
 Done, as described in the summary. Methods defines the criteria and the gated
 entropy once ("Evaluation Criteria and the Gated Entropy"). Results gives the
 D2 sweeps with the other parameter sensitivity ("Parameter Sensitivity and
-Profile Associations") and evaluates the rest in one section ("Monotonicity
-Under Weak-Target Addition"), which brings together the criteria table, the
+Profile Associations") and evaluates the rest in one section ("Criteria and the
+Gated Entropy"), which brings together the criteria table, the
 comparators, the gated entropy and the entropy counterexample. Each finding has one main location in the
 main text, with its qualification next to it, and the full evidence is in the
 Supporting Information section that follows the same order.

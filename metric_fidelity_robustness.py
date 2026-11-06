@@ -68,8 +68,8 @@ datasets['Klaeger'] = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), inde
 base = np.arange(5.0, 6.75, 0.25)
 print(f"{'Dataset':10s}{'floor-coded entries':>22s}{'entropy: r(literal, manuscript)':>34s}{'Gini: r(literal, manuscript)':>32s}")
 fig, axes = plt.subplots(2, 2, figsize=(10, 8.5))
-STYLE = {True: dict(color='#888888', marker='o', label='floor-coded entries at the floor'),
-         False: dict(color='#2a78d6', marker='s', label='floor-coded entries given no weight')}
+STYLE = {True: dict(color='#888888', marker='o', label='floor-coded pairs at the floor'),
+         False: dict(color='#2a78d6', marker='s', label='floor-coded pairs given zero weight')}
 for col, (name, M) in enumerate(datasets.items()):
     ent_man = np.median(np.array([to_ranks(-entropy_manuscript(M, b)) for b in base]), 0)
     gini_man = np.median(np.array([to_ranks(gini(np.maximum(M - b, 0))) for b in base]), 0)
@@ -78,7 +78,7 @@ for col, (name, M) in enumerate(datasets.items()):
         ent_lit = to_ranks(-entropy_literal(M, fw))                           # rank1=selective
         gini_lit = to_ranks(gini(ka(M, fw)))                                  # Gini of Ka
         r[fw] = (spearmanr(ent_lit, ent_man)[0], spearmanr(gini_lit, gini_man)[0])
-        print(f"{name:10s}{'at the floor' if fw else 'no weight':>22s}{r[fw][0]:>28.4f}{r[fw][1]:>32.4f}")
+        print(f"{name:10s}{'at the floor' if fw else 'zero weight':>22s}{r[fw][0]:>28.4f}{r[fw][1]:>32.4f}")
         axes[0, col].scatter(ent_lit, ent_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
         axes[1, col].scatter(gini_lit, gini_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
     for row, what in enumerate(("entropy", "Gini")):

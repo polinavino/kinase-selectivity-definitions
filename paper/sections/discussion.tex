@@ -2,7 +2,7 @@
 \label{sec:discussion}
 
 The scores compared here summarize different aspects of a binding profile, and
-how far their rankings agree depends on choices made before any score is
+the discrepancies between their rankings depend on choices made before any score is
 computed. The S-score, entropy and Gini agree more with one another than with
 the ratio when the entropy and Gini are computed from readouts above a common
 baseline and compounds without an active kinase are left out. With
@@ -10,8 +10,8 @@ association-constant weights, or with compounds that have no active kinase
 included, this grouping weakens or disappears. With most entries imputed at the
 floor, as on Metz, the three scores agree because they follow how many kinases
 were measured. Ratio measures match the pairwise definition of selectivity in
-analytical chemistry, a ratio of binding constants for an analyte and an
-interferent.\cite{IUPAC2001} Bosc et al.'s window score also correlates
+analytical chemistry\cite{IUPAC2001}, a ratio of binding constants for an
+analyte and an interferent. Bosc et al.'s window score also correlates
 strongly with the ratio, and their ranking score is a ratio by definition
 (Supporting Information, Section~S6). The ratio and the S-score, entropy and
 Gini disagree most on broad profiles with one dominant target. A selectivity ranking is therefore a statement about a
@@ -58,7 +58,7 @@ operational cutoff for weak inhibition. Fixing the boundary at the floor therefo
 depends on how each dataset codes these pairs. Random subpanels are one sampling design;
 panels chosen by kinase family, as many screening panels are, may recover
 rankings differently. Cell-free panels can also miss interactions that
-cellular target-engagement assays detect.\cite{Binder2026,Binder2026correction}
+cellular target-engagement assays detect\cite{Binder2026,Binder2026correction}.
 
 No score considered here uses target identity or exposure. Two compounds with
 the same affinity distribution receive the same score whether their
@@ -70,9 +70,11 @@ of the approved Klaeger compounds were not associated with adverse-event
 report proportions or label discontinuation rates (Supporting Information,
 Section~S7).
 
-The criteria do not single out one score, and on these data no score was
-preferable on every criterion. The gated entropy's guarantee covers only the
-addition of a weakly bound target. The criteria are also unlikely to be
-complete: a measure should be correctly oriented against a crude proxy such as
-the number of active kinases, since a measure can satisfy D1 and D3 and still
-rank promiscuous compounds as selective.
+The criteria do not single out one score (Results, Uniqueness). On these
+datasets, the S-score with
+$\tau = x_0$ matches the gated entropy on every criterion and in recovery, and
+the entropy with $\beta = x_0$ ranks compounds almost identically, although it
+violates D3. The gated entropy's guarantee covers only the addition of a weakly
+bound target. The criteria are also incomplete (Results),
+so a measure should also be correctly oriented against a crude proxy such as
+the number of active kinases, as the gated entropy is.

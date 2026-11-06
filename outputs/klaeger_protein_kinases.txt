@@ -32,8 +32,8 @@ r(S,G) - r(G,R), all: 2.5%                         -0.05825         -0.34643
 r(S,G) - r(G,R), all: 97.5%                         0.25596          0.05782
 r(S,G) - r(G,R), active: 2.5%                       0.19455          0.15824
 r(S,G) - r(G,R), active: 97.5%                      0.37499          0.35511
-pooled rank sd, zero-active                        73.96784         77.91281
-pooled rank sd, active                             31.16375         32.20944
+aggregated rank sd, zero-active                    73.96784         77.91281
+aggregated rank sd, active                         31.16375         32.20944
 Mann-Whitney p                                      2.8e-11         1.49e-14
 Table 2: n_active vs entropy instability           -0.30228         -0.31177
 Table 2: n_active vs entropy instability (p)       1.01e-05         6.99e-06

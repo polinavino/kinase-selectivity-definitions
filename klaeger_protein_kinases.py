@@ -147,8 +147,8 @@ def summarize(M):
         out[f"r(S,G) - r(G,R), {lab}: 2.5%"] = np.percentile(diff, 2.5)
         out[f"r(S,G) - r(G,R), {lab}: 97.5%"] = np.percentile(diff, 97.5)
     sd = np.vstack(list(ranks.values())).std(0)
-    out["pooled rank sd, zero-active"] = sd[~act].mean() if (~act).any() else np.nan
-    out["pooled rank sd, active"] = sd[act].mean()
+    out["aggregated rank sd, zero-active"] = sd[~act].mean() if (~act).any() else np.nan
+    out["aggregated rank sd, active"] = sd[act].mean()
     out["Mann-Whitney p"] = mannwhitneyu(sd[~act], sd[act]).pvalue if (~act).any() else np.nan
 
     # Table 2 rows: compounds with an active kinase, ranked among themselves

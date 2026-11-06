@@ -177,7 +177,7 @@ def neg_ent_ka(X):
     P = W / np.where(tot <= 0, 1.0, tot)
     return np.where(P > 0, P * np.log2(np.where(P > 0, P, 1.0)), 0.0).sum(1)
 Mc = M_klaeger.values
-Mx = np.where(Mc > 5.0, Mc, np.nan)                       # floor-coded entries given no weight
+Mx = np.where(Mc > 5.0, Mc, np.nan)                       # floor-coded entries given zero weight
 N = Mc.shape[1]
 elig = (Mc > 6.0).any(1)
 full = {"floor-excluded": neg_ent_ka(Mx), "measured-retained": neg_ent_ka(Mm)}

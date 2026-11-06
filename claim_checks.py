@@ -37,7 +37,7 @@ Each section prints the numbers cited in the text for one claim:
  19. D3 under realistic panel expansion: does adding real kinases that a compound
      binds below threshold to a focused panel raise the entropy's or the
      gated entropy's selectivity score? (Results, "Monotonicity Under Weak-Target Addition")
- 20. Zero-active compounds: where each definition ranks them, and their pooled rank
+ 20. Zero-active compounds: where each definition ranks them, and their aggregated rank
      instability with the undefined entropy/Gini configurations dropped (Results; SI Section S3)
  21. SI Table S4 with a Bonferroni correction for the 24 tests per dataset (Results,
      instability predictors)
@@ -126,7 +126,7 @@ def expand(ds, v):
 
 
 def sigma_act(ds, f=None):
-    """Rank sigma among active compounds (one family, or pooled over all four), NaN elsewhere."""
+    """Rank sigma among active compounds (one family, or aggregated over all four), NaN elsewhere."""
     X = RA[ds][f] if f else np.vstack([RA[ds][g] for g in FAM])
     return expand(ds, X.std(0))
 na_k, na_d = (Mk > 6).sum(1), (Md > 6).sum(1)
@@ -410,10 +410,10 @@ for i in np.argsort(-na_d)[:5]:
     print(f"   Davis broad (row {i}): n_active {na_d[i]:3d}, sigma {sig_d[i]:5.1f} | {med_ranks('Davis', i)}")
 broad = na_d > 40
 sig_d_noratio = np.vstack([R['Davis'][f] for f in ('s_score', 'entropy', 'gini')]).std(0)
-print(f"   Davis, {broad.sum()} compounds with > 40 active kinases: mean sigma {sig_d[broad].mean():.1f} pooled over all four "
+print(f"   Davis, {broad.sum()} compounds with > 40 active kinases: mean sigma {sig_d[broad].mean():.1f} aggregated over all four "
       f"definitions, {sig_d_noratio[broad].mean():.1f} without the ratio's configurations")
 wide = na_d > 20
-print(f"   Davis, {wide.sum()} compounds with > 20 active kinases: mean sigma {sig_d[wide].mean():.1f} pooled, "
+print(f"   Davis, {wide.sum()} compounds with > 20 active kinases: mean sigma {sig_d[wide].mean():.1f} aggregated, "
       f"{sig_d_noratio[wide].mean():.1f} without the ratio's configurations; the other {(~wide).sum()}: {sig_d[~wide].mean():.1f}")
 print("   Davis, 8 most stable compounds (sigma, n_active): "
       + ", ".join(f"({sig_d[i]:.1f}, {na_d[i]})" for i in np.argsort(sig_d)[:8]))
@@ -502,7 +502,7 @@ for i in np.where((S > 6.0).any(1))[0]:
 print(f"      adding each compound's sub-threshold variants: entropy rises for "
       + ", ".join(f"beta={b:g}: {e[b]}" for b in betas) + f" of {n} compounds; candidate rises for {c}")
 
-print("\n20. Zero-active compounds: where each definition ranks them, and the pooled rank sigma")
+print("\n20. Zero-active compounds: where each definition ranks them, and the aggregated rank sigma")
 print("    with the undefined entropy/Gini configurations dropped (rank 1 = most selective)")
 for ds, (M, s_thr, betas, floor, tau) in SETTINGS.items():
     act = (M > tau).sum(1) > 0
@@ -527,12 +527,30 @@ for ds, (M, s_thr, betas, floor, tau) in SETTINGS.items():
           + f" (mean Gini rank when undefined: {g_undef}; when defined: {g_def:.0f})")
     for k, v in sig.items():
         v = np.array(v)
-        print(f"      pooled sigma, {k:31s}: zero-active {v[~act].mean():5.1f}  active {v[act].mean():5.1f}"
+        print(f"      aggregated sigma, {k:31s}: zero-active {v[~act].mean():5.1f}  active {v[act].mean():5.1f}"
               f"  (Mann-Whitney p={mannwhitneyu(v[~act], v[act]).pvalue:.1g})")
 
 print("\n21. SI Table S4 (feature vs within-definition instability) with a Bonferroni correction for the"
-      "\n    24 tests per dataset (two-tailed Spearman p from r and n)")
+      "\n    24 tests per dataset (two-tailed Spearman p from r and n); Holm and Benjamini-Hochberg as checks")
 from scipy.stats import t as t_dist
+
+
+def holm_reject(p, a=0.05):
+    o, rej = np.argsort(p), np.zeros(p.size, bool)
+    for k, i in enumerate(o):
+        if p[i] > a / (p.size - k):
+            break
+        rej[i] = True
+    return rej
+
+
+def bh_reject(p, a=0.05):
+    o, rej = np.argsort(p), np.zeros(p.size, bool)
+    ok = np.where(p[o] <= a * np.arange(1, p.size + 1) / p.size)[0]
+    if ok.size:
+        rej[o[:ok.max() + 1]] = True
+    return rej
+
 for ds, n in (('klaeger', int((Mk > 6).any(1).sum())), ('davis', int((Md > 6).any(1).sum()))):
     tab = pd.read_csv(f"{HERE}/instability_predictors_{ds}.csv", index_col=0)
     r = tab.values
@@ -540,6 +558,9 @@ for ds, n in (('klaeger', int((Mk > 6).any(1).sum())), ('davis', int((Md > 6).an
     cut = 0.05 / r.size
     keep = [f"{tab.index[i]}/{tab.columns[j]} (p={pv[i, j]:.1g})" for i, j in zip(*np.where(pv < cut))]
     print(f"   {ds:8s} (n={n}, cutoff p < {cut:.4f}): {len(keep)} of {int((pv < 0.05).sum())} nominally significant survive: {', '.join(keep)}")
+    names = np.array([f"{a}/{b}" for a in tab.index for b in tab.columns])
+    for label, rej in (("Holm", holm_reject(pv.ravel())), ("Benjamini-Hochberg", bh_reject(pv.ravel()))):
+        print(f"     {label}: {rej.sum()} survive: {', '.join(names[rej])}")
 
 print("\n22. The candidate's dependence on the activity threshold tau*, which sets its D1 gate and"
       "\n    T = tau* - x0: compounds scored, and Spearman with the default ranking on compounds"

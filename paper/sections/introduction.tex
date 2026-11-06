@@ -3,18 +3,25 @@
 
 Kinase inhibitors are among the most intensely investigated compound classes
 in drug discovery, with 94 FDA-approved agents and several hundred in
-clinical development.\cite{Roskoski2026} The human kinome comprises more than
-500 proteins with a conserved ATP-binding site,\cite{Manning2002} and
-selectivity is a primary criterion in lead optimization.\cite{Bhullar2018}
+clinical development\cite{Roskoski2026}. The human kinome is comprised of more than
+500 proteins with a conserved ATP-binding site\cite{Manning2002}, and
+selectivity is a primary criterion in lead optimization\cite{Bhullar2018}.
 Profiling assays measure a compound against a panel of tens to hundreds of
 kinases, and the resulting profile is often reduced to one selectivity score.
-Several scores are in use: the S-score, the fraction of the panel bound below
-an affinity cutoff;\cite{Karaman2008} the selectivity entropy, the Shannon
-entropy of the profile treated as a distribution;\cite{Uitdehaag2011} the Gini
-coefficient of the profile;\cite{Graczyk2010} the partition index, the share of
-binding that falls on one target;\cite{Cheng2010} and ratio-based measures,
-which compare the primary target with an off-target. They are often used
-interchangeably, although each summarizes a different aspect of the profile.
+Several scores are in use:
+\begin{itemize}
+  \item the S-score\cite{Karaman2008}, the fraction of the panel bound below an
+        affinity cutoff
+  \item the selectivity entropy\cite{Uitdehaag2011}, the Shannon entropy of the
+        profile treated as a distribution
+  \item the Gini coefficient\cite{Graczyk2010} of the profile
+  \item the partition index\cite{Cheng2010}, the share of binding that falls on
+        one target
+  \item ratio-based measures, which compare the primary target with an
+        off-target.
+\end{itemize}
+They are often used interchangeably, although each summarizes a different
+aspect of the profile.
 
 Earlier work established that these scores can disagree. Bosc et
 al.\cite{Bosc2017} compared six scores on the Davis and Anastassiadis datasets,
@@ -24,7 +31,7 @@ substantially between them. They traced individual
 disagreements to profile shape, such as a broad binder with one dominant
 target. The KInhibition platform\cite{KInhibition2018} noted that conflicting
 results across metrics are common and introduced a composite score, and a
-later resource from the same group offers a choice of scores.\cite{Gujral2026}
+later resource\cite{Gujral2026} from the same group offers a choice of scores.
 Miljkovic and Bajorath\cite{Bajorath2018} found the concentration-dependent
 selectivity score of Klaeger et al.\cite{Klaeger2017} broadly consistent with
 activity data from ChEMBL. Karaman et al.\cite{Karaman2008} and Uitdehaag et
@@ -51,6 +58,8 @@ we state three criteria for a selectivity measure: activity eligibility,
 consistency across placements of the activity boundary, and monotonicity when
 a weakly bound kinase is added. We evaluate the existing scores and simple
 comparators against them, and give a gated, smooth-hinge entropy with a proof
-of the third. Finally, we measure how well each score's ranking is recovered
-from random subpanels, and for how many compounds. Stating such criteria
-follows the axiomatic approach Shannon used for entropy.\cite{Shannon1948}
+of the third. Stating such criteria
+follows the axiomatic approach Shannon\cite{Shannon1948} used for entropy.
+We measure how well each score's ranking is recovered
+from random subpanels, and for how many compounds. We then give recommendations
+for reporting selectivity scores.

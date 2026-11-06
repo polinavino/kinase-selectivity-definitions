@@ -1,23 +1,13 @@
-Kinase inhibitor selectivity is summarized by several competing scores,
-including the S-score, selectivity entropy, Gini coefficient and ratio-based
-measures, which are often used interchangeably. We asked which analysis choices
-change the resulting compound rankings, on four profiling datasets spanning
-three assay technologies, each curated to one reference target per human
-protein kinase. Agreement between the scores depends on how affinities are
-weighted, which compounds are ranked, and how pairs without detected binding
-are treated. With entropy and Gini on a common log-affinity scale, the S-score,
-entropy and Gini agree more with one another than with the ratio among
-compounds with an active kinase. The entropy as originally published, with
-association-constant weights, does not. Moving the activity boundary between
-the floor and the activity threshold reverses 8-13% of compound pairs under the
-S-score, entropy and Gini on three datasets, and over 20% on the fourth, whose
-rankings largely follow how many kinases were measured. We state three criteria
-for a selectivity measure: activity eligibility, consistency across placements
-of the activity boundary, and monotonicity when a weakly bound kinase is added.
-No boundary parameter we tested meets the second, so the boundary must be fixed
-in the analysis protocol and its effect reported. Monotonicity holds for simple
-measures such as a count of active kinases and for a gated, smooth-hinge
-entropy we construct, which on these data ranks compounds almost as the share
-of targets with detected binding does. On random subpanels, scores that rank compounds by this
-share recover rankings from fewer targets than the ratio and the published
-entropy, but some compounds can no longer be scored.
+On four kinase profiling datasets, we asked which analysis choices change the
+rankings given by the S-score, entropy, Gini and ratio. Agreement depends on
+how affinities are weighted, which compounds are ranked, and how pairs without
+detected binding are treated. Using log-affinities, the S-score, entropy and
+Gini agree more with one another than with the ratio among active compounds;
+the published entropy does not. Moving the activity boundary reverses 8-13% of
+compound pairs for these three scores on three datasets and over 20% on the
+fourth. No boundary parameter we tested meets our criterion of consistency
+across placements, so the boundary must be fixed by protocol. Monotonicity when
+a weakly bound kinase is added holds for simple measures and a gated entropy we
+construct. On subpanels, scores that follow the share of targets with detected
+binding recover rankings from fewer targets than the ratio and the published
+entropy, but some compounds then cannot be scored.

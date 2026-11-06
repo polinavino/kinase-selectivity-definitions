@@ -38,9 +38,9 @@ ratio) are used interchangeably. The paper:
 - Published (association-constant) entropy correlates most with the ratio on
   Davis, Klaeger and Metz under both treatments of floor-coded pairs. Against
   the log-affinity entropy: r = 0.37/-0.31 (Davis/Klaeger) with floor-coded
-  pairs at the floor, 0.74/0.79 with them given no weight (Figure 1).
+  pairs at the floor, 0.74/0.79 with them given zero weight (Figure 1).
 - Compounds with no active kinase (Klaeger, 22 of 222): all 20 most unstable
-  when all compounds are ranked together; pooled rank sigma 77.9 vs 32.2,
+  when all compounds are ranked together; aggregated rank sigma 77.9 vs 32.2,
   from the definitions' conventions for such profiles. Among the 20 most
   unstable active compounds (ranked among themselves), 5 have a top1-top2 gap
   below 0.1, 5 have >= 10 active kinases and 10 neither.

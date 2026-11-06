@@ -4,7 +4,7 @@ activity threshold; D2: baseline-driven instability), using
 the same Klaeger computations that produced the numbers quoted in the paper
 (SI Figure S2; Results).
 
-Left panel (D1): pooled rank instability (std across all four existing
+Left panel (D1): aggregated rank instability (std across all four existing
 definitions' parameter sweeps) for compounds with no binding above the pK_d > 6
 activity threshold vs. compounds with at least one active kinase. 16 of the 22
 such compounds on the curated panel bind some kinase above the floor of
@@ -12,7 +12,7 @@ pK_d = 5.0; "zero-active" is defined against the activity threshold, not the
 floor. Under D1 these compounds receive no score at all, rather than a
 low-instability one -- shown as a hatch pattern, not a bar height.
 
-The pooled statistic is also decomposed per definition below, because it is not
+The aggregated statistic is also decomposed per definition below, because it is not
 uniform across the four: it is driven by the Gini, is small for the entropy and
 the ratio, and reverses in sign for the S-score (whose score is exactly 0 for every
 zero-active compound at thresholds of pK_d 6 or above, so its ranks are stable
@@ -76,7 +76,7 @@ n_drugs, n_kin = M.shape
 n_active = (M > TAU_STAR).sum(1)
 has_active = n_active > 0
 
-# ---------------- D1: pooled rank instability, zero-active vs active ----------------
+# ---------------- D1: aggregated rank instability, zero-active vs active ----------------
 s_thresholds, ent_baselines, gini_baselines, ratio_top_ns = (
     np.arange(5.5, 8.25, 0.25), np.arange(5.0, 6.75, 0.25),
     np.arange(5.0, 6.75, 0.25), list(range(1, 6)))
@@ -96,7 +96,7 @@ print(f"D1: max pK_d among the {(~has_active).sum()} zero-active compounds: "
       f"{M[~has_active].max(1).min():.2f} to {M[~has_active].max(1).max():.2f}; "
       f"{int((M[~has_active].max(1) > FLOOR).sum())} bind some kinase above the floor of {FLOOR}")
 
-# Per-definition decomposition: the pooled figure above is NOT uniform across the four.
+# Per-definition decomposition: the aggregated figure above is NOT uniform across the four.
 print("\nD1 decomposed per definition (mean rank std within that definition's own sweep):")
 per_def = {
     's_score': [to_ranks(s_score(M, t)) for t in s_thresholds],

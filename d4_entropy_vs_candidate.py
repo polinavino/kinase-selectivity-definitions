@@ -165,7 +165,7 @@ print(f"   one target at 7 and fifty at 5.1: {one(base):+.5f}; one of the fifty 
       f"({'higher' if one(stronger) > one(base) else 'not higher'}: strengthening an existing off-target "
       f"is not covered by D3)")
 
-print("\n8. The published (association-constant) entropy, floor-coded pairs given no weight")
+print("\n8. The published (association-constant) entropy, floor-coded pairs given zero weight")
 def ka_score(xs, floor=5.0):
     x = np.asarray(xs, float)
     w = np.where(x > floor, 10.0 ** (x - 9.0), 0.0)

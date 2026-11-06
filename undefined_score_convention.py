@@ -12,7 +12,7 @@ script states that convention explicitly and reports the alternative Reviewer
 1 asked for: the zero-active vs. active rank-sigma contrast recomputed using,
 for every compound, only the baseline sweep configurations in which its
 entropy/Gini score is actually defined (max affinity > beta), rather than
-pooling every configuration regardless of degeneracy.
+aggregating every configuration regardless of degeneracy.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -62,8 +62,8 @@ for name, ranks in [('entropy', ent_ranks_pooled), ('gini', gini_ranks_pooled)]:
     u, p = mannwhitneyu(sigma[~active_6], sigma[active_6])
     print(f"Current convention -- {name}: zero-active mean sigma={sigma[~active_6].mean():.1f}  "
           f"active mean sigma={sigma[active_6].mean():.1f}  (Mann-Whitney p={p:.2e})")
-pooled = np.vstack([ent_ranks_pooled, gini_ranks_pooled])
-sigma_pooled = pooled.std(axis=0)
+aggregated = np.vstack([ent_ranks_pooled, gini_ranks_pooled])
+sigma_pooled = aggregated.std(axis=0)
 u, p = mannwhitneyu(sigma_pooled[~active_6], sigma_pooled[active_6])
 print(f"\nPooled convention (degenerate configs scored as entropy=Gini=0, included in every sweep):")
 print(f"  mean rank sigma, zero-active: {sigma_pooled[~active_6].mean():.1f}  "
@@ -125,7 +125,7 @@ zero_valid = valid & (~active_6)
 act_valid = valid & active_6
 if zero_valid.sum() >= 1 and act_valid.sum() >= 1:
     u2, p2 = mannwhitneyu(sigma_defined[zero_valid], sigma_defined[act_valid])
-    print(f"  pooled (entropy+gini): {valid.sum()} of {n_drugs} computable; "
+    print(f"  aggregated (entropy+gini): {valid.sum()} of {n_drugs} computable; "
           f"mean rank sigma, zero-active (n={zero_valid.sum()}): {sigma_defined[zero_valid].mean():.1f}  "
           f"active (n={act_valid.sum()}): {sigma_defined[act_valid].mean():.1f}  (Mann-Whitney p={p2:.2e})")
 print("\nDone.")

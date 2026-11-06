@@ -107,7 +107,7 @@ Table~3, all: R against S, E, G & 0.223, 0.455, 0.616 & 0.078, 0.344, 0.655 \\
 Table~3, active: S--E, S--G, E--G & 0.913, 0.911, 0.998 & 0.897, 0.892, 0.997 \\
 Table~3, active: R against S, E, G & 0.418, 0.621, 0.634 & 0.378, 0.622, 0.635 \\
 $r(\mathrm{S,G}) - r(\mathrm{G,R})$, active, 95\% interval & $[0.195, 0.375]$ & $[0.158, 0.355]$ \\
-Pooled rank $\sigma$, zero-active vs.\ active & 74.0 vs.\ 31.2 & 77.9 vs.\ 32.2 \\
+Aggregated rank $\sigma$, zero-active vs.\ active & 74.0 vs.\ 31.2 & 77.9 vs.\ 32.2 \\
 Table~S4: $n_\mathrm{active}$, entropy & $-0.302$ & $-0.312$ \\
 Table~S4: top$_1$--top$_2$ gap, ratio & $-0.291$ & $-0.275$ \\
 Table~S4: active range, S-score & $-0.315$ & $-0.317$ \\
@@ -160,7 +160,7 @@ profiles too few inhibitors for a ranking analysis.
 
 Table~S2 gives the correlation of the published, association-constant entropy
 with the median rankings of the S-score, the log-affinity Gini and the ratio,
-with floor-coded pairs given no weight and kept at the floor, and the native
+with floor-coded pairs given zero weight and kept at the floor, and the native
 percent-inhibition Gini on Anastassiadis.
 (\texttt{original\_\allowbreak{}operationalization\_\allowbreak{}robustness.py})
 
@@ -172,13 +172,13 @@ weighting) with the median rankings of the other definitions.}
 \toprule
 Dataset & Floor-coded pairs & S-score & Gini & Ratio \\
 \midrule
-Davis ($n = 68$)            & no weight    & 0.738    & 0.736    & 0.861 \\
+Davis ($n = 68$)            & zero weight    & 0.738    & 0.736    & 0.861 \\
                             & at the floor & 0.344    & 0.368    & 0.688 \\
-Klaeger ($n = 222$)         & no weight    & 0.571    & 0.530    & 0.657 \\
+Klaeger ($n = 222$)         & zero weight    & 0.571    & 0.530    & 0.657 \\
                             & at the floor & $-0.597$ & 0.077    & 0.648 \\
-Klaeger, active ($n = 200$) & no weight    & 0.564    & 0.782    & 0.916 \\
+Klaeger, active ($n = 200$) & zero weight    & 0.564    & 0.782    & 0.916 \\
                             & at the floor & $-0.412$ & $-0.094$ & 0.591 \\
-Metz ($n = 704$)            & no weight    & 0.291    & 0.385    & 0.758 \\
+Metz ($n = 704$)            & zero weight    & 0.291    & 0.385    & 0.758 \\
                             & at the floor & 0.241    & 0.342    & 0.742 \\
 \bottomrule
 \end{tabular}
@@ -205,7 +205,7 @@ compounds for the weak ones), and omits unmeasured pairs. The published entropy
 then correlates with the S-score, Gini and ratio at $0.558$, $0.531$ and $0.663$
 over all compounds and $0.558$, $0.778$ and $0.918$ over the 200 with an
 active kinase, against $0.571$, $0.530$, $0.657$ and $0.564$, $0.782$, $0.916$
-with floor-coded pairs given no weight. The two rankings correlate at $0.9987$
+with floor-coded pairs given zero weight. The two rankings correlate at $0.9987$
 over all compounds and $0.9996$ over active ones. On the subpanels of the
 recovery analysis, $p^*$ stays at 200 targets, and the mean Spearman
 correlation at 50 targets is $0.6025$ against $0.6014$.
@@ -236,9 +236,8 @@ instead of median ranks changes no all-compound correlation by more than $0.036$
 \clearpage
 \section*{S3: Ranking sensitivity and profile associations}
 
-\paragraph{Compounds with no active kinase.} Pooled across the four
-definitions' sweeps, compounds with no active kinase have higher rank
-instability than active compounds on every dataset where they occur ($77.9$
+\paragraph{Compounds with no active kinase.} Compounds with no active kinase
+have higher aggregated rank instability than active compounds on every dataset where they occur ($77.9$
 against $32.2$ on Klaeger, $36.6$ against $21.8$ on Anastassiadis, and $178.5$
 against $108.1$ on Metz, which has five such compounds). The contrast comes
 mainly from the definitions disagreeing. Within a single definition's sweep on
@@ -249,9 +248,9 @@ reverses for the S-score ($19.0$ against $25.7$, $p = 0.01$), whose score is $0$
 for every such compound at thresholds of 6 or above. On Anastassiadis it is
 significant for the Gini, the entropy and the ratio. On Metz it reverses for
 the S-score, the entropy and the Gini ($7.8$ against $71.2$, $11.0$ against
-$24.5$, and $5.4$ against $24.2$; all $p < 0.05$). On Klaeger, the pooled
+$24.5$, and $5.4$ against $24.2$; all $p < 0.05$). On Klaeger, the aggregated
 contrast persists with the undefined entropy and Gini configurations dropped
-($66.2$ against $31.7$) and with only the S-score and ratio pooled ($70.6$
+($66.2$ against $31.7$) and with only the S-score and ratio aggregated ($70.6$
 against $37.7$, both $p < 0.001$). Computed only over each compound's defined
 configurations, the 16 Klaeger compounds with no active kinase that have at
 least two defined configurations have lower mean instability than active ones
@@ -340,7 +339,9 @@ kinases correlates with entropy and Gini instability at $-0.274$ and $-0.272$
 (both $p < 0.001$). Figure~S3 plots each definition's strongest correlate. With a
 Bonferroni correction for the 24 tests per dataset, 8 of the 13 nominally
 significant Klaeger correlations survive, and on Davis only the ratio--gap
-correlation. On Anastassiadis and Metz, with active compounds ranked among
+correlation. The Holm procedure gives the same result; the Benjamini--Hochberg
+procedure keeps 13 Klaeger correlations and, on Davis, again only the
+ratio--gap correlation. On Anastassiadis and Metz, with active compounds ranked among
 themselves, the number of active kinases correlates with entropy instability at
 $-0.38$ and $-0.42$ (both $p < 0.001$), and the top$_1$--top$_2$ gap with ratio
 instability at $0.00$ ($p = 0.97$) and $-0.26$ ($p < 0.001$). Without the eight
@@ -574,7 +575,8 @@ $\alpha = 3$   & $1.14$ & $1.65$ & $0.998$--$0.999$ & 80 \\
 \end{tabular}
 \end{table}
 
-\paragraph{Noise.} Under the noise model of the main text (Methods), the
+\paragraph{Noise.} With random noise added to the measured values, as described
+in the main text (Methods), the
 number of compounds whose D1 status changed in a draw was at most 4 (Klaeger,
 noise $0.1$) and 11 (Klaeger, $0.3$), at most 10 on Anastassiadis ($9$
 percentage points) and 5 on Metz ($0.3$), and none on Davis. Over the compounds
@@ -678,10 +680,11 @@ individual subpanels above $0.90$ is $70\%$, $72\%$, $86\%$ and $62\%$ for the
 gated entropy on Davis, Klaeger, Anastassiadis and Metz, $64$--$90\%$ for the
 S-score at $x_0$, $66$--$82\%$ for the entropy at $x_0$, $62$--$74\%$ for the
 Gini, $60$--$80\%$ for the S-score at $\tau^*$, and $78$--$90\%$ for the entropy
-at $\tau^*$. Keeping floor-coded pairs at the floor instead of giving them no
+at $\tau^*$. Keeping floor-coded pairs at the floor instead of giving them zero
 weight leaves the published entropy's $p^*$ unchanged (300, 200 and 150
 targets). With bars of $0.80$, $0.85$ or $0.95$ instead of $0.90$, the
-share-following scores reach the bar no later than the S-score and the entropy
+share-following scores (the S-score and entropy at $x_0$, the Gini and the
+gated entropy) reach the bar no later than the S-score and the entropy
 at $\tau^*$ on Davis, Klaeger and Anastassiadis, and the ratio, the published
 entropy and $P_{\max}$ are the slowest scores on every dataset. On a 50-target
 subpanel, a compound with one active target stays scored with probability
@@ -782,7 +785,7 @@ Methods; S1 & Metz coverage of the retained compounds & \texttt{metz\_\allowbrea
 Methods; S2 & Mean instead of median ranks & \texttt{claim\_\allowbreak{}checks.py} (3) \\
 Table~3; Results, Agreement & Correlations between definitions; Klaeger active compounds; bootstrap & \texttt{selectivity\_\allowbreak{}analysis.py}, \texttt{klaeger\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (2) \\
 Table~3; Figure~1; Table~S2 & Published entropy and Gini, both floor treatments; every measured Klaeger affinity retained & \texttt{original\_\allowbreak{}operationalization\_\allowbreak{}robustness.py}, \texttt{metric\_\allowbreak{}fidelity\_\allowbreak{}robustness.py} \\
-Results, Agreement; S3 & Compounds with no active kinase: ranks, pooled and per-definition instability, undefined configurations & \texttt{claim\_\allowbreak{}checks.py} (13, 20), \texttt{failure\_\allowbreak{}mode\_\allowbreak{}illustration.py}, \texttt{undefined\_\allowbreak{}score\_\allowbreak{}convention.py} \\
+Results, Agreement; S3 & Compounds with no active kinase: ranks, aggregated and per-definition instability, undefined configurations & \texttt{claim\_\allowbreak{}checks.py} (13, 20), \texttt{failure\_\allowbreak{}mode\_\allowbreak{}illustration.py}, \texttt{undefined\_\allowbreak{}score\_\allowbreak{}convention.py} \\
 Results, Agreement; S3 & Targets of the compounds with no detected binding & \texttt{claim\_\allowbreak{}checks.py} (1) \\
 Results, Agreement; Figure~S1; S2 & Four datasets, all and active compounds; Metz coverage dependence & \texttt{additional\_\allowbreak{}datasets\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (10, 11) \\
 Methods; Results, Agreement; Table~S1 & Released against curated panels & \texttt{davis\_\allowbreak{}gene\_\allowbreak{}level.py}, \texttt{klaeger\_\allowbreak{}protein\_\allowbreak{}kinases.py} \\
@@ -794,12 +797,12 @@ Figure~2 & Binding profiles of two Davis compounds & \texttt{binding\_\allowbrea
 Results, Sensitivity; Table~S4; Figure~S3 & Profile features and instability, both ranking populations; compounds defined at every baseline; Anastassiadis and Metz relations & \texttt{instability\_\allowbreak{}by\_\allowbreak{}family.py}, \texttt{additional\_\allowbreak{}datasets\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (4, 8, 15--17, 21) \\
 S3 & Undefined features; further features & \texttt{feature\_\allowbreak{}placeholder\_\allowbreak{}sensitivity.py}, \texttt{instability\_\allowbreak{}predictor\_\allowbreak{}candidates.py} \\
 Results, Sensitivity; S3 & Broad profiles; most unstable and most stable compounds & \texttt{claim\_\allowbreak{}checks.py} (5--7, 18) \\
-Methods; Results, Monotonicity; S4 & Bound on $T$; entropy and gated entropy under weak addition; worked example; discontinuity; strengthening example; sharpness & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} \\
-Results, Monotonicity & Realistic panel expansion & \texttt{claim\_\allowbreak{}checks.py} (19) \\
-Results, Monotonicity; Table~S5 & Orientation, D3 at $\tau^*$, smoothing width & \texttt{candidate\_\allowbreak{}validation.py} \\
-Results, Monotonicity & Agreement with the entropy & \texttt{candidate\_\allowbreak{}measure.py} \\
-Results, Monotonicity; S4 & Dependence on $\tau^*$; noise & \texttt{claim\_\allowbreak{}checks.py} (22, 23) \\
-Results, Monotonicity; Results, Recovery; Figure~3; S5 & Coverage, recoverability, conditional agreement, variability, influence, agreement with the S-score at $x_0$; other bars; probability of staying scored & \texttt{panel\_\allowbreak{}recovery.py} \\
+Methods; Results, Criteria; S4 & Bound on $T$; entropy and gated entropy under weak addition; worked example; discontinuity; strengthening example; sharpness & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} \\
+Results, Criteria & Realistic panel expansion & \texttt{claim\_\allowbreak{}checks.py} (19) \\
+Results, Criteria; Table~S5 & Orientation, D3 at $\tau^*$, smoothing width & \texttt{candidate\_\allowbreak{}validation.py} \\
+Results, Criteria & Agreement with the entropy & \texttt{candidate\_\allowbreak{}measure.py} \\
+Results, Criteria; S4 & Dependence on $\tau^*$; noise & \texttt{claim\_\allowbreak{}checks.py} (22, 23) \\
+Results, Criteria; Results, Recovery; Figure~3; S5 & Coverage, recoverability, conditional agreement, variability, influence, agreement with the S-score at $x_0$; other bars; probability of staying scored & \texttt{panel\_\allowbreak{}recovery.py} \\
 S4; Table~S6 & Variants of the gated entropy & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
 S5; Figure~S4; Table~S7 & Recovery without the D1 gate & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py}, \texttt{claim\_\allowbreak{}checks.py} (14) \\
 Discussion; S6; Table~S8 & Bosc et al.'s scores and the CATDS proxy & \texttt{bosc\_\allowbreak{}catds\_\allowbreak{}comparison.py} \\

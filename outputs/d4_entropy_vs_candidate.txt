@@ -50,5 +50,5 @@
    jump at the floor: one target at 7 with a second at 5.0: +0.0000 bits; second at 5.0 + 1e-8: -0.8045 bits
    one target at 7 and fifty at 5.1: -5.64215; one of the fifty raised to 6.0: -5.63708 (higher: strengthening an existing off-target is not covered by D3)
 
-8. The published (association-constant) entropy, floor-coded pairs given no weight
+8. The published (association-constant) entropy, floor-coded pairs given zero weight
    one target at 6.01 and fifty at 5.01: -5.3532 bits; one kinase added at 6.0: -5.1879 bits (rises: D3 violated)
