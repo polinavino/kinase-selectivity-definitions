@@ -80,24 +80,26 @@ of the approved Klaeger compounds were not associated with adverse-event
 report proportions or label discontinuation rates (Supporting Information,
 Section~S7).
 
-The criteria do not single out one score: the gated entropy is unique only
-once its weights are fixed, and the criteria do not fix them (Results,
-``Uniqueness of the Gated Entropy''). On these
-datasets, the S-score with
-$\tau = x_0$ matches the gated entropy on every criterion and in recovery, and
-the entropy with $\beta = x_0$ ranks compounds almost identically (although it
-violates D3). The gated entropy's guarantee covers the usual way a panel grows: 
-most kinases
+The four criteria play different roles. D1 is a reporting rule that any score
+can adopt. D2 is a diagnostic: no boundary parameter meets it, so the boundary
+must be fixed by protocol. D3 is the criterion on which the scores differ, and
+the gated entropy's guarantee covers the usual way a panel grows: most kinases
 added to a panel bind the compound weakly or not at all, as $83.3\%$ of the
 Davis entries and $95.5\%$ of the Klaeger entries lie below the activity
 threshold. The guarantee does not extend to strengthening a target already in
-the profile.
+the profile. D4 calibrates the direction of a score on profiles with equally
+strong targets. Without it, D1 to D3 would not rule out the active count with
+its sign reversed. The criteria are necessary conditions, and they do not single 
+out one score. The gated entropy is
+unique once its weights are fixed, Shannon's
+conditions single it out (Proposition 2), but the criteria do not fix the
+weights (Results, ``Uniqueness of the Gated Entropy''). On these datasets, the S-score with
+$\tau = x_0$ matches the gated entropy on every criterion and in recovery, and
+the entropy with $\beta = x_0$ ranks compounds almost identically, although it
+violates D3.
 
-The criteria are also incomplete. A complete set of criteria would rule out a
-score that ranks compounds in the wrong direction. The active count with its
-sign reversed is such a score: it calls the most promiscuous compounds the most
-selective. Yet it meets the same criteria as the gated entropy, satisfying D1
-and D3 and failing D2 as every score with a boundary parameter does (Results).
-The criteria therefore do not rule it out. What they lack is a requirement on
-direction: a score should fall as the number of active kinases rises, as the
-gated entropy's does (Spearman $-0.78$ to $-0.97$).
+How closely a score follows the number of active kinases on real data, such as
+the gated entropy's Spearman $-0.78$ to $-0.97$, measures its agreement with
+breadth on those data, not whether it is correctly oriented. A score that
+measures concentration can correctly rank a compound with more active targets
+as more selective when its binding is more concentrated.

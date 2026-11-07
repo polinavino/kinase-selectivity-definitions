@@ -11,9 +11,10 @@ Preprint: ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1).
 Introduction (merged with Background); Methods (datasets and target selection,
 score implementations, ranking comparisons, criteria and the gated entropy,
 recovery design); Results (analysis choices and agreement; parameter
-sensitivity and profile associations; monotonicity under weak-target addition;
-recovery from small panels); Discussion; Conclusion. Main text about 6,600
-words; SI Sections S1-S8 follow the same order.
+sensitivity and profile associations; criteria and the gated entropy;
+uniqueness of the gated entropy; recovery from small panels); Discussion;
+Conclusion. Main text about 9,400 words; SI Sections S1-S8 follow the same
+order.
 
 ## Research question
 Existing kinase inhibitor selectivity definitions (S-score, entropy, Gini,
@@ -21,8 +22,9 @@ ratio) are used interchangeably. The paper:
 1. Characterizes where and why they disagree, on four datasets curated to one
    reference target per human protein kinase (curate_panels.py)
 2. Relates rank instability to features of the binding profile
-3. States three properties (D1 activity eligibility, D2 distributional
-   consistency, D3 monotonicity under weak-target addition) and evaluates
+3. States four criteria (D1 activity eligibility, D2 distributional
+   consistency, D3 monotonicity under weak-target addition, D4 orientation on
+   profiles with equally strong targets) and evaluates
    the four definitions, three comparators and a candidate against them
 4. Evaluates recovery from random subpanels separately (panel_recovery.py)
 
@@ -61,7 +63,13 @@ ratio) are used interchangeably. The paper:
   with beta = tau*, the ratio, P_max and the gated entropy (not the
   published entropy); not for the S-score with
   tau > x0, the Gini or the entropy with beta < tau*. The former D2 (bounded
-  gap sensitivity) was dropped.
+  gap sensitivity) was dropped. D4 holds for every score studied; the reversed
+  active count (which meets D1-D3 as the gated entropy does), the gated
+  entropy without its gate and the published entropy with floor-coded pairs
+  kept at the floor fail it (P_max keeps D4 under either floor treatment). Proposition 3: turning a floor-coded pair
+  into a target no stronger than the weakest weighted one never raises -H,
+  P_max or the Gini. Proposition 2: for fixed weights, Shannon's conditions
+  make the gated entropy unique.
 - Candidate (gated smooth-hinge entropy): D1 and D3 (proved) while weighting
   binding below tau* continuously; ranks almost identically to the entropy
   (0.994-0.998) and to the S-score at x0 (0.998-0.9997). Noise check with the

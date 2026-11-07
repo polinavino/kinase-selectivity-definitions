@@ -34,7 +34,7 @@ TABLES  (one file per table, separate slot each)  -> submission_tables/
   table2.tex   = score implementations
   table3.tex   = Spearman correlations between definitions, including the
                  published entropy
-  table4.tex   = the three criteria for each score
+  table4.tex   = the four criteria for each score
   (The Table*.docx files predate this reorganization and must be rebuilt
   from these .tex tables before upload.)
 

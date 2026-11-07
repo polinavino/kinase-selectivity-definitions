@@ -19,7 +19,7 @@ Thank you for a careful reading. In summary:
     sections: how analysis choices change agreement between scores, parameter
     sensitivity and profile associations, the criteria and the gated
     entropy, the uniqueness of the gated entropy, and recovery from small
-    panels. The main text is about 8,300 words, against about
+    panels. The main text is about 9,400 words, against about
     11,100 in the version you read, with three figures. Supporting
     Information follows the same order (Sections S1-S8) and holds the full
     evidence for each check. The Abstract is shortened to the journal's limit
@@ -49,14 +49,18 @@ Thank you for a careful reading. In summary:
     protocol decision, not as meeting distributional consistency, which no
     boundary parameter we tested meets. The former D2 (bounded gap
     sensitivity) is removed, because different reference off-targets answer
-    different questions. Three criteria remain: D1, D2 (distributional
-    consistency, formerly D3) and D3 (monotonicity under weak-target
-    addition, formerly D4). Criterion numbers below refer to the revised
-    manuscript.
+    different questions. D2 (distributional consistency) and D3
+    (monotonicity under weak-target addition) were D3 and D4. A new D4
+    (orientation) requires that, on a fixed panel, binding equally strongly
+    to more targets never makes a compound look more selective. Without it,
+    the active count with its sign reversed would meet the other criteria as
+    the gated entropy does. Every score studied satisfies it with floor-coded
+    pairs given zero weight, as in the main analyses. Criterion
+    numbers below refer to the revised manuscript.
   - Simple comparators are added: the active count, the entropy with its
     baseline at the activity threshold, the S-score with its threshold at the
     floor, and the partition index at the most strongly bound target. Several
-    satisfy D1 and D3, so the gated entropy is presented narrowly (Major 7).
+    satisfy D1, D3 and D4, so the gated entropy is presented narrowly (Major 7).
 
 Re-running every analysis after a review of the code against Methods also
 found errors that change some reported numbers. They are listed under

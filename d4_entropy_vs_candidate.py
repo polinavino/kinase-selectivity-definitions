@@ -3,8 +3,8 @@ Monotonicity under weak off-target addition (the paper's D3) for the entropy and
 the candidate.
 
 As stated in Methods: adding a kinase with affinity in (x0, tau*] must not raise
-a compound's selectivity score. This script supports Methods (the proposition)
-and Results, "Monotonicity Under Weak-Target Addition" (SI Section S4):
+a compound's selectivity score. This script supports Methods (Propositions 1
+and 3, and D4) and Results, "Criteria and the Gated Entropy" (SI Section S4):
 
 1. The condition on the smoothing width T under which the candidate provably
    satisfies D3 (with emphasis baseline beta = floor x0): every gated weight is
@@ -21,6 +21,10 @@ and Results, "Monotonicity Under Weak-Target Addition" (SI Section S4):
 6. How much moving T to tau* - x0 changes the Metz and Anastassiadis rankings.
 7. Two limits of the candidate: its jump at the floor, and that strengthening an
    existing off-target (rather than adding one) can raise its score.
+8. A D3 counterexample for the published entropy.
+9. D4 (orientation) on reference profiles with m equally strong targets.
+10. Proposition 3 (turning a null pair into a weak target never raises -H, P_max
+    or the Gini), and the examples that show why its condition is needed.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -174,3 +178,78 @@ def ka_score(xs, floor=5.0):
 base = [6.01] + [5.01] * 50
 print(f"   one target at 6.01 and fifty at 5.01: {ka_score(base):+.4f} bits; one kinase added at 6.0: "
       f"{ka_score(base + [6.0]):+.4f} bits ({'rises: D3 violated' if ka_score(base + [6.0]) > ka_score(base) else 'does not rise'})")
+
+print("\n9. D4 (orientation) on reference profiles: m targets at a common value a, the rest at the floor,")
+print("   panel size N fixed; D4 needs f(v_{m+1}) <= f(v_m) for all m and f(v_1) > f(v_N)")
+X0, TAU, NREF = 5.0, 6.0, 30
+
+
+def gini_w(w):
+    s = np.sort(np.asarray(w, float))
+    n = s.size
+    return 2 * np.sum(np.arange(1, n + 1) * s) / (n * s.sum()) - (n + 1) / n
+
+
+D4_SCORES = {
+    "active count":            lambda x: -float((x > TAU).sum()),
+    "S-score, tau = tau*":     lambda x: -float((x > TAU).mean()),
+    "S-score, tau = x0":       lambda x: -float((x > X0).mean()),
+    "entropy, beta = x0":      lambda x: float(entropy(x, X0)[0]),
+    "entropy, beta = tau*":    lambda x: float(entropy(x, TAU)[0]),
+    "Gini, beta = x0":         lambda x: gini_w(np.maximum(x - X0, 0.0)),
+    "ratio R(1), b = x0":      lambda x: float(np.sort(x)[::-1][0] - max(np.sort(x)[::-1][1], X0)),
+    "ratio R(3), b = x0":      lambda x: float(np.sort(x)[::-1][0] - max(np.sort(x)[::-1][3], X0)),
+    "gated entropy, T = 1":    lambda x: float(candidate(x, X0, 1.0)[0]),
+    "published entropy":       lambda x: float(neg_entropy(np.where(x > X0, 10.0 ** (x - 9.0), 0.0))[0]),
+    "P_max":                   lambda x: (lambda K: float(K.max() / K.sum()))(np.where(x > X0, 10.0 ** (x - 9.0), 0.0)),
+    "gated entropy, no gate":  lambda x: float(neg_entropy(1.0 * np.logaddexp(0.0, (x - X0) / 1.0))[0]),
+    "active count, reversed":  lambda x: float((x > TAU).sum()),
+}
+for name, f in D4_SCORES.items():
+    ok = True
+    for a in (6.5, 7.0, 8.0, 9.0):
+        v = [f(np.r_[np.full(m, a), np.full(NREF - m, X0)]) for m in range(1, NREF + 1)]
+        chain = all(v[i + 1] <= v[i] + 1e-12 for i in range(NREF - 1))
+        ok &= chain and v[0] > v[-1] + 1e-12
+    print(f"   {name:24s}: {'D4 holds' if ok else 'D4 FAILS'} (a = 6.5, 7, 8, 9; N = {NREF})")
+
+print("\n10. Proposition 3: on a fixed panel, turning a zero weight into a positive weight no larger than")
+print("    the smallest positive weight never raises -H, the largest share (P_max) or the Gini;")
+print("    random check over 20,000 weight vectors")
+rng3 = np.random.default_rng(3)
+viol = {"-H": 0, "largest share": 0, "Gini": 0}
+for _ in range(20000):
+    r = int(rng3.integers(1, 15)); w = rng3.lognormal(0.0, 1.5, r)
+    add = rng3.uniform(0.0, w.min()); n = r + int(rng3.integers(1, 10))
+    w0 = np.r_[w, np.zeros(n - r)]; w1 = np.r_[w, add, np.zeros(n - r - 1)]
+    viol["-H"] += neg_entropy(w1)[0] > neg_entropy(w0)[0] + 1e-12
+    viol["largest share"] += w1.max() / w1.sum() > w0.max() / w0.sum() + 1e-12
+    viol["Gini"] += gini_w(w1) > gini_w(w0) + 1e-12
+print("    violations:", {k: int(v) for k, v in viol.items()})
+H2 = lambda w: float(-neg_entropy(np.asarray(w, float))[0])
+print(f"    why the weakest-weight condition is needed: weights (10, fifty 1s) have H = {H2([10] + [1] * 50):.6f} bits;")
+print(f"    adding another 10, tied with the strongest, gives {H2([10, 10] + [1] * 50):.6f} bits (-H rises)")
+print(f"    a concentration score can rank more active targets as more selective: H(1, 1) = {H2([1, 1]):.6f} bits,")
+print(f"    H(1000, 1, 1) = {H2([1000, 1, 1]):.6f} bits")
+print("    adding one active kinase (value 12) to one target at 9 and fifty at 5.1 (x0 = 5):")
+base = np.r_[9.0, np.full(50, 5.1)]
+for name in ("gated entropy, T = 1", "entropy, beta = x0", "P_max", "active count"):
+    f = D4_SCORES[name]
+    print(f"      {name:22s}: {f(base):+.3f} -> {f(np.r_[base, 12.0]):+.3f}")
+print("    D4 depends on the floor treatment: with floor weight 1 and hit weight 2,")
+print(f"      -H of (2, 1, 1, 1) = {-H2([2, 1, 1, 1]):.6f}; of (2, 2, 1, 1) = {-H2([2, 2, 1, 1]):.6f} (rises: broader is not more even)")
+print(f"    a newly strongest target need not raise a concentration score: -H of (1) = {-H2([1]):.6f}; of (1, 2) = {-H2([1, 2]):.6f}")
+print("\n11. D4 with floor-coded pairs kept at the floor (association-constant weights 10^(x - 9), floor 10^(x0 - 9))")
+for N in (30, 172, 217, 363):
+    parts = []
+    for a in (6.01, 7.0, 8.0, 9.0):
+        prof = lambda m: np.r_[np.full(m, a), np.full(N - m, X0)]
+        ent = [float(neg_entropy(10.0 ** (prof(m) - 9.0))[0]) for m in range(1, N + 1)]
+        pmx = [(lambda K: float(K.max() / K.sum()))(10.0 ** (prof(m) - 9.0)) for m in range(1, N + 1)]
+        e_ok = all(ent[i + 1] <= ent[i] + 1e-12 for i in range(N - 1)) and ent[0] > ent[-1]
+        p_ok = all(pmx[i + 1] <= pmx[i] + 1e-15 for i in range(N - 1)) and pmx[0] > pmx[-1]
+        parts.append(f"a={a:g}: entropy {'holds' if e_ok else 'FAILS'}, P_max {'holds' if p_ok else 'FAILS'}")
+    print(f"   N = {N:3d}: " + "; ".join(parts))
+N, a = 363, 7.0
+e1, e2 = (float(neg_entropy(10.0 ** (np.r_[np.full(m, a), np.full(N - m, X0)] - 9.0))[0]) for m in (1, 2))
+print(f"   example, N = 363, targets at pKd 7: published entropy (floor kept) {e1:+.4f} with one target, {e2:+.4f} with two")

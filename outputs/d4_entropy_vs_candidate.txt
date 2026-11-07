@@ -52,3 +52,43 @@
 
 8. The published (association-constant) entropy, floor-coded pairs given zero weight
    one target at 6.01 and fifty at 5.01: -5.3532 bits; one kinase added at 6.0: -5.1879 bits (rises: D3 violated)
+
+9. D4 (orientation) on reference profiles: m targets at a common value a, the rest at the floor,
+   panel size N fixed; D4 needs f(v_{m+1}) <= f(v_m) for all m and f(v_1) > f(v_N)
+   active count            : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   S-score, tau = tau*     : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   S-score, tau = x0       : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   entropy, beta = x0      : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   entropy, beta = tau*    : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   Gini, beta = x0         : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   ratio R(1), b = x0      : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   ratio R(3), b = x0      : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   gated entropy, T = 1    : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   published entropy       : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   P_max                   : D4 holds (a = 6.5, 7, 8, 9; N = 30)
+   gated entropy, no gate  : D4 FAILS (a = 6.5, 7, 8, 9; N = 30)
+   active count, reversed  : D4 FAILS (a = 6.5, 7, 8, 9; N = 30)
+
+10. Proposition 3: on a fixed panel, turning a zero weight into a positive weight no larger than
+    the smallest positive weight never raises -H, the largest share (P_max) or the Gini;
+    random check over 20,000 weight vectors
+    violations: {'-H': 0, 'largest share': 0, 'Gini': 0}
+    why the weakest-weight condition is needed: weights (10, fifty 1s) have H = 5.353236 bits;
+    adding another 10, tied with the strongest, gives 5.180161 bits (-H rises)
+    a concentration score can rank more active targets as more selective: H(1, 1) = 1.000000 bits,
+    H(1000, 1, 1) = 0.022774 bits
+    adding one active kinase (value 12) to one target at 9 and fifty at 5.1 (x0 = 5):
+      gated entropy, T = 1  : -5.555 -> -5.346
+      entropy, beta = x0    : -4.127 -> -3.310
+      P_max                 : +0.994 -> +0.999
+      active count          : -1.000 -> -2.000
+    D4 depends on the floor treatment: with floor weight 1 and hit weight 2,
+      -H of (2, 1, 1, 1) = -1.921928; of (2, 2, 1, 1) = -1.918296 (rises: broader is not more even)
+    a newly strongest target need not raise a concentration score: -H of (1) = 0.000000; of (1, 2) = -0.918296
+
+11. D4 with floor-coded pairs kept at the floor (association-constant weights 10^(x - 9), floor 10^(x0 - 9))
+   N =  30: a=6.01: entropy FAILS, P_max holds; a=7: entropy holds, P_max holds; a=8: entropy holds, P_max holds; a=9: entropy holds, P_max holds
+   N = 172: a=6.01: entropy FAILS, P_max holds; a=7: entropy FAILS, P_max holds; a=8: entropy holds, P_max holds; a=9: entropy holds, P_max holds
+   N = 217: a=6.01: entropy FAILS, P_max holds; a=7: entropy FAILS, P_max holds; a=8: entropy holds, P_max holds; a=9: entropy holds, P_max holds
+   N = 363: a=6.01: entropy FAILS, P_max holds; a=7: entropy FAILS, P_max holds; a=8: entropy FAILS, P_max holds; a=9: entropy holds, P_max holds
+   example, N = 363, targets at pKd 7: published entropy (floor kept) -7.4137 with one target, -6.7633 with two

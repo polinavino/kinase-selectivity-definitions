@@ -259,9 +259,10 @@ within each dataset.
 A selectivity measure $f$ is a function that, for a given profile $\mathbf{x}$
 of any length $N$, returns a real number $f(\mathbf{x})$, with higher values
 for more selective profiles. Let $B = [x_0, \tau^*]$ be the interval between
-the floor and the activity threshold. We present three criteria, 
-wherein D1 decides which compounds are scored, while D2 and D3 concern 
-how the scores of those compounds behave.
+the floor and the activity threshold. We present four criteria. D1 decides
+which compounds are scored, D2 and D3 concern how their scores change when the
+activity boundary moves and when the panel grows, and D4 concerns the direction
+of the score.
 
 \textbf{D1 (activity eligibility).} $f(\mathbf{x})$ is undefined, or flagged as
 not eligible, whenever $\max_i x_i \leq \tau^*$. A compound with no target
@@ -310,6 +311,35 @@ satisfies it if adding such a target can be proved never to raise the score,
 and violates it if a profile can be constructed on which it does. Tests on
 measured profiles (Results) are checks, not the basis of the verdict.
 
+\textbf{D4 (orientation).} Fix the panel size $N \geq 2$ and all of the
+score's parameters. For every value $a$ above $\tau^*$ and above every cutoff
+and baseline the score uses, let $\mathbf{v}_m$ be the profile with $m$ targets
+at $a$ and the other $N - m$ at the floor, for $m = 1, \ldots, N$. D4 requires
+$f(\mathbf{v}_{m+1}) \leq f(\mathbf{v}_m)$ for $m = 1, \ldots, N - 1$, and
+$f(\mathbf{v}_1) > f(\mathbf{v}_N)$. These two conditions define what we take as
+the correct direction of a score: on the same panel, binding equally strongly
+to more targets must not make a compound look more selective, and binding to
+one target must be more selective than binding equally strongly to all. Strict
+decrease at every step is not required: $R_b(k)$ with $1 \leq k < N$ equals
+$a - \max(x_0, b)$ for $m \leq k$ and $0$ for $m > k$. D4 is judged by
+construction.
+
+When floor-coded pairs have zero weight, the profiles $\mathbf{v}_m$ become
+both broader and more evenly weighted as $m$ increases. When they keep a
+positive weight, they form a background of small weights, and turning them
+into equally strong targets moves weight from this background into a few large
+weights. The distribution can then become less even and the score rise, so a
+score can fail D4 because of its floor treatment, and each implementation is
+assessed with its own (example in Supporting Information, Section~S4).
+
+D4 constrains only the profiles $\mathbf{v}_m$. On a profile with unequal
+affinities, adding an active target that binds much more strongly than the
+others moves most of the weight to it, and a score that measures how
+concentrated binding is, such as the entropy or $P_{\max}$, then rates the
+compound as more selective (Supporting Information, Section~S4). Whether that
+rating is correct depends on whether selectivity is taken to mean breadth or
+concentration, which D4 leaves open.
+
 We state no criterion for the ratio's choice of reference off-target, because
 different references answer different questions.
 
@@ -342,19 +372,6 @@ any smaller $T$, a profile with one strong target and many kinases just above
 the floor scores higher after a kinase is added at $\tau^*$. For $\beta \neq x_0$
 only the \emph{if} direction is known.
 
-\textbf{Proposition 2 (uniqueness for fixed weights).} Fix the weights, that
-is, $x_0$, $\beta$ and $T$ in Equation~(\ref{eq:candidate}), and let
-$\mathbf{p}$ be the shares of a profile's positive gated weights. Suppose a score has the form $-F(\mathbf{p})$, where $F$ is
-continuous, increases with $n$ when all $n$ shares are equal, and has Shannon's
-grouping property\cite{Shannon1948}: when the kinases are split into groups,
-$F$ equals its value across the groups plus the share-weighted values within
-them. Then the score is a positive multiple of the gated entropy and ranks
-compounds as the gated entropy does.
-
-The proof applies Shannon's uniqueness theorem to the weight shares
-(Supporting Information, Section~S4). R\'enyi entropies of order other than 1
-lack the grouping property, so they are excluded.
-
 Because a target at the floor has weight $0$ and any target above it has weight
 above $m = T\ln 2$, the score jumps when a target's value crosses $x_0$.
 For example, on Davis or Klaeger ($x_0 = 5$, $T = 1$), take a profile with
@@ -370,6 +387,41 @@ Noise can also change which compounds are scored: a compound whose strongest
 target lies just above $\tau^*$ can fall below it, and the reverse. D1 was
 therefore applied to each noisy profile, and rankings were compared over the
 compounds scored both with and without noise.
+
+\textbf{Proposition 2 (uniqueness for fixed weights).} Fix the weights, that
+is, $x_0$, $\beta$ and $T$ in Equation~(\ref{eq:candidate}), and let
+$\mathbf{p}$ be the shares of a profile's positive gated weights. Suppose a
+score has the form $-F(\mathbf{p})$, where $F$ is continuous, increases with $n$ when all $n$ shares are equal, and has Shannon's
+grouping property\cite{Shannon1948}: when the kinases are split into groups,
+$F$ equals its value across the groups plus the share-weighted values within
+them. Then the score is a positive multiple of the gated entropy and ranks
+compounds as the gated entropy does.
+
+The proof applies Shannon's uniqueness theorem to the weight shares
+(Supporting Information, Section~S4). R\'enyi entropies of order other than 1
+lack the grouping property, so they are excluded.
+
+Call shares $\mathbf{q}$ \emph{more even} than shares $\mathbf{p}$ on the same
+panel if, for every $j$, the $j$ largest entries of $\mathbf{q}$ sum to no more
+than the $j$ largest entries of $\mathbf{p}$.
+
+\textbf{Proposition 3 (broadening).} On a fixed panel, let a profile have
+positive weights $w_1, \ldots, w_r$ ($r \geq 1$) and zero weights elsewhere,
+and let a score be a function $f$ of the profile's weight shares with
+$f(\mathbf{q}) \leq f(\mathbf{p})$ whenever $\mathbf{q}$ is more even than
+$\mathbf{p}$. Changing one zero weight to $a$ with $0 < a \leq \min_i w_i$
+does not raise $f$.
+
+The proof (Supporting Information, Section~S4) shows that the added weight,
+being the smallest, makes the new shares more even than the old ones. The
+negative Shannon and R\'enyi entropies, the largest share and the Gini
+coefficient all have this property. For a score whose
+weight increases with affinity, such as the entropy, the gated entropy,
+$P_{\max}$ and the Gini, Proposition 3 therefore means that turning a
+floor-coded pair into a target bound no more strongly than the weakest
+weighted target never makes the compound look more selective. The condition on $a$ is needed: adding a target
+tied with the strongest can lower the entropy.
+
 
 \subsection{Recovery from Smaller Panels}
 \label{sec:methods:recovery}

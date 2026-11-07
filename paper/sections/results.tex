@@ -61,7 +61,8 @@ at the floor and $0.74$ with them given zero weight. The published and
 log-affinity entropies correlate at $0.37$ (Davis) and $-0.31$ (Klaeger) with
 floor-coded pairs at the floor, and at $0.74$ and $0.79$ with them given zero
 weight (Figure~\ref{fig:fidelity}). The negative Klaeger value comes from the
-floor-coded pairs. Using every measured Klaeger affinity at its measured value,
+floor-coded pairs, with which the published entropy also fails D4
+(``Criteria and the Gated Entropy''). Using every measured Klaeger affinity at its measured value,
 including the 194 weaker than the floor, changes the published entropy's
 ranking little (Spearman $0.9996$ with the floor-excluded ranking among active
 compounds) and changes its correlations and recovery by at most $0.02$
@@ -234,9 +235,9 @@ right).
 \subsection{Criteria and the Gated Entropy}
 \label{sec:desiderata}
 
-Table~\ref{tab:desiderata} gives each score's verdict on the three criteria,
-D1, D2 and D3. D1 and D3 are judged by construction, and D2 empirically on
-the four datasets (Methods).
+Table~\ref{tab:desiderata} gives each score's verdict on the four criteria,
+D1 to D4. D1, D3 and D4 are judged by construction, and D2 empirically on the
+four datasets (Methods).
 None of the four
 definitions, as published, withholds the score of a compound with no active
 kinase (so none meets D1), but any score can meet it by adopting that rule.
@@ -248,11 +249,12 @@ published entropy and $P_{\max}$ have no boundary parameter and are not
 assessed against D2. D3 is the criterion on which the scores differ. The
 S-score with $\tau > x_0$, the entropy with $\beta = x_0$, the Gini and the
 published entropy violate it. The other scores, including $P_{\max}$, satisfy
-it.
+it. Every score in the table, and $P_{\max}$ and the published entropy, satisfies
+D4.
 
 \begin{table}[h]
   \centering
-  \caption{The three criteria for the four definitions, three comparators and
+  \caption{The four criteria for the four definitions, three comparators and
            the gated entropy. $P_{\max}$ and the published entropy have no
            boundary parameter and are assessed in the text. $\checkmark$: satisfied. $\times$: violated. }
   \label{tab:desiderata}
@@ -267,6 +269,7 @@ it.
     D1 (eligibility)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
     D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
     D3 (monotonicity)  & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+    D4 (orientation)   & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ & $\checkmark$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -290,13 +293,27 @@ $\beta = \tau^*$, where weak binding carries zero weight. The gated entropy
 satisfies D1 through its eligibility rule and D3 by Proposition 1 in Methods,
 and its
 weights vary smoothly with affinity above the gate. Proposition 1 concerns
-adding a target, not strengthening one already in the profile. The criteria do not
-fix the direction of a score. The active count with its sign reversed, which
-calls a compound more selective the more active kinases it has, satisfies D1
-and D3, because a kinase added at or below $\tau^*$ leaves it unchanged, and
-fails D2 as the count does, since reversing a score's sign does not change how
-many pairs reverse. It therefore meets the same criteria as the gated entropy,
-and the three criteria are incomplete.
+adding a target, not strengthening one already in the profile. On the profiles
+$\mathbf{v}_m$ of D4, the scores take the values $-m$ (active count), $-m/N$
+(S-score with $\tau < a$), $-\log_2 m$ (the entropies and the gated entropy,
+whose $m$ weights are equal), $1/m$ ($P_{\max}$), $(N - m)/N$ (Gini), and
+$a - \max(x_0, b)$ for $m \leq k$ and $0$ otherwise ($R_b(k)$), so all of them
+satisfy D4. These values assume that floor-coded pairs have zero weight, as in
+the main analyses. With them kept at the floor, the published entropy fails D4
+on panels of the datasets' sizes: on 363 kinases with targets at
+$\mathrm{p}K_d = 7$, a second target raises its score from $-7.41$ to $-6.76$
+bits. $P_{\max}$ satisfies D4 under either treatment, because its largest share
+falls as $m$ grows. D1 to D3 alone do not fix the direction of a score. The active count with
+its sign reversed, which calls a compound more selective the more active
+kinases it has, satisfies D1 and D3, because a kinase added at or below
+$\tau^*$ leaves it unchanged, and fails D2 as the count does, since reversing a
+score's sign does not change how many pairs reverse. It therefore meets D1 to
+D3 exactly as the gated entropy does, but its value on $\mathbf{v}_m$ is $+m$,
+so D4 rules it out. The gated entropy without its non-binder gate also fails
+D4, because floor-coded pairs then carry weight and adding equally strong
+targets can concentrate the distribution. For the entropies, $P_{\max}$ and
+the Gini, Proposition 3 extends D4 to any profile in which a floor-coded pair
+becomes a target no stronger than the weakest weighted one.
 
 \emph{By construction: counterexamples.} Constructed profiles show the D3
 violations of the published entropy and of the entropy with $\beta < \tau^*$,
@@ -326,12 +343,12 @@ entropy's.
 
 \emph{Empirical rankings of the gated entropy.} On the four datasets, we
 compared the gated entropy's rankings with those of other scores and tested
-their sensitivity to $\tau^*$ and to noise. The gated entropy's
-score falls with the number of active kinases (Spearman $-0.78$ to $-0.97$);
-without the non-binder gate the floor-coded pairs dominate and the score rises
-with it ($r = +0.91$ on Klaeger). It ranks the compounds almost exactly as the
+their sensitivity to $\tau^*$ and to noise. On the data, the gated
+entropy's score falls as the number of active kinases rises (Spearman $-0.78$
+to $-0.97$), so it agrees closely with breadth. Without the non-binder gate the
+correlation reverses ($r = +0.91$ on Klaeger), as its failure of D4 predicts. It ranks the compounds almost exactly as the
 entropy does ($0.994$--$0.998$) and as the S-score with $\tau = x_0$ does
-($0.998$--$0.9997$), which also satisfies D1 and D3. Moving $\tau^*$ from
+($0.998$--$0.9997$), which also satisfies D1, D3 and D4. Moving $\tau^*$ from
 $5.5$ to $7$ ($40\%$ to $70\%$ on Anastassiadis) changes which compounds are
 scored but not how those scored at both values are ranked (Spearman
 $\geq 0.999$). 
@@ -353,9 +370,9 @@ The criteria do not determine a unique score. Once the gated entropy's weights
 are fixed, Shannon's conditions do.
 
 \emph{By construction, with the parameters free.} The active count, the S-score
-with $\tau = x_0$ and the entropy with $\beta = \tau^*$ satisfy D1 and D3 as the
+with $\tau = x_0$ and the entropy with $\beta = \tau^*$ satisfy D1, D3 and D4 as the
 gated entropy does (Table~\ref{tab:desiderata}). Within the family of gated
-entropies with $\beta = x_0$, the members that satisfy D1 and D3 are exactly
+entropies with $\beta = x_0$, the members that satisfy D1, D3 and D4 are exactly
 those with $T \geq 0.58\,(\tau^* - x_0)$, by Proposition 1, so the criteria
 narrow the family to a range of $T$. With $T = \tau^* - x_0$, every baseline
 $\beta$ in $B$ also gives a member that satisfies D3. The proof of Proposition
