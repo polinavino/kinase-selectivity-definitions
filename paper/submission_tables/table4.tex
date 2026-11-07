@@ -7,7 +7,9 @@
   \centering
   \caption{The four criteria for the four definitions, three comparators and
            the gated entropy. $P_{\max}$ and the published entropy have no
-           boundary parameter and are assessed in the text. $\checkmark$: satisfied. $\times$: violated. }
+           boundary parameter and are assessed in the text. With
+           $\beta < x_0$, the entropy and Gini fail D4. $\checkmark$:
+           satisfied. $\times$: violated.}
   \label{tab:desiderata}
   \small
   \setlength{\tabcolsep}{3.5pt}
@@ -15,7 +17,7 @@
     \toprule
     & \multicolumn{2}{c}{S-score} & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Gated \\
     \cmidrule(lr){2-3}\cmidrule(lr){5-6}
-    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & & & entropy \\
+    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & $\beta \geq x_0$ & & entropy \\
     \midrule
     D1 (eligibility)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
     D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\

@@ -93,7 +93,8 @@ with a higher cutoff, the Gini, or the entropy with a low baseline. We give a
 satisfies criterion 3 and weights weak binding continuously. It ranks these
 datasets almost identically to the share of targets with detected binding, so
 on these data it is not an improvement on simpler formulas. Every formula
-studied satisfies criterion 4; the active count with its sign reversed, which
+studied satisfies criterion 4 when pairs without detected binding get zero
+weight; the active count with its sign reversed, which
 meets criteria 1 to 3 as well as the gated entropy does, fails it. Once its
 weights are fixed, Shannon's conditions make the gated entropy unique, but the
 criteria do not fix the weights.
@@ -158,18 +159,15 @@ Raw supplementary files (downloaded programmatically):
 | metz.xls / metz_matrix.csv | Metz raw / processed pK_i matrix (≥50-kinase coverage subset) |
 | cross_dataset_summary.csv | Cross-dataset correlation and instability summary |
 | selectivity_results.csv, klaeger_selectivity_results.csv | Per-compound analysis outputs |
-| faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv | Clinical-outcome analysis data (Limitations) |
-| label_texts.json, extended_labels.json | Raw FDA drug label text underlying clinical_safety_data.csv |
+| faers_counts.csv, selectivity_outcomes_merged.csv | Clinical-outcome analysis data (Limitations) |
+| clinical_safety_data.csv, label_texts.json, extended_labels.json | Hand-extracted FDA label discontinuation rates and the label text; no longer used, because an audit found extraction errors |
 | bosc_catds_comparison.csv | Bosc et al. window/ranking score and CATDS-proxy comparison (SI Section S6) |
-| clinical_outcomes_correlation.csv | FAERS/discontinuation-rate vs. selectivity-rank correlations (Discussion, Limitations) |
+| clinical_outcomes_correlation.csv | FAERS vs. selectivity-rank correlations (Discussion, Limitations) |
 
 **Clinical data provenance.** `faers_counts.csv` is pulled live from the openFDA
 adverse-event API by `faers_pull.py` and is fully script-reproducible (though
 report counts grow over time, so re-running will not reproduce the exact
-frozen numbers in the paper). `clinical_safety_data.csv`, `label_texts.json`,
-and `extended_labels.json` are **manually curated**: discontinuation rates and
-grade 3/4 adverse-event rates were extracted by hand from FDA drug label text
-(no script performs this extraction). `selectivity_outcomes_merged.csv` holds
+frozen numbers in the paper). `selectivity_outcomes_merged.csv` holds
 the frozen FAERS counts and rates; its median-rank columns are superseded,
 because `clinical_outcomes_correlation.py` takes each drug's current ranks from
 `klaeger_selectivity_results.csv`. `bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
@@ -190,7 +188,7 @@ from these files and cited in the Discussion/Limitations sections.
 | candidate_measure.py | Candidate measure: correlation with the number of active kinases, agreement with the entropy, D2/D3 checks on Klaeger |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical analysis, Limitations) |
 | bosc_catds_comparison.py | Reproduces Bosc et al. window/ranking score and CATDS-proxy correlations against the ratio family (SI Section S6, Table S8) |
-| clinical_outcomes_correlation.py | Reproduces FAERS/discontinuation-rate vs. selectivity-rank correlations, using the frozen FAERS counts and the current Klaeger median ranks (Discussion, Limitations) |
+| clinical_outcomes_correlation.py | Reproduces FAERS vs. selectivity-rank correlations, using the frozen FAERS counts and the current Klaeger median ranks (Discussion, Limitations) |
 | klaeger_filter_sensitivity.py | Klaeger high-confidence filter: entries removed, and sensitivity of Table 3 and of the gated and ungated p* to relaxing it (SI Section S1) |
 | curate_panels.py | Builds the curated panels (one reference target per human protein kinase) from the released Davis, Klaeger and Anastassiadis files, and the target_curation_*.csv tables (Methods) |
 | klaeger_protein_kinases.py | Klaeger panel composition (122 of 343 targets removed besides four protein groups) and the main Klaeger results on the released and curated panels (SI Table S1) |
@@ -221,8 +219,9 @@ Some script names and printed labels keep the property numbering of the
 previous revision: D3 there is the paper's D2 (distributional consistency) and
 D4 the paper's D3 (monotonicity). The paper's former D2 (bounded gap
 sensitivity) was removed. `d4_entropy_vs_candidate.py` also checks the paper's
-new D4 (orientation), Proposition 3 and D4 with floor-coded pairs kept at the
-floor (sections 9 to 11 of its output).
+new D4 (orientation), Proposition 3, D4 with floor-coded pairs kept at the
+floor, and D4 for the entropy and Gini at baselines below the floor (sections
+9 to 12 of its output).
 
 ### Replication steps
 
@@ -255,14 +254,13 @@ floor (sections 9 to 11 of its output).
     python3 claim_checks.py                  # numbers for specific claims (run last)
     python3 faers_pull.py                    # clinical data, Limitations (needs internet)
     python3 bosc_catds_comparison.py         # Bosc/CATDS comparison (SI Section S6)
-    python3 clinical_outcomes_correlation.py # FAERS/discontinuation correlations (Discussion, Limitations)
+    python3 clinical_outcomes_correlation.py # FAERS correlations (Discussion, Limitations)
 
 Every other script in the table above runs the same way; SI Table S9 maps each reported result to its script.
 `additional_datasets_analysis.py` reads `anastassiadis_matrix.csv` / `metz_matrix.csv`
 if present, otherwise regenerates them from the raw `.xls` files.
 `clinical_outcomes_correlation.py` requires `selectivity_outcomes_merged.csv`
-and `clinical_safety_data.csv`, both manually curated (see Data files above)
-and already committed — it does not need internet access.
+(see Data files above), already committed — it does not need internet access.
 
 ### Expected key results
 
@@ -292,8 +290,8 @@ and already committed — it does not need internet access.
     ├── anastassiadis.xls, anastassiadis_matrix.csv
     ├── metz.xls, metz_matrix.csv
     ├── cross_dataset_summary.csv, selectivity_results.csv, klaeger_selectivity_results.csv
-    ├── faers_counts.csv, clinical_safety_data.csv, selectivity_outcomes_merged.csv
-    ├── label_texts.json, extended_labels.json (manually curated FDA label text)
+    ├── faers_counts.csv, selectivity_outcomes_merged.csv
+    ├── clinical_safety_data.csv, label_texts.json, extended_labels.json (not used)
     ├── bosc_catds_comparison.csv, clinical_outcomes_correlation.csv
     ├── *.png  (analysis figures)
     ├── outputs/  (printed results of every script, one .txt per script)

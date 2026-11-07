@@ -25,6 +25,9 @@ and 3, and D4) and Results, "Criteria and the Gated Entropy" (SI Section S4):
 9. D4 (orientation) on reference profiles with m equally strong targets.
 10. Proposition 3 (turning a null pair into a weak target never raises -H, P_max
     or the Gini), and the examples that show why its condition is needed.
+11. D4 for the published entropy and P_max with floor-coded pairs kept at the floor.
+12. D4 for the entropy and Gini over the Anastassiadis baseline sweep, which
+    includes baselines below the floor.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -253,3 +256,21 @@ for N in (30, 172, 217, 363):
 N, a = 363, 7.0
 e1, e2 = (float(neg_entropy(10.0 ** (np.r_[np.full(m, a), np.full(N - m, X0)] - 9.0))[0]) for m in (1, 2))
 print(f"   example, N = 363, targets at pKd 7: published entropy (floor kept) {e1:+.4f} with one target, {e2:+.4f} with two")
+
+print("\n12. D4 for the entropy and Gini over the Anastassiadis baseline sweep (x0 = 20%, tau* = 50%, N = 291);")
+print("    beta < x0 gives floor-coded pairs the positive weight x0 - beta")
+XA, NA = 20.0, 291
+for beta in (0.0, 5.0, 10.0, 15.0, 20.0, 25.0, 30.0):
+    parts = []
+    for name, f in (("entropy", lambda w: float(neg_entropy(w)[0])), ("Gini", gini_w)):
+        fails = []
+        for a in (55.0, 60.0, 70.0, 80.0, 90.0, 100.0):
+            v = [f(np.maximum(np.r_[np.full(m, a), np.full(NA - m, XA)] - beta, 0.0)) for m in range(1, NA + 1)]
+            if not (all(v[i + 1] <= v[i] + 1e-12 for i in range(NA - 1)) and v[0] > v[-1] + 1e-12):
+                fails.append(f"{a:g}")
+        parts.append(f"{name} " + (f"FAILS at a = {', '.join(fails)}%" if fails else "holds"))
+    print(f"   beta = {beta:4.0f}%: " + "; ".join(parts) + "  (a tested: 55, 60, 70, 80, 90, 100%)")
+g1, g2 = (gini_w(np.r_[np.full(m, 60.0), np.full(NA - m, XA)]) for m in (1, 2))
+h1, h2 = (float(neg_entropy(np.r_[np.full(m, 60.0), np.full(NA - m, XA)])[0]) for m in (1, 2))
+print(f"   example, beta = 0, targets at 60%: Gini {g1:.5f} with one target, {g2:.5f} with two; "
+      f"entropy {h1:+.4f} with one, {h2:+.4f} with two")

@@ -10,9 +10,7 @@ association-constant weights, or with compounds that have no active kinase
 included, this grouping weakens or disappears. When most entries are
 coded at the floor, as on Metz, the S-score, entropy and Gini agree for a
 different reason: each ranks compounds largely by how many kinases the
-compound was tested against. Ratio measures match the pairwise definition of selectivity in
-analytical chemistry\cite{IUPAC2001}, a ratio of binding constants for an
-analyte and an interferent. Bosc et al.'s window score also correlates
+compound was tested against. Bosc et al.'s window score correlates
 strongly with the ratio ($0.91$--$0.96$), and their ranking score is a ratio
 by definition. A proxy for the CATDS score of Klaeger et al., the top target's
 share of the profile, instead correlates more with the Gini than with the
@@ -76,9 +74,9 @@ off-targets are inert or linked to a class toxicity, and an affinity alone does
 not establish whether a target is occupied at a tolerated dose. A selectivity
 score is at best a summary of the binding profile, to be weighed with
 target-specific liability knowledge and exposure modeling. Selectivity rankings
-of the approved Klaeger compounds were not associated with adverse-event
-report proportions or label discontinuation rates (Supporting Information,
-Section~S7).
+of the approved Klaeger compounds were not associated with the proportions of
+their adverse-event reports that were serious, fatal or led to hospitalization
+(Supporting Information, Section~S7).
 
 The four criteria play different roles. D1 is a reporting rule that any score
 can adopt. D2 is a diagnostic: no boundary parameter meets it, so the boundary
@@ -89,11 +87,8 @@ Davis entries and $95.5\%$ of the Klaeger entries lie below the activity
 threshold. The guarantee does not extend to strengthening a target already in
 the profile. D4 calibrates the direction of a score on profiles with equally
 strong targets. Without it, D1 to D3 would not rule out the active count with
-its sign reversed. The criteria are necessary conditions, and they do not single 
-out one score. The gated entropy is
-unique once its weights are fixed, Shannon's
-conditions single it out (Proposition 2), but the criteria do not fix the
-weights (Results, ``Uniqueness of the Gated Entropy''). On these datasets, the S-score with
+its sign reversed. All four are proposed evaluation criteria and do not single
+out one score. On these datasets, the S-score with
 $\tau = x_0$ matches the gated entropy on every criterion and in recovery, and
 the entropy with $\beta = x_0$ ranks compounds almost identically, although it
 violates D3.

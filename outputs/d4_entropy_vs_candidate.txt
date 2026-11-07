@@ -92,3 +92,14 @@
    N = 217: a=6.01: entropy FAILS, P_max holds; a=7: entropy FAILS, P_max holds; a=8: entropy holds, P_max holds; a=9: entropy holds, P_max holds
    N = 363: a=6.01: entropy FAILS, P_max holds; a=7: entropy FAILS, P_max holds; a=8: entropy FAILS, P_max holds; a=9: entropy holds, P_max holds
    example, N = 363, targets at pKd 7: published entropy (floor kept) -7.4137 with one target, -6.7633 with two
+
+12. D4 for the entropy and Gini over the Anastassiadis baseline sweep (x0 = 20%, tau* = 50%, N = 291);
+    beta < x0 gives floor-coded pairs the positive weight x0 - beta
+   beta =    0%: entropy FAILS at a = 55, 60, 70, 80, 90, 100%; Gini FAILS at a = 55, 60, 70, 80, 90, 100%  (a tested: 55, 60, 70, 80, 90, 100%)
+   beta =    5%: entropy FAILS at a = 55, 60, 70, 80, 90, 100%; Gini FAILS at a = 55, 60, 70, 80, 90, 100%  (a tested: 55, 60, 70, 80, 90, 100%)
+   beta =   10%: entropy FAILS at a = 55, 60, 70, 80, 90, 100%; Gini FAILS at a = 55, 60, 70, 80, 90, 100%  (a tested: 55, 60, 70, 80, 90, 100%)
+   beta =   15%: entropy FAILS at a = 55, 60, 70, 80, 90, 100%; Gini FAILS at a = 55, 60, 70, 80, 90, 100%  (a tested: 55, 60, 70, 80, 90, 100%)
+   beta =   20%: entropy holds; Gini holds  (a tested: 55, 60, 70, 80, 90, 100%)
+   beta =   25%: entropy holds; Gini holds  (a tested: 55, 60, 70, 80, 90, 100%)
+   beta =   30%: entropy holds; Gini holds  (a tested: 55, 60, 70, 80, 90, 100%)
+   example, beta = 0, targets at 60%: Gini 0.00680 with one target, 0.01347 with two; entropy -8.1785 with one, -8.1723 with two

@@ -557,9 +557,15 @@ floor-coded pairs kept at the floor fails D4 in this way: with targets at
 $\mathrm{p}K_d = 6.01$ on every panel size checked (30 to 363 kinases), at $7$
 on 172 kinases or more, and at $8$ on 363, while it holds at $9$. On 363
 kinases with targets at $7$, a second target raises its score from $-7.414$ to
-$-6.763$ bits. $P_{\max}$ satisfies D4 under either floor treatment.
+$-6.763$ bits. $P_{\max}$ satisfies D4 under either floor treatment. A
+baseline below the floor also gives floor-coded pairs positive weight. Over the
+Anastassiadis sweep (291 kinases, floor $20\%$, targets at $55\%$ to $100\%$),
+the entropy and Gini satisfy D4 for $\beta \geq 20\%$ and fail it at every
+tested target value for $\beta = 0$, $5$, $10$ and $15\%$. With $\beta = 0\%$
+and targets at $60\%$, a second target raises the Gini from $0.00680$ to
+$0.01347$ and the entropy's score from $-8.1785$ to $-8.1723$ bits.
 (\texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} sections
-9--11)
+9--12)
 
 \paragraph{Validation.} Table~S5 reports the gated entropy's agreement with
 breadth (its correlation with the number of active kinases), D2 for its emphasis baseline
@@ -618,6 +624,24 @@ width. As
 $T \to 0$ the softplus approaches the hard cutoff, giving back the entropy.
 (\texttt{family\_construction.py}, \texttt{family\_panelsize.py},
 \texttt{candidate\_validation.py})
+
+\paragraph{Uniqueness.} The criteria admit a range of gated entropies. With
+$\beta = x_0$, those that satisfy D3 are exactly those with
+$T \geq 0.5816\,(\tau^* - x_0)$ (Proposition 1 and Sharpness), and with
+$T = \tau^* - x_0$ every $\beta$ in $B$ gives one that does. The proof of
+Proposition 1 also covers other weight functions, so the softplus is not the
+only admissible weight. Requiring the smallest admissible $T$ would give one
+member, but the criteria do not require it. Binding occupancy does not fix $T$
+either. The slope of the softplus weight, $1/(1 + e^{-(x - \beta)/T})$, is an
+S-shaped curve in the log-affinity $x$ that rises from $0$ to $1$ around
+$\beta$. It has the same form as the fraction of a kinase occupied at a fixed
+inhibitor concentration in a two-state binding model. Matching it to that
+fraction, at concentration $10^{-\beta}$~M, sets $T = 1/\ln 10 \approx 0.43$
+$\mathrm{p}K$ units. By Proposition 1, D3 then holds with $\beta = x_0$ only if
+$\tau^* - x_0 \leq \ln(2^e - 1)/\ln 10 \approx 0.75$ $\mathrm{p}K$ units,
+whereas $\tau^* - x_0$ is $1$ or $2$ on the three $\mathrm{p}K_d$ and
+$\mathrm{p}K_i$ datasets. We therefore fix $T = \tau^* - x_0$ as a convention,
+under which D3 holds for every $\beta$ in $B$.
 
 \begin{table}[h]
 \centering
@@ -805,19 +829,16 @@ Metz          & 704 & 0.910 & 0.899 & 0.447 & 0.883 / 0.906 \\
 
 \section*{S7: Clinical analysis}
 
-For the FDA-approved Klaeger compounds, we correlated each definition's median
-selectivity rank with the proportions of FAERS reports that were serious, fatal
-or involved hospitalization ($n = 46$) and with discontinuation rates reported
-in FDA labels ($n = 33$). FAERS counts were pulled from the openFDA
-adverse-event interface (\texttt{faers\_pull.py}); discontinuation rates were
-extracted by hand from label text (\texttt{clinical\_safety\_data.csv}). No
-correlation was significant (all $|r| \leq 0.20$, all $p > 0.19$). Raw report
-counts correlate weakly with the ratio ranking ($r = 0.30$, $p = 0.04$), which
-may reflect prescription volume. Grade 3/4 adverse-event rates were available
-for too few drugs. FAERS proportions describe reports, not incidence among
-treated patients; label discontinuation rates come from trials with different
-populations and doses; and both depend on indication and prescription volume.
-The analysis therefore cannot isolate an effect of selectivity on toxicity.
+For the 46 FDA-approved Klaeger compounds with FAERS records, we correlated
+each definition's median selectivity rank with the proportions of FAERS
+reports that were serious, fatal or involved hospitalization. FAERS counts
+were pulled from the openFDA adverse-event interface (\texttt{faers\_pull.py}).
+No correlation was significant (all $|r| \leq 0.20$, all $p > 0.19$). Raw
+report counts correlate weakly with the ratio ranking ($r = 0.30$, $p = 0.04$),
+which may reflect prescription volume. FAERS proportions describe reports, not
+incidence among treated patients, and they depend on indication and
+prescription volume. The analysis therefore cannot isolate an effect of
+selectivity on toxicity.
 (\texttt{clinical\_\allowbreak{}outcomes\_\allowbreak{}correlation.py})
 
 \clearpage
@@ -860,13 +881,13 @@ Figure~2 & Binding profiles of two Davis compounds & \texttt{binding\_\allowbrea
 Results, Sensitivity; Table~S4; Figure~S3 & Profile features and instability, both ranking populations; compounds defined at every baseline; Anastassiadis and Metz relations & \texttt{instability\_\allowbreak{}by\_\allowbreak{}family.py}, \texttt{additional\_\allowbreak{}datasets\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (4, 8, 15--17, 21) \\
 S3 & Undefined features; further features & \texttt{feature\_\allowbreak{}placeholder\_\allowbreak{}sensitivity.py}, \texttt{instability\_\allowbreak{}predictor\_\allowbreak{}candidates.py} \\
 Results, Sensitivity; S3 & Broad profiles; most unstable and most stable compounds & \texttt{claim\_\allowbreak{}checks.py} (5--7, 18) \\
-Methods; Results, Criteria; S4 & Bound on $T$; entropy and gated entropy under weak addition; worked example; discontinuity; strengthening example; sharpness; D4 on reference profiles; Proposition 3 & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} \\
+Methods; Results, Criteria; S4 & Bound on $T$; entropy and gated entropy under weak addition; worked example; discontinuity; strengthening example; sharpness; D4 on reference profiles and below the floor; Proposition 3 & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} \\
 Results, Criteria & Realistic panel expansion & \texttt{claim\_\allowbreak{}checks.py} (19) \\
-Results, Criteria; Results, Uniqueness; Table~S5 & Correlation with the number of active kinases, D3 at $\tau^*$, smoothing width & \texttt{candidate\_\allowbreak{}validation.py} \\
+Results, Criteria; Table~S5 & Correlation with the number of active kinases, D3 at $\tau^*$, smoothing width & \texttt{candidate\_\allowbreak{}validation.py} \\
 Results, Criteria & Agreement with the entropy & \texttt{candidate\_\allowbreak{}measure.py} \\
 Results, Criteria; S4 & Dependence on $\tau^*$; noise & \texttt{claim\_\allowbreak{}checks.py} (22, 23) \\
 Results, Criteria; Results, Recovery; Figure~3; S5 & Coverage, recoverability, conditional agreement, variability, influence, agreement with the S-score at $x_0$; other bars; probability of staying scored & \texttt{panel\_\allowbreak{}recovery.py} \\
-Results, Uniqueness; S4; Table~S6 & Variants of the gated entropy & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
+Results, Criteria; S4; Table~S6 & Variants of the gated entropy & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
 S5; Figure~S4; Table~S7 & Recovery without the D1 gate & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py}, \texttt{claim\_\allowbreak{}checks.py} (14) \\
 Discussion; S6; Table~S8 & Bosc et al.'s scores and the CATDS proxy & \texttt{bosc\_\allowbreak{}catds\_\allowbreak{}comparison.py} \\
 Discussion; S7 & Clinical outcomes & \texttt{clinical\_\allowbreak{}outcomes\_\allowbreak{}correlation.py}, \texttt{faers\_\allowbreak{}pull.py} \\

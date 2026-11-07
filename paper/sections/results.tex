@@ -249,14 +249,16 @@ published entropy and $P_{\max}$ have no boundary parameter and are not
 assessed against D2. D3 is the criterion on which the scores differ. The
 S-score with $\tau > x_0$, the entropy with $\beta = x_0$, the Gini and the
 published entropy violate it. The other scores, including $P_{\max}$, satisfy
-it. Every score in the table, and $P_{\max}$ and the published entropy, satisfies
-D4.
+it. Every score in the table satisfies D4, and so do $P_{\max}$ and the
+published entropy with floor-coded pairs given zero weight.
 
 \begin{table}[h]
   \centering
   \caption{The four criteria for the four definitions, three comparators and
            the gated entropy. $P_{\max}$ and the published entropy have no
-           boundary parameter and are assessed in the text. $\checkmark$: satisfied. $\times$: violated. }
+           boundary parameter and are assessed in the text. With
+           $\beta < x_0$, the entropy and Gini fail D4. $\checkmark$:
+           satisfied. $\times$: violated.}
   \label{tab:desiderata}
   \small
   \setlength{\tabcolsep}{3.5pt}
@@ -264,7 +266,7 @@ D4.
     \toprule
     & \multicolumn{2}{c}{S-score} & Count & \multicolumn{2}{c}{Entropy} & Gini & Ratio & Gated \\
     \cmidrule(lr){2-3}\cmidrule(lr){5-6}
-    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & & & entropy \\
+    & $\tau > x_0$ & $\tau = x_0$ & & $\beta = x_0$ & $\beta = \tau^*$ & $\beta \geq x_0$ & & entropy \\
     \midrule
     D1 (eligibility)   & $\times$ & $\checkmark$ & $\checkmark$ & $\times$ & $\checkmark$ & $\times$ & $\times$     & $\checkmark$ \\
     D2 (consistency)   & $\times$ & $\times$     & $\times$     & $\times$ & $\times$     & $\times$ & $\times$     & $\times$ \\
@@ -298,9 +300,12 @@ $\mathbf{v}_m$ of D4, the scores take the values $-m$ (active count), $-m/N$
 (S-score with $\tau < a$), $-\log_2 m$ (the entropies and the gated entropy,
 whose $m$ weights are equal), $1/m$ ($P_{\max}$), $(N - m)/N$ (Gini), and
 $a - \max(x_0, b)$ for $m \leq k$ and $0$ otherwise ($R_b(k)$), so all of them
-satisfy D4. These values assume that floor-coded pairs have zero weight, as in
-the main analyses. With them kept at the floor, the published entropy fails D4
-on panels of the datasets' sizes: on 363 kinases with targets at
+satisfy D4. These values assume that floor-coded pairs have zero weight, which
+for the entropy and Gini requires $\beta \geq x_0$. On Anastassiadis, their
+sweeps also include baselines below the $20\%$ floor, where both fail D4: on
+its 291 kinases, with $\beta = 0\%$ and targets at $60\%$, a second target
+raises the Gini from $0.0068$ to $0.0135$. With floor-coded pairs kept at the
+floor, the published entropy also fails D4 on panels of the datasets' sizes: on 363 kinases with targets at
 $\mathrm{p}K_d = 7$, a second target raises its score from $-7.41$ to $-6.76$
 bits. $P_{\max}$ satisfies D4 under either treatment, because its largest share
 falls as $m$ grows. D1 to D3 alone do not fix the direction of a score. The active count with
@@ -356,60 +361,22 @@ With random noise added to the measured values, as described in Methods, D1
 changed the status of at
 most 11 compounds in any draw, and the ranking of the compounds scored with and
 without noise stayed at Spearman $0.978$ or higher with the noise-free ranking,
-against $0.983$ or higher for the entropy. The entropy satisfies D3 only at
+against $0.983$ or higher for the entropy. The entropy satisfies D3 at
 $\beta = \tau^*$, where it gives zero weight to binding below the threshold. The
 gated entropy gives that binding a weight that varies smoothly with affinity
 and still satisfies D3, as proved in Methods. On these datasets, gated entropy is
 thus not an
 empirical improvement on simpler scores.
 
-\subsection{Uniqueness of the Gated Entropy}
-\label{sec:results:uniqueness}
-
-The criteria do not determine a unique score. Once the gated entropy's weights
-are fixed, Shannon's conditions do.
-
-\emph{By construction, with the parameters free.} The active count, the S-score
-with $\tau = x_0$ and the entropy with $\beta = \tau^*$ satisfy D1, D3 and D4 as the
-gated entropy does (Table~\ref{tab:desiderata}). Within the family of gated
-entropies with $\beta = x_0$, the members that satisfy D1, D3 and D4 are exactly
-those with $T \geq 0.58\,(\tau^* - x_0)$, by Proposition 1, so the criteria
-narrow the family to a range of $T$. With $T = \tau^* - x_0$, every baseline
-$\beta$ in $B$ also gives a member that satisfies D3. The proof of Proposition
-1 also applies to any weight that increases with affinity and is at most $e$
-times larger at $\tau^*$ than just above the floor, so the softplus is not the
-only admissible weight.
-
-\emph{On the data.} Variants of the gated entropy rank compounds almost as it
-does. On Klaeger, smoothing widths from $T = 0.5$ to $2$ give a worst pairwise
-Spearman correlation of $0.999$. On Davis and Klaeger, replacing the Shannon
-entropy by a R\'enyi entropy of order $0.5$ to $3$ gives $0.998$ or higher, and
-replacing the fixed floor by a per-compound low quantile gives $1.000$. D3 held
-for every scored compound when one kinase was added at $\tau^*$ under all of
-these variants, although it is proved only for the Shannon entropy with $T$ at
-or above the bound of Proposition 1, which is $0.58$ on Klaeger, so not for the
-tested width $T = 0.5$ (Supporting Information,
-Section~S4).
-
-\emph{By construction, with the weights fixed.} Once the weights are fixed,
-that is, the softplus with given $x_0$, $\beta$ and $T$, the gated entropy is
-unique in a narrow sense: by Proposition 2, which applies Shannon's uniqueness
-theorem, any score that depends on a profile only through the shares of these
-weights and satisfies Shannon's three conditions, ranks compounds as the gated
-entropy does. The criteria fix neither the shape of the weights nor their
-parameters. Requiring the smallest admissible $T$
-with $\beta = x_0$ gives $T = (\tau^* - x_0)/\ln(2^e - 1)$, but any larger $T$
-satisfies D3 as well. The slope of the softplus weight, $1/(1 + e^{-(x - \beta)/T})$,
-is an S-shaped curve in the log-affinity $x$ that rises from $0$ to $1$ around
-$\beta$. It has the same form as the fraction of a kinase occupied at a fixed
-inhibitor concentration in a two-state binding model. Matching it to that
-fraction, at concentration $10^{-\beta}$~M, sets $T = 1/\ln 10 \approx 0.43$
-$\mathrm{p}K$ units, and this contradicts D3: by
-Proposition 1, D3 then holds with $\beta = x_0$ only if
-$\tau^* - x_0 \leq \ln(2^e - 1)/\ln 10 \approx 0.75$ $\mathrm{p}K$ units,
-whereas $\tau^* - x_0$ is $1$ or $2$ on the three $\mathrm{p}K_d$ and
-$\mathrm{p}K_i$ datasets. We fix $T = \tau^* - x_0$ as a convention, under
-which D3 holds for every $\beta$ in $B$.
+\emph{By construction: uniqueness.} The criteria do not single out one score.
+The active count, the S-score with $\tau = x_0$ and the entropy with
+$\beta = \tau^*$ satisfy D1, D3 and D4 as the gated entropy does, and so does
+every gated entropy with $\beta = x_0$ and $T \geq 0.58\,(\tau^* - x_0)$, by
+Proposition 1. Once the weights are fixed, Proposition 2 makes the gated
+entropy unique: any score that depends only on the shares of these weights and
+meets Shannon's three conditions ranks compounds as it does. The criteria do
+not fix the weights, and variants of the gated entropy rank compounds almost as
+it does (Supporting Information, Section~S4).
 
 \subsection{Recovery from Small Panels}
 \label{sec:recovery}

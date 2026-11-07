@@ -1,22 +1,18 @@
-                rate                rank  n      r      p
-        serious_rate median_rank_s_score 46 -0.075 0.6201
-        serious_rate median_rank_entropy 46 -0.015 0.9206
-        serious_rate    median_rank_gini 46 -0.004 0.9815
-        serious_rate   median_rank_ratio 46  0.069 0.6480
-          death_rate median_rank_s_score 46 -0.007 0.9610
-          death_rate median_rank_entropy 46 -0.002 0.9873
-          death_rate    median_rank_gini 46  0.004 0.9815
-          death_rate   median_rank_ratio 46 -0.077 0.6114
-           hosp_rate median_rank_s_score 46  0.147 0.3281
-           hosp_rate median_rank_entropy 46  0.191 0.2045
-           hosp_rate    median_rank_gini 46  0.193 0.1984
-           hosp_rate   median_rank_ratio 46  0.146 0.3334
-discontinuation_rate median_rank_s_score 33  0.077 0.6696
-discontinuation_rate median_rank_entropy 33  0.039 0.8294
-discontinuation_rate    median_rank_gini 33  0.016 0.9296
-discontinuation_rate   median_rank_ratio 33  0.103 0.5685
+        rate                rank  n      r      p
+serious_rate median_rank_s_score 46 -0.075 0.6201
+serious_rate median_rank_entropy 46 -0.015 0.9206
+serious_rate    median_rank_gini 46 -0.004 0.9815
+serious_rate   median_rank_ratio 46  0.069 0.6480
+  death_rate median_rank_s_score 46 -0.007 0.9610
+  death_rate median_rank_entropy 46 -0.002 0.9873
+  death_rate    median_rank_gini 46  0.004 0.9815
+  death_rate   median_rank_ratio 46 -0.077 0.6114
+   hosp_rate median_rank_s_score 46  0.147 0.3281
+   hosp_rate median_rank_entropy 46  0.191 0.2045
+   hosp_rate    median_rank_gini 46  0.193 0.1984
+   hosp_rate   median_rank_ratio 46  0.146 0.3334
 
 max |r| across all rate x rank pairs = 0.193, min p = 0.1984
-n (FAERS rates) = 46, n (discontinuation_rate) = 33
+n (FAERS rates) = 46
 
 total_reports vs median_rank_ratio: r = 0.3047, p = 0.0395

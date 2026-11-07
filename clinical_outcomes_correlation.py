@@ -1,23 +1,20 @@
 """
-Reproduces the FAERS / FDA-label discontinuation-rate correlation analysis
-referenced in the Discussion and Limitations sections: does in vitro
-selectivity (median rank under each of the four definition families) predict
-clinical adverse-event outcomes for FDA-approved Klaeger compounds?
+Reproduces the FAERS correlation analysis referenced in the Limitations
+(SI Section S7): does in vitro selectivity (median rank under each of the four
+definition families) predict clinical adverse-event outcomes for FDA-approved
+Klaeger compounds?
 
-Merges the two frozen clinical data files committed to this repository:
-  * selectivity_outcomes_merged.csv -- per-drug FAERS report counts and rates
-    (serious_rate, death_rate, hosp_rate) plus each drug's median selectivity
-    rank under every definition family, for n=46 FDA-approved Klaeger
-    compounds with FAERS records. FAERS report counts grow over time (this is
-    not what faers_pull.py's live API pull reproduces); this file is the
-    frozen snapshot the paper's numbers are computed from.
-  * clinical_safety_data.csv -- discontinuation_rate and grade34_rate manually
-    extracted from FDA drug label text (label_texts.json, extended_labels.json)
-    for n=33/35 of those drugs with a reported discontinuation rate.
+Uses the frozen FAERS snapshot selectivity_outcomes_merged.csv: per-drug FAERS
+report counts and rates (serious_rate, death_rate, hosp_rate) for n=46
+FDA-approved Klaeger compounds with FAERS records. FAERS report counts grow
+over time, so faers_pull.py's live API pull does not reproduce them exactly;
+this file is the snapshot the paper's numbers are computed from.
 
-No script produces these two files themselves (they were built/merged by
-hand from FAERS pulls and manual label review); this script is the
-permanent, reproducible record of the correlation analysis computed from them.
+FDA-label discontinuation rates (clinical_safety_data.csv) are no longer used:
+an audit against the stored label text found dose-reduction rates recorded as
+discontinuation rates (ceritinib, pazopanib), values not found in the stored
+text (ibrutinib, lapatinib, sorafenib) and a combination-therapy rate
+(axitinib).
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -27,7 +24,7 @@ from scipy.stats import spearmanr
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 RANK_COLS = ['median_rank_s_score', 'median_rank_entropy', 'median_rank_gini', 'median_rank_ratio']
-RATE_COLS = ['serious_rate', 'death_rate', 'hosp_rate', 'discontinuation_rate']
+RATE_COLS = ['serious_rate', 'death_rate', 'hosp_rate']
 
 
 def analyze():
@@ -38,8 +35,7 @@ def analyze():
     ranks = pd.read_csv(f"{HERE}/klaeger_selectivity_results.csv")[['drug'] + RANK_COLS]
     so = so.drop(columns=RANK_COLS).merge(ranks, on='drug', how='left')
     assert so[RANK_COLS].notna().all().all(), "a FAERS drug is missing from klaeger_selectivity_results.csv"
-    cs = pd.read_csv(f"{HERE}/clinical_safety_data.csv")
-    merged = so.merge(cs[['drug', 'discontinuation_rate', 'grade34_rate']], on='drug', how='left')
+    merged = so
 
     rows = []
     for rate in RATE_COLS:
@@ -59,6 +55,5 @@ if __name__ == "__main__":
     print(df.to_string(index=False))
     print(f"\nmax |r| across all rate x rank pairs = {df['r'].abs().max():.3f}, "
           f"min p = {df['p'].min():.4f}")
-    print(f"n (FAERS rates) = {merged[RATE_COLS[0]].notna().sum()}, "
-          f"n (discontinuation_rate) = {merged['discontinuation_rate'].notna().sum()}")
+    print(f"n (FAERS rates) = {merged[RATE_COLS[0]].notna().sum()}")
     print(f"\ntotal_reports vs median_rank_ratio: r = {r_tot:.4f}, p = {p_tot:.4f}")

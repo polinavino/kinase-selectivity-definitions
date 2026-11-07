@@ -12,7 +12,7 @@ response, the manuscript has been revised as follows:
 
   - the manuscript is consolidated around one question, which analysis
     choices change selectivity rankings, and shortened from about 11,100 to
-    about 9,400 words, with the full evidence for each check in a
+    about 9,000 words, with the full evidence for each check in a
     Supporting Information file that follows the same order;
 
   - the analyses now use one reference target per human protein kinase,

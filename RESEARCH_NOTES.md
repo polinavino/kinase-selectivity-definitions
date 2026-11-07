@@ -12,8 +12,8 @@ Introduction (merged with Background); Methods (datasets and target selection,
 score implementations, ranking comparisons, criteria and the gated entropy,
 recovery design); Results (analysis choices and agreement; parameter
 sensitivity and profile associations; criteria and the gated entropy;
-uniqueness of the gated entropy; recovery from small panels); Discussion;
-Conclusion. Main text about 9,400 words; SI Sections S1-S8 follow the same
+recovery from small panels); Discussion; Conclusion. Main text about 9,000
+words; SI Sections S1-S8 follow the same
 order.
 
 ## Research question
@@ -63,7 +63,9 @@ ratio) are used interchangeably. The paper:
   with beta = tau*, the ratio, P_max and the gated entropy (not the
   published entropy); not for the S-score with
   tau > x0, the Gini or the entropy with beta < tau*. The former D2 (bounded
-  gap sensitivity) was dropped. D4 holds for every score studied; the reversed
+  gap sensitivity) was dropped. D4 holds for every score studied when
+  floor-coded pairs have zero weight; the entropy and Gini fail it at
+  baselines below the floor (part of the Anastassiadis sweep); the reversed
   active count (which meets D1-D3 as the gated entropy does), the gated
   entropy without its gate and the published entropy with floor-coded pairs
   kept at the floor fail it (P_max keeps D4 under either floor treatment). Proposition 3: turning a floor-coded pair
@@ -95,9 +97,12 @@ ratio) are used interchangeably. The paper:
 
 ## Clinical outcomes analysis (Limitations)
 - Proportions of FAERS reports that were serious, fatal or involved
-  hospitalization (n = 46) and FDA-label discontinuation rates (n = 33) vs median
-  selectivity rank: all |r| <= 0.20, all p > 0.19 (clinical_outcomes_correlation.py)
+  hospitalization (n = 46) vs median selectivity rank: all |r| <= 0.20, all
+  p > 0.19 (clinical_outcomes_correlation.py)
+- FDA-label discontinuation rates were dropped: an audit against the stored
+  label text found dose-reduction rates recorded as discontinuation
+  (ceritinib 45%, pazopanib 36%), values not in the stored text (ibrutinib,
+  lapatinib, sorafenib) and a combination-therapy rate (axitinib)
 - Only nominal signal: raw FAERS report count vs ratio rank, r = 0.30, p = 0.04,
   likely prescription volume
-- Grade 3/4 rates: too few drugs with data for analysis
 - Confounded by indication and prescription volume; reported as a null result
