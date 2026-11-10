@@ -118,6 +118,10 @@ print(f"   profile: one kinase at pKd 7.0 and fifty at 5.1; add one kinase at pK
 print(f"   entropy selectivity  {before:+.4f} -> {after:+.4f}  ({'RISES: D3 violated' if after > before else 'does not rise'})")
 cb, ca = candidate(prof, 5.0, 1.0)[0], candidate(add_column(prof, 6.0), 5.0, 1.0)[0]
 print(f"   candidate (T = 1)    {cb:+.4f} -> {ca:+.4f}  ({'RISES' if ca > cb else 'does not rise'})")
+e6, e51 = 6.0 - 5.0, 5.1 - 5.0
+g6, g51 = float(np.logaddexp(0.0, 6.0 - 5.0)), float(np.logaddexp(0.0, 5.1 - 5.0))
+print(f"   weights: entropy {e6:.2f} (added kinase at 6.0) and {e51:.2f} (each at 5.1), ratio {e6 / e51:.1f}; "
+      f"candidate {g6:.4f} and {g51:.4f}, ratio {g6 / g51:.2f}")
 
 print("\n4. Real data: add one kinase at tau* to every compound with an active kinase")
 for name, (M, x0, tau, top, grid, T_old) in data.items():

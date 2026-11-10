@@ -227,7 +227,8 @@ kinases, and six of these have one clearly dominant target (top$_1$--top$_2$
 gap above $1$). The ratio ranks these seven 31st to 63rd of 200 and the
 entropy and Gini 146th to 180th. This is because the ratio reflects the dominant target, and the
 entropy and Gini reflect the number of active kinases. Bosc et al.\cite{Bosc2017}
-described such profiles for individual compounds. On Davis, the most unstable
+attributed disagreements for individual compounds to such profiles (i.e. broad profiles with one
+dominant target). On Davis, the most unstable
 compound overall is a profile of this kind (Figure~\ref{fig:profiles},
 right).
 
@@ -288,94 +289,117 @@ stay the same, and D3 holds. D3 therefore concerns how scores change when a
 panel is extended, not how compounds are ranked on one panel. The Gini violates
 D3, since a weakly bound kinase can raise its inequality. The ratio satisfies
 it, because a weak addition cannot displace the primary target or lower the
-reference off-target. $P_{\max}$ satisfies it too: a weak addition leaves its
+reference off-target. $P_{\max}$ satisfies it too, since a weak addition leaves its
 numerator unchanged and raises its denominator. The entropy satisfies D3 at
 $\beta = \tau^*$, where weak binding carries zero weight. The gated entropy
-satisfies D1 through its eligibility rule and D3 by Proposition 1 in Methods,
-and its
-weights vary smoothly with affinity above the gate. Proposition 1 concerns
-adding a target, not strengthening one already in the profile. On the profiles
-$\mathbf{v}_m$ of D4, the scores take the values $-m$ (active count), $-m/N$
-(S-score with $\tau < a$), $-\log_2 m$ (the entropies and the gated entropy,
-whose $m$ weights are equal), $1/m$ ($P_{\max}$), $(N - m)/N$ (Gini), and
-$a - \max(x_0, b)$ for $m \leq k$ and $0$ otherwise ($R_b(k)$), so all of them
-satisfy D4. These values assume that floor-coded pairs have zero weight, which
-for the entropy and Gini requires $\beta \geq x_0$. On Anastassiadis, their
+satisfies D1 through its eligibility rule and D3 by Proposition 1 in Methods.
+D3 concerns adding a target, not strengthening one already in the profile (so
+strengthening one is allowed to raise the gated entropy's score). 
+Indeed, we observe that, if one kinase at
+$\mathrm{p}K_d = 7.0$ and fifty at $5.1$, the score is $-5.642$. Raising one
+of the fifty to $6.0$ raises it to $-5.637$.
+
+D4 asks that a score not rise when a compound binds one more kinase as
+strongly as the others. For any compound that binds $m$ kinases at the same
+value $a$, and the rest of the panel at the floor (such compounds are denoted by $\mathbf{v}_m$
+in Methods), the scores are:
+\begin{itemize}
+  \item active count: $-m$
+  \item S-score with $\tau < a$: $-m/N$
+  \item the entropies and the gated entropy, whose $m$ weights are equal:
+        $-\log_2 m$
+  \item $P_{\max}$: $1/m$
+  \item Gini: $(N - m)/N$
+  \item ratio $R_b(k)$: $a - \max(x_0, b)$ for $m \leq k$ and $0$ otherwise.
+\end{itemize}
+None of these values rises as $m$ grows, so all of these scores satisfy D4.
+The values assume that floor-coded pairs have zero weight, which,
+for the entropy and Gini, requires $\beta \geq x_0$. On Anastassiadis, their
 sweeps also include baselines below the $20\%$ floor, where both fail D4: on
 its 291 kinases, with $\beta = 0\%$ and targets at $60\%$, a second target
 raises the Gini from $0.0068$ to $0.0135$. With floor-coded pairs kept at the
 floor, the published entropy also fails D4 on panels of the datasets' sizes: on 363 kinases with targets at
 $\mathrm{p}K_d = 7$, a second target raises its score from $-7.41$ to $-6.76$
 bits. $P_{\max}$ satisfies D4 under either treatment, because its largest share
-falls as $m$ grows. D1 to D3 alone do not fix the direction of a score. The active count with
-its sign reversed, which calls a compound more selective the more active
-kinases it has, satisfies D1 and D3, because a kinase added at or below
-$\tau^*$ leaves it unchanged, and fails D2 as the count does, since reversing a
-score's sign does not change how many pairs reverse. It therefore meets D1 to
-D3 exactly as the gated entropy does, but its value on $\mathbf{v}_m$ is $+m$,
-so D4 rules it out. The gated entropy without its non-binder gate also fails
-D4, because floor-coded pairs then carry weight and adding equally strong
-targets can concentrate the distribution. For the entropies, $P_{\max}$ and
-the Gini, Proposition 3 extends D4 to any profile in which a floor-coded pair
-becomes a target no stronger than the weakest weighted one.
+falls as $m$ grows.
 
-\emph{By construction: counterexamples.} Constructed profiles show the D3
-violations of the published entropy and of the entropy with $\beta < \tau^*$,
-and a limit of the gated entropy. The published entropy violates D3: with
+D1 to D3 alone do not fix the direction of a score. The active count with
+its sign reversed, which calls a compound more selective the more active
+kinases it has, satisfies D1 and D3 because a kinase added at or below
+$\tau^*$ leaves it unchanged. Like the count, it fails D2, since reversing a
+score's sign does not change how many pairs reverse. It therefore has the same
+verdicts on D1 to D3 as the gated entropy, but it rises with the number of equally
+strong targets ($+m$ on $\mathbf{v}_m$), contradicting D4. The gated entropy without its non-binder gate also fails
+D4, because floor-coded pairs carry weight, and adding equally strong
+targets can concentrate the distribution. For the entropy, the gated entropy,
+$P_{\max}$ and the Gini, Proposition 3 allows us to make a conclusion even stronger 
+than D4. On any
+profile (not only one with equally strong targets), turning a floor-coded pair
+into a target that is no stronger than the weakest weighted one does not raise the
+score.
+
+\emph{By construction: counterexamples.} The published entropy violates D3: with
 floor-coded pairs given zero weight, a profile with one target at
 $\mathrm{p}K_d = 6.01$ and fifty at $5.01$ scores $-5.35$ bits, and adding one
 at $6.0$ raises this to $-5.19$. The entropy violates D3 at $\beta < \tau^*$.
-Its hard cutoff gives a kinase just above $\beta$ a weight close to zero, so a
-profile with many such kinases has high entropy, and adding one kinase bound
-more strongly, but still below $\tau^*$, concentrates the distribution. With
+Its hard cutoff gives a kinase just above $\beta$ a weight close to zero. A
+profile with many such kinases therefore has high entropy. Adding one kinase
+bound more strongly, but still below $\tau^*$, concentrates the distribution.
+With
 $\beta = 5.0$, a profile with one kinase at $\mathrm{p}K_d = 7.0$ and fifty at
 $5.1$ scores $-4.89$ bits, and adding one at $6.0$ raises this to $-4.83$.
-Strengthening a target already in the profile can raise the gated entropy's
-score: one target at $7$ and fifty at $5.1$, with one of the fifty raised to
-$6.0$, moves from $-5.642$ to $-5.637$.
+The gated entropy does not violate D3 on this profile: adding the kinase at
+$6.0$ lowers its score from $-5.642$ to $-5.666$, because the softplus gives
+that kinase only $1.8$ times the weight of a kinase at $5.1$ ($1.31$ against
+$0.74$). The entropy's hard cutoff gives it $10$ times the weight ($1.0$
+against $0.1$).
 
-\emph{Empirical checks of monotonicity.} We also tested D3 for the entropy and
-the gated entropy on the measured profiles. On the measured profiles of the active
+\emph{Empirical checks.} To additionally check empirically that Proposition 1 
+holds, we tested D3
+for the entropy and the gated entropy on the measured profiles. 
+On the measured profiles of the active
 compounds, adding a hypothetical kinase at $\tau^*$ never raises the entropy's
 score on Davis, Klaeger or Metz at any baseline in their sweeps. On
-Anastassiadis it does at baselines below the $20\%$ floor ($33\%$ of the
-compounds at $\beta = 0\%$, $16\%$ at $5\%$). It never raises the gated
+Anastassiadis, at baselines below the $20\%$ floor ($33\%$ of the
+compounds at $\beta = 0\%$, $16\%$ at $5\%$), it does. It never raises the gated
 entropy's score on any dataset. Adding measured kinases bound below the
 threshold to random 50- or 100-kinase subpanels of the same profiles raises the
 entropy's score in at most $0.1\%$ of cases on any dataset, and never the gated
 entropy's.
 
-\emph{Empirical rankings of the gated entropy.} On the four datasets, we
-compared the gated entropy's rankings with those of other scores and tested
+On the four datasets, we
+compared the gated entropy's rankings with those of other scores, and tested
 their sensitivity to $\tau^*$ and to noise. On the data, the gated
 entropy's score falls as the number of active kinases rises (Spearman $-0.78$
-to $-0.97$), so it agrees closely with breadth. Without the non-binder gate the
-correlation reverses ($r = +0.91$ on Klaeger), as its failure of D4 predicts. It ranks the compounds almost exactly as the
+to $-0.97$). Without the non-binder gate, the
+correlation reverses ($r = +0.91$ on Klaeger), as its failure of D4 predicts. 
+It ranks the compounds almost exactly as the
 entropy does ($0.994$--$0.998$) and as the S-score with $\tau = x_0$ does
 ($0.998$--$0.9997$), which also satisfies D1, D3 and D4. Moving $\tau^*$ from
 $5.5$ to $7$ ($40\%$ to $70\%$ on Anastassiadis) changes which compounds are
-scored but not how those scored at both values are ranked (Spearman
+scored, but does not change how those scored at both values are ranked (Spearman
 $\geq 0.999$). 
 With random noise added to the measured values, as described in Methods, D1
-changed the status of at
-most 11 compounds in any draw, and the ranking of the compounds scored with and
-without noise stayed at Spearman $0.978$ or higher with the noise-free ranking,
-against $0.983$ or higher for the entropy. The entropy satisfies D3 at
+changed the status of at most 11 compounds in any draw. Over the compounds
+scored both with and without noise, the gated entropy's ranking correlated
+with its noise-free ranking at Spearman $0.978$ or higher, and the entropy's
+at $0.983$ or higher. The entropy satisfies D3 at
 $\beta = \tau^*$, where it gives zero weight to binding below the threshold. The
 gated entropy gives that binding a weight that varies smoothly with affinity
-and still satisfies D3, as proved in Methods. On these datasets, gated entropy is
+and still satisfies D3, as proved in Methods. On these datasets, the gated entropy is
 thus not an
 empirical improvement on simpler scores.
 
-\emph{By construction: uniqueness.} The criteria do not single out one score.
-The active count, the S-score with $\tau = x_0$ and the entropy with
-$\beta = \tau^*$ satisfy D1, D3 and D4 as the gated entropy does, and so does
-every gated entropy with $\beta = x_0$ and $T \geq 0.58\,(\tau^* - x_0)$, by
-Proposition 1. Once the weights are fixed, Proposition 2 makes the gated
-entropy unique: any score that depends only on the shares of these weights and
-meets Shannon's three conditions ranks compounds as it does. The criteria do
-not fix the weights, and variants of the gated entropy rank compounds almost as
-it does (Supporting Information, Section~S4).
+\emph{Uniqueness.} The criteria do not single out one score. No score
+satisfies D2. The active count, the S-score with $\tau = x_0$ and the entropy
+with $\beta = \tau^*$ satisfy D1, D3 and D4, as the gated entropy does. By
+Proposition 1, so does every gated entropy with $\beta = x_0$ and
+$T \geq 0.58\,(\tau^* - x_0)$. Once $x_0$, $\beta$ and $T$ are fixed,
+Proposition 2 makes the gated entropy unique: any score that depends only on
+the shares of its weights and meets Shannon's three conditions ranks compounds
+as it does. The criteria do not fix $T$, since any value above the bound
+passes, and variants of the gated entropy rank compounds almost as it does
+(Supporting Information, Section~S4).
 
 \subsection{Recovery from Small Panels}
 \label{sec:recovery}

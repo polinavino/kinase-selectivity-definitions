@@ -24,6 +24,7 @@
    profile: one kinase at pKd 7.0 and fifty at 5.1; add one kinase at pKd 6.0
    entropy selectivity  -4.8944 -> -4.8262  (RISES: D3 violated)
    candidate (T = 1)    -5.6422 -> -5.6657  (does not rise)
+   weights: entropy 1.00 (added kinase at 6.0) and 0.10 (each at 5.1), ratio 10.0; candidate 1.3133 and 0.7444, ratio 1.76
 
 4. Real data: add one kinase at tau* to every compound with an active kinase
    Davis          n=  68  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
