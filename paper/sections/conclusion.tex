@@ -9,8 +9,11 @@ agree, how much a ranking moves when the activity boundary moves, and how much
 of a ranking a small panel retains. Selectivity analyses should state
 them, apply an activity-eligibility rule, fix the activity boundary in advance
 and report its effect, and report how many compounds remain scorable on small
-panels. The gated entropy shows that a Shannon entropy can give weight to binding
-below the activity threshold and remain monotone under weak-target addition,
-and that, once its parameters are fixed, Shannon's conditions make it unique, but
-on these data it ranks
-compounds almost as the share of targets with detected binding does.
+panels. The gated entropy gives weight to binding below the activity threshold
+and remains monotone under weak-target addition. Among scores that weight each
+target by its distance above the activity boundary and satisfy Shannon's
+grouping rule, the criteria leave only gated entropies whose width is at least
+the distance between the floor and the activity threshold. On these data, the
+gated entropy with that smallest width recovers rankings from small panels more
+slowly than the share of targets with detected binding. With twice the width,
+it recovers them as fast and ranks compounds almost as that share does.

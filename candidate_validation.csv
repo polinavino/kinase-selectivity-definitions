@@ -1,5 +1,5 @@
-dataset,n_cpd,n_kin,orient_r,d3_emphasis_rev,d3_boundary_rev,d3_entropy_rev,d4_pct
-Davis,68,363,-0.968,0.0044,0.0922,0.079,100.0
-Klaeger,222,217,-0.946,0.0053,0.1299,0.1237,100.0
-Anastassiadis,178,291,-0.934,0.0036,0.1439,0.1058,100.0
-Metz,704,172,-0.783,0.0072,0.2359,0.228,100.0
+dataset,n_cpd,n_kin,orient_r,gate_rev,entropy_rev,d4_pct
+Davis,68,363,-0.947,0.0922,0.079,100.0
+Klaeger,222,217,-0.935,0.1266,0.1237,100.0
+Anastassiadis,178,291,-0.926,0.1456,0.1058,100.0
+Metz,704,172,-0.761,0.2382,0.228,100.0

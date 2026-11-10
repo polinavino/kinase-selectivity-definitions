@@ -1,39 +1,36 @@
-1. Condition for the candidate's D3 guarantee: T >= 0.5816 (tau* - x0)
-   dataset         tau*-x0  T now  T before  r=a/m now  r before  (need r <= e = 2.718)
-   Davis               1.0    1.0       1.0      1.895     1.895
-   Klaeger             1.0    1.0       1.0      1.895     1.895
-   Anastassiadis      30.0   30.0      10.0      1.895     4.398
-   Metz                2.0    2.0       1.0      1.895     3.069
-   emphasis baseline beta swept over B, T = tau* - x0 (any dataset): r = a/m from 1.895 (beta = x0) to 2.213 (beta = tau*)
+1. Condition for the candidate's D3 guarantee: T >= tau* - x0 (need a = exp((tau* - x0)/T) <= e)
+   dataset         tau*-x0      T  a (gate x0)  a (gate tau*)
+   Davis               1.0    1.0       2.7183         1.0000
+   Klaeger             1.0    1.0       2.7183         1.0000
+   Anastassiadis      30.0   30.0       2.7183         1.0000
+   Metz                2.0    2.0       2.7183         1.0000
+   e = 2.7183; with the gate at g in [x0, tau*], a = exp((tau* - g)/T) falls from e to 1
 
-2. Sharpness on profiles with one strong target and n kinases just above the floor
+2. Sharpness on profiles with one target just above tau* and n kinases just above the floor
    Klaeger        T = tau*-x0          T =   1.000: D3 holds
-   Klaeger        T before             T =   1.000: D3 holds
-   Klaeger        T just above bound   T =   0.587: D3 holds
-   Klaeger        T just below bound   T =   0.564: D3 VIOLATED (max rise +3.1e-05 bits at n = 1473)
+   Klaeger        T just above bound   T =   1.010: D3 holds
+   Klaeger        T just below bound   T =   0.970: D3 VIOLATED (max rise +2.2e-04 bits at n = 280)
    Metz           T = tau*-x0          T =   2.000: D3 holds
-   Metz           T before             T =   1.000: D3 VIOLATED (max rise +1.4e-03 bits at n = 190)
-   Metz           T just above bound   T =   1.175: D3 holds
-   Metz           T just below bound   T =   1.128: D3 VIOLATED (max rise +5.4e-05 bits at n = 850)
+   Metz           T just above bound   T =   2.020: D3 holds
+   Metz           T just below bound   T =   1.940: D3 VIOLATED (max rise +2.2e-04 bits at n = 280)
    Anastassiadis  T = tau*-x0          T =  30.000: D3 holds
-   Anastassiadis  T before             T =  10.000: D3 VIOLATED (max rise +1.4e-02 bits at n = 98)
-   Anastassiadis  T just above bound   T =  17.623: D3 holds
-   Anastassiadis  T just below bound   T =  16.925: D3 VIOLATED (max rise +4.4e-05 bits at n = 1046)
+   Anastassiadis  T just above bound   T =  30.300: D3 holds
+   Anastassiadis  T just below bound   T =  29.100: D3 VIOLATED (max rise +2.2e-04 bits at n = 280)
 
 3. Worked counterexample for the entropy (beta = floor = 5.0, tau* = 6.0)
    profile: one kinase at pKd 7.0 and fifty at 5.1; add one kinase at pKd 6.0
    entropy selectivity  -4.8944 -> -4.8262  (RISES: D3 violated)
-   candidate (T = 1)    -5.6422 -> -5.6657  (does not rise)
-   weights: entropy 1.00 (added kinase at 6.0) and 0.10 (each at 5.1), ratio 10.0; candidate 1.3133 and 0.7444, ratio 1.76
+   candidate (T = 1)    -5.5016 -> -5.5223  (does not rise)
+   weights: entropy 1.00 (added kinase at 6.0) and 0.10 (each at 5.1), ratio 10.0; candidate 2.7183 and 1.1052, ratio 2.46 (at most e = 2.7183 times the weight at the floor)
 
 4. Real data: add one kinase at tau* to every compound with an active kinase
-   Davis          n=  68  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+   Davis          n=  68  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0%
                   entropy rises, by baseline: 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%, 5.75: 0.0%, 6: 0.0%, 6.25: 0.0%, 6.5: 0.0%
-   Klaeger        n= 200  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+   Klaeger        n= 200  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0%
                   entropy rises, by baseline: 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%, 5.75: 0.0%, 6: 0.0%, 6.25: 0.0%, 6.5: 0.0%
-   Anastassiadis  n= 133  entropy rises:   0.0% at beta = floor,  33.1% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+   Anastassiadis  n= 133  entropy rises:   0.0% at beta = floor,  33.1% at some beta in the sweep;  candidate rises: 0.0%
                   entropy rises, by baseline: 0: 33.1%, 5: 15.8%, 10: 2.3%, 15: 0.0%, 20: 0.0%, 25: 0.0%, 30: 0.0%
-   Metz           n= 699  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0% (T = tau*-x0), 0.0% (T before)
+   Metz           n= 699  entropy rises:   0.0% at beta = floor,   0.0% at some beta in the sweep;  candidate rises: 0.0%
                   entropy rises, by baseline: 4: 0.0%, 4.25: 0.0%, 4.5: 0.0%, 4.75: 0.0%, 5: 0.0%, 5.25: 0.0%, 5.5: 0.0%
 
 5. Random adversarial search, candidate with T = tau* - x0 (additions anywhere in (x0, tau*])
@@ -41,18 +38,20 @@
    Metz           20000 random profiles: max rise = +0.00e+00 bits
    Anastassiadis  20000 random profiles: max rise = +0.00e+00 bits
 
-6. Effect of the change of T on the rankings (Spearman, all compounds)
-   Davis          T unchanged (1)
-   Klaeger        T unchanged (1)
-   Anastassiadis  T = 10 -> 30: Spearman = 0.999
-   Metz           T = 1 -> 2: Spearman = 0.999
+6. Effect of the switch from the earlier softplus weights (same gate and T = tau* - x0), Spearman
+   Davis          all compounds 0.968; compounds D1 scores 0.968
+   Klaeger        all compounds 0.986; compounds D1 scores 0.982
+   Anastassiadis  all compounds 0.998; compounds D1 scores 0.998
+   Metz           all compounds 0.989; compounds D1 scores 0.989
 
-7. Limits of the candidate (beta = x0 = 5.0, T = 1)
-   jump at the floor: one target at 7 with a second at 5.0: +0.0000 bits; second at 5.0 + 1e-8: -0.8045 bits
-   one target at 7 and fifty at 5.1: -5.64215; one of the fifty raised to 6.0: -5.63708 (higher: strengthening an existing off-target is not covered by D3)
+7. Limits of the candidate (x0 = 5.0, T = 1)
+   jump at the floor: one target at 7 with a second at 5.0: +0.0000 bits; second at 5.0 + 1e-8: -0.5271 bits
+   one target at 7 and fifty at 5.1: -5.50161; one of the fifty raised to 6.0: -5.49148 (higher: strengthening an existing off-target is not covered by D3)
 
 8. The published (association-constant) entropy, floor-coded pairs given zero weight
    one target at 6.01 and fifty at 5.01: -5.3532 bits; one kinase added at 6.0: -5.1879 bits (rises: D3 violated)
+   K_a = 10^pKd = exp(pKd ln 10): exponential weights with T = 1/ln 10 = 0.4343 pK units; the D3 bound needs T >= tau* - x0 = 1 (Davis, Klaeger) or 2 (Metz)
+   matching check: -0.737409 (Ka weights) vs -0.737409 (exponential, T = 1/ln 10)
 
 9. D4 (orientation) on reference profiles: m targets at a common value a, the rest at the floor,
    panel size N fixed; D4 needs f(v_{m+1}) <= f(v_m) for all m and f(v_1) > f(v_N)
@@ -79,7 +78,7 @@
     a concentration score can rank more active targets as more selective: H(1, 1) = 1.000000 bits,
     H(1000, 1, 1) = 0.022774 bits
     adding one active kinase (value 12) to one target at 9 and fifty at 5.1 (x0 = 5):
-      gated entropy, T = 1  : -5.555 -> -5.346
+      gated entropy, T = 1  : -3.839 -> -0.790
       entropy, beta = x0    : -4.127 -> -3.310
       P_max                 : +0.994 -> +0.999
       active count          : -1.000 -> -2.000
@@ -104,3 +103,24 @@
    beta =   25%: entropy holds; Gini holds  (a tested: 55, 60, 70, 80, 90, 100%)
    beta =   30%: entropy holds; Gini holds  (a tested: 55, 60, 70, 80, 90, 100%)
    example, beta = 0, targets at 60%: Gini 0.00680 with one target, 0.01347 with two; entropy -8.1785 with one, -8.1723 with two
+
+13. D2 (boundary locality): gate moved from g to g' with no readout between them
+   5000 random profiles with no readout in [5.0, 6.5], gate at 5.0 and at 6.5: candidate (exponential): score changes for 0.0%; softplus of the distance above the gate: score changes for 85.9%; entropy, baseline as boundary: score changes for 85.9%
+   two targets at distances u = 1.0 and v = 0.5 above the gate, gate lowered by 0.5: weight ratio exponential 1.6487 -> 1.6487; softplus 1.3482 -> 1.2956
+
+14. The entropy fact behind Proposition 1: weights all >= 1, one weight a appended (20,000 random vectors)
+   a = e               : entropy falls (score rises) in 0 of 20000
+   a uniform in (0, e] : entropy falls (score rises) in 0 of 20000
+   a = 1.05 e          : entropy falls (score rises) in 1537 of 20000
+
+15. Softplus weights T log(1 + exp((x - x0)/T)): D3 bound T >= (tau* - x0)/ln(2^e - 1)
+   (tau* - x0)/ln(2^e - 1) = 0.5816 (tau* - x0)
+   Klaeger        T = tau*-x0          T =   1.000: D3 holds
+   Klaeger        T just above bound   T =   0.587: D3 holds
+   Klaeger        T just below bound   T =   0.564: D3 VIOLATED (max rise +3.1e-05 bits at n = 1473)
+   Metz           T = tau*-x0          T =   2.000: D3 holds
+   Metz           T just above bound   T =   1.175: D3 holds
+   Metz           T just below bound   T =   1.128: D3 VIOLATED (max rise +5.4e-05 bits at n = 850)
+   Anastassiadis  T = tau*-x0          T =  30.000: D3 holds
+   Anastassiadis  T just above bound   T =  17.623: D3 holds
+   Anastassiadis  T just below bound   T =  16.925: D3 VIOLATED (max rise +4.4e-05 bits at n = 1046)

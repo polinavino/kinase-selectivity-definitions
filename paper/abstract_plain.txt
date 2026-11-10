@@ -2,13 +2,12 @@ Kinase selectivity scores can rank the same compounds differently. We compare
 four common scores across four profiling datasets. Agreement changes with
 affinity weighting, the compounds ranked and the treatment of pairs without
 detected binding. We relate ranking sensitivity to binding profile features.
-We propose four criteria for evaluating selectivity scores. No score is
-consistent across activity boundaries, so the boundary must be fixed by
-protocol. We construct a gated entropy that gives weight to weak binding and
-prove that adding a weakly bound target cannot make a compound appear more
-selective. On these data, it ranks compounds almost as the share of targets
-with detected binding does. Scores that follow this share recover full-panel
-rankings from fewer targets than the ratio and the published entropy, but on
-small panels many compounds with few active targets cannot be scored. These
-findings support reporting analysis choices, ranking sensitivity and compound
-coverage.
+Moving the activity boundary reorders compounds under every score, so the
+boundary must be fixed by protocol. We propose four criteria for selectivity
+scores and, with Shannon's grouping rule, derive from them a gated entropy with
+exponential affinity weights. We prove the range of weighting for which adding
+a weakly bound target cannot make a compound appear more selective. Scores that
+follow the share of targets with detected binding recover rankings from fewer
+targets than the ratio and the published entropy, but on small panels many
+compounds with few active targets cannot be scored. These findings support
+reporting analysis choices, ranking sensitivity and compound coverage.

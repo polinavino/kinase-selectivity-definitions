@@ -25,7 +25,7 @@ Table 2: top2 pKd vs ratio instability                    0.296          0.147  
 Table 2: top2 pKd vs ratio instability (p)                0.014           0.23          0.096
 compounds with top1-top2 gap < 0.05                          15              8              8
 mean overall rank sd                                      8.478          7.496          7.802
-candidate vs entropy, scored compounds                    0.999          0.997          0.998
+candidate vs entropy, scored compounds                    0.956          0.969          0.963
 p* candidate                                                 50             50             50
 p* entropy                                                   50             50             50
 p* gini                                                     110            110            110

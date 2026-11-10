@@ -57,8 +57,7 @@ def neg_renyi_H(w, alpha, eps=1e-12):
 
 
 def candidate_alpha(P, floor, T, alpha):
-    g = (P > floor).astype(float)
-    w = g * (T * np.logaddexp(0.0, (P - floor) / T))
+    w = np.where(P > floor, np.exp((P - floor) / T), 0.0)
     return neg_renyi_H(w, alpha)
 
 

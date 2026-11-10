@@ -160,6 +160,7 @@ def load_metz():
 results = [load_davis(), load_klaeger(), load_anastassiadis(), load_metz()]
 
 rows = []
+pvals = []
 print(f"{'Dataset':32s}{'n_cpd':>7s}{'n_kin':>7s}{'distr.r':>10s}{'ratio-distr.r':>15s}"
       f"{'gap~ratio':>12s}{'nact~entropy':>14s}")
 for r in results:
@@ -172,6 +173,7 @@ for r in results:
     na_r, na_p = r['fc']('n_active', 'entropy')
     print(f"{r['label']:32s}{r['n_cpd']:>7d}{r['n_kin']:>7d}{distr:>10.3f}"
           f"{rd_lo:>8.2f}-{rd_hi:<5.2f}{gap_r:>10.4f}  {na_r:>10.4f}")
+    pvals.append(f"{r['label'].split(' ')[0]} gap~ratio p = {gap_p:.2g}, nact~entropy p = {na_p:.2g}")
     rows.append(dict(dataset=r['label'], n_cpd=r['n_cpd'], n_kin=r['n_kin'],
                      within_distr_r=round(distr, 3),
                      ratio_vs_distr_min=round(rd_lo, 3), ratio_vs_distr_max=round(rd_hi, 3),
@@ -181,6 +183,7 @@ for r in results:
                      rankstd_zeroactive=round(float(r['rank_std'][~r['has_active']].mean()), 1)
                          if (~r['has_active']).any() else np.nan,
                      rankstd_active=round(float(r['rank_std'][r['has_active']].mean()), 1)))
+print("p-values: " + "; ".join(pvals))
 pd.DataFrame(rows).to_csv(os.path.join(HERE, "cross_dataset_summary.csv"), index=False)
 print("\nSaved cross_dataset_summary.csv")
 

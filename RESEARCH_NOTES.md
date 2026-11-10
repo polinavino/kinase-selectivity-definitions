@@ -12,7 +12,7 @@ Introduction (merged with Background); Methods (datasets and target selection,
 score implementations, ranking comparisons, criteria and the gated entropy,
 recovery design); Results (analysis choices and agreement; parameter
 sensitivity and profile associations; criteria and the gated entropy;
-recovery from small panels); Discussion; Conclusion. Main text about 9,000
+recovery from small panels; width of the gated entropy and recovery); Discussion; Conclusion. Main text about 9,800
 words; SI Sections S1-S8 follow the same
 order.
 
@@ -22,10 +22,11 @@ ratio) are used interchangeably. The paper:
 1. Characterizes where and why they disagree, on four datasets curated to one
    reference target per human protein kinase (curate_panels.py)
 2. Relates rank instability to features of the binding profile
-3. States four criteria (D1 activity eligibility, D2 distributional
-   consistency, D3 monotonicity under weak-target addition, D4 orientation on
-   profiles with equally strong targets) and evaluates
-   the four definitions, three comparators and a candidate against them
+3. States four criteria (D1 activity eligibility, D2 boundary locality, D3
+   monotonicity under weak-target addition, D4 orientation on profiles with
+   equally strong targets), all judged by construction, and evaluates the
+   four definitions, three comparators and a candidate against them; derives
+   the candidate (gated entropy with exponential weights) from them
 4. Evaluates recovery from random subpanels separately (panel_recovery.py)
 
 ## Key findings
@@ -55,11 +56,13 @@ ratio) are used interchangeably. The paper:
   Anastassiadis (0.00; -0.15 without saturated compounds); entropy-n_active on
   all four (r = -0.30 to -0.42; Davis p = 0.01, not significant after
   Bonferroni).
-- Properties: no boundary parameter tested satisfies D2 (rule: within eps on every
-  dataset and, for the ratio, every k). S-score threshold reverses 8.4-13.0%
-  of pairs on three datasets; entropy/Gini 7.9-12.4%; candidate gate
-  9.2-14.4%; ratio clipping level b in R_b(k) = x(1) - max(x(k+1), b) up to
-  13.7%. D3 holds for the active count, the S-score at tau = x0, the entropy
+- Properties: D2 (locality: moving the boundary without passing a value
+  leaves the score unchanged) holds for the S-score, the active count and the
+  gated entropy, not for the entropy, Gini or ratio. Boundary sensitivity,
+  reported as a measurement: S-score threshold reverses 8.4-13.0% of pairs on
+  three datasets; entropy/Gini 7.9-12.4%; candidate gate 9.2-14.6%; ratio
+  clipping level b in R_b(k) = x(1) - max(x(k+1), b) up to 13.7%; every
+  parameter at least 13.7% on some dataset. D3 holds for the active count, the S-score at tau = x0, the entropy
   with beta = tau*, the ratio, P_max and the gated entropy (not the
   published entropy); not for the S-score with
   tau > x0, the Gini or the entropy with beta < tau*. The former D2 (bounded
@@ -70,15 +73,23 @@ ratio) are used interchangeably. The paper:
   entropy without its gate and the published entropy with floor-coded pairs
   kept at the floor fail it (P_max keeps D4 under either floor treatment). Proposition 3: turning a floor-coded pair
   into a target no stronger than the weakest weighted one never raises -H,
-  P_max or the Gini. Proposition 2: for fixed weights, Shannon's conditions
-  make the gated entropy unique.
-- Candidate (gated smooth-hinge entropy): D1 and D3 (proved) while weighting
-  binding below tau* continuously; ranks almost identically to the entropy
-  (0.994-0.998) and to the S-score at x0 (0.998-0.9997). Noise check with the
-  D1 gate reapplied: Spearman >= 0.978.
+  P_max or the Gini. Proposition 2: among scores that weight each target by
+  the same function of its distance above the gate and satisfy Shannon's
+  grouping property, D2 and D4 force exponential (or equal) weights and the
+  Shannon entropy. Proposition 1: D3 holds exactly when T >= tau* - x0. The
+  published entropy (floor-coded pairs at zero weight) is the member with
+  T = 1/ln 10, below the bound, so it violates D3.
+- Candidate (gated entropy, w = 1[x > x0] exp((x - x0)/T), T = tau* - x0, the
+  smallest width D3 allows; replaced the softplus version, Spearman
+  0.968-0.998 with it): D1 to D4 by construction; ranks with the entropy at
+  0.969-0.993 and with the S-score at x0 at 0.964-0.996. Moving tau* (with T)
+  gives Spearman 0.85-0.999. Noise check with the D1 gate reapplied:
+  Spearman >= 0.972.
 - Recovery (D1 applied, Figure 3): measures that follow the share of targets with
-  detected binding (S-score at x0, entropy beta = x0, Gini, candidate) reach
+  detected binding (S-score at x0, entropy beta = x0, Gini) reach
   Spearman 0.9 at 20/50/30/65 targets (Davis/Klaeger/Anastassiadis/Metz);
+  the candidate at 50/65/30/80, and at 20/50/30/65 with T = 2 (tau* - x0) or
+  softplus weights (Results, "Width of the Gated Entropy and Recovery");
   S-score at tau*/count 30/80/50/50; published entropy 300/200/-/150; partition
   index P_max 300/200/-/>150; ratio more than the largest subpanel tested
   except on Klaeger (200). At p*, 62-90% of subpanels exceed 0.90. Coverage

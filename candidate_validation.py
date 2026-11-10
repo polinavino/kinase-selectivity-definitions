@@ -1,10 +1,10 @@
 """
 Cross-dataset validation of the candidate selectivity measure.
 
-For each dataset it checks orientation, D2 (distributional consistency, on the
-same 201-point grid over B = [x0, tau*] as d3_pair_reversals.py) and D3
-(monotonicity, one kinase added at tau*), using the same per-dataset floor and
-activity threshold used elsewhere in the analysis.  It also (a) sweeps the smoothing
+For each dataset it checks orientation, the pairs reversing when the gate is
+swept over B = [x0, tau*] (on the same 201-point grid as d3_pair_reversals.py)
+and D3 (monotonicity, one kinase added at tau*), using the same per-dataset floor
+and activity threshold used elsewhere in the analysis.  It also (a) sweeps the
 width T to show the ranking is stable across it, and (b) shows that removing the
 floor gate inverts the measure, which is what makes the gate necessary.
 
@@ -30,11 +30,10 @@ def negH(w):
     return np.where(p > 0, p * np.log2(np.where(p > 0, p, 1.0)), 0.0).sum(1)
 
 
-def candidate(P, floor, T, baseline=None, gate=True):
-    """Gated smooth-hinge effective-target number. baseline defaults to floor."""
-    b = floor if baseline is None else baseline
+def candidate(P, floor, T, gate=True):
+    """Gated entropy: exponential weights above the gate (the floor by default)."""
     g = (P > floor).astype(float) if gate else np.ones_like(P)
-    return negH(g * (T * np.logaddexp(0.0, (P - b) / T)))
+    return negH(g * np.exp((P - floor) / T))
 
 
 def worst_pair(fn, grid):
@@ -44,8 +43,8 @@ def worst_pair(fn, grid):
 
 
 def rev_frac(fn, grid, keep):
-    """D2 as stated in Methods: fraction of pairs of scored compounds whose order
-    reverses somewhere in the grid (as in d3_pair_reversals.py)."""
+    """Fraction of pairs of scored compounds whose order reverses somewhere in the
+    grid (as in d3_pair_reversals.py)."""
     S = np.array([fn(v) for v in grid])[:, keep]
     G, n = S.shape
     chunk = max(1, int(4e7 // (G * n)))
@@ -58,15 +57,14 @@ def rev_frac(fn, grid, keep):
     return count / (n * (n - 1) / 2)
 
 
-# per-dataset: (matrix, floor, activity threshold, T, D2 sweep).
-# The D2 sweep is 201 points over B = [x0, tau*] (Methods), the same for the
-# candidate's gate and emphasis and for the entropy's baseline, as in
-# d3_pair_reversals.py.
+# per-dataset: (matrix, floor, activity threshold, T, boundary sweep).
+# The sweep is 201 points over B = [x0, tau*] (Methods), the same for the
+# candidate's gate and for the entropy's baseline, as in d3_pair_reversals.py.
 def load():
     aff = pd.read_csv(f"{HERE}/davis_affinity.csv")
     davis = aff.pivot(index="Drug_Index", columns="Protein_Index", values="Affinity").fillna(5.0).values
     return {
-        # T = active threshold - floor in every dataset (1, 1, 30, 2): below 0.58 x that
+        # T = active threshold - floor in every dataset (1, 1, 30, 2): below that
         # distance the candidate can violate D3 (d4_entropy_vs_candidate.py).
         "Davis":         (davis, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
         "Klaeger":       (pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0).values, 5.0, 6.0, 1.0, np.linspace(5.0, 6.0, 201)),
@@ -92,13 +90,12 @@ def validate():
         sel = candidate(M, floor, T)
         keep = nact > 0                                        # compounds D1 allows to be scored
         orient = spearmanr(sel[keep], nact[keep])[0]           # want strongly negative
-        d3_emph = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, keep)  # gate pinned
-        # boundary varied: gate and emphasis move together (floor = b)
-        # the gate jumps where it passes an observed value: evaluate at every observed value
-        # in B and just below it, as well as on the grid
+        # boundary varied: the gate moves, T stays fixed. The score jumps where the
+        # gate passes an observed value: evaluate at every observed value in B and
+        # just below it, as well as on the grid
         v = np.unique(M[(M > floor) & (M <= active)])
         gsweep = np.unique(np.concatenate([bsweep, v, np.nextafter(v, -np.inf)]))
-        d3_bound = rev_frac(lambda b: candidate(M, b, T, baseline=b), gsweep, keep)
+        d3_bound = rev_frac(lambda b: candidate(M, b, T), gsweep, keep)
         # the entropy's own baseline swept over the same grid, for comparison
         d3_ent = rev_frac(lambda b: entropy_sel(M, b), bsweep, keep)
         sub = active                                           # worst case for D3: an addition exactly at tau*
@@ -106,8 +103,8 @@ def validate():
         new = candidate(np.hstack([M, np.full((M.shape[0], 1), sub)]), floor, T)
         d4 = (new <= base + 1e-9)[keep].mean() * 100           # over the compounds D1 scores
         rows.append(dict(dataset=name, n_cpd=M.shape[0], n_kin=M.shape[1],
-                         orient_r=round(orient, 3), d3_emphasis_rev=round(d3_emph, 4),
-                         d3_boundary_rev=round(d3_bound, 4), d3_entropy_rev=round(d3_ent, 4),
+                         orient_r=round(orient, 3),
+                         gate_rev=round(d3_bound, 4), entropy_rev=round(d3_ent, 4),
                          d4_pct=round(d4, 1)))
     return pd.DataFrame(rows)
 
@@ -119,14 +116,16 @@ def t_sweep():
     for T in [0.5, 0.75, 1.0, 1.5, 2.0]:
         sel = candidate(M, floor, T)
         orient = spearmanr(sel[nact > 0], nact[nact > 0])[0]
-        d3 = rev_frac(lambda b: candidate(M, floor, T, baseline=b), bsweep, nact > 0)
         added = candidate(np.hstack([M, np.full((M.shape[0], 1), active)]), floor, T)
         d4 = (added <= sel + 1e-9)[nact > 0].mean() * 100   # D3: one kinase added at tau*
-        rows.append(dict(T=T, orient_r=round(orient, 3), d3_emphasis_rev=round(d3, 4), d4_pct=round(d4, 1)))
+        rows.append(dict(T=T, orient_r=round(orient, 3), d4_pct=round(d4, 1)))
     # cross-T ranking agreement (are rankings stable as T varies?)
-    rk = [to_ranks(candidate(M, floor, T)[nact > 0]) for T in [0.5, 0.75, 1.0, 1.5, 2.0]]
+    Ts = [0.5, 0.75, 1.0, 1.5, 2.0]
+    rk = [to_ranks(candidate(M, floor, T)[nact > 0]) for T in Ts]
     worstT = min(spearmanr(rk[i], rk[j])[0] for i in range(len(rk)) for j in range(i + 1, len(rk)))
-    return pd.DataFrame(rows), round(worstT, 3)
+    ok = [i for i, T in enumerate(Ts) if T >= 1.0]   # the widths for which D3 is guaranteed
+    worstT_ok = min(spearmanr(rk[i], rk[j])[0] for i in ok for j in ok if j > i)
+    return pd.DataFrame(rows), round(worstT, 3), round(worstT_ok, 3)
 
 
 def inversion_demo():
@@ -146,12 +145,12 @@ def inversion_demo():
 if __name__ == "__main__":
     df = validate()
     df.to_csv(f"{HERE}/candidate_validation.csv", index=False)
-    print("Cross-dataset validation (orientation must be negative; D2 (d3_* columns) = fraction of scored-compound pairs reversing in B, emphasis must be <= 0.01; D3 (d4_pct) = 100):")
+    print("Cross-dataset validation (orientation must be negative; *_rev = fraction of scored-compound pairs reversing in B; D3 (d4_pct) = 100):")
     print(df.to_string(index=False))
-    ts, worstT = t_sweep()
-    print("\nSmoothing-width T sweep on Klaeger:")
+    ts, worstT, worstT_ok = t_sweep()
+    print("\nWidth T sweep on Klaeger (D3 is guaranteed for T >= 1):")
     print(ts.to_string(index=False))
-    print(f"worst-case cross-T ranking agreement (Spearman) = {worstT}")
+    print(f"worst-case cross-T ranking agreement (Spearman) = {worstT}; over T >= 1 = {worstT_ok}")
     inv = inversion_demo()
     print("\nWhy the gate is needed (Klaeger):")
     print(f"  gated   selectivity vs n_active = {inv['gated_vs_nactive']:+}  (correct: negative)")

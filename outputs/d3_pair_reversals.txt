@@ -1,59 +1,64 @@
-Distributional consistency over B = [x0, tau*]: fraction of scored-compound pairs reversing; pass if <= 1%. Continuous parameters on 201 points (101 points in parentheses).
+Boundary sensitivity over B = [x0, tau*]: fraction of scored-compound pairs reversing. Continuous parameters on 201 points (101 points in parentheses).
 
 Davis: B = [5, 6], 68 scored compounds
-  S-score (tau, exact)             8.43%   fail
-  entropy (beta)                   7.90% ( 7.90%)   fail
-  Gini (beta)                      8.56% ( 8.56%)   fail
-  candidate (emphasis beta)        0.44% ( 0.44%)   PASS
-  candidate (gate x0)              9.22% ( 9.22%)   fail
-  ratio (clipping level, k=1)      0.00% ( 0.00%)   PASS
-  ratio (clipping level, k=2)      0.83% ( 0.83%)   PASS
-  ratio (clipping level, k=3)      1.10% ( 1.10%)   fail
-  ratio (clipping level, k=4)      1.71% ( 1.71%)   fail
-  ratio (clipping level, k=5)      2.59% ( 2.59%)   fail
+  S-score (tau, exact)             8.43%
+  entropy (beta)                   7.90% ( 7.90%)
+  Gini (beta)                      8.56% ( 8.56%)
+  candidate (gate)                 9.22% ( 9.22%)
+  softplus (baseline, gate x0)     0.44% ( 0.44%)
+  softplus (gate = baseline)       9.22% ( 9.22%)
+  ratio (clipping level, k=1)      0.00% ( 0.00%)
+  ratio (clipping level, k=2)      0.83% ( 0.83%)
+  ratio (clipping level, k=3)      1.10% ( 1.10%)
+  ratio (clipping level, k=4)      1.71% ( 1.71%)
+  ratio (clipping level, k=5)      2.59% ( 2.59%)
 
 Klaeger: B = [5, 6], 200 scored compounds
-  S-score (tau, exact)             9.96%   fail
-  entropy (beta)                  12.37% (12.36%)   fail
-  Gini (beta)                     12.40% (12.40%)   fail
-  candidate (emphasis beta)        0.53% ( 0.53%)   PASS
-  candidate (gate x0)             12.99% (12.99%)   fail
-  ratio (clipping level, k=1)      3.00% ( 3.00%)   fail
-  ratio (clipping level, k=2)      6.26% ( 6.26%)   fail
-  ratio (clipping level, k=3)      9.19% ( 9.19%)   fail
-  ratio (clipping level, k=4)     12.03% (12.03%)   fail
-  ratio (clipping level, k=5)     13.71% (13.71%)   fail
+  S-score (tau, exact)             9.96%
+  entropy (beta)                  12.37% (12.36%)
+  Gini (beta)                     12.40% (12.40%)
+  candidate (gate)                12.66% (12.66%)
+  softplus (baseline, gate x0)     0.53% ( 0.53%)
+  softplus (gate = baseline)      12.99% (12.99%)
+  ratio (clipping level, k=1)      3.00% ( 3.00%)
+  ratio (clipping level, k=2)      6.26% ( 6.26%)
+  ratio (clipping level, k=3)      9.19% ( 9.19%)
+  ratio (clipping level, k=4)     12.03% (12.03%)
+  ratio (clipping level, k=5)     13.71% (13.71%)
 
 Anastassiadis: B = [20, 50], 133 scored compounds
-  S-score (tau, exact)            12.99%   fail
-  entropy (beta)                  10.58% (10.58%)   fail
-  Gini (beta)                     10.51% (10.51%)   fail
-  candidate (emphasis beta)        0.36% ( 0.36%)   PASS
-  candidate (gate x0)             14.39% (14.39%)   fail
-  ratio (clipping level, k=1)      2.13% ( 2.13%)   fail
-  ratio (clipping level, k=2)      4.10% ( 4.10%)   fail
-  ratio (clipping level, k=3)      6.08% ( 6.08%)   fail
-  ratio (clipping level, k=4)      8.17% ( 8.17%)   fail
-  ratio (clipping level, k=5)      9.72% ( 9.72%)   fail
+  S-score (tau, exact)            12.99%
+  entropy (beta)                  10.58% (10.58%)
+  Gini (beta)                     10.51% (10.51%)
+  candidate (gate)                14.56% (14.56%)
+  softplus (baseline, gate x0)     0.36% ( 0.36%)
+  softplus (gate = baseline)      14.39% (14.39%)
+  ratio (clipping level, k=1)      2.13% ( 2.13%)
+  ratio (clipping level, k=2)      4.10% ( 4.10%)
+  ratio (clipping level, k=3)      6.08% ( 6.08%)
+  ratio (clipping level, k=4)      8.17% ( 8.17%)
+  ratio (clipping level, k=5)      9.72% ( 9.72%)
 
 Metz: B = [4, 6], 699 scored compounds
-  S-score (tau, exact)            21.82%   fail
-  entropy (beta)                  22.80% (22.80%)   fail
-  Gini (beta)                     22.49% (22.49%)   fail
-  candidate (emphasis beta)        0.72% ( 0.72%)   PASS
-  candidate (gate x0)             23.59% (23.59%)   fail
-  ratio (clipping level, k=1)      0.04% ( 0.04%)   PASS
-  ratio (clipping level, k=2)      0.43% ( 0.43%)   PASS
-  ratio (clipping level, k=3)      0.75% ( 0.75%)   PASS
-  ratio (clipping level, k=4)      0.84% ( 0.84%)   PASS
-  ratio (clipping level, k=5)      1.03% ( 1.03%)   fail
+  S-score (tau, exact)            21.82%
+  entropy (beta)                  22.80% (22.80%)
+  Gini (beta)                     22.49% (22.49%)
+  candidate (gate)                23.82% (23.82%)
+  softplus (baseline, gate x0)     0.72% ( 0.72%)
+  softplus (gate = baseline)      23.59% (23.59%)
+  ratio (clipping level, k=1)      0.04% ( 0.04%)
+  ratio (clipping level, k=2)      0.43% ( 0.43%)
+  ratio (clipping level, k=3)      0.75% ( 0.75%)
+  ratio (clipping level, k=4)      0.84% ( 0.84%)
+  ratio (clipping level, k=5)      1.03% ( 1.03%)
 
 Largest change from 101 to 201 grid points: 0.01 percentage points
 Largest fraction over the four datasets (and over k for the ratio), per swept parameter:
   S-score (tau, exact)            21.82%
   entropy (beta)                  22.80%
   Gini (beta)                     22.49%
-  candidate (emphasis beta)        0.72%
-  candidate (gate x0)             23.59%
+  candidate (gate)                23.82%
+  softplus (baseline, gate x0)     0.72%
+  softplus (gate = baseline)      23.59%
   ratio (clipping level)          13.71%
-Only the candidate's emphasis baseline stays within eps on every dataset (0.72%); every other swept parameter reaches at least 13.71% on at least one dataset.
+Every swept parameter of the scores in Table S3 reverses at least 13.71% of pairs on at least one dataset.

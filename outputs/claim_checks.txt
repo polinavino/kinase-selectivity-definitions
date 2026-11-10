@@ -13,7 +13,9 @@
 
 2. Klaeger correlations between definitions, all compounds vs compounds with an active kinase
    all 222           : S-E 0.896  S-G 0.508  E-G 0.658  | S-R 0.078  E-R 0.344  G-R 0.655
+                       ratio against S, E, G to four decimals: 0.0778, 0.3443, 0.6553
    active only (200) : S-E 0.897  S-G 0.892  E-G 0.997  | S-R 0.378  E-R 0.622  G-R 0.635
+                       ratio against S, E, G to four decimals: 0.3778, 0.6220, 0.6353
    all 222           : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI, 1,000 resamples [-0.346433, +0.057819]
    active only (200) : r(S-score, Gini) - r(Gini, ratio), bootstrap 95% CI, 1,000 resamples [+0.158240, +0.355111]
 
@@ -221,17 +223,17 @@
 22. The candidate's dependence on the activity threshold tau*, which sets its D1 gate and
     T = tau* - x0: compounds scored, and Spearman with the default ranking on compounds
     scored at both values
-   Davis         (default tau*=6: 68 of 68 scored): tau*=5.5: 68 scored, r=0.9995; tau*=6.5: 68 scored, r=0.9995; tau*=7: 65 scored, r=0.9993
-   Klaeger       (default tau*=6: 200 of 222 scored): tau*=5.5: 213 scored, r=0.9997; tau*=6.5: 189 scored, r=0.9999; tau*=7: 157 scored, r=0.9998
-   Anastassiadis (default tau*=50: 133 of 178 scored): tau*=40: 140 scored, r=0.9998; tau*=60: 125 scored, r=0.9999; tau*=70: 116 scored, r=0.9998
-   Metz          (default tau*=6: 699 of 704 scored): tau*=5.5: 704 scored, r=0.9999; tau*=6.5: 690 scored, r=0.9999; tau*=7: 680 scored, r=0.9999
+   Davis         (default tau*=6: 68 of 68 scored): tau*=5.5: 68 scored, r=0.8525; tau*=6.5: 68 scored, r=0.9795; tau*=7: 65 scored, r=0.9726
+   Klaeger       (default tau*=6: 200 of 222 scored): tau*=5.5: 213 scored, r=0.8705; tau*=6.5: 189 scored, r=0.9898; tau*=7: 157 scored, r=0.9841
+   Anastassiadis (default tau*=50: 133 of 178 scored): tau*=40: 140 scored, r=0.9947; tau*=60: 125 scored, r=0.9992; tau*=70: 116 scored, r=0.9988
+   Metz          (default tau*=6: 699 of 704 scored): tau*=5.5: 704 scored, r=0.9899; tau*=6.5: 690 scored, r=0.9976; tau*=7: 680 scored, r=0.9950
 
 23. Measurement noise near the gate: Spearman between the noise-free and noisy rankings, 50 draws,
     candidate (gate at x0) vs entropy at beta = x0, over the compounds scored (D1) both without
     and with noise; the D1 gate is reapplied to the noisy profiles. pK datasets: measured
     (above-floor) values perturbed, and set to the floor if pushed below it; Anastassiadis:
     every entry perturbed and clipped to [0, 100]%
-   Davis        : sd=0.1: candidate mean 0.999 (min 0.999), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 0.0, max 0 of 68 scored; sd=0.3: candidate mean 0.998 (min 0.998), entropy mean 0.999 (min 0.998); compounds changing D1 status: mean 0.0, max 0 of 68 scored
-   Klaeger      : sd=0.1: candidate mean 1.000 (min 0.999), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 2.1, max 4 of 200 scored; sd=0.3: candidate mean 0.998 (min 0.998), entropy mean 0.998 (min 0.998); compounds changing D1 status: mean 5.8, max 11 of 200 scored
-   Anastassiadis: sd=3: candidate mean 0.996 (min 0.995), entropy mean 0.999 (min 0.998); compounds changing D1 status: mean 1.0, max 3 of 133 scored; sd=9: candidate mean 0.984 (min 0.978), entropy mean 0.988 (min 0.983); compounds changing D1 status: mean 5.2, max 10 of 133 scored
-   Metz         : sd=0.1: candidate mean 1.000 (min 1.000), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 0.4, max 2 of 699 scored; sd=0.3: candidate mean 0.999 (min 0.998), entropy mean 0.999 (min 0.999); compounds changing D1 status: mean 2.2, max 5 of 699 scored
+   Davis        : sd=0.1: candidate mean 0.999 (min 0.998), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 0.0, max 0 of 68 scored; sd=0.3: candidate mean 0.994 (min 0.989), entropy mean 0.999 (min 0.998); compounds changing D1 status: mean 0.0, max 0 of 68 scored
+   Klaeger      : sd=0.1: candidate mean 0.999 (min 0.998), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 2.1, max 4 of 200 scored; sd=0.3: candidate mean 0.994 (min 0.991), entropy mean 0.998 (min 0.998); compounds changing D1 status: mean 5.8, max 11 of 200 scored
+   Anastassiadis: sd=3: candidate mean 0.997 (min 0.995), entropy mean 0.999 (min 0.998); compounds changing D1 status: mean 1.0, max 3 of 133 scored; sd=9: candidate mean 0.979 (min 0.972), entropy mean 0.988 (min 0.983); compounds changing D1 status: mean 5.2, max 10 of 133 scored
+   Metz         : sd=0.1: candidate mean 1.000 (min 0.999), entropy mean 1.000 (min 1.000); compounds changing D1 status: mean 0.4, max 2 of 699 scored; sd=0.3: candidate mean 0.998 (min 0.997), entropy mean 0.999 (min 0.999); compounds changing D1 status: mean 2.2, max 5 of 699 scored

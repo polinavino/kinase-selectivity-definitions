@@ -1,35 +1,34 @@
 """
 The candidate selectivity measure: its orientation, its agreement with the
 entropy, and checks of D2 (boundary sensitivity) and D3 (monotonicity) on
-Klaeger. Property numbers follow the paper: D1 reliability threshold, D2
-distributional consistency, D3 monotonicity under weak off-target addition.
+Klaeger. Property numbers follow the paper: D1 activity eligibility, D2
+boundary locality, D3 monotonicity under weak off-target addition.
 
-Construction.  Selectivity is the negative Shannon "effective number of targets"
-of a compound's binding profile.  Each kinase above the assay floor is weighted
-by a smooth (softplus) hinge of its log-affinity.  Kinases at or below the floor
-are gated out and carry zero weight:
+Construction.  Selectivity is the negative Shannon entropy of a compound's
+binding profile.  Each kinase above the gate g (the assay floor x0 unless the
+gate is swept) is weighted by an exponential of its readout.  Kinases at or
+below the gate carry zero weight:
 
-    w_i = 1[x_i > x_floor] * T * log(1 + exp((x_i - beta)/T)),
+    w_i = 1[x_i > g] * exp((x_i - g)/T),    T = tau* - x0,
     p_i = w_i / sum_j w_j,
-    H(x) = - sum_i p_i log p_i,    selectivity  S(x) = -H(x),
+    S(x) = sum_i p_i log2 p_i.
 
-with beta = x_floor.  The gate keeps the measure correctly oriented: without
-it, the non-binding kinases at the floor dominate the distribution and invert
-the ranking.  Scores are reported only for compounds with max_i x_i > tau*
-(the D1 gate).
+The gate keeps the measure correctly oriented: without it, the non-binding
+kinases at the floor dominate the distribution and invert the ranking.  Scores
+are reported only for compounds with max_i x_i > tau* (the D1 gate).
 
-  D1  explicit reliability gate on max_i x_i > tau*.
-  D2  the gate fixes the activity boundary at the floor; swept over B it reverses
-      about as many pairs as the entropy's baseline (d3_pair_reversals.py), so
-      the candidate, like every measure examined, fails D2 when its boundary is
-      varied.  The remaining emphasis baseline, with the gate fixed, is robust.
-  D3  every gated kinase has weight above T ln 2, so an added kinase in
-      (x0, tau*] cannot raise the score when T >= 0.58 (tau* - x0)
-      (Methods, Proposition; d4_entropy_vs_candidate.py).  The weight jumps from
-      0 to T ln 2 at the floor, so the measure is discontinuous there.
+  D1  explicit eligibility gate on max_i x_i > tau*.
+  D2  moving the gate multiplies every retained weight by the same factor, so a
+      compound's score changes only when the gate crosses one of its readouts.
+      Swept over B, the gate still reverses pairs whose readouts it crosses
+      (d3_pair_reversals.py).
+  D3  every gated kinase has weight above 1, and a kinase added at or below tau*
+      has weight at most e, so the score cannot rise when T >= tau* - x0
+      (Methods, Proposition 1; d4_entropy_vs_candidate.py).  The weight jumps
+      from 0 to 1 at the floor, so the measure is discontinuous there.
 
-The smoothing width is T = tau* - x0 on every dataset.  Recovery from random
-subpanels, compared with every other measure, is in panel_recovery.py.
+T = tau* - x0 on every dataset, the smallest width for which D3 holds.  Recovery
+from random subpanels, compared with every other measure, is in panel_recovery.py.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -45,13 +44,13 @@ def to_ranks(s):
     return rankdata(-np.asarray(s), method='average')
 
 # ---------------- candidate ----------------
-def candidate(P, baseline, floor, T=T, eps=1e-10):
-    # Gate at the fixed assay detection floor. Sub-floor kinases are non-binders.
-    # They carry zero weight, so the effective-target count reflects real binding.
-    # The gate is what keeps the measure correctly oriented (concentrated = selective).
-    # The softplus above the baseline gives a smooth, baseline-robust emphasis.
-    gate = (P > floor).astype(float)
-    w = gate * (T * np.logaddexp(0.0, (P - baseline) / T))
+def candidate(P, gate, T=T, eps=1e-10):
+    # Kinases at or below the gate (the assay detection floor by default) are
+    # non-binders and carry zero weight. The gate is what keeps the measure
+    # correctly oriented (concentrated = selective). Above it, the weight grows
+    # exponentially with the readout, so moving the gate rescales every retained
+    # weight by the same factor.
+    w = np.where(P > gate, np.exp((P - gate) / T), 0.0)
     rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
     p = w / rs
     return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1))   # -Shannon entropy
@@ -73,8 +72,8 @@ def ratio(P, floor, k=1):
 
 def measures_for(baseline, threshold, floor):
     return {
-        # T = tau* - floor: the D3 guarantee needs T >= 0.58 (tau* - floor) (d4_entropy_vs_candidate.py)
-        'candidate': lambda P: candidate(P, baseline=floor, floor=floor, T=threshold - floor),
+        # T = tau* - floor: the D3 guarantee needs T >= tau* - floor (d4_entropy_vs_candidate.py)
+        'candidate': lambda P: candidate(P, gate=floor, T=threshold - floor),
         'entropy':   lambda P: entropy(P, b=baseline),
         'gini':      lambda P: gini(P, b=baseline),
         's_score':   lambda P: s_score(P, thr=threshold),
@@ -170,23 +169,22 @@ n_drugs_k = Mk.shape[0]
 # orientation guard
 n_active = (Mk > TAU_STAR).sum(1)
 scored = n_active > 0                      # compounds D1 allows to be scored
-orient_r = spearmanr(candidate(Mk, FLOOR, FLOOR)[scored], n_active[scored])[0]
+orient_r = spearmanr(candidate(Mk, FLOOR)[scored], n_active[scored])[0]
 assert orient_r < -0.3, f"candidate is inverted: corr(selectivity, n_active) = {orient_r:+.3f}"
 print(f"Orientation check (Klaeger): corr(candidate selectivity, n_active) = {orient_r:+.3f} (must be negative)")
 
-# D3: baseline robustness
-betas = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] = [5.0, 6.0] (Methods, D2)
+# Boundary sweep (the gate moves; T stays at tau* - x0)
+betas = np.arange(5.0, 6.01, 0.25)   # B = [x0, tau*] = [5.0, 6.0]
 def worst_pair(fn):
     rr = np.array([to_ranks(fn(b)) for b in betas])
     return min(spearmanr(rr[i], rr[j])[0] for i in range(len(betas)) for j in range(i + 1, len(betas)))
-print("\nD2 check (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):")
-print(f"  candidate, vary emphasis baseline (gate pinned at floor): {worst_pair(lambda b: candidate(Mk, baseline=b, floor=FLOOR)):+.3f}")
-print(f"  candidate, vary active-set boundary (gate = floor)       : {worst_pair(lambda b: candidate(Mk, baseline=b, floor=b)):+.3f}")
-print(f"  existing entropy, vary baseline                          : {worst_pair(lambda b: entropy(Mk, b=b)):+.3f}")
+print("\nBoundary sweep (worst-case rank Spearman over B = [5.0,6.0]; pair-reversal fractions: d3_pair_reversals.py):")
+print(f"  candidate, vary the gate        : {worst_pair(lambda b: candidate(Mk, gate=b)):+.3f}")
+print(f"  existing entropy, vary baseline : {worst_pair(lambda b: entropy(Mk, b=b)):+.3f}")
 
 # D3: monotonicity under weak off-target addition
-base = candidate(Mk, FLOOR, FLOOR)
-new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR)]), FLOOR, FLOOR)   # worst case: at tau*
+base = candidate(Mk, FLOOR)
+new = candidate(np.hstack([Mk, np.full((n_drugs_k, 1), TAU_STAR)]), FLOOR)   # worst case: at tau*
 print(f"\nD3 (add a sub-threshold off-target): selectivity non-increasing for "
       f"{(new <= base + 1e-9).mean() * 100:.0f}% of compounds; max increase = {max(0.0, (new - base).max()):.4f}")
 
@@ -227,7 +225,7 @@ for ax, ds in zip(axes.ravel(), DATASETS):
     ax.set_title(f"{ds['name']} ({n_drugs} cpd $\\times$ {n_kin} kin)")
     ax.legend(fontsize=8); ax.set_ylim(-0.2, 1.01)
 
-fig.suptitle('Panel-size convergence: candidate (gated, smooth-hinge effective-target number) '
+fig.suptitle('Panel-size convergence: candidate (gated exponential entropy) '
              'vs existing measures (50 subsamples per size)', fontsize=12)
 plt.tight_layout(rect=[0, 0, 1, 0.96])
 plt.savefig('candidate_panel_convergence.png', dpi=150, bbox_inches='tight')

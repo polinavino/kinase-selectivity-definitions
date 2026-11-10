@@ -6,7 +6,7 @@
 \begin{table}[h]
   \centering
   \caption{Score implementations. Parameter ranges are for the
-           $\mathrm{p}K_d$ datasets; on Anastassiadis $\tau$ runs over
+           $\mathrm{p}K_d$ datasets. On Anastassiadis $\tau$ runs over
            $[50, 90]\%$ and $\beta$ over $[0, 30]\%$, and on Metz over
            $[5.0, 7.5]$ and $[4.0, 5.5]$. The last three rows are comparators.}
   \label{tab:implementations}
@@ -22,7 +22,7 @@
     Ratio $R_b(k)$             & $x_{(1)} - \max(x_{(k+1)}, b)$         & $k = 1, \ldots, 5$     & uses $b$ \\
     Entropy, published         & $K_{a,i}$                              & none                   & --- \\
     Partition index $P_{\max}$ & $\max_i K_{a,i} / \sum_j K_{a,j}$      & none                   & --- \\
-    Gated entropy              & gated softplus (below) & none      & not scored (D1) \\
+    Gated entropy              & gated exponential (below) & none  & not scored (D1) \\
     Active count               & number above $\tau^*$                  & none                   & not scored (D1) \\
     Entropy, $\beta = \tau^*$  & $\max(x_i - \tau^*, 0)$                & none                   & not scored (D1) \\
     S-score, $\tau = x_0$      & fraction above $x_0$                   & none                   & not scored (D1) \\

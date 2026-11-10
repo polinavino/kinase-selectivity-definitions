@@ -3,6 +3,7 @@ Davis (pKd binding)                  68    363     0.975    0.51-0.56    -0.4445
 Klaeger (pKd chemoproteomics)       222    217     0.687    0.08-0.66    -0.2751     -0.3118
 Anastassiadis (% inhibition)        178    291     0.909    0.48-0.55     0.0038     -0.3794
 Metz (pKi)                          704    172     0.875    0.14-0.19    -0.2613     -0.4213
+p-values: Davis gap~ratio p = 0.00015, nact~entropy p = 0.013; Klaeger gap~ratio p = 8.1e-05, nact~entropy p = 7e-06; Anastassiadis gap~ratio p = 0.97, nact~entropy p = 6.7e-06; Metz gap~ratio p = 2.3e-12, nact~entropy p = 1.9e-31
 
 Saved cross_dataset_summary.csv
 Saved /Users/polina/Documents/BioInfStuff/selectivity/cross_dataset_correlations.png

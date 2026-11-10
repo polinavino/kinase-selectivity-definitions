@@ -42,7 +42,7 @@ Each section prints the numbers cited in the text for one claim:
  21. SI Table S4 with a Bonferroni correction for the 24 tests per dataset (Results,
      instability predictors)
  22. The candidate's sensitivity to the activity threshold tau*, which sets its D1
-     gate and smoothing width (Results, "Monotonicity Under Weak-Target Addition")
+     gate and its width T (Results, "Monotonicity Under Weak-Target Addition")
  23. The candidate's gate is discontinuous at x0: rank stability of the candidate and
      the entropy under measurement noise (Results; SI Section S4)
 """
@@ -157,6 +157,8 @@ for label, Rx in (('all 222', R['Klaeger']), (f'active only ({act_k.sum()})', R_
     print(f"   {label:18s}: S-E {c[('s_score','entropy')]:.3f}  S-G {c[('s_score','gini')]:.3f}  "
           f"E-G {c[('entropy','gini')]:.3f}  | S-R {c[('s_score','ratio')]:.3f}  E-R {c[('entropy','ratio')]:.3f}  "
           f"G-R {c[('gini','ratio')]:.3f}")
+    print(f"   {'':18s}  ratio against S, E, G to four decimals: {c[('s_score','ratio')]:.4f}, "
+          f"{c[('entropy','ratio')]:.4f}, {c[('gini','ratio')]:.4f}")
 rng = np.random.default_rng(0)
 for label, Rx in (('all 222', R['Klaeger']), (f'active only ({act_k.sum()})', R_act)):
     med = {f: np.median(Rx[f], 0) for f in FAM}
@@ -429,7 +431,7 @@ import re
 
 
 def cand_score(X, x0, T):
-    w = (X > x0) * T * np.logaddexp(0.0, (X - x0) / T)
+    w = np.where(X > x0, np.exp((X - x0) / T), 0.0)
     t = w.sum(1, keepdims=True)
     p = w / np.where(t == 0, 1, t)
     return (p * np.log2(np.where(p > 0, p, 1.0))).sum(1)

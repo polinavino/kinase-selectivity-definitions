@@ -12,7 +12,7 @@ response, the manuscript has been revised as follows:
 
   - the manuscript is consolidated around one question, which analysis
     choices change selectivity rankings, and shortened from about 11,100 to
-    about 9,000 words, with the full evidence for each check in a
+    about 9,800 words, with the full evidence for each check in a
     Supporting Information file that follows the same order;
 
   - the analyses now use one reference target per human protein kinase,
@@ -26,10 +26,11 @@ response, the manuscript has been revised as follows:
 
   - the criteria and the gated entropy are defined in Methods and
     evaluated together in Results, against simple comparators and the
-    partition index, and the claims are narrowed accordingly: no boundary
-    parameter we tested is robust, and the gated entropy is presented as a
-    monotone entropy that ranks compounds almost as the share of targets with
-    detected binding does;
+    partition index, and the claims are narrowed accordingly: moving the
+    activity boundary reorders compounds under every score, and the gated
+    entropy, now with exponential weights, is derived from the criteria
+    within a stated class of scores, with a proved range for its width, and
+    is not an empirical improvement on simpler scores;
 
   - every robustness check the reviewer requested has been added; and
 

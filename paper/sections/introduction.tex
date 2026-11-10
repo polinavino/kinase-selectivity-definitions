@@ -3,7 +3,7 @@
 
 Kinase inhibitors are among the most intensely investigated compound classes
 in drug discovery, with 94 FDA-approved agents and several hundred in
-clinical development\cite{Roskoski2026}. The human kinome is comprised of more than
+clinical development\cite{Roskoski2026}. The human kinome comprises more than
 500 proteins with a conserved ATP-binding site\cite{Manning2002}, and
 selectivity is a primary criterion in lead optimization\cite{Bhullar2018}.
 Profiling assays measure a compound against a panel of tens to hundreds of
@@ -39,28 +39,30 @@ al.\cite{Uitdehaag2012} showed that the S-score and the entropy of individual
 compounds vary when they are computed on random subpanels.
 
 What has not been characterized systematically is how analysis choices alter
-agreement between the scores. Such choices include: how affinities are weighted, 
-which compounds are
-ranked, how pairs without detected binding are treated, which assay targets
+agreement between the scores. These choices include how affinities are
+weighted, which compounds are ranked, how pairs without detected binding are treated, which assay targets
 count as kinases, and where each score's parameter is set. It is also not
 known which associations between profile shape and ranking instability persist
 across these choices, or how much of a ranking a smaller panel retains once
-some compounds can no longer be scored. 
+some compounds can no longer be scored.
 
 This work adds a systematic account of these choices. We compare the S-score,
 entropy, Gini and ratio on four datasets that span three assay technologies.
-Each is curated to one reference target per human protein kinase, with the
-entropy and Gini both in a common log-affinity form as well as in their published
-forms. We vary the compounds ranked, the treatment of
+Each is curated to one reference target per human protein kinase, and the
+entropy and Gini are computed in both a common log-affinity form and their
+published forms. We vary the compounds ranked, the treatment of
 pairs without detected binding and each score's parameter, and relate the
 resulting instability to features of the binding profile. From these results
 we state four criteria for a selectivity measure: activity eligibility,
-consistency across placements of the activity boundary, monotonicity when a
-weakly bound kinase is added, and orientation on profiles with equally strong
-targets. We evaluate the existing scores and simple
-comparators against them. We also give a gated, smooth-hinge entropy, prove
-that it satisfies all criteria. We then show that, once its coefficients are fixed,
-the criteria fix a unique measure. Stating such criteria
+locality of the activity boundary, monotonicity when a weakly bound kinase is
+added, and orientation on profiles with equally strong targets. We evaluate
+the existing scores and simple comparators against them. We then derive a
+gated entropy that satisfies all four. Among scores that weight each target by
+its distance above the activity boundary and combine the weights with Shannon's
+grouping rule, the criteria leave one family with a single width parameter,
+and monotonicity fixes the range of that parameter. Within that range, the
+width can be chosen so that the score recovers rankings from small panels as
+fast as the share of targets with detected binding. Stating such criteria
 follows the axiomatic approach Shannon\cite{Shannon1948} used for entropy.
 We measure how well each score's ranking is recovered
 from random subpanels, and for how many compounds, then give recommendations

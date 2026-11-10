@@ -46,8 +46,8 @@ SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
   Sections S1-S8 with Tables S1-S9 and Figures S1-S4: dataset construction
   and target selection; score implementations and agreement; ranking
-  sensitivity and profile associations; the weak-addition property and the
-  gated entropy (proof, variants); recovery from subpanels, including the
+  sensitivity and profile associations; the criteria D2 to D4 and the
+  gated entropy (proofs, characterization, variants); recovery from subpanels, including the
   analysis without the D1 gate; cross-dataset and supplementary comparisons;
   the clinical analysis; and the script behind every result. Referenced from
   the main text as "Supporting Information, Section S<n>", "Table S<n>" or

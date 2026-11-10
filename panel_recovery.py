@@ -16,7 +16,11 @@ a target above tau* there. Measures:
   entropy tau* baseline-subtracted entropy, beta = tau*
   Gini         baseline-subtracted Gini, beta = x0
   ratio        R(1), clipping level x0
-  candidate    gated smooth-hinge entropy (Methods)
+  candidate    gated entropy with exponential weights (Methods), T = tau* - x0
+  candidate 2T, candidate 4T
+               the same with T = 2 (tau* - x0) and 4 (tau* - x0) (printed, not plotted)
+  softplus     gated entropy with softplus weights T log(1 + exp((x - x0)/T)),
+               T = tau* - x0 (printed, not plotted)
   entropy Ka   published association-constant entropy, p_i ~ 1/Kd_i, with the
                floor-coded entries given zero weight (affinity datasets only)
   partition Ka maximum partition index (Cheng et al. 2010), max_i Ka_i / sum_i Ka_i,
@@ -76,7 +80,10 @@ def measures(x0, tau, affinity=True):
         "entropy tau*": lambda M: neg_entropy(np.maximum(M - tau, 0.0)),
         "Gini":         lambda M: gini(M, x0),
         "ratio":        lambda M: (lambda s: s[..., 0] - np.maximum(s[..., 1], x0))(-np.sort(-M, -1)),
-        "candidate":    lambda M: neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - x0) / T), 0.0)),
+        "candidate":    lambda M: neg_entropy(np.where(M > x0, np.exp((M - x0) / T), 0.0)),
+        "candidate 2T": lambda M: neg_entropy(np.where(M > x0, np.exp((M - x0) / (2 * T)), 0.0)),
+        "candidate 4T": lambda M: neg_entropy(np.where(M > x0, np.exp((M - x0) / (4 * T)), 0.0)),
+        "softplus":     lambda M: neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - x0) / T), 0.0)),
     }
     if affinity:
         m["entropy Ka"] = lambda M: neg_entropy(np.where(M > x0, 10.0 ** (M - 9.0), 0.0))
@@ -95,7 +102,7 @@ def weights(M, x0, tau, name):
         return np.maximum(M - tau, 0.0)
     if name == "entropy Ka":
         return np.where(M > x0, 10.0 ** (M - 9.0), 0.0)
-    return np.where(M > x0, T * np.logaddexp(0.0, (M - x0) / T), 0.0)
+    return np.where(M > x0, np.exp((M - x0) / T), 0.0)
 
 
 def pair_recovery(full, sub, ok_sub, elig):
@@ -187,11 +194,11 @@ for ds, (M, x0, tau) in DATA.items():
     from math import comb
     print("  probability of staying scored at 50 targets, by number of active targets: "
           + ", ".join(f"{a}: {1 - comb(N - a, 50) / comb(N, 50):.2f}" for a in (1, 2, 5, 10)))
-    # how close the share-following scores are to the gated entropy
-    for k in ("entropy x0", "Gini", "S-score x0"):
-        dr = max(abs(res[k]["rho"][m][0] - res["candidate"]["rho"][m][0]) for m in sizes)
-        dp = max(abs(res[k]["pair"][m][0] - res["candidate"]["pair"][m][0]) for m in sizes)
-        print(f"  {k} vs gated entropy: largest difference in mean Spearman {dr:.3f}, in recoverability {dp:.3f}")
+    # how close the share-following scores are to the S-score at x0, and the gated entropy to them
+    for k in ("entropy x0", "Gini", "candidate"):
+        dr = max(abs(res[k]["rho"][m][0] - res["S-score x0"]["rho"][m][0]) for m in sizes)
+        dp = max(abs(res[k]["pair"][m][0] - res["S-score x0"]["pair"][m][0]) for m in sizes)
+        print(f"  {k} vs S-score x0: largest difference in mean Spearman {dr:.3f}, in recoverability {dp:.3f}")
 
     # influence diagnostic on the full panel
     if M_DIAG in sizes:
@@ -217,14 +224,14 @@ for ds, (M, x0, tau) in DATA.items():
 # ------------------------------------------------------------------ Figure 6
 ORDER = ["candidate", "entropy x0", "entropy tau*", "S-score", "Gini", "ratio", "S-score x0", "entropy Ka",
          "partition Ka"]
-# plotted: the entropy and Gini at x0 and the S-score at x0 lie on the gated entropy's curve
+# plotted: the entropy and Gini at x0 lie on the curve of the S-score at x0
 # (differences printed above), so they are not drawn
-PLOT = ["candidate", "S-score", "entropy tau*", "ratio", "entropy Ka", "partition Ka"]
+PLOT = ["S-score x0", "candidate", "S-score", "entropy tau*", "ratio", "entropy Ka", "partition Ka"]
 plt.rcParams.update({"font.size": 13, "axes.titlesize": 13, "axes.labelsize": 13,
                      "xtick.labelsize": 11, "ytick.labelsize": 11})
-LABEL = {"candidate": "gated entropy (≈ entropy, Gini, S-score at x₀)", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
+LABEL = {"candidate": "gated entropy", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
          "S-score": "S-score, τ = τ* (= active count)", "Gini": "Gini, β = x₀", "ratio": "ratio R(1)",
-         "S-score x0": "S-score, τ = x₀", "entropy Ka": "entropy, published (1/Kd)",
+         "S-score x0": "S-score, τ = x₀ (≈ entropy, Gini at x₀)", "entropy Ka": "entropy, published (1/Kd)",
          "partition Ka": "partition index, max (1/Kd)"}
 COLOR = dict(zip(ORDER, ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948",
                          "#e34948"]))   # the two association-constant measures share a hue, told apart by line style

@@ -43,7 +43,7 @@ Panel-size p* without the D1 gate (SI Section S5 design), High-confidence only v
   gini     : 200 vs. 200
   s_score  : 80 vs. 80
   ratio    : 217 vs. 217
-  candidate: 80 vs. 50
+  candidate: 80 vs. 80
 
 Gated recovery p* (main text, Figure 3), High-confidence only vs. relaxed:
   S-score tau*          : 80 vs. 80
@@ -52,7 +52,7 @@ Gated recovery p* (main text, Figure 3), High-confidence only vs. relaxed:
   entropy tau*          : 100 vs. 100
   Gini                  : 50 vs. 50
   ratio                 : 200 vs. 200
-  candidate             : 50 vs. 50
+  candidate             : 65 vs. 65
   entropy Ka            : 200 vs. 200
   entropy Ka, floor kept: 200 vs. 200
   partition Ka          : 200 vs. 200

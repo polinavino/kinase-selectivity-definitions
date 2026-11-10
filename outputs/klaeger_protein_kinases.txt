@@ -43,8 +43,8 @@ Table 2: active range vs S-score instability       -0.31469         -0.31720
 Table 2: active range vs S-score instability (p)   4.09e-06         4.73e-06
 Table 2: skewness vs Gini instability               0.10706          0.07216
 Table 2: skewness vs Gini instability (p)             0.126             0.31
-candidate vs n_active (orientation)                -0.93592         -0.93656
-candidate vs entropy, scored compounds              0.99842          0.99826
+candidate vs n_active (orientation)                -0.92020         -0.92185
+candidate vs entropy, scored compounds              0.98346          0.98369
 D3 at tau*: % non-increasing (scored)             100.00000        100.00000
 p* candidate                                             80               80
 p* entropy                                               80               80

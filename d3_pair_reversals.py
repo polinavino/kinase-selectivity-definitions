@@ -1,19 +1,15 @@
 """
-Distributional consistency (boundary sensitivity) for every measure on all four
-datasets: the share of compound pairs whose order reverses as a parameter moves
-across B = [x0, tau*], the interval between the assay floor and the activity
-threshold. A pair reverses in B if f(x; b) - f(y; b) is positive at some b in B
-and negative at another. Pairs are taken among the compounds with at least one
-target above tau* (those the reliability gate scores).
+Boundary sensitivity for every measure on all four datasets: the share of
+compound pairs whose order reverses as the parameter that places the activity
+boundary moves across B = [x0, tau*], the interval between the assay floor and
+the activity threshold. A pair reverses in B if f(x; b) - f(y; b) is positive at
+some b in B and negative at another. Pairs are taken among the compounds with at
+least one target above tau* (those D1 scores).
 
 Parameters swept over B: the S-score's threshold tau, the entropy's and Gini's
-baseline beta, the candidate's emphasis baseline beta (gate fixed at x0) and its
-gate x0 (beta pinned to the gate, smoothing width T held at tau* - x0 of the fixed
-floor), and the ratio's clipping level b in R_b(k) = x_(1) - max(x_(k+1), b), which
-replaces any off-target affinity below b, measured or missing, by b (each k).
-
-Aggregate rule: a measure satisfies D2 only if at most eps of pairs reverse on every
-dataset, and, for the ratio, for every k.
+baseline beta, the gated entropy's gate (its width T held at tau* - x0 of the
+fixed floor), and the ratio's clipping level b in R_b(k) = x_(1) - max(x_(k+1), b),
+which replaces any off-target affinity below b, measured or missing, by b (each k).
 
 The S-score is a step function of tau, so it is evaluated exactly, at every
 observed affinity in B and between consecutive ones. The gated entropy's gate
@@ -29,7 +25,6 @@ import numpy as np
 import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-EPS = 0.01
 
 
 def neg_entropy(w):
@@ -59,8 +54,13 @@ def ratio(M, k, floor):
     return s[:, 0] - np.maximum(s[:, k], floor)
 
 
-def candidate(M, x0, T, b):
-    return neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - b) / T), 0.0))
+def candidate(M, g, T):
+    return neg_entropy(np.where(M > g, np.exp((M - g) / T), 0.0))
+
+
+def softplus(M, g, T, b):
+    """Gated entropy with softplus weights T log(1 + exp((x - b)/T)), for comparison."""
+    return neg_entropy(np.where(M > g, T * np.logaddexp(0.0, (M - b) / T), 0.0))
 
 
 def reversals(S):
@@ -96,17 +96,19 @@ def sweeps(M, x0, tau, n_grid):
         "S-score (tau, exact)":      [s_score(M, t) for t in tau_exact],
         "entropy (beta)":            [entropy(M, b) for b in B],
         "Gini (beta)":               [gini(M, b) for b in B],
-        "candidate (emphasis beta)": [candidate(M, x0, T, b) for b in B],
         # the gate jumps where it passes an observed value: evaluate there and just below too
-        "candidate (gate x0)":       [candidate(M, b, T, b) for b in np.unique(np.concatenate(
+        "candidate (gate)":          [candidate(M, b, T) for b in np.unique(np.concatenate(
+                                         [B, v[v > x0], np.nextafter(v[v > x0], -np.inf)]))],
+        "softplus (baseline, gate x0)": [softplus(M, x0, T, b) for b in B],
+        "softplus (gate = baseline)":   [softplus(M, b, T, b) for b in np.unique(np.concatenate(
                                          [B, v[v > x0], np.nextafter(v[v > x0], -np.inf)]))],
     }
     rows.update({f"ratio (clipping level, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
     return rows
 
 
-print(f"Distributional consistency over B = [x0, tau*]: fraction of scored-compound pairs reversing; "
-      f"pass if <= {EPS:.0%}. Continuous parameters on 201 points (101 points in parentheses).")
+print("Boundary sensitivity over B = [x0, tau*]: fraction of scored-compound pairs reversing. "
+      "Continuous parameters on 201 points (101 points in parentheses).")
 largest = {}
 shift = 0.0
 for name, (M, x0, tau) in DATA.items():
@@ -122,13 +124,12 @@ for name, (M, x0, tau) in DATA.items():
         key = label.split(", k=")[0] + (")" if ", k=" in label else "")
         largest[key] = max(largest.get(key, 0.0), f)
         extra = "" if "exact" in label else f" ({100 * c:5.2f}%)"
-        print(f"  {label:30s} {100 * f:6.2f}%{extra}   {'PASS' if f <= EPS else 'fail'}")
+        print(f"  {label:30s} {100 * f:6.2f}%{extra}")
 
 print(f"\nLargest change from 101 to 201 grid points: {100 * shift:.2f} percentage points")
 print("Largest fraction over the four datasets (and over k for the ratio), per swept parameter:")
 for key, v in largest.items():
     print(f"  {key:30s} {100 * v:6.2f}%")
-swept = [v for k, v in largest.items() if k != "candidate (emphasis beta)"]
-print(f"Only the candidate's emphasis baseline stays within eps on every dataset "
-      f"({100 * largest['candidate (emphasis beta)']:.2f}%); every other swept parameter reaches at least "
-      f"{100 * min(swept):.2f}% on at least one dataset.")
+main = {k: v for k, v in largest.items() if not k.startswith("softplus")}
+print(f"Every swept parameter of the scores in Table S3 reverses at least {100 * min(main.values()):.2f}% "
+      f"of pairs on at least one dataset.")

@@ -75,8 +75,8 @@ def correlations(M):
 
 
 def candidate(M, floor, T=1.0, eps=1e-10):
-    # gated smooth-hinge effective-target number (candidate_measure.py), selectivity orientation
-    w = (M > floor) * (T * np.logaddexp(0.0, (M - floor) / T))
+    # gated entropy with exponential weights (candidate_measure.py), selectivity orientation
+    w = np.where(M > floor, np.exp((M - floor) / T), 0.0)
     rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
     p = w / rs
     return (p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1)
@@ -207,7 +207,7 @@ GATED = {
     "entropy tau*": lambda M: neg_entropy(np.maximum(M - 6.0, 0.0)),
     "Gini":         lambda M: gini_selectivity(M, 5.0),
     "ratio":        lambda M: (lambda s: s[..., 0] - np.maximum(s[..., 1], 5.0))(-np.sort(-M, -1)),
-    "candidate":    lambda M: neg_entropy(np.where(M > 5.0, np.logaddexp(0.0, M - 5.0), 0.0)),
+    "candidate":    lambda M: neg_entropy(np.where(M > 5.0, np.exp(M - 5.0), 0.0)),
     "entropy Ka":   lambda M: neg_entropy(np.where(M > 5.0, 10.0 ** (M - 9.0), 0.0)),
     "entropy Ka, floor kept": lambda M: neg_entropy(10.0 ** (M - 9.0)),
     "partition Ka": lambda M: (lambda K: K.max(-1) / np.where(K.sum(-1) > 0, K.sum(-1), 1.0))(

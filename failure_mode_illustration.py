@@ -1,6 +1,6 @@
 """
 Illustrates two failure modes (D1: scores for compounds with no binding above the
-activity threshold; D2: baseline-driven instability), using
+activity threshold; instability when the activity boundary moves), using
 the same Klaeger computations that produced the numbers quoted in the paper
 (SI Figure S2; Results).
 
@@ -19,25 +19,16 @@ zero-active compound at thresholds of pK_d 6 or above, so its ranks are stable
 by degeneracy rather than by reliability). The paper reports the decomposition rather than claiming the effect
 holds "under all four definitions".
 
-Right panel (D2): per-compound rank instability vs. n_active, for active
-compounds ranked among themselves, under three different sweeps (Reviewer 1, Molecular Informatics
-revision: the original version of this panel compared entropy's sensitivity to
-its gate/baseline against only the candidate's emphasis parameter, which does
-not touch the gate -- an apples-to-oranges comparison the reviewer correctly
-flagged). All three series are swept over B = [x0, tau*] = [5.0, 6.0]:
-  (1) entropy, baseline in B -- this baseline is BOTH the entropy's
-      gate (active/inactive cutoff) AND its emphasis weighting, left fully
-      free in existing practice;
-  (2) candidate, floor x0 in B (with emphasis beta pinned to x0 at
-      each point) -- the TRUE equivalent comparison, sweeping the candidate's
-      own gate exactly as entropy's gate is swept in (1). This is comparably,
-      if not more, sensitive than entropy, because gate placement always
-      moves kinases in and out of the active set;
-  (3) candidate, emphasis beta in B with the gate FIXED at the assay
-      floor (x0 = 5.0, as used throughout the rest of this paper) -- the
-      candidate's only remaining free parameter once x0 is fixed. Fixing the
-      gate is a protocol decision: swept as in (2), the candidate fails D2 as
-      the entropy does, and only its remaining emphasis parameter is robust.
+Right panel: per-compound rank instability vs. n_active, for active compounds
+ranked among themselves, when each score's activity boundary moves across
+B = [x0, tau*] = [5.0, 6.0] (Reviewer 1, Molecular Informatics revision: an
+earlier version of this panel compared the entropy's boundary with a parameter
+of the candidate that did not move its boundary):
+  (1) entropy, baseline in B -- this baseline is BOTH the entropy's gate
+      (active/inactive cutoff) AND the reference subtracted from every readout;
+  (2) gated entropy, gate in B with T = tau* - x0 fixed -- the equivalent
+      comparison. Its exponential weights make the gate act only as a gate,
+      but moving the gate still moves kinases in and out of the profile.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -64,9 +55,8 @@ def gini(P, b):
 def s_score(P, thr): return -(P > thr).astype(float).mean(1)
 def ratio(P, floor, k=1):
     return np.array([np.sort(r)[::-1][0] - max(np.sort(r)[::-1][k] if len(r) > k else floor, floor) for r in P])
-def candidate(P, baseline, floor, T=1.0, eps=1e-10):
-    gate = (P > floor).astype(float)
-    w = gate * (T * np.logaddexp(0.0, (P - baseline) / T))
+def candidate(P, gate, T=1.0, eps=1e-10):
+    w = np.where(P > gate, np.exp((P - gate) / T), 0.0)
     rs = np.where(w.sum(1, keepdims=True) == 0, eps, w.sum(1, keepdims=True))
     p = w / rs
     return -(-(p * np.where(p > 0, np.log2(np.where(p > 0, p, 1.0)), 0)).sum(1))
@@ -113,9 +103,9 @@ for name, ranks in per_def.items():
 print("  (the S-score reverses because its score is exactly 0 for every zero-active")
 print("   compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)")
 
-# ---------------- D2: per-compound instability under three different sweeps ----------------
-# one grid for all three sweeps: B = [x0, tau*] = [5.0, 6.0] (Methods, D2), so the
-# candidate's gate is swept over exactly the entropy's range
+# ---------------- per-compound instability when the boundary moves ----------------
+# one grid for both sweeps: B = [x0, tau*] = [5.0, 6.0], so the candidate's gate
+# is swept over exactly the entropy's range
 sweep = np.arange(5.0, 6.01, 0.25)
 # compounds with an active kinase (those D1 scores), ranked among themselves
 MA = M[has_active]
@@ -124,25 +114,17 @@ def instab_active(rank_rows):
     out[has_active] = np.array(rank_rows).std(axis=0)
     return out
 ent_instab = instab_active([to_ranks(entropy(MA, b)) for b in sweep])
-# true equivalent: sweep the candidate's own gate (floor x0), beta pinned to x0 at each point
-cand_floor_instab = instab_active([to_ranks(candidate(MA, baseline=f, floor=f)) for f in sweep])
-# the candidate's remaining free parameter once the gate is fixed by declaration (x0 = FLOOR)
-cand_emph_instab = instab_active([to_ranks(candidate(MA, baseline=b, floor=FLOOR)) for b in sweep])
+# equivalent comparison: sweep the candidate's own gate, T fixed
+cand_floor_instab = instab_active([to_ranks(candidate(MA, gate=f)) for f in sweep])
 
 r_ent, p_ent = spearmanr(n_active[has_active], ent_instab[has_active])
 r_cand_floor, p_cf = spearmanr(n_active[has_active], cand_floor_instab[has_active])
-r_cand_emph, p_ce = spearmanr(n_active[has_active], cand_emph_instab[has_active])
-print(f"D2: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}); "
-      f"candidate-floor-swept r={r_cand_floor:+.3f} (p={p_cf:.1e}); "
-      f"candidate-emphasis-swept (gate fixed) r={r_cand_emph:+.3f} (p={p_ce:.1e})")
+print(f"Boundary sweep: corr(n_active, instability) -- entropy r={r_ent:+.3f} (p={p_ent:.1e}); "
+      f"gated entropy, gate swept r={r_cand_floor:+.3f} (p={p_cf:.1e})")
 ratio_gate = cand_floor_instab[has_active].mean() / ent_instab[has_active].mean()
-ratio_emph = ent_instab[has_active].mean() / cand_emph_instab[has_active].mean()
-print(f"D2: mean instability over B=[5.0,6.0] -- entropy (baseline swept) {ent_instab[has_active].mean():.3f}; "
-      f"candidate (gate/floor swept, true equivalent) {cand_floor_instab[has_active].mean():.3f} "
-      f"({ratio_gate:.2f}x the entropy's); "
-      f"candidate (emphasis swept, gate fixed by declaration) {cand_emph_instab[has_active].mean():.3f} "
-      f"({ratio_emph:.0f}x smaller than entropy -- but only because the gate itself is no longer "
-      f"a free parameter being compared)")
+print(f"Boundary sweep: mean instability over B=[5.0,6.0] -- entropy (baseline swept) "
+      f"{ent_instab[has_active].mean():.3f}; gated entropy (gate swept) "
+      f"{cand_floor_instab[has_active].mean():.3f} ({ratio_gate:.2f}x the entropy's)")
 
 # ---------------- figure ----------------
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.5))
@@ -162,14 +144,11 @@ axR.scatter(n_active[has_active], ent_instab[has_active], s=16, color='C1', alph
             label=f'entropy, baseline swept (r={r_ent:+.2f})')
 axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2', alpha=0.6,
             label=f'gated entropy, gate swept (r={r_cand_floor:+.2f})')
-axR.scatter(n_active[has_active], cand_emph_instab[has_active], s=16, color='C3', alpha=0.6,
-            label=f'gated entropy, gate fixed, emphasis swept (r={r_cand_emph:+.2f})')
 axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
-axR.set_title('D2: rank instability under each parameter sweep (Klaeger)')
+axR.set_title('Rank instability when the boundary moves (Klaeger)')
 axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)
 axR.text(0.97, 0.55, f"mean: entropy {ent_instab[has_active].mean():.1f}, "
-          f"gate {cand_floor_instab[has_active].mean():.1f}, "
-          f"emphasis {cand_emph_instab[has_active].mean():.1f}",
+          f"gated entropy {cand_floor_instab[has_active].mean():.1f}",
           ha='right', va='top', fontsize=7.5, transform=axR.transAxes)
 
 plt.tight_layout()

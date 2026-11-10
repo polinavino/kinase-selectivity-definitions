@@ -80,8 +80,8 @@ def ratio(M, k):
     return s[:, 0] - np.maximum(s[:, k], X0)
 
 
-def candidate(M, x0=X0, b=X0):
-    return neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - b) / T), 0.0))
+def candidate(M, x0=X0):
+    return neg_entropy(np.where(M > x0, np.exp((M - x0) / T), 0.0))
 
 
 SWEEPS = {
