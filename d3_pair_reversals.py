@@ -58,11 +58,6 @@ def candidate(M, g, T):
     return neg_entropy(np.where(M > g, np.exp((M - g) / T), 0.0))
 
 
-def softplus(M, g, T, b):
-    """Gated entropy with softplus weights T log(1 + exp((x - b)/T)), for comparison."""
-    return neg_entropy(np.where(M > g, T * np.logaddexp(0.0, (M - b) / T), 0.0))
-
-
 def reversals(S):
     """Fraction of compound pairs whose score difference changes sign across the
     rows of S (parameter values x compounds)."""
@@ -99,9 +94,6 @@ def sweeps(M, x0, tau, n_grid):
         # the gate jumps where it passes an observed value: evaluate there and just below too
         "candidate (gate)":          [candidate(M, b, T) for b in np.unique(np.concatenate(
                                          [B, v[v > x0], np.nextafter(v[v > x0], -np.inf)]))],
-        "softplus (baseline, gate x0)": [softplus(M, x0, T, b) for b in B],
-        "softplus (gate = baseline)":   [softplus(M, b, T, b) for b in np.unique(np.concatenate(
-                                         [B, v[v > x0], np.nextafter(v[v > x0], -np.inf)]))],
     }
     rows.update({f"ratio (clipping level, k={k})": [ratio(M, k, b) for b in B] for k in range(1, 6)})
     return rows
@@ -130,6 +122,5 @@ print(f"\nLargest change from 101 to 201 grid points: {100 * shift:.2f} percenta
 print("Largest fraction over the four datasets (and over k for the ratio), per swept parameter:")
 for key, v in largest.items():
     print(f"  {key:30s} {100 * v:6.2f}%")
-main = {k: v for k, v in largest.items() if not k.startswith("softplus")}
-print(f"Every swept parameter of the scores in Table S3 reverses at least {100 * min(main.values()):.2f}% "
+print(f"Every swept parameter in Table S3 reverses at least {100 * min(largest.values()):.2f}% "
       f"of pairs on at least one dataset.")

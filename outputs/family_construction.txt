@@ -37,11 +37,9 @@ Other weights, over the compounds D1 scores (Shannon order)
 Davis (68 scored compounds):
   equal weights (T -> infinity)         orient_r=-0.969  D3(% non-increasing)=100.0  Spearman vs candidate=0.963
   association constants (T = 1/ln 10)   orient_r=-0.720  D3(% non-increasing)=100.0  Spearman vs candidate=0.773
-  softplus, earlier candidate           orient_r=-0.968  D3(% non-increasing)=100.0  Spearman vs candidate=0.968
 
 Klaeger (200 scored compounds):
   equal weights (T -> infinity)         orient_r=-0.944  D3(% non-increasing)=100.0  Spearman vs candidate=0.978
   association constants (T = 1/ln 10)   orient_r=-0.733  D3(% non-increasing)=100.0  Spearman vs candidate=0.825
-  softplus, earlier candidate           orient_r=-0.946  D3(% non-increasing)=100.0  Spearman vs candidate=0.982
 
 Done.

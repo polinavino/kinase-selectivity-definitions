@@ -88,8 +88,9 @@ ratio) are used interchangeably. The paper:
 - Recovery (D1 applied, Figure 3): measures that follow the share of targets with
   detected binding (S-score at x0, entropy beta = x0, Gini) reach
   Spearman 0.9 at 20/50/30/65 targets (Davis/Klaeger/Anastassiadis/Metz);
-  the candidate at 50/65/30/80, and at 20/50/30/65 with T = 2 (tau* - x0) or
-  softplus weights (Results, "Width of the Gated Entropy and Recovery");
+  the candidate at 50/65/30/80, and at 20/50/30/65 with T = 2 (tau* - x0)
+  (Results, "Width of the Gated Entropy and Recovery", where T = 2 (tau* - x0)
+  is a reported variant and T = tau* - x0 stays the default);
   S-score at tau*/count 30/80/50/50; published entropy 300/200/-/150; partition
   index P_max 300/200/-/>150; ratio more than the largest subpanel tested
   except on Klaeger (200). At p*, 62-90% of subpanels exceed 0.90. Coverage

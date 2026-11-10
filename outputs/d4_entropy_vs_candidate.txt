@@ -112,15 +112,3 @@
    a = e               : entropy falls (score rises) in 0 of 20000
    a uniform in (0, e] : entropy falls (score rises) in 0 of 20000
    a = 1.05 e          : entropy falls (score rises) in 1537 of 20000
-
-15. Softplus weights T log(1 + exp((x - x0)/T)): D3 bound T >= (tau* - x0)/ln(2^e - 1)
-   (tau* - x0)/ln(2^e - 1) = 0.5816 (tau* - x0)
-   Klaeger        T = tau*-x0          T =   1.000: D3 holds
-   Klaeger        T just above bound   T =   0.587: D3 holds
-   Klaeger        T just below bound   T =   0.564: D3 VIOLATED (max rise +3.1e-05 bits at n = 1473)
-   Metz           T = tau*-x0          T =   2.000: D3 holds
-   Metz           T just above bound   T =   1.175: D3 holds
-   Metz           T just below bound   T =   1.128: D3 VIOLATED (max rise +5.4e-05 bits at n = 850)
-   Anastassiadis  T = tau*-x0          T =  30.000: D3 holds
-   Anastassiadis  T just above bound   T =  17.623: D3 holds
-   Anastassiadis  T just below bound   T =  16.925: D3 VIOLATED (max rise +4.4e-05 bits at n = 1046)

@@ -13,7 +13,10 @@ panels. The gated entropy gives weight to binding below the activity threshold
 and remains monotone under weak-target addition. Among scores that weight each
 target by its distance above the activity boundary and satisfy Shannon's
 grouping rule, the criteria leave only gated entropies whose width is at least
-the distance between the floor and the activity threshold. On these data, the
-gated entropy with that smallest width recovers rankings from small panels more
-slowly than the share of targets with detected binding. With twice the width,
-it recovers them as fast and ranks compounds almost as that share does.
+the distance between the floor and the activity threshold. The smallest width
+makes the score depend most on affinity differences. On these data, it
+recovers rankings from small panels more slowly than the share of targets with
+detected binding. Twice the width gives the targets more nearly equal weights,
+and the score then recovers rankings as fast and ranks compounds almost as that
+share does. Analyses that use the gated entropy should therefore report its
+width.

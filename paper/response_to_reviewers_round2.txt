@@ -231,8 +231,10 @@ threshold at the floor at 0.964-0.996, and that S-score also satisfies all four
 criteria. With T = tau* - x0, the gated entropy recovers rankings from
 subpanels more slowly than that S-score (p* of 50, 65, 30 and 80 targets,
 against 20, 50, 30 and 65). With T = 2 (tau* - x0), which still satisfies all
-four criteria, it reaches the same p* as that S-score, as the softplus weights
-do (Results, "Width of the Gated Entropy and Recovery").
+four criteria, it reaches the same p* as that S-score (Results, "Width of the
+Gated Entropy and Recovery"). Its rankings are then
+close to those of that S-score (Spearman 0.9968-0.9996), so we keep
+T = tau* - x0 as the default and report the wider width as a variant.
 What it adds is theoretical. Its weights are now exponential,
 exp((x - x0)/T), rather than the softplus. Among scores that weight each target
 by the same function of its distance above the gate and combine the weight
@@ -244,8 +246,8 @@ gets zero weight, whereas the gated entropy weights that binding and still
 meets D3. The published entropy is the member with T = 1/ln 10 = 0.43 pK
 units, below the bound, which is why it violates D3. We take T = tau* - x0,
 the smallest width D3 allows, and state that this is our choice. The softplus
-weights of the previous version satisfied D3 for T >= 0.58 (tau* - x0) but
-were not determined by the criteria. The paper also states the score's limits:
+weights of the previous version also satisfied D3 but were not determined by
+the criteria. The paper also states the score's limits:
 it is discontinuous at the floor, strengthening a target already in the
 profile can raise it, and because T moves with tau*, moving tau* changes its
 rankings (Spearman 0.85-0.999).

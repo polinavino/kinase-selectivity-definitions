@@ -478,12 +478,11 @@ entropy). On Klaeger, this association is weak ($r \leq 0.13$).
 The gated entropy satisfies D1 to D4 for any width $T \geq \tau^* - x_0$. With
 $T = 2(\tau^* - x_0)$, it reaches $p^*$ at 20, 50, 30 and 65 targets on Davis,
 Klaeger, Anastassiadis and Metz, the values of the share-following scores,
-against 50, 65, 30 and 80 with $T = \tau^* - x_0$. Its rankings are then close
-to those of the S-score with $\tau = x_0$ (Spearman $0.9968$--$0.9996$).
-Softplus weights, $T\ln(1 + e^{(x_i - x_0)/T})$ above the gate with
-$T = \tau^* - x_0$, give the same $p^*$ values. They satisfy D1, D3 and D4,
-but not D2 when the baseline of the softplus moves with the gate. Empirically,
-moving that baseline with the gate fixed reverses at most $0.72\%$ of pairs on
-each dataset, and moving the gate with the baseline reverses $9.2$--$23.6\%$.
-Supporting Information (Section~S5) gives the definitions and the full
-comparison.
+against 50, 65, 30 and 80 with $T = \tau^* - x_0$. The wider width gives the
+targets more nearly equal weights, and the score then ranks compounds almost as
+the S-score with $\tau = x_0$ does (Spearman $0.9968$--$0.9996$). Recovery
+compares each score with its own full-panel ranking, so the faster recovery
+does not show that the score with the wider width measures selectivity better.
+The other analyses keep $T = \tau^* - x_0$, the admissible width at which the
+score depends most on affinity differences. Supporting Information,
+Section~S5, gives the same comparison for $T = 4(\tau^* - x_0)$.

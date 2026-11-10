@@ -277,9 +277,7 @@ $B = [x_0, \tau^*]$. $B$ is $[5.0, 6.0]$ on Davis and Klaeger, $[4.0, 6.0]$ on
 Metz and $[20, 50]\%$ inhibition on Anastassiadis. For the ratio, the parameter
 is the level $b$ in $R_b(k) = x_{(1)} - \max(x_{(k+1)}, b)$. The gated
 entropy's gate is swept with $T$ fixed at $\tau^* - x_0$. Every parameter
-that places a score's activity boundary reverses more than $13\%$ of pairs on
-at least one dataset (the ratio's level only at $k = 5$). The softplus baseline
-of Section~S5, which moves no boundary, reverses at most $0.72\%$. Figure~S2 shows the per-compound rank instability
+reverses more than $13\%$ of pairs on at least one dataset (the ratio's level only at $k = 5$). Figure~S2 shows the per-compound rank instability
 on Klaeger. (\texttt{d3\_pair\_reversals.py},
 \texttt{failure\_mode\_illustration.py})
 
@@ -300,8 +298,6 @@ S-score, threshold $\tau$ & 8.43 & 9.96 & 12.99 & 21.82 \\
 Entropy, baseline $\beta$ & 7.90 & 12.37 & 10.58 & 22.80 \\
 Gini, baseline $\beta$ & 8.56 & 12.40 & 10.51 & 22.49 \\
 Gated entropy, gate $g$ & 9.22 & 12.66 & 14.56 & 23.82 \\
-Softplus, baseline $\beta$ (gate at $x_0$) & 0.44 & 0.53 & 0.36 & 0.72 \\
-Softplus, gate with $\beta$ & 9.22 & 12.99 & 14.39 & 23.59 \\
 Ratio, level $b$, $k = 1$ & 0.00 & 3.00 & 2.13 & 0.04 \\
 Ratio, level $b$, $k = 2$ & 0.83 & 6.26 & 4.10 & 0.43 \\
 Ratio, level $b$, $k = 3$ & 1.10 & 9.19 & 6.08 & 0.75 \\
@@ -573,11 +569,11 @@ $0.01347$ and the entropy's score from $-8.1785$ to $-8.1723$ bits.
 \paragraph{Check of D2.} Over 5{,}000 random profiles with no value in
 $[5.0, 6.5]$, moving the gate from $5.0$ to $6.5$ leaves the gated entropy
 unchanged. The score changes for $85.9\%$ of the profiles when each weight is
-instead a softplus of the distance above the gate, and for $85.9\%$ under the
-entropy with its baseline as the boundary. For two targets $1.0$ and $0.5$
-units above the gate, lowering the gate by $0.5$ leaves the ratio of the
-exponential weights at $1.649$ and changes the ratio of the softplus weights
-from $1.348$ to $1.296$.
+instead $\ln(1 + e^{d})$, where $d$ is the target's distance above the gate,
+and for $85.9\%$ under the entropy with its baseline as the boundary. For two
+targets $1.0$ and $0.5$ units above the gate, lowering the gate by $0.5$ leaves
+the ratio of the exponential weights at $1.649$ and changes the ratio of the
+weights $\ln(1 + e^{d})$ from $1.348$ to $1.296$.
 (\texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py}
 section 13)
 
@@ -629,10 +625,9 @@ correlation with the number of active kinases ranges from $-0.776$ ($T = 0.5$)
 to $-0.945$, and D3 held for every scored compound at every width, including
 the two below the bound of Proposition 1. Across these widths the rankings
 agree at Spearman $0.79$ or higher, and for $T \geq 1$ at $0.985$ or higher.
-\emph{Other weights.} Equal weights (the limit $T \to \infty$), the
-association-constant weights of the published entropy ($T = 1/\ln 10$) and
-softplus weights $T\ln(1 + e^{(x - x_0)/T})$ rank compounds with Spearman
-$0.963$--$0.978$, $0.773$--$0.825$ and $0.968$--$0.982$ against the gated
+\emph{Other weights.} Equal weights (the limit $T \to \infty$) and the
+association-constant weights of the published entropy ($T = 1/\ln 10$) rank
+compounds with Spearman $0.963$--$0.978$ and $0.773$--$0.825$ against the gated
 entropy on Davis and Klaeger (Table~S6).
 (\texttt{family\_construction.py}, \texttt{family\_panelsize.py},
 \texttt{candidate\_validation.py})
@@ -644,8 +639,8 @@ Shannon's grouping property. Within this class, D2 and D4 leave the gated
 entropies, with any $T > 0$, and the equal-weight limit, and D3 leaves those
 with $T \geq \tau^* - x_0$ (Proposition 1). The class assumption is needed. If
 each weight is a function of the distance above a fixed reference and only the
-gate moves, D2 holds for every weight function, including the softplus, and
-does not determine the weights. The criteria also leave $T$ free above
+gate moves, D2 holds for every weight function and does not determine the
+weights. The criteria also leave $T$ free above
 $\tau^* - x_0$. We choose the smallest admissible value, $T = \tau^* - x_0$,
 which makes the score depend most on affinity differences.
 The published entropy, with floor-coded pairs given zero weight, is the member
@@ -668,7 +663,6 @@ R\'enyi order $\alpha = 2$   & $0.968$ & $0.977$ \\
 R\'enyi order $\alpha = 3$   & $0.932$ & $0.953$ \\
 Equal weights ($T \to \infty$) & $0.963$ & $0.978$ \\
 Association constants ($T = 1/\ln 10$) & $0.773$ & $0.825$ \\
-Softplus weights & $0.968$ & $0.982$ \\
 Quantile floor, 10th percentile & $1.000$ & $1.000$ \\
 \bottomrule
 \end{tabular}
@@ -773,26 +767,12 @@ bar = 0.95 & 110 & 110 & 80 & 170 \\
 \end{tabular}
 \end{table}
 
-\paragraph{Width and softplus weights.} With $T = 2(\tau^* - x_0)$ and
-$4(\tau^* - x_0)$, the gated entropy reaches $p^*$ at 20, 50, 30 and 65 targets
-on Davis, Klaeger, Anastassiadis and Metz, as the share-following scores do.
-Its full-panel rankings correlate with those of the S-score with $\tau = x_0$
-at $0.9968$--$0.9996$ and $0.9994$--$0.9998$. Both widths satisfy D1 to D4
-(Proposition 1). Softplus weights,
-$w_i = \mathbf{1}[x_i > g]\,T\ln(1 + e^{(x_i - \beta)/T})$ with $g = \beta = x_0$
-and $T = \tau^* - x_0$, give the same $p^*$ values, and their full-panel rankings
-correlate with that S-score at $0.9984$--$0.9997$. They satisfy D1 and D4 by
-construction. They satisfy D3 for $T \geq (\tau^* - x_0)/\ln(2^e - 1) \approx
-0.58\,(\tau^* - x_0)$, by the argument of Proposition 1 with the lightest gated
-weight $T\ln 2$ in place of $1$. Just below this bound, a profile with one
-strong target and many kinases just above the floor violates D3. They do not
-satisfy D2 when $\beta$ moves with $g$ (Section~S4, Check of D2). With the gate
-fixed at $x_0$, sweeping $\beta$ over $B$ reverses $0.44$, $0.53$, $0.36$ and
-$0.72\%$ of pairs, and moving $g$ and $\beta$ together reverses $9.22$, $12.99$,
-$14.39$ and $23.59\%$ (Table~S3). (\texttt{panel\_recovery.py},
-\texttt{d3\_\allowbreak{}pair\_\allowbreak{}reversals.py},
-\texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py}
-section 15)
+\paragraph{Width.} With $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$, the gated
+entropy reaches $p^*$ at 20, 50, 30 and 65 targets on Davis, Klaeger,
+Anastassiadis and Metz, as the share-following scores do. Its full-panel
+rankings correlate with those of the S-score with $\tau = x_0$ at
+$0.9968$--$0.9996$ and $0.9994$--$0.9998$. Both widths satisfy D1 to D4
+(Proposition 1). (\texttt{panel\_recovery.py})
 
 \paragraph{Variability across subpanels.} In the main-text recovery analysis,
 with D1 applied, $p^*$ is a threshold on the mean over 50 subpanels. At $p^*$, the share of
@@ -920,7 +900,7 @@ Results, Criteria; Table~S5 & Correlation with the number of active kinases, D3 
 Results, Criteria & Agreement with the entropy & \texttt{candidate\_\allowbreak{}measure.py} \\
 Results, Criteria; S4 & Dependence on $\tau^*$; noise & \texttt{claim\_\allowbreak{}checks.py} (22, 23) \\
 Results, Criteria; Results, Recovery; Figure~3; S5 & Coverage, recoverability, conditional agreement, variability, influence, agreement with the S-score at $x_0$; other bars; probability of staying scored & \texttt{panel\_\allowbreak{}recovery.py} \\
-Results, Width; S5; Table~S3 & Gated entropy with $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$ and softplus weights: recovery, agreement with the S-score at $x_0$, reversals, D3 bound & \texttt{panel\_\allowbreak{}recovery.py}, \texttt{d3\_\allowbreak{}pair\_\allowbreak{}reversals.py}, \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} (15) \\
+Results, Width; S5 & Gated entropy with $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$: recovery, agreement with the S-score at $x_0$ & \texttt{panel\_\allowbreak{}recovery.py} \\
 Results, Criteria; S4; Table~S6 & Variants of the gated entropy & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
 S5; Figure~S4; Table~S7 & Recovery without D1 & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py}, \texttt{claim\_\allowbreak{}checks.py} (14) \\
 Discussion; S6; Table~S8 & Bosc et al.'s scores and the CATDS proxy & \texttt{bosc\_\allowbreak{}catds\_\allowbreak{}comparison.py} \\

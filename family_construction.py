@@ -21,8 +21,7 @@ candidate empirically, the same way candidate_validation.py does.
   3. Other weights: the limit T -> infinity (every gated kinase weighted equally,
      -log2 of the number above the floor), the association-constant weights of the
      published entropy with floor-coded pairs given zero weight (T = 1/ln 10 pK
-     units), and the softplus weights T log(1 + exp((x - x0)/T)) of the earlier
-     version of the candidate.
+     units).
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -69,7 +68,6 @@ def candidate_quantile(P, q, T):
 OTHER_WEIGHTS = {
     "equal weights (T -> infinity)": lambda P, floor, T: np.where(P > floor, 1.0, 0.0),
     "association constants (T = 1/ln 10)": lambda P, floor, T: np.where(P > floor, 10.0 ** (P - P.max()), 0.0),
-    "softplus, earlier candidate": lambda P, floor, T: np.where(P > floor, T * np.logaddexp(0.0, (P - floor) / T), 0.0),
 }
 
 

@@ -19,8 +19,6 @@ a target above tau* there. Measures:
   candidate    gated entropy with exponential weights (Methods), T = tau* - x0
   candidate 2T, candidate 4T
                the same with T = 2 (tau* - x0) and 4 (tau* - x0) (printed, not plotted)
-  softplus     gated entropy with softplus weights T log(1 + exp((x - x0)/T)),
-               T = tau* - x0 (printed, not plotted)
   entropy Ka   published association-constant entropy, p_i ~ 1/Kd_i, with the
                floor-coded entries given zero weight (affinity datasets only)
   partition Ka maximum partition index (Cheng et al. 2010), max_i Ka_i / sum_i Ka_i,
@@ -83,7 +81,6 @@ def measures(x0, tau, affinity=True):
         "candidate":    lambda M: neg_entropy(np.where(M > x0, np.exp((M - x0) / T), 0.0)),
         "candidate 2T": lambda M: neg_entropy(np.where(M > x0, np.exp((M - x0) / (2 * T)), 0.0)),
         "candidate 4T": lambda M: neg_entropy(np.where(M > x0, np.exp((M - x0) / (4 * T)), 0.0)),
-        "softplus":     lambda M: neg_entropy(np.where(M > x0, T * np.logaddexp(0.0, (M - x0) / T), 0.0)),
     }
     if affinity:
         m["entropy Ka"] = lambda M: neg_entropy(np.where(M > x0, 10.0 ** (M - 9.0), 0.0))

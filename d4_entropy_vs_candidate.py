@@ -34,8 +34,6 @@ D2 and D4) and Results, "Criteria and the Gated Entropy" (SI Section S4):
     distance above the gate (the softplus) or for the entropy's baseline.
 14. The entropy fact behind Proposition 1: if every weight is at least 1, appending
     a weight a <= e never lowers the entropy; appending a weight above e can.
-15. Softplus weights T log(1 + exp((x - x0)/T)), for comparison: D3 holds for
-    T >= (tau* - x0)/ln(2^e - 1) ~= 0.58 (tau* - x0) and fails just below.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -320,20 +318,3 @@ for a_fac, label in ((1.0, "a = e"), (0.5, "a uniform in (0, e]"), (1.05, "a = 1
         a = np.e * (rng14.uniform(1e-6, 1.0) if a_fac == 0.5 else a_fac)
         falls += neg_entropy(np.r_[w, a])[0] > neg_entropy(w)[0] + 1e-12
     print(f"   {label:20s}: entropy falls (score rises) in {falls} of 20000")
-
-print("\n15. Softplus weights T log(1 + exp((x - x0)/T)): D3 bound T >= (tau* - x0)/ln(2^e - 1)")
-SP_FACTOR = 1.0 / np.log(2.0 ** np.e - 1.0)
-print(f"   (tau* - x0)/ln(2^e - 1) = {SP_FACTOR:.4f} (tau* - x0)")
-for name in ("Klaeger", "Metz", "Anastassiadis"):
-    _, x0, tau, top, _ = data[name]
-    d = tau - x0
-    for label, T in (("T = tau*-x0", d), ("T just above bound", 1.01 * SP_FACTOR * d),
-                     ("T just below bound", 0.97 * SP_FACTOR * d)):
-        worst, worst_n = 0.0, None
-        for n in range(1, 2001):
-            prof = np.array([[top] + [x0 + 1e-3 * T] * n])
-            dd = float((softplus_candidate(add_column(prof, tau), x0, T) - softplus_candidate(prof, x0, T))[0])
-            if dd > worst:
-                worst, worst_n = dd, n
-        verdict = "D3 holds" if worst <= 1e-12 else f"D3 VIOLATED (max rise {worst:+.1e} bits at n = {worst_n})"
-        print(f"   {name:14s} {label:20s} T = {T:7.3f}: {verdict}")
