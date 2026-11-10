@@ -95,11 +95,12 @@ or the entropy with a low baseline. We derive a **gated entropy**, a Shannon
 entropy with exponential affinity weights. Among formulas that weight each
 kinase by its distance above the cutoff and satisfy Shannon's grouping rule,
 criteria 2 and 4 leave only these weights, and criterion 3 holds exactly when
-their width is at least the distance between the floor and the activity
+their scale (the affinity difference over which a weight grows by a factor of
+e) is at least the distance between the floor and the activity
 threshold. On these data it ranks drugs similarly to the share of targets with
 detected binding but recovers rankings from small panels more slowly, so it is
-not an empirical improvement on simpler formulas. With twice the width it
-recovers them as fast and ranks drugs almost as that share does, so the width
+not an empirical improvement on simpler formulas. With twice the scale it
+recovers them as fast and ranks drugs almost as that share does, so the scale
 should be reported. Every formula studied
 satisfies criterion 4 when pairs without detected binding get zero weight; the
 active count with its sign reversed, which meets criteria 1 to 3 as the gated
@@ -199,14 +200,14 @@ from these files and cited in the Discussion/Limitations sections.
 | curate_panels.py | Builds the curated panels (one reference target per human protein kinase) from the released Davis, Klaeger and Anastassiadis files, and the target_curation_*.csv tables (Methods) |
 | klaeger_protein_kinases.py | Klaeger panel composition (122 of 343 targets removed besides four protein groups) and the main Klaeger results on the released and curated panels (SI Table S1) |
 | davis_gene_level.py | The main Davis results on the released constructs, the curated panel and the best affinity per gene (SI Table S1) |
-| panel_recovery.py | Recovery from random subpanels for all measures, including the S-score at the floor and the published entropy, with coverage, pair recovery, p* at other bars, the probability that a compound stays scored, an influence diagnostic, and the gated entropy at twice and four times its width (Results, Figure 3, "Width of the Gated Entropy and Recovery") |
+| panel_recovery.py | Recovery from random subpanels for all measures, including the S-score at the floor and the published entropy, with coverage, pair recovery, p* at other bars, the probability that a compound stays scored, an influence diagnostic, and the gated entropy at twice and four times its scale (Results, Figure 3, "Scale of the Gated Entropy and Recovery") |
 | metz_coverage.py | Per-compound kinase-coverage distribution among the 704 retained Metz compounds (Methods) |
 | dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis check with the S-score sweep shifted to [6.5, 9.0] (SI Section S1) |
 | d2_near_tie_sensitivity.py | The ratio's reference-choice sensitivity: Klaeger compounds with an active kinase and a top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Results, Parameter Sensitivity) |
 | original_operationalization_robustness.py | Cross-definition correlations under the original (association-constant entropy, native %inhibition Gini) operationalizations, two floor treatments, and on Klaeger every measured affinity kept at its value (Results, Table 3, SI Table S2) |
 | undefined_score_convention.py | States the entropy/Gini 0/0 convention for zero-active compounds and the alternative defined-configs-only rank-sigma contrast (Results; SI Section S3) |
 | pstar_bar_sensitivity.py | Ungated panel-size p* at four correlation bars (SI Table S7) |
-| candidate_validation.py | Cross-dataset validation of the candidate measure: correlation with the number of active kinases, pairs reversing when the gate or the entropy's baseline is swept, D3, width sweep on Klaeger (Results, SI Table S5 and Section S4) |
+| candidate_validation.py | Cross-dataset validation of the candidate measure: correlation with the number of active kinases, pairs reversing when the gate or the entropy's baseline is swept, D3, scale sweep on Klaeger (Results, SI Table S5 and Section S4) |
 | d3_pair_reversals.py | Boundary sensitivity for every measure on all four datasets: share of pairs reversing over B = [x0, tau*], exact for the S-score; the gated entropy's gate also at every observed value, where its score jumps; 201 grid points otherwise (Results, SI Table S3) |
 | davis_klaeger_overlap.py | Resolves Davis/Klaeger compound overlap via PubChem CID matching (46 compounds; Discussion) |
 | platform_vs_definition.py | Platform-vs-definition ranking-disagreement benchmark on the 46 shared Davis/Klaeger compounds and 201 shared kinases, renamed symbols mapped (Results; SI Section S6) |
@@ -256,7 +257,7 @@ floor, D4 for the entropy and Gini at baselines below the floor (sections 9 to
     python3 panel_recovery.py               # recovery from random subpanels (Figure 3)
     python3 binding_profiles.py             # Figure 2
     python3 failure_mode_illustration.py    # SI Figure S2
-    python3 d3_pair_reversals.py            # D2 percentages (SI Table S3)
+    python3 d3_pair_reversals.py            # boundary sensitivity (SI Table S3)
     python3 claim_checks.py                  # numbers for specific claims (run last)
     python3 faers_pull.py                    # clinical data, Limitations (needs internet)
     python3 bosc_catds_comparison.py         # Bosc/CATDS comparison (SI Section S6)
@@ -280,7 +281,7 @@ if present, otherwise regenerates them from the raw `.xls` files.
 | Zero-active vs. active rank std (Klaeger) | 77.9 vs. 32.2 |
 | Zero-active vs. active rank std (Anastassiadis / Metz) | 36.6 vs. 21.8 / 178.5 vs. 108.1 |
 | Pairs reversing as the activity boundary moves (S-score, Davis/Klaeger/Anastassiadis) | 8.4–13.0% |
-| Recovery with D1 applied, targets to mean Spearman 0.90 (Davis/Klaeger/Anastassiadis/Metz) | S-score at floor, entropy at floor, Gini: 20/50/30/65; gated entropy: 50/65/30/80 (20/50/30/65 with twice the width); ratio: >300/200/>250/>150; published entropy: 300/200/–/150; P_max: 300/200/–/>150 |
+| Recovery with D1 applied, targets to mean Spearman 0.90 (Davis/Klaeger/Anastassiadis/Metz) | S-score at floor, entropy at floor, Gini: 20/50/30/65; gated entropy: 50/65/30/80 (20/50/30/65 with twice the scale); ratio: >300/200/>250/>150; published entropy: 300/200/–/150; P_max: 300/200/–/>150 |
 | Panel-size threshold without the D1 gate, entropy (SI Section S5) | 50 targets (Davis, Anastassiadis), 80 (Klaeger, Metz) |
 | Published vs. log-affinity entropy (Davis/Klaeger) | r = 0.37/−0.31 with floor-coded pairs at the floor, 0.74/0.79 with them given zero weight |
 

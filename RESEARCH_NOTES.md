@@ -9,10 +9,11 @@ Preprint: ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1).
 
 ## Paper structure (after consolidation)
 Introduction (merged with Background); Methods (datasets and target selection,
-score implementations, ranking comparisons, criteria and the gated entropy,
-recovery design); Results (analysis choices and agreement; parameter
+score implementations, ranking comparisons, evaluation criteria, the gated
+entropy, recovery design); Results (analysis choices and agreement; parameter
 sensitivity and profile associations; criteria and the gated entropy;
-recovery from small panels; width of the gated entropy and recovery); Discussion; Conclusion. Main text about 9,800
+recovery from small panels; scale of the gated entropy and recovery); Discussion (roles of the criteria
+and the gated entropy; reporting recommendations; limitations); Conclusion. Main text about 10,100
 words; SI Sections S1-S8 follow the same
 order.
 
@@ -80,7 +81,7 @@ ratio) are used interchangeably. The paper:
   published entropy (floor-coded pairs at zero weight) is the member with
   T = 1/ln 10, below the bound, so it violates D3.
 - Candidate (gated entropy, w = 1[x > x0] exp((x - x0)/T), T = tau* - x0, the
-  smallest width D3 allows; replaced the softplus version, Spearman
+  smallest scale D3 allows; replaced the softplus version, Spearman
   0.968-0.998 with it): D1 to D4 by construction; ranks with the entropy at
   0.969-0.993 and with the S-score at x0 at 0.964-0.996. Moving tau* (with T)
   gives Spearman 0.85-0.999. Noise check with the D1 gate reapplied:
@@ -89,7 +90,7 @@ ratio) are used interchangeably. The paper:
   detected binding (S-score at x0, entropy beta = x0, Gini) reach
   Spearman 0.9 at 20/50/30/65 targets (Davis/Klaeger/Anastassiadis/Metz);
   the candidate at 50/65/30/80, and at 20/50/30/65 with T = 2 (tau* - x0)
-  (Results, "Width of the Gated Entropy and Recovery", where T = 2 (tau* - x0)
+  (Results, "Scale of the Gated Entropy and Recovery", where T = 2 (tau* - x0)
   is a reported variant and T = tau* - x0 stays the default);
   S-score at tau*/count 30/80/50/50; published entropy 300/200/-/150; partition
   index P_max 300/200/-/>150; ratio more than the largest subpanel tested

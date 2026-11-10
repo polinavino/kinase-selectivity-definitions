@@ -5,7 +5,7 @@ For each dataset it checks orientation, the pairs reversing when the gate is
 swept over B = [x0, tau*] (on the same 201-point grid as d3_pair_reversals.py)
 and D3 (monotonicity, one kinase added at tau*), using the same per-dataset floor
 and activity threshold used elsewhere in the analysis.  It also (a) sweeps the
-width T to show the ranking is stable across it, and (b) shows that removing the
+scale T to show the ranking is stable across it, and (b) shows that removing the
 floor gate inverts the measure, which is what makes the gate necessary.
 
 Writes candidate_validation.csv and prints a summary.  Deterministic.
@@ -123,7 +123,7 @@ def t_sweep():
     Ts = [0.5, 0.75, 1.0, 1.5, 2.0]
     rk = [to_ranks(candidate(M, floor, T)[nact > 0]) for T in Ts]
     worstT = min(spearmanr(rk[i], rk[j])[0] for i in range(len(rk)) for j in range(i + 1, len(rk)))
-    ok = [i for i, T in enumerate(Ts) if T >= 1.0]   # the widths for which D3 is guaranteed
+    ok = [i for i, T in enumerate(Ts) if T >= 1.0]   # the scales for which D3 is guaranteed
     worstT_ok = min(spearmanr(rk[i], rk[j])[0] for i in ok for j in ok if j > i)
     return pd.DataFrame(rows), round(worstT, 3), round(worstT_ok, 3)
 
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     print("Cross-dataset validation (orientation must be negative; *_rev = fraction of scored-compound pairs reversing in B; D3 (d4_pct) = 100):")
     print(df.to_string(index=False))
     ts, worstT, worstT_ok = t_sweep()
-    print("\nWidth T sweep on Klaeger (D3 is guaranteed for T >= 1):")
+    print("\nScale T sweep on Klaeger (D3 is guaranteed for T >= 1):")
     print(ts.to_string(index=False))
     print(f"worst-case cross-T ranking agreement (Spearman) = {worstT}; over T >= 1 = {worstT_ok}")
     inv = inversion_demo()

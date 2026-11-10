@@ -5,7 +5,7 @@ Cross-dataset validation (orientation must be negative; *_rev = fraction of scor
 Anastassiadis    178    291    -0.926    0.1456       0.1058   100.0
          Metz    704    172    -0.761    0.2382       0.2280   100.0
 
-Width T sweep on Klaeger (D3 is guaranteed for T >= 1):
+Scale T sweep on Klaeger (D3 is guaranteed for T >= 1):
    T  orient_r  d4_pct
 0.50    -0.776   100.0
 0.75    -0.896   100.0

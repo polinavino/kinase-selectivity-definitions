@@ -59,9 +59,10 @@ added, and orientation on profiles with equally strong targets. We evaluate
 the existing scores and simple comparators against them. We then derive a
 gated entropy that satisfies all four. Among scores that weight each target by
 its distance above the activity boundary and combine the weights with Shannon's
-grouping rule, the criteria leave one family with a single width parameter,
-and monotonicity fixes the range of that parameter. Within that range, the
-width can be chosen so that the score recovers rankings from small panels as
+grouping rule, the criteria leave one family with a single parameter, the
+\emph{scale}. The scale is the readout difference over which a weight grows by a factor
+of $e$. Monotonicity fixes the range of the scale. Within that range, the
+scale can be chosen so that the score recovers rankings from small panels as
 fast as the share of targets with detected binding. Stating such criteria
 follows the axiomatic approach Shannon\cite{Shannon1948} used for entropy.
 We measure how well each score's ranking is recovered

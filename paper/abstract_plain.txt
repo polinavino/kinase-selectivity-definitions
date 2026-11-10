@@ -2,7 +2,7 @@ Kinase selectivity scores can rank the same compounds differently. We compare
 four common scores across four profiling datasets. Agreement changes with
 affinity weighting, the compounds ranked and the treatment of pairs without
 detected binding. We relate ranking sensitivity to binding profile features.
-Moving the activity boundary reorders compounds under every score, so the
+Moving the activity boundary reorders compounds under every score, and the
 boundary must be fixed by protocol. We propose four criteria for selectivity
 scores and, with Shannon's grouping rule, derive from them a gated entropy with
 exponential affinity weights. We prove the range of weighting for which adding

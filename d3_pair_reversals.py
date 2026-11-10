@@ -7,7 +7,7 @@ some b in B and negative at another. Pairs are taken among the compounds with at
 least one target above tau* (those D1 scores).
 
 Parameters swept over B: the S-score's threshold tau, the entropy's and Gini's
-baseline beta, the gated entropy's gate (its width T held at tau* - x0 of the
+baseline beta, the gated entropy's gate (its scale T held at tau* - x0 of the
 fixed floor), and the ratio's clipping level b in R_b(k) = x_(1) - max(x_(k+1), b),
 which replaces any off-target affinity below b, measured or missing, by b (each k).
 

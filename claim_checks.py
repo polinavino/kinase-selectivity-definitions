@@ -42,7 +42,7 @@ Each section prints the numbers cited in the text for one claim:
  21. SI Table S4 with a Bonferroni correction for the 24 tests per dataset (Results,
      instability predictors)
  22. The candidate's sensitivity to the activity threshold tau*, which sets its D1
-     gate and its width T (Results, "Monotonicity Under Weak-Target Addition")
+     gate and its scale T (Results, "Criteria and the Gated Entropy")
  23. The candidate's gate is discontinuous at x0: rank stability of the candidate and
      the entropy under measurement noise (Results; SI Section S4)
 """

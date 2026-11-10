@@ -66,7 +66,7 @@ ranking little (Spearman $0.9996$ with the floor-excluded ranking among active
 compounds) and changes its correlations and recovery by at most $0.02$
 (Supporting Information, Section~S2).
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/metric_fidelity}
   \caption{Rankings under association-constant weights ($x$-axis) against the
@@ -180,7 +180,7 @@ whether the second kinase is an intended target, which the profile does not
 show. On Davis, fedratinib, a JAK2 inhibitor with JAK2 and GAK tied, has the
 most unstable ratio ranking (Figure~\ref{fig:profiles}, left).
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=0.85\textwidth]{figures/binding_profiles}
   \caption{Binding profiles of two Davis compounds, targets sorted by affinity.
@@ -287,7 +287,7 @@ $-(C+1)/(N+1)$, which is not higher. The active count ranks compounds on any
 one panel as the S-score at $\tau^*$ does, but it does not divide by $N$. A
 kinase added at or below $\tau^*$ is not counted, so the count and the score
 stay the same, and D3 holds. D3 therefore concerns how scores change when a
-panel is extended, not how compounds are ranked on one panel. The Gini violates
+panel is extended. The Gini violates
 D3, since a weakly bound kinase can raise its inequality. The ratio satisfies
 it, because a weak addition cannot displace the primary target or lower the
 reference off-target. $P_{\max}$ satisfies it too, since a weak addition leaves its
@@ -391,14 +391,19 @@ construction: the entropy satisfies D3 at $\beta = \tau^*$, where binding below
 the threshold has zero weight, and the gated entropy satisfies D3 while giving
 that binding weight.
 
-\emph{Uniqueness.} The criteria do not single out one score. The active
-count, the S-score with $\tau = x_0$ and the gated entropy satisfy all four,
-and so does every gated entropy with $T \geq \tau^* - x_0$. Proposition 2
-narrows the choice within one class of scores: those that weight each target
-by the same function of its distance above the gate and combine the weight
-shares with Shannon's grouping property. In this class, D2 and D4 leave only
-the gated entropies, and D3 then leaves those with $T \geq \tau^* - x_0$
-(Proposition 1). Taking the smallest such $T$ is our choice. On Klaeger, the
+\emph{What the criteria determine.} 
+The active count, the S-score with $\tau = x_0$ and the gated entropy satisfy
+all four criteria, and so does every gated entropy with $T \geq \tau^* - x_0$.
+Proposition 2 narrows the choice within one class of scores: those that weight
+each target above the gate by the same continuous, nondecreasing function of
+its distance above the gate and combine the weight shares with Shannon's
+grouping property. In this class, D2 and D4 reject everything but the gated
+entropies and the score that gives every target above the gate the same
+weight, $-\log_2 n$ for $n$ such targets (the limit $T \to \infty$). D3 then
+additionally retains only the gated entropies with $T \geq \tau^* - x_0$
+(Proposition 1) and the equal-weight score. With the gate and $T$ fixed, the
+score is determined up to a positive multiple. Taking the smallest admissible
+$T$ is our choice. On Klaeger, the
 rankings for $T = 1$, $1.5$ and $2$ agree at Spearman $0.985$ or higher, and
 other variants are compared in Supporting Information, Section~S4.
 
@@ -456,7 +461,7 @@ target is left out tend to have larger rank errors at 50 targets (Spearman
 $r = 0.18$--$0.70$ for the entropy with $\beta = x_0$, the Gini and the gated
 entropy). On Klaeger, this association is weak ($r \leq 0.13$).
 
-\begin{figure}[h]
+\begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/panel_recovery}
   \caption{Recovery from random subpanels with D1 applied to every score, on
@@ -472,17 +477,17 @@ entropy). On Klaeger, this association is weak ($r \leq 0.13$).
   \label{fig:candidate}
 \end{figure}
 
-\subsection{Width of the Gated Entropy and Recovery}
-\label{sec:results:width}
+\subsection{Scale of the Gated Entropy and Recovery}
+\label{sec:results:scale}
 
-The gated entropy satisfies D1 to D4 for any width $T \geq \tau^* - x_0$. With
+The gated entropy satisfies D1 to D4 for any scale $T \geq \tau^* - x_0$. With
 $T = 2(\tau^* - x_0)$, it reaches $p^*$ at 20, 50, 30 and 65 targets on Davis,
 Klaeger, Anastassiadis and Metz, the values of the share-following scores,
-against 50, 65, 30 and 80 with $T = \tau^* - x_0$. The wider width gives the
+against 50, 65, 30 and 80 with $T = \tau^* - x_0$. A larger scale gives the
 targets more nearly equal weights, and the score then ranks compounds almost as
 the S-score with $\tau = x_0$ does (Spearman $0.9968$--$0.9996$). Recovery
 compares each score with its own full-panel ranking, so the faster recovery
-does not show that the score with the wider width measures selectivity better.
-The other analyses keep $T = \tau^* - x_0$, the admissible width at which the
+does not show that the score with the larger scale measures selectivity better.
+The other analyses keep $T = \tau^* - x_0$, the admissible scale at which the
 score depends most on affinity differences. Supporting Information,
 Section~S5, gives the same comparison for $T = 4(\tau^* - x_0)$.

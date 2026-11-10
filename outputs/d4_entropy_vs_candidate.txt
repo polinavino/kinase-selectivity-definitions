@@ -106,7 +106,7 @@
 
 13. D2 (boundary locality): gate moved from g to g' with no readout between them
    5000 random profiles with no readout in [5.0, 6.5], gate at 5.0 and at 6.5: candidate (exponential): score changes for 0.0%; softplus of the distance above the gate: score changes for 85.9%; entropy, baseline as boundary: score changes for 85.9%
-   two targets at distances u = 1.0 and v = 0.5 above the gate, gate lowered by 0.5: weight ratio exponential 1.6487 -> 1.6487; softplus 1.3482 -> 1.2956
+   two targets at distances u = 1.0 and v = 0.5 above the gate, gate lowered by 0.5: weight ratio exponential 1.6487 -> 1.6487; softplus 1.3482 -> 1.2956; linear (the entropy's) 2.0000 -> 1.5000
 
 14. The entropy fact behind Proposition 1: weights all >= 1, one weight a appended (20,000 random vectors)
    a = e               : entropy falls (score rises) in 0 of 20000

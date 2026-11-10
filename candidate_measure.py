@@ -27,7 +27,7 @@ are reported only for compounds with max_i x_i > tau* (the D1 gate).
       (Methods, Proposition 1; d4_entropy_vs_candidate.py).  The weight jumps
       from 0 to 1 at the floor, so the measure is discontinuous there.
 
-T = tau* - x0 on every dataset, the smallest width for which D3 holds.  Recovery
+T = tau* - x0 on every dataset, the smallest scale for which D3 holds.  Recovery
 from random subpanels, compared with every other measure, is in panel_recovery.py.
 """
 import script_logging; script_logging.capture(__file__)

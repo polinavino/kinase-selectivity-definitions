@@ -16,9 +16,43 @@ by definition. A proxy for the CATDS score of Klaeger et al., the top target's
 share of the profile, instead correlates more with the Gini than with the
 ratio on every dataset (Supporting Information, Section~S6). The ratio and the S-score, entropy and
 Gini disagree most on broad profiles with one dominant target. A selectivity ranking is therefore a statement about a
-score, its implementation, and a set of compounds and targets, not about the
-compounds alone. On compounds and kinases shared by two datasets, changing the
+score, its implementation, and a set of compounds and targets.
+On compounds and kinases shared by two datasets, changing the
 definition moved rankings about as much as changing the dataset.
+
+\subsection{Roles of the Criteria and the Gated Entropy}
+
+D1 is a reporting rule that any score can adopt. D2 and D3 depend on a
+score's form, and they separate the scores. The entropy, Gini and ratio fail
+D2, and the S-score above the floor, the entropy with $\beta = x_0$, the Gini
+and the published entropy fail D3. D4 fixes the direction of a score, which D1
+to D3 leave open. The criteria do not single out one score. Meeting D2 does
+not make rankings independent of the boundary, so the boundary must still be
+fixed by protocol. D3 concerns adding kinases that bind weakly or not at all,
+which is how most panels grow (most entries lie at or below the activity threshold). 
+It does not concern a stronger value for a
+target already in the profile, which can raise the gated entropy's score.
+
+Among the scores studied, only the gated entropy meets all four criteria and
+weights targets by affinity. Within the class of Proposition 2, the criteria
+leave only exponential weights, and D3 requires the scale to be at least the
+distance between the floor and the activity threshold. The published
+entropy, with floor-coded pairs given zero weight, is a member of this family
+whose scale is smaller than this distance on these datasets, so it violates
+D3. As the scale grows, the rankings approach those
+of the share of targets with detected binding. Two simpler scores rank
+compounds almost as the gated entropy does, and each lacks one of its
+properties. The entropy with $\beta = x_0$ weights targets by affinity but
+fails D2 and D3. The S-score with $\tau = x_0$ meets all four criteria but
+weights every detected target equally. With twice the smallest allowed scale,
+the gated entropy keeps its affinity weights and recovers rankings from small
+panels as fast as that S-score.
+
+A score's correlation with the number of active kinases on real data does not
+show whether it satisfies D4, which concerns only profiles with equally strong
+targets. On real profiles, a compound with more active targets can have more
+concentrated binding, and a score that measures concentration can then rank it
+as more selective without violating D4.
 
 \subsection{Reporting Recommendations}
 
@@ -27,7 +61,7 @@ Each recommendation follows from a result above.
   \item State which targets the score is computed over, including how the
         panel was curated, and the score implementation, including the
         weighting and its parameters, such as a baseline or the gated
-        entropy's width.
+        entropy's scale.
   \item Distinguish measured affinities, pairs with no detected binding,
         rejected fits and untested pairs, and state the value and weight each
         receives.
@@ -78,31 +112,3 @@ target-specific liability knowledge and exposure modeling. Selectivity rankings
 of the approved Klaeger compounds were not associated with the proportions of
 their adverse-event reports that were serious, fatal or led to hospitalization
 (Supporting Information, Section~S7).
-
-The four criteria play different roles. D1 is a reporting rule that any score
-can adopt. D2 requires that moving a score's boundary change a compound's
-score only when it passes one of the compound's values. The S-score, the active
-count and the gated entropy meet it, and the entropy, Gini and ratio do not.
-Meeting D2 does not make rankings independent of where the boundary is placed,
-so the boundary must still be fixed by protocol. D3 also separates the scores.
-The gated entropy's guarantee covers the usual way a
-panel grows: most kinases added to a panel bind the compound weakly or not at
-all, as $83.3\%$ of the Davis entries and $95.5\%$ of the Klaeger entries lie
-below the activity threshold. The guarantee does not extend to strengthening a
-target already in the profile. The published entropy, with floor-coded pairs
-given zero weight, is the gated entropy with $T = 1/\ln 10 \approx 0.43$
-$\mathrm{p}K$ units, below the bound $\tau^* - x_0$ of Proposition 1 on these
-datasets, so it violates D3. D4 calibrates the direction of a score on profiles with equally
-strong targets. Without it, D1 to D3 would not rule out the active count with
-its sign reversed. All four are proposed evaluation criteria and do not single
-out one score. On these datasets, the S-score with $\tau = x_0$ matches the
-gated entropy on every criterion and recovers rankings from as few or fewer
-targets, and
-the entropy with $\beta = x_0$ ranks compounds almost as that S-score does
-(Spearman above $0.99$), although it violates D2 and D3.
-
-A score's correlation with the number of active kinases on real data, such as
-the gated entropy's Spearman $-0.76$ to $-0.95$, does not show whether the
-score is correctly oriented. A score that measures concentration can correctly
-rank a compound with more active targets as more selective when its binding is
-more concentrated.

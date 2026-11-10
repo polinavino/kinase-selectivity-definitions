@@ -7,7 +7,7 @@ As stated in Methods: adding a kinase with readout in (x0, tau*] must not raise 
 compound's selectivity score. This script supports Methods (Propositions 1 to 3,
 D2 and D4) and Results, "Criteria and the Gated Entropy" (SI Section S4):
 
-1. The condition on the width T under which the candidate satisfies D3: every
+1. The condition on the scale T under which the candidate satisfies D3: every
    gated weight is above m = 1, an added kinase at or below tau* has weight at
    most a = exp((tau* - x0)/T), and the proof needs a <= e, i.e. T >= tau* - x0.
    With the gate moved to g in B = [x0, tau*], a = exp((tau* - g)/T) is smaller.
@@ -306,7 +306,8 @@ print(f"   {n_prof} random profiles with no readout in [5.0, 6.5], gate at 5.0 a
 u, v, dd = 1.0, 0.5, 0.5
 sp = lambda z: np.logaddexp(0.0, z)
 print(f"   two targets at distances u = {u} and v = {v} above the gate, gate lowered by {dd}: weight ratio "
-      f"exponential {np.exp(u - v):.4f} -> {np.exp(u + dd - v - dd):.4f}; softplus {sp(u) / sp(v):.4f} -> {sp(u + dd) / sp(v + dd):.4f}")
+      f"exponential {np.exp(u - v):.4f} -> {np.exp(u + dd - v - dd):.4f}; softplus {sp(u) / sp(v):.4f} -> {sp(u + dd) / sp(v + dd):.4f}; "
+      f"linear (the entropy's) {u / v:.4f} -> {(u + dd) / (v + dd):.4f}")
 
 print("\n14. The entropy fact behind Proposition 1: weights all >= 1, one weight a appended (20,000 random vectors)")
 rng14 = np.random.default_rng(14)

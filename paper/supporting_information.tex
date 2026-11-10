@@ -620,10 +620,10 @@ gives a score that still satisfies D1 and D2. Orders $0.5$ to $3$ rank compounds
 order does at Spearman $0.93$ or higher (Table~S6). Without D1
 (Section~S5), orders from $0.01$ to $1$ reach $p^* = 80$ on Klaeger and Metz,
 and orders $2$ and $3$ reach it at 110 on Klaeger and 80 on Metz.
-\emph{Width.} On Klaeger, over $T = 0.5$, $0.75$, $1$, $1.5$ and $2$, the
+\emph{Scale.} On Klaeger, over $T = 0.5$, $0.75$, $1$, $1.5$ and $2$, the
 correlation with the number of active kinases ranges from $-0.776$ ($T = 0.5$)
-to $-0.945$, and D3 held for every scored compound at every width, including
-the two below the bound of Proposition 1. Across these widths the rankings
+to $-0.945$, and D3 held for every scored compound at every scale, including
+the two below the bound of Proposition 1. Across these scales the rankings
 agree at Spearman $0.79$ or higher, and for $T \geq 1$ at $0.985$ or higher.
 \emph{Other weights.} Equal weights (the limit $T \to \infty$) and the
 association-constant weights of the published entropy ($T = 1/\ln 10$) rank
@@ -632,7 +632,7 @@ entropy on Davis and Klaeger (Table~S6).
 (\texttt{family\_construction.py}, \texttt{family\_panelsize.py},
 \texttt{candidate\_validation.py})
 
-\paragraph{Uniqueness.} Proposition 2 characterizes the scores in one class:
+\paragraph{What the criteria determine.} Proposition 2 characterizes the scores in one class:
 each target above the gate is weighted by the same function of its distance
 above the gate, and the score is an aggregate of the weight shares with
 Shannon's grouping property. Within this class, D2 and D4 leave the gated
@@ -767,11 +767,11 @@ bar = 0.95 & 110 & 110 & 80 & 170 \\
 \end{tabular}
 \end{table}
 
-\paragraph{Width.} With $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$, the gated
+\paragraph{Scale.} With $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$, the gated
 entropy reaches $p^*$ at 20, 50, 30 and 65 targets on Davis, Klaeger,
 Anastassiadis and Metz, as the share-following scores do. Its full-panel
 rankings correlate with those of the S-score with $\tau = x_0$ at
-$0.9968$--$0.9996$ and $0.9994$--$0.9998$. Both widths satisfy D1 to D4
+$0.9968$--$0.9996$ and $0.9994$--$0.9998$. Both scales satisfy D1 to D4
 (Proposition 1). (\texttt{panel\_recovery.py})
 
 \paragraph{Variability across subpanels.} In the main-text recovery analysis,
@@ -877,7 +877,7 @@ Location & Result & Script (output section) \\
 \bottomrule
 \endfoot
 Methods; Table~1; S1 & Curated panels, curation tables, Klaeger values below the floor & \texttt{curate\_\allowbreak{}panels.py} \\
-Methods; S1 & Active fractions, Anastassiadis weak-inhibition cutoff, Metz coverage before restriction, Klaeger compounds with few active kinases, Davis stricter threshold & \texttt{dataset\_\allowbreak{}descriptive\_\allowbreak{}stats.py} \\
+Methods; S1; Discussion & Active fractions, entries at or below the activity threshold, Anastassiadis weak-inhibition cutoff, Metz coverage before restriction, Klaeger compounds with few active kinases, Davis stricter threshold & \texttt{dataset\_\allowbreak{}descriptive\_\allowbreak{}stats.py} \\
 Methods; S1 & Metz coverage of the retained compounds & \texttt{metz\_\allowbreak{}coverage.py}, \texttt{claim\_\allowbreak{}checks.py} (10) \\
 Methods; S2 & Mean instead of median ranks & \texttt{claim\_\allowbreak{}checks.py} (3) \\
 Table~3; Results, Agreement & Correlations between definitions; Klaeger active compounds; bootstrap & \texttt{selectivity\_\allowbreak{}analysis.py}, \texttt{klaeger\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (2) \\
@@ -896,11 +896,11 @@ S3 & Undefined features; further features & \texttt{feature\_\allowbreak{}placeh
 Results, Sensitivity; S3 & Broad profiles; most unstable and most stable compounds & \texttt{claim\_\allowbreak{}checks.py} (5--7, 18) \\
 Methods; Results, Criteria; Table~4; S4 & Bound on $T$; entropy fact used in Proposition 1; D2 (locality); entropy and gated entropy under weak addition; worked example; discontinuity; strengthening example; sharpness; D4 on reference profiles and below the floor; Proposition 3 & \texttt{d4\_\allowbreak{}entropy\_\allowbreak{}vs\_\allowbreak{}candidate.py} \\
 Results, Criteria & Realistic panel expansion & \texttt{claim\_\allowbreak{}checks.py} (19) \\
-Results, Criteria; Table~S5 & Correlation with the number of active kinases, D3 at $\tau^*$, width $T$ & \texttt{candidate\_\allowbreak{}validation.py} \\
+Results, Criteria; Table~S5 & Correlation with the number of active kinases, D3 at $\tau^*$, scale $T$ & \texttt{candidate\_\allowbreak{}validation.py} \\
 Results, Criteria & Agreement with the entropy & \texttt{candidate\_\allowbreak{}measure.py} \\
 Results, Criteria; S4 & Dependence on $\tau^*$; noise & \texttt{claim\_\allowbreak{}checks.py} (22, 23) \\
 Results, Criteria; Results, Recovery; Figure~3; S5 & Coverage, recoverability, conditional agreement, variability, influence, agreement with the S-score at $x_0$; other bars; probability of staying scored & \texttt{panel\_\allowbreak{}recovery.py} \\
-Results, Width; S5 & Gated entropy with $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$: recovery, agreement with the S-score at $x_0$ & \texttt{panel\_\allowbreak{}recovery.py} \\
+Results, Scale; S5 & Gated entropy with $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$: recovery, agreement with the S-score at $x_0$ & \texttt{panel\_\allowbreak{}recovery.py} \\
 Results, Criteria; S4; Table~S6 & Variants of the gated entropy & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
 S5; Figure~S4; Table~S7 & Recovery without D1 & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py}, \texttt{claim\_\allowbreak{}checks.py} (14) \\
 Discussion; S6; Table~S8 & Bosc et al.'s scores and the CATDS proxy & \texttt{bosc\_\allowbreak{}catds\_\allowbreak{}comparison.py} \\

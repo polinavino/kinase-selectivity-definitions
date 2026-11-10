@@ -116,9 +116,8 @@ Zaman\cite{Uitdehaag2011} is the Shannon entropy
 $H = -\sum_i p_i \log_2 p_i$ (in bits) of the profile normalized to a distribution,
 negated. In its published form, $p_i = K_{a,i} / \sum_j K_{a,j}$, with
 association constants $K_{a,i} = 1/K_{d,i}$ ($1/K_{i,i}$ on Metz). It needs
-affinity constants, so it is not computed on Anastassiadis. To place all four
-definitions on
-one scale, we also use a log-affinity form (on Anastassiadis, percent
+affinity constants, so it is not computed on Anastassiadis. To compute all
+four definitions from the same readout, we also use a log-affinity form (on Anastassiadis, percent
 inhibition), which weights each target by its readout above a baseline
 $\beta$:
 \begin{equation}
@@ -254,7 +253,7 @@ computed the Spearman correlation between each definition's median ranking on
 Davis and on Klaeger, and between each pair of definitions' median rankings
 within each dataset.
 
-\subsection{Evaluation Criteria and the Gated Entropy}
+\subsection{Evaluation Criteria}
 \label{sec:methods:criteria}
 
 A selectivity measure $f$ is a function that, for a given profile $\mathbf{x}$
@@ -275,7 +274,7 @@ whereas D1 applies the rule to every score.
 
 \textbf{D2 (boundary locality).} Let $\theta$ be the parameter that places a
 score's activity boundary, i.e. the S-score's $\tau$, the entropy's and Gini's
-$\beta$, the gated entropy's gate $g$, and the ratio's level $b$. If no value
+$\beta$ and the ratio's level $b$. If no value
 of $\mathbf{x}$ lies between $\theta$ and $\theta'$, then
 $f(\mathbf{x}; \theta) = f(\mathbf{x}; \theta')$. Moving the boundary should
 change a compound's score only when it changes which of the compound's targets
@@ -288,11 +287,9 @@ positive at some $\theta \in B$ and negative at another, and we report the
 share of the pairs of compounds scored under D1 that reverse. To count
 reversals, each score is evaluated at a set of values of $\theta$ in $B$. The S-score changes
 only where $\tau$ passes an observed value, so it is evaluated at every observed
-value in $B$ and its percentages are exact. The gated entropy jumps where its
-gate passes an observed value, so the gate is evaluated at each observed value
-in $B$, just below each, and at 201 equally spaced values. The other parameters
-are evaluated at the 201 values. Apart from the S-score's, the percentages are
-therefore estimates.
+value in $B$ and its percentages are exact. The other parameters are
+evaluated at 201 equally spaced values. Apart from the S-score's, the
+percentages are therefore estimates.
 
 Some scores fix the boundary at one value, e.g. the active count, which
 counts the targets above $\tau^*$. Such a score is assessed, in D2 and in the
@@ -345,7 +342,10 @@ few targets), which D4 leaves open.
 We state no criterion for the ratio's choice of reference off-target, because
 different references answer different questions.
 
-\paragraph{The gated entropy.} For a profile with $\max_i x_i > \tau^*$
+\subsection{The Gated Entropy}
+\label{sec:methods:gated}
+
+For a profile with $\max_i x_i > \tau^*$
 (undefined otherwise, as D1 requires), define
 \begin{equation}
   w_i = \mathbf{1}[x_i > g]\, e^{(x_i - g)/T}, \qquad
@@ -353,11 +353,11 @@ different references answer different questions.
   f(\mathbf{x}) = \sum_i p_i \log_2 p_i,
   \label{eq:candidate}
 \end{equation}
-with the gate $g = x_0$ and the width $T = \tau^* - x_0$ ($1$ $\mathrm{p}K$
+with the gate $g = x_0$ and the scale $T = \tau^* - x_0$, the readout
+difference over which a weight grows by a factor of $e$ ($1$ $\mathrm{p}K$
 unit on Davis and Klaeger, $2$ on Metz, and $30$ percentage points on
 Anastassiadis). It is the negative Shannon entropy of a gated, exponentially
-weighted profile. The gate gives floor-coded pairs zero weight. Above the gate,
-a weight grows by a factor of $e$ for every $T$ units of readout, so a kinase
+weighted profile. The gate gives floor-coded pairs zero weight, and a kinase
 just above the gate has weight close to $1$. Under the entropy's hard cutoff
 $\max(x_i - \beta, 0)$, such a kinase has weight close to $0$. On
 $\mathrm{p}K$ data the weights are powers of the association constants,
@@ -367,6 +367,9 @@ $\mathrm{p}K$ units. Moving the gate without passing a value multiplies every
 weight above it by the same factor, which cancels in the shares, so the gated
 entropy satisfies D2. A reference value subtracted from
 every readout cancels in the same way, so the score has no baseline parameter.
+When the gate passes an observed value, the score jumps, so in the reversal
+counts the gate is evaluated at each observed value in $B$ and just below
+each, as well as at the 201 equally spaced values.
 
 \textbf{Proposition 1 (monotonicity).} Adding a kinase with a value in
 $(x_0, \tau^*]$ never raises $f$ if and only if $T \geq \tau^* - g$. With
@@ -384,8 +387,8 @@ Proposition 1 leaves $T$ free above $\tau^* - x_0$. Two targets whose readouts
 differ by $\Delta x$ have weights in the ratio $e^{\Delta x/T}$, so a smaller
 $T$ makes the score depend more on affinity differences. We take the smallest
 $T$ that D3 allows, $T = \tau^* - x_0$. This is a choice: the criteria allow
-any larger $T$. Section~\ref{sec:results:width} compares
-$T = 2(\tau^* - x_0)$.
+any larger $T$. Results (``Scale of the Gated Entropy and Recovery'')
+compares $T = 2(\tau^* - x_0)$.
 
 Because a target at the gate has weight $0$ and any target above it has weight
 above $1$, the score jumps when a target's value crosses $x_0$. For example,
@@ -415,14 +418,20 @@ with that $T$ (with equal weights if $h$ is constant).
 
 The proof (Supporting Information, Section~S4) has two steps. D4 gives the
 condition on equal shares in Shannon's theorem, which then fixes $F$ up to a
-positive factor. D2 applied to two targets above $\tau^*$ then requires every
-shift of the gate to multiply all weights by the same factor, which only
-exponential and constant $h$ do. The assumption that a weight depends only on the distance
+positive factor. D2, applied to profiles with two targets above $\tau^*$,
+then requires the ratio of their weights to stay the same when the gate moves
+without passing a value, so the ratio can depend only on the difference
+between their readouts. Only exponential and constant $h$ have this property,
+and D2 rejects every other function of the distance above the gate. For
+example, the entropy's weights $\max(x_i - \beta, 0)$ have this form with
+$\beta$ as the gate: for two targets $1.0$ and $0.5$ units above $\beta$,
+lowering $\beta$ by $0.5$ changes their weight ratio from $2$ to $1.5$. The assumption that a weight depends only on the distance
 above the gate is needed: weights measured from a separate fixed reference
 satisfy D2 for any $h$. R\'enyi entropies of order other than 1 lack the
 grouping property, so they are excluded. By Propositions 1 and 2, the scores
 of this form that also satisfy D3 are the gated entropies with
-$T \geq \tau^* - x_0$, together with the equal-weight limit.
+$T \geq \tau^* - x_0$, together with the score that weights every target
+above the gate equally (the limit $T \to \infty$).
 
 We call shares $\mathbf{q}$ \emph{more even} than shares $\mathbf{p}$ on the
 same panel if, for every $j$, the $j$ largest entries of $\mathbf{q}$ sum to no more

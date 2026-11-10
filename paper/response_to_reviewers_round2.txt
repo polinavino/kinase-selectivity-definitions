@@ -17,8 +17,8 @@ Thank you for a careful reading. In summary:
     choices change selectivity rankings. Methods describes only what was
     done, and Results has five sections: agreement between scores, parameter
     sensitivity and profile associations, the criteria and the gated
-    entropy, recovery from small panels, and the width of the gated entropy
-    and recovery. The main text is about 9,800
+    entropy, recovery from small panels, and the scale of the gated entropy
+    and recovery. The main text is about 10,100
     words, against about 11,100 in the version you read, with three figures.
     Supporting Information (Sections S1-S8) follows the same order. The title
     is changed to match this focus, and the Abstract is within the journal's
@@ -213,9 +213,9 @@ now judged by construction.
 symbol.
 
 The Abstract states the conclusions directly: moving the activity boundary
-reorders compounds under every score, so the boundary must be fixed by
-protocol, and the gated entropy is derived from the criteria with a proved
-range for D3. The Conclusion draws the reporting implications, and Results adds
+reorders compounds under every score, and the boundary must be fixed by
+protocol. It also states that the gated entropy is derived from the criteria,
+with a proved range for D3. The Conclusion draws the reporting implications, and Results adds
 that D1 is a reporting rule any score can adopt and that D2 and D3 are the
 criteria on which the scores differ. Table 4 uses only
 satisfied and violated. The vacuous verdicts came from the former D2, which
@@ -231,10 +231,10 @@ threshold at the floor at 0.964-0.996, and that S-score also satisfies all four
 criteria. With T = tau* - x0, the gated entropy recovers rankings from
 subpanels more slowly than that S-score (p* of 50, 65, 30 and 80 targets,
 against 20, 50, 30 and 65). With T = 2 (tau* - x0), which still satisfies all
-four criteria, it reaches the same p* as that S-score (Results, "Width of the
+four criteria, it reaches the same p* as that S-score (Results, "Scale of the
 Gated Entropy and Recovery"). Its rankings are then
 close to those of that S-score (Spearman 0.9968-0.9996), so we keep
-T = tau* - x0 as the default and report the wider width as a variant.
+T = tau* - x0 as the default and report the larger scale as a variant.
 What it adds is theoretical. Its weights are now exponential,
 exp((x - x0)/T), rather than the softplus. Among scores that weight each target
 by the same function of its distance above the gate and combine the weight
@@ -245,7 +245,7 @@ cannot be lowered. The entropy meets D3 only when binding below the threshold
 gets zero weight, whereas the gated entropy weights that binding and still
 meets D3. The published entropy is the member with T = 1/ln 10 = 0.43 pK
 units, below the bound, which is why it violates D3. We take T = tau* - x0,
-the smallest width D3 allows, and state that this is our choice. The softplus
+the smallest scale D3 allows, and state that this is our choice. The softplus
 weights of the previous version also satisfied D3 but were not determined by
 the criteria. The paper also states the score's limits:
 it is discontinuous at the floor, strengthening a target already in the
@@ -298,7 +298,7 @@ label text, and one rate for a combination therapy.
 Results, and consolidate the qualifications.
 
 Done, as described in the summary. Methods defines the criteria and the gated
-entropy once ("Evaluation Criteria and the Gated Entropy"). Results gives the
+entropy once ("Evaluation Criteria" and "The Gated Entropy"). Results gives the
 boundary sweeps with the other parameter sensitivity ("Parameter Sensitivity and
 Profile Associations") and evaluates the rest in one section ("Criteria and
 the Gated Entropy"). Each finding has one main location in the main text, with
