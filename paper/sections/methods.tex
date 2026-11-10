@@ -16,9 +16,9 @@ Anastassiadis dataset\cite{Anastassiadis2011} reports residual kinase activity
 in a radiometric assay at $0.5~\mu$M inhibitor, which we converted to percent
 inhibition ($100$ minus residual activity, clipped to $[0, 100]$). The Metz
 dataset\cite{Metz2011} reports $\mathrm{p}K_i$ values from a
-medicinal-chemistry campaign. Each score is computed on the native readout of
-its dataset, and datasets are compared only through rank correlations computed
-within each.
+medicinal-chemistry campaign. Because the assays and readouts differ, each
+score is computed on its dataset's own readout, and datasets are compared only
+through the rankings computed within each.
 
 \begin{table}[h]
   \centering
@@ -151,12 +151,23 @@ swept. At this level $R_b(k)$ equals the ranking score of Bosc
 et al.\cite{Bosc2017} at rank $k + 1$. We cap $k$ at 5 because half of the Klaeger compounds
 have fewer than five active kinases.
 
+\paragraph{Partition index.} The partition index of Cheng et al.\cite{Cheng2010} is the fraction of a
+compound's molecules that would bind a reference target in a mixture of all panel kinases,
+$K_{a,\mathrm{ref}} / \sum_j K_{a,j}$. Only Klaeger names an intended target
+for each compound, so we use the most strongly bound target as the reference
+($P_{\max}$), as Uitdehaag and Zaman\cite{Uitdehaag2011} did. Like the
+published entropy, it is not computed on Anastassiadis. The CATDS score
+of Klaeger et al.\ is the same kind of fraction, for a designated target at one
+concentration. It needs Kinobeads dose--response curves, which the other three
+datasets lack, so it is not compared across datasets (Supporting Information,
+Section~S6, compares a proxy).
+
 \begin{table}[h]
   \centering
   \caption{Score implementations. Parameter ranges are for the
            $\mathrm{p}K_d$ datasets; on Anastassiadis $\tau$ runs over
            $[50, 90]\%$ and $\beta$ over $[0, 30]\%$, and on Metz over
-           $[5.0, 7.5]$ and $[4.0, 5.5]$. The last four rows are comparators.}
+           $[5.0, 7.5]$ and $[4.0, 5.5]$. The last three rows are comparators.}
   \label{tab:implementations}
   \footnotesize
   \setlength{\tabcolsep}{3pt}
@@ -169,8 +180,8 @@ have fewer than five active kinases.
     Gini, log-affinity         & $\max(x_i - \beta, 0)$                 & $\beta \in [5.0, 6.5]$ & undefined; set to $0$ (bottom rank) \\
     Ratio $R_b(k)$             & $x_{(1)} - \max(x_{(k+1)}, b)$         & $k = 1, \ldots, 5$     & uses $b$ \\
     Entropy, published         & $K_{a,i}$                              & none                   & --- \\
-    Gated entropy              & gated softplus (below) & none      & not scored (D1) \\
     Partition index $P_{\max}$ & $\max_i K_{a,i} / \sum_j K_{a,j}$      & none                   & --- \\
+    Gated entropy              & gated softplus (below) & none      & not scored (D1) \\
     Active count               & number above $\tau^*$                  & none                   & not scored (D1) \\
     Entropy, $\beta = \tau^*$  & $\max(x_i - \tau^*, 0)$                & none                   & not scored (D1) \\
     S-score, $\tau = x_0$      & fraction above $x_0$                   & none                   & not scored (D1) \\
@@ -193,23 +204,14 @@ No empirical data supports either assigning zero-weight or $x_0$ value
 to floor-coded pairs.
 
 \paragraph{Comparators.} The comparators are simple variants of existing
-scores, not new measures. The only new score in this study is the gated
+scores. The only new score in this study is the gated
 entropy. The active count (the number of targets above $\tau^*$, which is the
 numerator of the S-score at $\tau^*$, with fewer more selective), the entropy
 with $\beta = \tau^*$
 and the S-score with $\tau = x_0$ (the share of the panel with detected
 binding) are scored only for active compounds. Otherwise, a compound with no
 active target would have an active count of 0, fewer than any active compound,
-and would rank as the most selective. 
-The partition index of Cheng et al.\cite{Cheng2010} is the fraction of a
-compound's molecules that would bind a reference target in a mixture of all panel kinases,
-$K_{a,\mathrm{ref}} / \sum_j K_{a,j}$. Only Klaeger names an intended target
-for each compound, so we use the most strongly bound target as the reference
-($P_{\max}$), as Uitdehaag and Zaman\cite{Uitdehaag2011} did. Like the
-published entropy, it is not computed on Anastassiadis. The CATDS score
-of Klaeger et al.\ needs a designated target as well as Kinobeads dose--response
-curves, which the other three datasets lack. So, it is not compared across
-datasets (a proxy is compared in Supporting Information (Section~S6)).
+and would rank as the most selective.
 
 \subsection{Ranking Comparisons and Sensitivity Analysis}
 \label{sec:methods:stability}
@@ -295,7 +297,7 @@ counts the targets above $\tau^*$. Such a score is assessed by sweeping that
 value over $B$, so that a fixed value does not let a score pass D2 vacuously.
 The value of $\theta$ is set in the analysis protocol according to the intended
 use, e.g. by whether binding weaker than $\tau^*$ matters at the
-concentration at which the compound will be used. The resulting rankings are
+concentration at which the compound will be used in practice. The resulting rankings are
 sensitive to this choice, and D2 reports this sensitivity as a diagnostic.
 At different values of $\theta$, a score
 can measure different things: on Davis, the S-score at $\tau = 5$ counts the
@@ -309,7 +311,7 @@ compound can be made to look more selective by profiling it against more
 kinases it binds weakly. D3 is judged by construction: a score
 satisfies it if adding such a target can be proved never to raise the score,
 and violates it if a profile can be constructed on which it does. Tests on
-measured profiles (Results) are checks, not the basis of the verdict.
+measured profiles (Results) are secondary checks of D3.
 
 \textbf{D4 (orientation).} Fix the panel size $N \geq 2$ and all of the
 score's parameters. For every value $a$ above $\tau^*$ and above every cutoff
@@ -401,7 +403,7 @@ The proof applies Shannon's uniqueness theorem to the weight shares
 (Supporting Information, Section~S4). R\'enyi entropies of order other than 1
 lack the grouping property, so they are excluded.
 
-Call shares $\mathbf{q}$ \emph{more even} than shares $\mathbf{p}$ on the same
+Let us call shares $\mathbf{q}$ \emph{more even} than shares $\mathbf{p}$ on the same
 panel if, for every $j$, the $j$ largest entries of $\mathbf{q}$ sum to no more
 than the $j$ largest entries of $\mathbf{p}$.
 
@@ -462,5 +464,6 @@ when one target is left out. We report the Spearman correlation between them
 over the scored compounds. As published, none of the four definitions has an
 eligibility rule, so Supporting Information (Section~S5) also reports recovery
 with every compound scored, without D1. These results depend partly on the
-conventions for undefined scores, for example, the entropy ranks a
-compound with no binding above its baseline as the most selective.
+conventions for undefined scores. For example, the Gini recovers as fast as
+the entropy once the compounds with an undefined Gini which the convention
+ranks least selective are left out.

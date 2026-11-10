@@ -58,9 +58,9 @@ matrix under the published forms.
 Methods ("Selectivity Scores and Their Implementations") defines the
 published and log-affinity forms together, states that the baseline is a
 parameter we introduce, and lists every implementation in Table 2. The
-Abstract, Results and Discussion state that the grouping of the S-score,
-entropy and Gini holds for the log-affinity form and not for the published
-entropy. The paper no longer says that these three "agree closely", only that
+Abstract states that agreement changes with affinity weighting. Results and
+Discussion state that the grouping of the S-score, entropy and Gini holds for
+the log-affinity form and not for the published entropy. The paper no longer says that these three "agree closely", only that
 they agree more with one another than with the ratio among compounds with an
 active kinase. On Anastassiadis this separation is weak, and Results says so.
 
@@ -197,19 +197,18 @@ judged by construction, and D2 empirically.
 7. State the conclusion more directly; give vacuous satisfaction its own
 symbol.
 
-The Abstract states the conclusions directly: no boundary parameter we tested
-satisfies D2, so the boundary must be fixed by protocol, and simple measures
-and the gated entropy satisfy D3. The Conclusion draws the reporting
+The Abstract states the conclusions directly: no score satisfies D2, so the
+boundary must be fixed by protocol, and the gated entropy satisfies D3. The Conclusion draws the reporting
 implications, and Results adds that D1 is a reporting rule any score can adopt
 and that D3 is the criterion on which the scores differ. Table 4 uses only
 satisfied and violated. The vacuous verdicts came from the former D2, which
 has been removed.
 
 You asked for evidence that the candidate improves on the entropy. On these
-data it does not, and the paper says so. We added simple comparators: the
-active count, the entropy with its baseline at the activity threshold, the
-S-score with its threshold at the floor, and the partition index at the most
-strongly bound target. The gated entropy ranks compounds almost as the
+data it does not, and the paper says so. We added three simple comparators
+(the active count, the entropy with its baseline at the activity threshold and
+the S-score with its threshold at the floor) and the partition index at the
+most strongly bound target. The gated entropy ranks compounds almost as the
 entropy does (Spearman 0.994-0.998), and almost as the S-score with its
 threshold at the floor does (0.998-0.9997), which also satisfies D1, D3 and
 D4. It recovers rankings from subpanels no better than that S-score. What it
@@ -339,7 +338,8 @@ compounds on which scores disagree to be reported.
 4. References. The FDA count is updated (Roskoski, 2026), Miljkovic and
 Bajorath is corrected to ACS Omega 3(3):3113-3119, Cheng et al. (2010) and
 Uitdehaag et al. (2012) are added, and the Davis floor is attributed to
-DeepDTA. The description of Khinchin's axioms was wrong and is removed. The
+DeepDTA. Saifudeen et al. (2026) now gives its DOI, and author lists longer
+than seven names give the first three and et al. The description of Khinchin's axioms was wrong and is removed. The
 IUPAC citation is removed, because its definition of selectivity does not
 concern a ratio of binding constants.
 
