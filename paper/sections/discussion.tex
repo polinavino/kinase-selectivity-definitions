@@ -28,10 +28,12 @@ D2, and the S-score above the floor, the entropy with $\beta = x_0$, the Gini
 and the published entropy fail D3. D4 fixes the direction of a score, which D1
 to D3 leave open. The criteria do not single out one score. Meeting D2 does
 not make rankings independent of the boundary, so the boundary must still be
-fixed by protocol. D3 concerns adding kinases that bind weakly or not at all,
-which is how most panels grow (most entries lie at or below the activity threshold). 
-It does not concern a stronger value for a
-target already in the profile, which can raise the gated entropy's score.
+fixed by protocol. D3 concerns adding a weakly bound kinase, above the floor
+and at or below the activity threshold. A kinase added at the floor has zero
+weight in the gated entropy and leaves its score unchanged. No kinase added at
+or below the activity threshold therefore raises the gated entropy's score,
+and most entries lie in this range. A stronger value for a target already in
+the profile can raise the score.
 
 Among the scores studied, only the gated entropy meets all four criteria and
 weights targets by affinity. Within the class of Proposition 2, the criteria
@@ -67,16 +69,11 @@ Each recommendation follows from a result above.
         receives.
   \item Apply D1: state the activity threshold, withhold or flag the scores of
         compounds with no target above it, and rank the eligible compounds
-        among themselves. Otherwise, an active compound's instability depends on
-        how the ineligible compounds are scored, as the Gini--skewness
-        association showed.
+        among themselves. 
   \item Fix the activity boundary in the analysis protocol and report how
         rankings change when it is moved, for example by each compound's rank
         instability across the sweep. Rank instability is not a guide to
-        robustness across datasets: on the 46 shared compounds, a compound's
-        rank instability is not associated with how far its rank moves between
-        Davis and Klaeger ($|r| \leq 0.18$, Supporting Information,
-        Section~S6).
+        robustness across datasets.
   \item For small panels, report how many compounds remain scorable as well as
         how well the ranking of those compounds is recovered.
   \item When comparing studies that use different scores, fix the comparison

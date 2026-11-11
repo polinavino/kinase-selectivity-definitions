@@ -120,7 +120,7 @@ compound was tested against. Untested pairs are coded at the floor, and nearly
 every tested value ($99.9\%$) lies above it. A compound tested against more
 kinases therefore has more kinases with positive weight and looks less
 selective under the S-score, entropy and Gini, while the ratio, which uses only
-the two highest values, is barely affected. The
+the strongest value and one of the next five, is barely affected. The
 Spearman correlation between a compound's coverage and its median rank (rank 1
 = most selective) is $0.98$ for the entropy, $0.95$ for the Gini, $0.76$ for
 the S-score and $0.11$ for the ratio. Compounds measured against more kinases
@@ -372,7 +372,7 @@ compared the gated entropy's rankings with those of other scores, and tested
 their sensitivity to $\tau^*$ and to noise. On the data, the gated
 entropy's score falls as the number of active kinases rises (Spearman $-0.76$
 to $-0.95$). Without the non-binder gate, the
-correlation reverses ($r = +0.67$ on Klaeger), as its failure of D4 predicts.
+correlation reverses ($r = +0.67$ on Klaeger).
 Its rankings agree with the entropy's ($0.969$--$0.993$) and with those of the
 S-score with $\tau = x_0$ ($0.964$--$0.996$), which also satisfies D1 to D4.
 Moving $\tau^*$ from $5.5$ to $7$ ($40\%$ to $70\%$ on Anastassiadis), with

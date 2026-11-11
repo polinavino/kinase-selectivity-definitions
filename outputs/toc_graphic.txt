@@ -7,7 +7,7 @@ Ratio      0.563   0.513   0.510   1.000
 
 Davis gated recovery, smallest panel with mean Spearman > 0.90:
   S-score, threshold at the floor: 20 targets
+  gated entropy: 50 targets
   entropy, published (1/Kd): 300 targets
-  ratio R(1): 363 targets
 
 Saved /Users/polina/Documents/BioInfStuff/selectivity/paper/figures/toc_graphic.png

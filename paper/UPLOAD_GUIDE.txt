@@ -39,7 +39,7 @@ TABLES  (one file per table, separate slot each)  -> submission_tables/
   from these .tex tables before upload.)
 
 GRAPHICAL ABSTRACT / TOC
-  Image:  figures/toc_graphic.png
+  Image:  figures/toc_graphic.png   (5.0 x 5.6 cm at 600 dpi; rebuild with toc_graphic.py)
   Text:   graphical_abstract_text.txt   (<= 80 words / 3 sentences)
 
 SUPPORTING INFORMATION

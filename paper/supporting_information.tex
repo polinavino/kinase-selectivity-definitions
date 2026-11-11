@@ -11,6 +11,10 @@
 \renewcommand{\thefigure}{S\arabic{figure}}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage[articletitle=true]{achemso}
+\renewcommand*\natmovechars{}
+\setcitestyle{open={[},close={]}}
+\renewcommand*\bibnumfmt[1]{[#1]}
 
 \title{Supporting Information\\[0.3em]
   \large Analysis Choices and Ranking Stability in Kinase Inhibitor
@@ -47,7 +51,7 @@ BRAF(V600E) and BRAF, and a gap of $1.54$ to the next gene (RAF1). On Davis,
 the best affinity per gene is also given as an alternative to the reference
 construct.
 
-Klaeger et al.\ annotate 225 of the 343 released Klaeger targets as protein or
+Klaeger et al.\cite{Klaeger2017} annotate 225 of the 343 released Klaeger targets as protein or
 lipid kinases. The curated panel keeps 217 of them and leaves out three
 lipid-kinase columns (PIP4K2A, PIP4K2C and PIP4K2A;\allowbreak PIP4K2B), four
 protein groups (CSNK2A1;\allowbreak CSNK2A3, PDPK1;\allowbreak PDPK2P,
@@ -149,9 +153,9 @@ S-score still correlates more with the entropy and Gini ($0.88$) than with the
 ratio ($0.54$). (\texttt{dataset\_descriptive\_stats.py}, \texttt{claim\_checks.py}
 section 9)
 
-\paragraph{Datasets not used.} The screen of Gao et al.\ (2013) has the same
+\paragraph{Datasets not used.} The screen of Gao et al.\cite{Gao2013} has the same
 readout type as Anastassiadis, so it would add no new assay technology, and its
-raw data are not openly redistributable. The study of Patricelli et al.\ (2011)
+raw data are not openly redistributable. The study of Patricelli et al.\cite{Patricelli2011}
 profiles too few inhibitors for a ranking analysis.
 
 \clearpage
@@ -495,7 +499,7 @@ sections 1--5 and 14)
 \paragraph{Proof of Proposition 2.} \emph{D4 and grouping fix the aggregate.}
 This step does not use $h$. On the profiles $\mathbf{v}_m$, the positive
 weights are $m$ equal weights, so D4 requires $A_F(m) = F(1/m, \ldots, 1/m)$ to
-be nondecreasing in $m$ and $A_F(N) > A_F(1)$. Shannon (1948, Theorem 2) showed
+be nondecreasing in $m$ and $A_F(N) > A_F(1)$. Shannon\cite{Shannon1948} (Theorem 2) showed
 that a continuous $F$ with the grouping property and increasing $A_F$ is
 $F(\mathbf{p}) = -K\sum_i p_i \log p_i$. His argument uses the monotonicity of
 $A_F$ only to show that $A_F(n) = K\log n$, for which nondecreasing $A_F$
@@ -680,7 +684,7 @@ the entropy's at $0.983$ or higher. (\texttt{claim\_checks.py} section 23)
 \clearpage
 \section*{S5: Recovery from subpanels}
 
-\paragraph{Without D1.} Karaman et al.\ scored each compound's S-score
+\paragraph{Without D1.} Karaman et al.\cite{Karaman2008} scored each compound's S-score
 on random subpanels and found that it varies more as panels shrink. Repeating
 that design for the four definitions, scoring every compound on every subpanel,
 makes the ranking depend also on each definition's convention for compounds that have no
@@ -811,7 +815,7 @@ instability within a dataset is not associated with how far its rank moves
 between the datasets ($|r| \leq 0.18$). (\texttt{davis\_\allowbreak{}klaeger\_\allowbreak{}overlap.py},
 \texttt{platform\_\allowbreak{}vs\_\allowbreak{}definition.py}, \texttt{claim\_checks.py} section 9)
 
-\paragraph{Bosc et al.'s scores and a CATDS proxy.} Bosc et al.'s window score
+\paragraph{Bosc et al.'s scores and a CATDS proxy.} Bosc et al.'s\cite{Bosc2017} window score
 (WS) and ranking score (RS) correlate strongly with the ratio on every dataset
 (Table~S8). RS at rank $k + 1$ is $R(k)$, so its agreement with the ratio follows
 from its definition. CATDS scores one designated target at a chosen
@@ -907,5 +911,7 @@ Discussion; S6; Table~S8 & Bosc et al.'s scores and the CATDS proxy & \texttt{bo
 Discussion; S7 & Clinical outcomes & \texttt{clinical\_\allowbreak{}outcomes\_\allowbreak{}correlation.py}, \texttt{faers\_\allowbreak{}pull.py} \\
 \end{longtable}
 \normalsize
+
+\bibliography{references}
 
 \end{document}
