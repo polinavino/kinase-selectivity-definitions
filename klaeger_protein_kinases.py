@@ -131,12 +131,12 @@ def summarize(M):
     med = {f: np.median(r, 0) for f, r in ranks.items()}
     for i, a in enumerate(FAMS):
         for b in FAMS[i + 1:]:
-            out[f"Table 1: {a} vs {b}"] = spearmanr(med[a], med[b])[0]
+            out[f"Table 3: {a} vs {b}"] = spearmanr(med[a], med[b])[0]
     # active compounds: re-ranked among themselves at every configuration (as in claim_checks.py, 2)
     med_act = {f: np.median([to_ranks(fn(M[act], p)) for p in grid], 0) for f, (fn, grid) in SWEEPS.items()}
     for i, a in enumerate(FAMS):
         for b in FAMS[i + 1:]:
-            out[f"Table 1, active compounds: {a} vs {b}"] = spearmanr(med_act[a], med_act[b])[0]
+            out[f"Table 3, active compounds: {a} vs {b}"] = spearmanr(med_act[a], med_act[b])[0]
     out["active compounds"] = int(act.sum())
     rng = np.random.default_rng(0)
     for lab, m in (("all", med), ("active", med_act)):
@@ -151,7 +151,7 @@ def summarize(M):
     out["aggregated rank sd, active"] = sd[act].mean()
     out["Mann-Whitney p"] = mannwhitneyu(sd[~act], sd[act]).pvalue if (~act).any() else np.nan
 
-    # Table 2 rows: compounds with an active kinase, ranked among themselves
+    # SI Table S4 rows: compounds with an active kinase, ranked among themselves
     inst = {f: np.full(len(M), np.nan) for f in ranks}
     for f, (fn, grid) in SWEEPS.items():
         inst[f][act] = np.array([to_ranks(fn(M[act], p)) for p in grid]).std(0)
@@ -164,8 +164,8 @@ def summarize(M):
                            ("active range vs S-score instability", rng_, "s_score"),
                            ("skewness vs Gini instability", skw, "gini")]:
         r, p = spearmanr(feat[act], inst[fam][act])
-        out[f"Table 2: {lab}"] = r
-        out[f"Table 2: {lab} (p)"] = p
+        out[f"SI Table S4: {lab}"] = r
+        out[f"SI Table S4: {lab} (p)"] = p
 
 
     c = candidate(M)

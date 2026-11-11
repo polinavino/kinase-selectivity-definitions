@@ -174,6 +174,9 @@ axr.set_ylabel("Spearman with\nfull-panel ranking", labelpad=1)
 for s in ("top", "right"):
     axr.spines[s].set_visible(False)
 fig.text(0.5, 0.565, "Recovery from random subpanels\n(scorable compounds, Davis)", ha="center", va="top", fontsize=6.5)
+fig.text(0.5, 0.485,
+         f"At 50 targets, one-hit coverage: {50 / Md.shape[1]:.0%}",
+         ha="center", va="top", fontsize=5.5)
 
 outpath = os.path.join(HERE, "paper", "figures", "toc_graphic.png")
 plt.savefig(outpath, dpi=600)

@@ -23,6 +23,18 @@ end
 local fig_count = 0
 local tbl_count = 0
 
+-- Word embeds the lossless bitmap even when a vector PDF is also available.
+function Image(img)
+  if img.src:match("^figures/") then
+    if img.src:match("%.pdf$") then
+      img.src = img.src:gsub("%.pdf$", ".png")
+    elseif not img.src:match("%.[A-Za-z]+$") then
+      img.src = img.src .. ".png"
+    end
+  end
+  return img
+end
+
 local function prepend_label(caption, label)
   if caption and caption.long and #caption.long > 0 then
     local first = caption.long[1]

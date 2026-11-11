@@ -1,0 +1,46 @@
+Shared Davis/Klaeger compounds (PubChem CID match): n = 46
+(supersedes the manuscript's previous, unverified claim of 'at most 19')
+
+Platform effect: Spearman r between Davis-rank and Klaeger-rank, same definition, same 46 compounds:
+  s_score : r = +0.765 (p = 6.2e-10)
+  entropy : r = +0.813 (p = 6.4e-12)
+  gini    : r = +0.386 (p = 8.1e-03)
+  ratio   : r = +0.141 (p = 3.5e-01)
+
+Definition effect: Spearman r between definitions, within platform, same 46 compounds:
+  Davis:
+    s_score  vs entropy : r = +0.934
+    s_score  vs gini    : r = +0.935
+    s_score  vs ratio   : r = +0.487
+    entropy  vs gini    : r = +0.999
+    entropy  vs ratio   : r = +0.379
+    gini     vs ratio   : r = +0.383
+  Klaeger:
+    s_score  vs entropy : r = +0.923
+    s_score  vs gini    : r = +0.322
+    s_score  vs ratio   : r = -0.050
+    entropy  vs gini    : r = +0.427
+    entropy  vs ratio   : r = +0.175
+    gini     vs ratio   : r = +0.655
+
+Summary: platform-effect r range = 0.14-0.81 (mean 0.53)
+         definition-effect r range = -0.05-1.00 (mean 0.55)
+Lower r = more disagreement. Comparing the two ranges shows which source of ranking disagreement -- assay platform or scoring definition -- is larger on this shared-compound set.
+
+Davis genes with no Klaeger column after alias mapping (162): ACVR2A, ADCK4, ALK, ANKK1, AURKC, AXL, BLK, BMX, BRSK1, BRSK2, CAMK1, CAMK1D, CAMK2A, CAMK2B, CAMKK1, CASK, CDC2L1, CDC2L2, CDK11, CDK14, CDK15, CDK8, CDKL1, CDKL2, CDKL3, CHEK2, CHUK, CSF1R, CSNK1A1L, CSNK2A1, DAPK1, DAPK2, DAPK3, DCAMKL1, DCAMKL2, DCAMKL3, DMPK, DRAK1, DRAK2, DYRK1B, DYRK2, EIF2AK2, EPHA3, EPHA6, EPHA8, EPHB1, ERBB2, ERBB3, ERBB4, FGFR2, FGFR3, FGFR4, FLT1, FLT4, GRK1, GRK4, GRK7, HIPK1, HIPK2, HIPK3, HIPK4, HUNK, IKBKB, INSRR, ITK, JAK3, KDR, LATS2, LRRK2, LTK, MAK, MAP2K4, MAP2K7, MAP3K10, MAP3K12, MAP3K13, MAP3K15, MAP3K19, MAP3K7, MAP3K9, MAPK12, MAPK13, MAPK4, MAPK6, MARK1, MAST1, MATK, MERTK, MKNK1, MKNK2, MTOR, MUSK, MYLK2, MYLK4, MYO3A, MYO3B, NEK11, NEK2, NEK4, NEK5, NEK6, NIM1, NTRK2, NTRK3, NUAK1, OSR1, PAK1, PAK3, PAK5, PDGFRA, PDPK1, PHKG1, PIM3, PLK2, PLK3, PRKAA2, PRKCE, PRKCH, PRKD1, PRKG2, PRPF4B, RAF1, RIOK1, RIOK2, RIOK3, RIPK1, RIPK4, RIPK5, ROS1, RPS6KA2, SBK1, SGK3, SIK1, SNRK, SRMS, SRPK1, SRPK2, SRPK3, STK25, STK32A, STK33, STK35, STK36, STK38, STK39, SgK110, TEK, TIE1, TLK1, TLK2, TNNI3K, TRPM6, TSSK1B, TTK, TXK, TYRO3, ULK2, VRK2, WEE2, YANK2, YANK3, ZAP70
+  current symbols of renamed Davis genes found among Klaeger targets: none
+
+Shared panel: 201 genes profiled on both platforms (of 363 Davis genes and 217 Klaeger targets)
+  compounds with no active target on the shared panel: Davis 0, Klaeger 6
+  platform effect, s_score : r = +0.7801 (p = 1.66e-10)
+  platform effect, entropy : r = +0.8445 (p = 1.63e-13)
+  platform effect, gini    : r = +0.4548 (p = 0.0015)
+  platform effect, ratio   : r = +0.3442 (p = 0.0192)
+Summary on the shared panel: platform-effect r range = 0.34-0.84 (mean 0.61); definition-effect r range = -0.08-1.00 (mean 0.57)
+
+Shared panel, the 40 compounds active on both platforms:
+  platform effect, s_score : r = +0.7372
+  platform effect, entropy : r = +0.8481
+  platform effect, gini    : r = +0.8428
+  platform effect, ratio   : r = +0.4574
+Summary: platform-effect r range = 0.46-0.85 (mean 0.72); definition-effect r range = 0.24-1.00 (mean 0.73)

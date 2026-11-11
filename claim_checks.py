@@ -248,8 +248,12 @@ print(f"   mean active fraction of the panel: Davis {100 * (na_d[di] / Md.shape[
       f"Klaeger {100 * (na_k[ki] / Mk.shape[1]).mean():.1f}%; paired Spearman of n_active {spearmanr(na_d[di], na_k[ki])[0]:+.2f}")
 for f in FAM:
     d = np.abs(rankdata(np.median(R['Davis'][f], 0)[di]) - rankdata(np.median(R['Klaeger'][f], 0)[ki]))
-    print(f"   {f:8s}: Spearman(|Davis rank - Klaeger rank|, within-dataset sigma): "
+    print(f"   {f:8s}: Spearman(|Davis rank - Klaeger rank|, aggregated within-dataset sigma): "
           f"Davis {spearmanr(d, sig_d[di])[0]:+.2f}, Klaeger {spearmanr(d, sig_k[ki])[0]:+.2f}")
+    for ds, idx in (('Davis', di), ('Klaeger', ki)):
+        r_within, p_within = spearmanr(d, R[ds][f].std(0)[idx])
+        print(f"      {ds:7s} within-{f} sigma: r = {r_within:+.4f}, "
+              f"p = {p_within:.4f}, Bonferroni p (8 tests) = {min(1.0, 8 * p_within):.4f}")
 
 print("\n10. Metz: dependence on per-compound coverage (untested pairs set to the floor)")
 mz = pd.read_excel(f"{HERE}/metz.xls", sheet_name=0, header=0)

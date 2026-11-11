@@ -33,6 +33,7 @@ target, whether it is kept, and why (target_curation_<dataset>.csv).
 import script_logging; script_logging.capture(__file__)
 import re
 import pandas as pd
+from panel_curation import anastassiadis_gene as an_gene, curate_anastassiadis
 
 # ---------------------------------------------------------------- Davis
 prot = pd.read_csv("davis_proteins.csv").set_index("Protein_Index")["Gene_Name"]
@@ -113,14 +114,10 @@ print(f"  measured values below the floor set to {FLOOR_K}: {below} entries")
 
 # ---------------------------------------------------------------- Anastassiadis
 an = pd.read_csv("anastassiadis_matrix_released.csv", index_col=0)
-def an_gene(name):
-    n = name.split("/")[0].split(" cyclin")[0].strip()
-    return {"LYN B": "LYN", "PKCb1": "PKCb", "PKCb2": "PKCb", "PKG1a": "PKG1", "PKG1b": "PKG1"}.get(n, n)
-first = {}
-for c in an.columns:
-    first.setdefault(an_gene(c), c)
-an_keep = [c for c in an.columns if first[an_gene(c)] == c]
-an[an_keep].to_csv("anastassiadis_matrix.csv")
+curated_an = curate_anastassiadis(an)
+an_keep = list(curated_an.columns)
+first = {an_gene(c): c for c in an_keep}
+curated_an.to_csv("anastassiadis_matrix.csv")
 pd.DataFrame([(c, an_gene(c), "kept" if c in an_keep else "removed",
                "first-listed complex or isoform of " + an_gene(c) if c in an_keep
                else "another complex or isoform of " + an_gene(c) + f" is the reference ({first[an_gene(c)]})")

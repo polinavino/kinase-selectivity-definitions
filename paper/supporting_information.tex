@@ -130,7 +130,9 @@ a fitted $\mathrm{p}K_d$ above 5, and 208 above 6), and 402 of these fall within
 the $222 \times 217$ matrix. Adding them changes $0.77\%$ of its entries (some
 added values lie below the floor and are set to it). It shifts the all-compound
 Klaeger correlations of main-text Table~3 by at most $0.08$, and those among the
-200 compounds with an active kinase under both filters by at most $0.006$. It
+200 compounds with an active kinase under both filters by about $0.006$.
+The relaxed filter makes Brivanib\_alaninate and TG-100115 newly eligible,
+increasing the active population to 202. It
 leaves every $p^*$ of the main-text recovery analysis unchanged and raises coverage
 at 50 targets from $70.6\%$ to $72.9\%$. Retaining all low-confidence pairs also
 adds 7 compounds and shifts the all-compound correlations by at most $0.06$.
@@ -810,9 +812,18 @@ no further matches. Klaeger has six compounds with no
 active target on this shared panel. Among the 40 compounds active in both, the
 same definition's rankings correlate at $0.74$, $0.85$, $0.84$ and $0.46$ (mean
 $0.72$, against $0.73$ between definitions). On the full panels the
-cross-dataset correlations are $0.14$--$0.81$ (mean $0.53$). A compound's rank
-instability within a dataset is not associated with how far its rank moves
-between the datasets ($|r| \leq 0.18$). (\texttt{davis\_\allowbreak{}klaeger\_\allowbreak{}overlap.py},
+cross-dataset correlations are $0.14$--$0.81$ (mean $0.53$).
+
+In a separate diagnostic using the full curated panels and the original
+68- and 222-compound ranking populations, aggregated rank instability is only
+weakly associated with cross-dataset rank displacement for these 46 compounds
+($|r| \leq 0.18$). This diagnostic aggregates all four definitions and is not
+a result about each definition's own parameter sensitivity. Replacing it by
+within-definition instability gives $r = 0.327$ for the Davis S-score
+(nominal $p = 0.027$; Bonferroni-adjusted $p = 0.212$ over eight tests).
+No within-definition association survives that correction. These exploratory
+results do not establish that parameter sensitivity is generally uninformative
+about robustness across datasets. (\texttt{davis\_\allowbreak{}klaeger\_\allowbreak{}overlap.py},
 \texttt{platform\_\allowbreak{}vs\_\allowbreak{}definition.py}, \texttt{claim\_checks.py} section 9)
 
 \paragraph{Bosc et al.'s scores and a CATDS proxy.} Bosc et al.'s\cite{Bosc2017} window score
@@ -850,7 +861,9 @@ For the 46 FDA-approved Klaeger compounds with FAERS records, we correlated
 each definition's median selectivity rank with the proportions of FAERS
 reports that were serious, fatal or involved hospitalization. FAERS counts
 were retrieved from the openFDA adverse-event interface (\texttt{faers\_pull.py}).
-No correlation was significant (all $|r| \leq 0.20$, all $p > 0.19$). Raw
+No correlation was statistically significant in this exploratory analysis
+(all $|r| \leq 0.20$, all $p > 0.19$); this does not establish the absence of
+clinically relevant associations. Raw
 report counts correlate weakly with the ratio ranking ($r = 0.30$, $p = 0.04$),
 which may reflect prescription volume. FAERS proportions describe reports, not
 incidence among treated patients, and they depend on indication and

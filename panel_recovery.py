@@ -1,6 +1,6 @@
 """
 Recoverability from small panels: how much of each measure's full-panel ranking a
-random subpanel preserves, for how many compounds (Figure 6).
+random subpanel preserves, for how many compounds (Figure 3).
 
 All measures are compared on the same curated panels (curate_panels.py), the same
 random subpanels (curated targets sampled uniformly without replacement, 50 per
@@ -218,7 +218,7 @@ for ds, (M, x0, tau) in DATA.items():
                 line += f";  effective number of targets: r = {spearmanr(neff[ok], e[k][ok])[0]:+.2f}"
             print(line)
 
-# ------------------------------------------------------------------ Figure 6
+# ------------------------------------------------------------------ Figure 3
 ORDER = ["candidate", "entropy x0", "entropy tau*", "S-score", "Gini", "ratio", "S-score x0", "entropy Ka",
          "partition Ka"]
 # plotted: the entropy and Gini at x0 lie on the curve of the S-score at x0
@@ -263,5 +263,5 @@ for c, (ds, (sizes, cover, res)) in enumerate(curves.items()):
 h, l = axes[1, 0].get_legend_handles_labels()
 fig.legend(h, l, loc="lower center", ncol=3, fontsize=12, frameon=False, bbox_to_anchor=(0.5, -0.09))
 plt.tight_layout()
-plt.savefig("panel_recovery.png", dpi=150, bbox_inches="tight")
+script_logging.save_figure(fig, "panel_recovery.png", bbox_inches="tight")
 print("\nSaved panel_recovery.png")

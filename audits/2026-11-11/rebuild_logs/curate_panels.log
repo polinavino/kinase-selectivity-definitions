@@ -1,0 +1,16 @@
+Davis: 433 constructs -> 363 reference targets (3 non-human, 20 lipid-kinase constructs removed; 47 further mutant, state or domain constructs not used)
+  references for genes with several constructs: ABL1-phosphorylated, BRAF, EGFR, FGFR3, FLT3, JAK1(JH1domain-catalytic), KIT, LRRK2, MET, RET, RPS6KA4(Kin.Dom.1-N-terminal), RPS6KA5(Kin.Dom.1-N-terminal), RSK1(Kin.Dom.1-N-terminal), RSK3(Kin.Dom.1-N-terminal), RSK4(Kin.Dom.1-N-terminal), TYK2(JH1domain-catalytic)
+  genes with no wild-type construct: GCN2
+
+Klaeger: 343 targets -> 217 protein kinases annotated by the source
+  annotated by the source as protein or lipid kinases: 225; not annotated as kinases: 118
+  removed, lipid kinase: 3 (PIP4K2A, PIP4K2A;PIP4K2B, PIP4K2C)
+  removed, not annotated as a kinase: 30
+  removed, protein group: 4 (CSNK2A1;CSNK2A3, PDPK1;PDPK2P, PRKCE;PRKCH, PRKX;PRKY)
+  removed, uncharacterized protein with no kinase domain, encoded in the 3'-UTR of AAK1 (UniProt): 1 (Q6ZSR9)
+  removed, not annotated as a kinase and flagged as possibly co-enriched: 88; of these, BCR, TRRAP were in the previous curated panel
+  measured values below the floor set to 5.0: 194 entries
+
+Anastassiadis: 300 targets -> 291 (duplicates removed: CDK1/cyclin B, CDK2/cyclin E, CDK4/cyclin D3, CDK5/p35, CDK6/cyclin D3, CDK9/cyclin T1, LYN B, PKCb2, PKG1b)
+
+Metz: unchanged (172 human protein kinases, one per column)

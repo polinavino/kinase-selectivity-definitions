@@ -1,0 +1,1 @@
+Historical intermediate draft assets from the earlier audit-only step. These files and their old build script are superseded by paper/build_submission.py and paper/molecular_informatics_submission.docx. Retained for provenance; do not use for submission.

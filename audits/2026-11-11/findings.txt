@@ -1,0 +1,231 @@
+Audit of the kinase selectivity manuscript, November 11, 2026
+
+The current LaTeX manuscript's principal numerical results reproduced. The
+largest immediate risk is that the upload guide points to an obsolete Word
+manuscript. I also found an overgeneralized cross-dataset recommendation, an
+overstated reversal percentage, a clinical null-result wording issue, a small
+population mismatch in the filter summary, and a reproducibility bug in the
+raw-data fallback. None of the checks below established corruption of the
+currently committed matrices or a failure of the gated-entropy proofs under
+their stated assumptions.
+
+The manuscript and existing analysis files were left unchanged. This directory
+contains the audit report, a read-only verification script, and its JSON output.
+The companion contribution_review.txt evaluates the clarity of the central
+point, the contribution relative to the cited prior work, and support from
+the body, with concrete recommendations for the abstract and conclusion.
+The older AUDIT_FINDINGS.md concerns an earlier version and was used only as a
+source of leads; its verdicts were not carried forward as current findings.
+
+1. HIGH: The prescribed clean Word submission is a different, obsolete paper.
+
+Location: paper/UPLOAD_GUIDE.txt:15-16;
+paper/molecular_informatics_submission.docx; paper/build_docx.sh.
+
+The upload guide names molecular_informatics_submission.docx as the clean main
+document. Reading its actual document.xml shows the old title, "Definitional
+Instability in Kinase Inhibitor Selectivity: An Empirical Characterization and
+Motivated Properties for a Well-Formed Measure". It uses a softplus candidate,
+the former D2 (bounded gap sensitivity), the former D3 (distributional
+consistency), and a claim of recovering rankings from about a third to a half
+of a panel. It lacks the revised exponential-weight derivation and the curated
+217-target Klaeger and 363-target Davis panels. The other explicitly named
+second-round Word file is also old.
+
+The current main.pdf, supporting_information.pdf and LaTeX sources have the
+new title and revised content. Thus agreement between source and PDF does not
+make the named Word upload safe. Uploading it alongside the new figures,
+tables and response would give reviewers mutually inconsistent versions.
+
+Action: regenerate the clean Word document from the final LaTeX source, inspect
+the resulting equations and tables, and generate any redline from that same
+final version. Check the actual intended upload, rather than its filename.
+
+2. MEDIUM: The cross-dataset robustness recommendation is broader than the
+analysis that supports it.
+
+Locations: paper/sections/discussion.tex:73-76;
+paper/supporting_information.tex:813-816; claim_checks.py:243-252.
+
+The recommendation says "Rank instability is not a guide to robustness across
+datasets." SI says rank instability is not associated with cross-dataset rank
+movement, citing |r| <= 0.18. Those numbers reproduce, but the diagnostic
+correlates every definition's displacement with the SAME aggregated sigma over
+all four definitions. It does not use that definition's within-sweep sigma.
+It also uses the full, different target panels, and instability computed among
+the original 68/222 compound populations. It is narrower than the matched
+compound/target analysis immediately preceding it in SI and does not establish
+an absence of useful associations under other instability definitions.
+
+Keeping the published displacement calculation unchanged and using S-score
+instability within the S-score sweep gives Davis r = 0.3270, nominal p = 0.0265.
+Ranking the 46 matched compounds among themselves before computing their
+within-definition instabilities gives Davis S-score r = 0.3361, p = 0.0224.
+These exploratory results do not survive an eight-test Bonferroni correction
+and do not establish a general predictive relationship. They do establish
+that the |r| <= 0.18 statement is specific to the aggregate definition.
+
+Action: say "In this 46-compound comparison, aggregated rank instability was
+only weakly associated with cross-dataset rank displacement (|r| <= 0.18)."
+Specify the populations and panels. If retaining a recommendation about
+within-definition parameter sensitivity, evaluate that quantity directly on
+matched panels and eligible compounds, with uncertainty and multiplicity
+reported. The existing null result supports caution, not a general no-guide
+conclusion.
+
+3. MEDIUM: "For every score ... at least 13.7%" silently maximizes over the
+ratio's off-target parameter.
+
+Location: paper/sections/results.tex:245-248;
+outputs/d3_pair_reversals.txt; d3_pair_reversals.py.
+
+The manuscript says that for every score, moving the boundary reverses at least
+13.7% of pairs on at least one dataset. The ratio reaches 13.71% only at k = 5
+on Klaeger. For R_b(1), the largest fraction across all four datasets is 3.00%:
+Davis 0.00%, Klaeger 3.00%, Anastassiadis 2.13%, Metz 0.04%. R_b(2), R_b(3),
+and R_b(4) also never reach 13.7%. Moreover, the immediately preceding text
+correctly says the published entropy and P_max have no boundary parameter.
+
+The script's actual summary is more precise: every swept PARAMETER in Table S3
+reaches at least 13.71% somewhere, taking the maximum over k for the ratio.
+The main text changes that quantifier to every score.
+
+Action: write "Every boundary parameter studied reverses compound pairs; the
+maximum over datasets, and over k for the ratio, is at least 13.7% for each
+parameter family." Alternatively retain the actual ranges already reported
+at results.tex:155-163 and omit the universal percentage. This does not affect
+the conclusion that fixing the boundary is consequential.
+
+4. LOW TO MEDIUM: Clinical nonsignificance is summarized as absence of an
+association.
+
+Location: paper/sections/discussion.tex:108-111;
+paper/supporting_information.tex, Section S7;
+clinical_outcomes_correlation.py.
+
+The main text says the selectivity rankings "were not associated" with serious,
+fatal or hospitalization report proportions. The actual result is that none
+of 12 correlations was statistically significant in 46 drugs. The largest
+observed association, hospitalization versus Gini rank, is r = 0.1931 with
+p = 0.1984. An illustrative paired percentile bootstrap over drugs (3,000
+resamples; seed 42) gives a 95% interval of [-0.1393, 0.4858]. That interval
+does not exclude moderately positive associations. This bootstrap is an audit
+diagnostic, not a replacement for a prespecified clinical analysis.
+
+The manuscript appropriately describes FAERS proportions as proportions of
+reports. I did not find a current claim that they estimate patient incidence,
+and the dropped FDA-label discontinuation data are not used by this analysis.
+
+Action: change to "We detected no statistically significant associations in
+this exploratory 46-drug analysis." Retain the report-based interpretation and
+avoid interpreting the null as clinical equivalence or evidence that
+selectivity cannot matter for adverse events.
+
+5. LOW: The main-text filter-sensitivity summary omits its fixed-population
+condition.
+
+Locations: paper/sections/results.tex:134-136;
+paper/supporting_information.tex:130-135;
+klaeger_filter_sensitivity.py:174-182.
+
+The main text reports a change of at most 0.01 in active-compound correlations
+when low-confidence fits are restored. SI correctly specifies the 200 compounds
+active under BOTH filters. The analysis deliberately fixes this intersection.
+Restoring the fits actually increases the eligible population from 200 to 202,
+adding Brivanib_alaninate and TG-100115. Using each filter's own eligible set
+changes the S-score/ratio correlation from 0.37778 to 0.39093 (delta 0.01315),
+versus a maximum change of about 0.006 on the fixed intersection.
+
+Action: carry the SI's qualifier into the main text: "among the 200 compounds
+active under both filters." The scientific effect remains small. This is an
+estimand/population clarification, not a consequential reversal of the result;
+0.013 also rounds to 0.01 at two decimal places.
+
+6. MEDIUM FOR REPRODUCIBILITY: The Anastassiadis raw-data fallback silently
+bypasses target curation.
+
+Location: additional_datasets_analysis.py:127-140;
+curate_panels.py, Anastassiadis section.
+
+When anastassiadis_matrix.csv exists, the analysis uses the correct curated
+178 x 291 panel. If it is absent, load_anastassiadis() reconstructs ALL 300 raw
+columns, writes them under the same filename, and immediately analyzes them
+without the nine duplicate-complex/isoform removals. That file then persists
+for other scripts, which assume this filename denotes the curated matrix.
+
+This did not affect the current reruns: the committed curated file exists,
+matches the raw data on retained columns, and is reproduced by curate_panels.py.
+The fallback is nevertheless an advertised path for regenerating missing data
+and can silently produce results inconsistent with Methods.
+
+Action: have the fallback create the released matrix and call a shared curation
+function before writing/using the curated matrix, or fail with a clear request
+to run curation. Validate the panel's expected target identities, not just its
+shape, at the analysis boundary.
+
+Verification performed
+
+Fourteen scripts were run successfully in an isolated temporary copy. All
+their printed numerical output matched the committed outputs (absolute paths
+to generated figures were normalized for the comparison):
+
+  additional_datasets_analysis.py
+  bosc_catds_comparison.py
+  claim_checks.py
+  clinical_outcomes_correlation.py
+  curate_panels.py
+  d3_pair_reversals.py
+  d4_entropy_vs_candidate.py
+  feature_placeholder_sensitivity.py
+  instability_by_family.py
+  klaeger_filter_sensitivity.py
+  metric_fidelity_robustness.py
+  original_operationalization_robustness.py
+  panel_recovery.py
+  platform_vs_definition.py
+
+The Klaeger, Anastassiadis and Metz matrices were independently rebuilt from
+their raw spreadsheets and compared against the committed curated matrices.
+Maximum absolute discrepancies were approximately 1.8e-15, 1.4e-14 and zero,
+respectively. Rerunning target curation reproduced all three curated panels
+and all three curation tables byte for byte. Davis curation was checked
+against its released matrix; acquisition from the upstream repository was
+not repeated.
+
+The recovery benchmarks reproduced: S-score at the floor reaches the chosen
+mean-Spearman 0.90 bar at 20/50/30/65 targets (Davis/Klaeger/Anastassiadis/Metz),
+the default gated entropy at 50/65/30/80, and twice its scale at 20/50/30/65.
+These are conditional agreement with each score's own full-panel ranking.
+The current manuscript correctly explains coverage loss, the chosen mean
+benchmark, and why recovery does not establish better biological selectivity.
+
+I checked the algebra and assumptions of Propositions 1-3 and reproduced their
+numerical examples and adversarial checks. I did not identify a counterexample
+to the stated propositions. Proposition 2 explicitly assumes distance-based
+weights and Shannon grouping; it does not establish uniqueness among all
+possible selectivity measures. The T lower bound is a universal guarantee over
+arbitrary profile length, rather than a demonstrated optimal scale for a fixed
+finite kinome. These restrictions are substantially stated in the paper.
+
+Primary-source spot checks confirmed the Bosc window/ranking definitions and
+its S-score-specific withholding convention, the radiometric Anastassiadis
+assay, the cited 2026 review's count of 94 FDA-approved inhibitors, and the
+existence of the Binder paper's cited correction:
+
+  https://pmc.ncbi.nlm.nih.gov/articles/PMC5217660/
+  https://pmc.ncbi.nlm.nih.gov/articles/PMC3230241/
+  https://pubmed.ncbi.nlm.nih.gov/41587611/
+  https://doi.org/10.1021/acs.jmedchem.6c02488
+
+The audit was not an exhaustive verification of every bibliography entry,
+every raw experimental measurement, or upstream chemical identity. It did not
+redownload the public datasets or refresh FAERS; refreshing a live clinical
+snapshot would change the object being checked. No manuscript edits or
+submission regeneration were performed.
+
+To reproduce the independent checks saved here:
+  python3 audits/2026-11-11/verify.py
+
+The script prints the evidence in verification.json and does not execute the
+analysis scripts' top-level logging/writes. The 14 full reruns were performed
+separately in a temporary copy to preserve the reviewed repository state.

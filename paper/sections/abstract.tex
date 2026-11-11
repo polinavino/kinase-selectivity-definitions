@@ -1,18 +1,19 @@
 \begin{abstract}
-Kinase selectivity scores can rank the same compounds differently. We compare
-four common scores across four profiling datasets. Agreement changes with
-affinity weighting, the compounds ranked and the treatment of pairs without
-detected binding. We relate ranking sensitivity to binding profile features.
-Moving the activity boundary reorders compounds under every score, and the
-boundary must be fixed by protocol. We propose four criteria for selectivity
-scores and, with Shannon's grouping rule, derive from them a gated entropy with
-exponential affinity weights. We prove the range of weighting for which adding
-a weakly bound target cannot make a compound appear more selective. Scores that
-follow the share of targets with detected binding recover rankings from fewer
-targets than the ratio and the published entropy, but on small panels many
-compounds with few active targets cannot be scored. These findings support
-reporting analysis choices, ranking sensitivity and compound coverage.
+Agreement between kinase selectivity scores can change with the analysis
+protocol. Across four profiling datasets, we show how affinity weighting,
+floor-coded pairs and compound eligibility alter agreement between scores.
+We evaluate recovery from random smaller panels jointly with compound
+coverage: high rank agreement among the compounds still scorable can conceal
+the loss of narrowly active compounds. Moving an activity boundary also
+changes rankings, so its value must be fixed by protocol. Separately, we
+propose four criteria for selectivity scores and characterize gated entropies
+within a stated class of affinity-weighted scores using Shannon's grouping
+rule. We prove the scale range that guarantees monotonicity when a weakly
+bound target is added. These guarantees do not confer an empirical recovery
+advantage over simpler scores. Selectivity comparisons should report score
+implementation, activity eligibility, boundary sensitivity and retained
+compound coverage.
 \end{abstract}
 
 \noindent\textbf{Keywords:} binding selectivity,
-cancer drug discovery, cheminformatics, kinase inhibition, research methodology.
+chemoinformatics, drug discovery, kinase inhibition, ranking stability.

@@ -1,0 +1,137 @@
+Molecular Informatics submission audit — checked November 11, 2026
+
+Status: a refreshed DRAFT package is provided in submission_prepared/. The
+paper cannot yet be certified ready for final submission: the scientific and
+contribution findings from the earlier audit remain open, catalogue keywords
+are unverified, and a faithful revision redline needs the actual reviewed
+baseline. The postal address is deferred at the author's express request.
+
+Official sources consulted
+
+Journal-specific author guidelines, sections 3, 4.3, 5.1, 5.2 and 5.5:
+https://onlinelibrary.wiley.com/page/journal/18681751/homepage/2022_authors.html
+
+Publisher figure-preparation guidance:
+https://authors.wiley.com/author-resources/Journal-Authors/Prepare/manuscript-preparation-guidelines.html/figure-preparation.html
+
+Publisher ethics guidance:
+https://authorservices-ppd.wiley.com/ethics-guidelines/
+
+The journal page is the currently accessible official author-guidelines page,
+despite "2022" in its URL. Its recommended Word template is optional. The
+portal and any manuscript-specific editorial instructions determine the final
+upload slots; neither was inspected in an authenticated submission session.
+
+Requirements checked, condensed
+
+Full Papers: no fixed length limit; abstract 600-1000 characters. TOC: title,
+authors, corresponding-author asterisk, at most 80 words or three sentences,
+and graphic at most 5 cm wide. Keywords: at most five, alphabetical, with two
+from the catalogue. Supply contact metadata, editable equations/tables, figure
+legends together after references, funding/conflict declarations and a data
+statement. For plots Wiley prefers vector PDF or 600-dpi artwork, while review
+acceptability depends on legibility. Cite the sources above for these rules.
+
+Measured passes
+
+The current abstract is 994 characters after whitespace normalization. Its
+plain-text file agrees with the source abstract. This leaves only six
+characters of headroom, so recheck the character count after any contribution
+rewrite rather than relying on today's result.
+
+The TOC body is 80 whitespace-delimited words in three sentences, excluding
+the separately supplied title and author name. The graphic is 1176 x 1320
+pixels at approximately 600 dpi: 4.978 cm wide. It was visually inspected;
+labels are present, with small text that should still be checked at the
+portal's final display size. A combined editable Graphical_abstract.docx now
+collects the title, Polina Vinogradova*, text and graphic in one file.
+
+Five keywords are present and alphabetized. Their catalogue membership has
+not been established: the official catalogue link failed to load. It is not
+enough to infer that plausible scientific terms belong to the catalogue.
+
+The source has Methods, Results, Discussion, Conclusion, author email/ORCID,
+funding/conflict statements, data/software availability, and an AI-use
+acknowledgement. The work is a public-data methods study, so requirements
+specific to newly synthesized compounds, new animal/human experiments or
+new structure deposition were not applied as if these experiments occurred.
+
+Prepared assets and technical corrections
+
+The old Word file identified in UPLOAD_GUIDE.txt was not reused. A fresh
+molecular_informatics_submission_CURRENT_DRAFT.docx was generated from the
+current LaTeX with its bundled Angewandte CSL style. It includes four editable
+tables, three embedded figures and native Word mathematics. The corresponding
+author is marked with an asterisk, and figure legends are collected after
+the references. Specialized abbreviations are expanded on first use. These
+are changes to the derived draft only; source LaTeX
+and the obsolete root Word file are preserved.
+
+Table1.docx through Table4.docx were generated from the current standalone
+LaTeX tables, replacing reliance on the obsolete Table*.docx files under
+paper/submission_tables/. Their standalone caption numbers were corrected.
+
+Figures 1-3 were recomputed from data and their original plotting scripts.
+The existing PNGs are 1484/1784/1621 pixels wide, about 215/259/235 effective
+dpi at a 17.5 cm width. The new package contains vector PDFs, newly rendered
+600-dpi PNGs and lossless TIFFs whose physical width is encoded as 17.5 cm.
+This is a genuine source re-render, not enlargement of old bitmap pixels.
+asset_checks.json records pixel dimensions, effective resolution and document
+structure. Artwork preference is distinguished here from a claim that the
+old figures were automatically ineligible for peer review.
+
+The package also includes the current SI PDF, response letter, cover letter,
+plain abstract, TOC text and standalone figure legends. The copied SI was
+not scientifically edited or recompiled during this formatting pass.
+
+Outstanding items
+
+1. Resolve the scientific overclaims and reproducibility findings in
+findings.txt, and align the abstract/contribution/conclusion as discussed in
+contribution_review.txt. This package reproduces the current manuscript;
+it does not silently apply the proposed scientific revisions.
+
+2. Confirm the five keywords against the official catalogue and replace
+terms if necessary. Alphabetical ordering and count alone are already checked.
+
+3. Synchronize the abbreviation expansions back to the manuscript source
+before subsequent builds. The original source introduces
+CATDS, FAERS and PubChem CID without expanding them; the bare achemso
+abbreviations list does not provide those expansions in the Word manuscript.
+Suggested expansions: concentration- and target-dependent selectivity;
+FDA Adverse Event Reporting System; PubChem compound identifier. FDA and ATP
+are also expanded in the derived Word draft. These are terminology expansions;
+the scientific claims are unchanged.
+
+CATDS expansion was checked against its originating paper:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC6542668/
+
+4. Confirm the revision baseline and produce a genuine marked-up manuscript
+against the version actually reviewed. The local upload guide refers to a
+Google Docs tracked-changes file; it is not present in the inspected workspace.
+Historical Word filenames alone do not establish which file was reviewed.
+No purported redline was fabricated.
+
+5. Postal-address metadata: deferred by the author on November 11, 2026.
+The package retains Independent Researcher, ORCID and email. No private
+address was inferred, inserted, or sought again.
+
+6. The prepared cover letter now states journal fit explicitly: "This study fits Molecular Informatics because
+it evaluates how computational summaries of kinase profiling data support
+compound comparisons in drug discovery, and provides empirical and formal
+guidance for interpreting those summaries." The root cover letter is unchanged.
+
+7. Recheck the rendered portal proof, figure/table callouts, equation layout,
+reference list and uploaded file roles after the remaining edits. DOCX ZIP/XML
+checks establish editable content and correct source version, not that every
+page will render identically in Word and the journal's conversion service.
+
+References use the journal-linked Angewandte style for the Word conversion.
+This pass did not exhaustively verify every author list or DOI against the
+original publication. No blanket reference-compliance certification is made.
+
+Rebuild assets with:
+  python3 audits/2026-11-11/prepare_submission.py
+
+This rebuilds figures in an isolated temporary directory and preserves the
+repository's scientific source files and original output files.

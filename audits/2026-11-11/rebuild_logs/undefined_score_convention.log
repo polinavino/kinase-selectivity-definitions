@@ -1,0 +1,19 @@
+Zero-active compounds (pKd>6 threshold): 22 of 222
+Current convention -- entropy: zero-active mean sigma=11.9  active mean sigma=12.6  (Mann-Whitney p=9.15e-01)
+Current convention -- gini: zero-active mean sigma=65.0  active mean sigma=16.3  (Mann-Whitney p=2.26e-05)
+
+Pooled convention (degenerate configs scored as entropy=Gini=0, included in every sweep):
+  mean rank sigma, zero-active: 84.1  active: 17.9  (Mann-Whitney p=1.52e-14)
+
+Per-compound number of DEFINED configurations (of 7 baselines swept): min=0, max=7
+  Zero-active (pKd>6) compounds have a defined score at 0-4 of 7 baselines (mean 2.4)
+
+Alternative convention (compounds ranked only among those defined at each beta;
+rank sigma computed only over each compound's own DEFINED configs):
+  entropy: 216 of 222 compounds have >=2 defined configs (6 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=16)=7.0  active mean sigma (n=200)=13.5  (p=2.05e-03)
+    zero-active compounds above the active mean: Brivanib (21.28), Brivanib_alaninate (18.94), NMS-1286937 (28.13)
+  gini: 216 of 222 compounds have >=2 defined configs (6 excluded -- defined at <2 of 7 baselines, cannot be scored at all); zero-active mean sigma (n=16)=6.7  active mean sigma (n=200)=13.6  (p=1.52e-03)
+    zero-active compounds above the active mean: Brivanib (21.44), Brivanib_alaninate (17.18), NMS-1286937 (28.22)
+  aggregated (entropy+gini): 216 of 222 computable; mean rank sigma, zero-active (n=16): 6.9  active (n=200): 13.6  (Mann-Whitney p=1.81e-03)
+
+Done.

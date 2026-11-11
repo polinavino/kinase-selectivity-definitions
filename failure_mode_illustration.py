@@ -152,5 +152,5 @@ axR.text(0.97, 0.55, f"mean: entropy {ent_instab[has_active].mean():.1f}, "
           ha='right', va='top', fontsize=7.5, transform=axR.transAxes)
 
 plt.tight_layout()
-plt.savefig('failure_modes.png', dpi=150, bbox_inches='tight')
+script_logging.save_figure(fig, 'failure_modes.png', bbox_inches='tight')
 print("\nSaved failure_modes.png")

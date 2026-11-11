@@ -129,5 +129,5 @@ for ax, ds in zip(axes.ravel(), DATASETS):
 fig.suptitle('Rank stability as a function of kinase panel size (50 subsamples per size)',
              fontsize=13)
 plt.tight_layout(rect=[0, 0, 1, 0.96])
-plt.savefig('panel_size_stability.png', dpi=150, bbox_inches='tight')
+script_logging.save_figure(fig, 'panel_size_stability.png', bbox_inches='tight')
 print("\nSaved panel_size_stability.png")

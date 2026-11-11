@@ -18,8 +18,11 @@ Thank you for a careful reading. In summary:
     done, and Results has five sections: agreement between scores, parameter
     sensitivity and profile associations, the criteria and the gated
     entropy, recovery from small panels, and the scale of the gated entropy
-    and recovery. The main text is about 10,100
-    words, against about 11,100 in the version you read, with three figures.
+    and recovery, with three figures. The Abstract, Introduction and
+    Conclusion now distinguish the primary empirical contribution
+    (implementation, eligibility and retained coverage) from the conditional
+    mathematical characterization; the latter does not establish an
+    empirical improvement over simpler scores.
     Supporting Information (Sections S1-S8) follows the same order. The title
     is changed to match this focus, and the Abstract is within the journal's
     limit of 1,000 characters.
@@ -49,7 +52,8 @@ Thank you for a careful reading. In summary:
   - The gated entropy now uses exponential weights, exp((x - x0)/T), instead
     of the softplus. Among scores that weight each target by its distance
     above the gate and satisfy Shannon's grouping property, D2 and D4 leave
-    only these weights, and D3 holds exactly when T >= tau* - x0
+    exponential weights and their equal-weight limit, and D3 holds for the
+    finite-scale entropies exactly when T >= tau* - x0
     (Propositions 1 and 2). The new score ranks compounds as the previous
     one did at Spearman 0.968-0.998, and every result involving it is
     recomputed (Major 7).
@@ -106,8 +110,9 @@ restate the Metz threshold or report its coverage distribution.
 Klaeger (Methods; Supporting Information Section S1). The filter removes 793
 of 5,916 rows (13.4%). Restoring the 402 low-confidence pairs that fall inside
 the analysed matrix changes 0.77% of its entries, moves the all-compound
-Klaeger correlations by at most 0.08 and those among compounds with an active
-kinase by at most 0.006, and leaves every p* of the recovery analysis
+Klaeger correlations by at most 0.08 and those among the 200 compounds active
+under both filters by about 0.006. Restoring the fits makes two further
+compounds eligible (202 in total) and leaves every p* of the recovery analysis
 unchanged. Checking the panel itself, we found that 118 of its 343 targets are
 not annotated as kinases by the source, including kinase-complex subunits,
 such as cyclins, that Kinobeads co-capture. The analyses now use the 217
@@ -186,7 +191,7 @@ entropy's baseline.
 6. Restate D2 (formerly D3) so that the verdicts follow from its definition.
 
 The reversal measure is defined over an interval (Methods, "Evaluation
-Criteria and the Gated Entropy"). A pair of compounds reverses in B if their
+Criteria"). A pair of compounds reverses in B if their
 score difference is positive at some value of the parameter in B and negative
 at another, and we report the share of the pairs of scored compounds that
 reverse, on every dataset and, for the ratio, for every k. A score that fixes
@@ -212,10 +217,14 @@ now judged by construction.
 7. State the conclusion more directly; give vacuous satisfaction its own
 symbol.
 
-The Abstract states the conclusions directly: moving the activity boundary
-reorders compounds under every score, and the boundary must be fixed by
-protocol. It also states that the gated entropy is derived from the criteria,
-with a proved range for D3. The Conclusion draws the reporting implications, and Results adds
+The Abstract states the main empirical conclusion directly: score agreement
+depends on implementation and activity eligibility, and high conditional
+agreement on a small panel can conceal the loss of narrowly active compounds.
+It also states that moving an activity boundary changes rankings and that
+the boundary must be fixed by protocol. The gated entropy is presented as
+a separate, conditional characterization, with a proved range for D3.
+The Conclusion ends with the reporting implications for implementation,
+eligibility and coverage, and Results adds
 that D1 is a reporting rule any score can adopt and that D2 and D3 are the
 criteria on which the scores differ. Table 4 uses only
 satisfied and violated. The vacuous verdicts came from the former D2, which
@@ -238,7 +247,8 @@ T = tau* - x0 as the default and report the larger scale as a variant.
 What it adds is theoretical. Its weights are now exponential,
 exp((x - x0)/T), rather than the softplus. Among scores that weight each target
 by the same function of its distance above the gate and combine the weight
-shares with Shannon's grouping property, D2 and D4 leave only these weights
+shares with Shannon's grouping property, D2 and D4 leave exponential weights
+and the equal-weight limit
 (Proposition 2), and D3 then holds exactly when T >= tau* - x0 (Proposition 1).
 Supporting Information Section S4 gives the proofs and shows that the bound
 cannot be lowered. The entropy meets D3 only when binding below the threshold
@@ -279,6 +289,15 @@ against -0.08 to 1.00 between definitions within a dataset (mean 0.57).
 Kinases are matched by gene symbol with renamed symbols mapped to current ones
 (Davis's MLCK is MYLK3). Among the 40 compounds active in both, the means are
 0.72 and 0.73. The comparison is descriptive.
+
+The separate exploratory diagnostic of rank displacement versus instability
+uses the full curated panels and original ranking populations. Its weak
+associations (|r| <= 0.18) concern instability aggregated over all definitions,
+so the manuscript no longer concludes that every within-score sensitivity
+diagnostic is uninformative across datasets. Within-definition instability
+gives r = 0.327 for the Davis S-score (nominal p = 0.027; adjusted p = 0.212
+over eight tests); none of those eight associations survives correction
+(Supporting Information Section S6).
 
 
 10. Discuss how these properties limit the use of any single measure.
@@ -322,7 +341,8 @@ correlation changes significance.
 3. Figure 4. The binding-profile figure (now Figure 2) shows two named Davis
 compounds: fedratinib, whose tied targets, JAK2 and GAK, are different genes,
 and PHA-665752, a broad profile with one dominant target. The legend reads
-"assay floor". The previous example, GDC-0879, tied two BRAF constructs. The
+"coded floor", to distinguish this convention from a measured detection limit.
+The previous example, GDC-0879, tied two BRAF constructs. The
 statement that the most stable compounds are promiscuous on both datasets was
 wrong for Davis. Supporting Information Section S3 states that on Davis
 compounds with few active kinases are the most stable on average, and that
@@ -371,6 +391,23 @@ DeepDTA. Saifudeen et al. (2026) now gives its DOI, and author lists longer
 than seven names give the first three and et al. The description of Khinchin's axioms was wrong and is removed. The
 IUPAC citation is removed, because its definition of selectivity does not
 concern a ratio of binding constants.
+
+
+
+5. Final consistency audit. We have narrowed the reversal statement: the ratio
+reaches 13.7% only at k = 5; at k = 1 its largest fraction across datasets is
+3.0%. The clinical analysis is now described as detecting no statistically
+significant associations in 46 drugs, without inferring that clinically
+relevant associations are absent. The filter-sensitivity summary explicitly
+uses the 200 compounds active under both filters. A missing-cache path that
+could rebuild Anastassiadis without target curation has been corrected and
+regression-tested; it did not affect the committed 291-target analysis. All
+local analysis outputs, manuscript figures, standalone tables and submission
+text have been rebuilt from the current source. Historical submissions are
+kept separately, and the clean Word document is generated from that source.
+The keywords now include Chemoinformatics and Drug discovery, verified against
+Wiley's catalogue. Zaman's given name in the 2011 entropy reference is
+corrected to Guido.
 
 
 I hope the manuscript is now suitable for publication in Molecular

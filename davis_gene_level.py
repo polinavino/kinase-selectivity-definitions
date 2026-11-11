@@ -98,7 +98,7 @@ def summarize(M):
     med = {f: np.median(r, 0) for f, r in ranks.items()}
     for i, a in enumerate(FAMS):
         for b in FAMS[i + 1:]:
-            out[f"Table 1: {a} vs {b}"] = spearmanr(med[a], med[b])[0]
+            out[f"Table 3: {a} vs {b}"] = spearmanr(med[a], med[b])[0]
     inst = {f: r.std(0) for f, r in ranks.items()}
     s = -np.sort(-M, 1)
     feats = {"n_active": n_act, "top1-top2 gap": s[:, 0] - s[:, 1], "top2 pKd": s[:, 1],
@@ -107,8 +107,8 @@ def summarize(M):
     for feat, fam in [("n_active", "entropy"), ("n_active", "gini"), ("n_active", "ratio"),
                       ("top1-top2 gap", "ratio"), ("top2 pKd", "ratio")]:
         r, p = spearmanr(feats[feat][act], inst[fam][act])
-        out[f"Table 2: {feat} vs {fam} instability"] = r
-        out[f"Table 2: {feat} vs {fam} instability (p)"] = p
+        out[f"SI Table S4: {feat} vs {fam} instability"] = r
+        out[f"SI Table S4: {feat} vs {fam} instability (p)"] = p
     out["compounds with top1-top2 gap < 0.05"] = int((feats["top1-top2 gap"] < 0.05).sum())
     out["mean overall rank sd"] = np.vstack(list(ranks.values())).std(0).mean()
     c = candidate(M)

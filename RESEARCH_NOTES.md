@@ -7,14 +7,22 @@ Reviewer 1's round-2 review (`paper/reviewer1_round2_review.txt`; response in
 every number in the paper is printed by a script into `outputs/` (see README).
 Preprint: ChemRxiv (https://doi.org/10.26434/chemrxiv.15001618/v1).
 
+November 11 consistency revision: the abstract, contribution paragraph and
+conclusion now foreground implementation, activity eligibility and retained
+coverage. The conditional entropy characterization is a separate contribution.
+The scientific audit findings are addressed in source, including the raw
+Anastassiadis curation fallback. Current submission files are built with
+`python3 paper/build_submission.py`; historical documents are in
+`paper/archive/`. The postal address is deferred at the author's request.
+
 ## Paper structure (after consolidation)
 Introduction (merged with Background); Methods (datasets and target selection,
 score implementations, ranking comparisons, evaluation criteria, the gated
 entropy, recovery design); Results (analysis choices and agreement; parameter
 sensitivity and profile associations; criteria and the gated entropy;
 recovery from small panels; scale of the gated entropy and recovery); Discussion (roles of the criteria
-and the gated entropy; reporting recommendations; limitations); Conclusion. Main text about 10,100
-words; SI Sections S1-S8 follow the same
+and the gated entropy; reporting recommendations; limitations); Conclusion.
+SI Sections S1-S8 follow the same
 order.
 
 ## Research question
@@ -29,6 +37,13 @@ ratio) are used interchangeably. The paper:
    four definitions, three comparators and a candidate against them; derives
    the candidate (gated entropy with exponential weights) from them
 4. Evaluates recovery from random subpanels separately (panel_recovery.py)
+
+The criteria are proposed design/reporting requirements motivated by the
+observations; the empirical data do not establish their universal necessity.
+Cross-dataset displacement is only weakly associated with aggregated sigma;
+that result does not extend automatically to each definition's own parameter
+sensitivity (Davis S-score r = 0.327, nominal p = 0.027, adjusted p = 0.212
+over eight exploratory tests).
 
 ## Key findings
 - Agreement depends on analysis choices: which compounds are included, how
@@ -63,7 +78,9 @@ ratio) are used interchangeably. The paper:
   reported as a measurement: S-score threshold reverses 8.4-13.0% of pairs on
   three datasets; entropy/Gini 7.9-12.4%; candidate gate 9.2-14.6%; ratio
   clipping level b in R_b(k) = x(1) - max(x(k+1), b) up to 13.7%; every
-  parameter at least 13.7% on some dataset. D3 holds for the active count, the S-score at tau = x0, the entropy
+  boundary-parameter family at least 13.7% on some dataset only when the ratio
+  is maximized over k; for k = 1 the largest fraction is 3.0%.
+  D3 holds for the active count, the S-score at tau = x0, the entropy
   with beta = tau*, the ratio, P_max and the gated entropy (not the
   published entropy); not for the S-score with
   tau > x0, the Gini or the entropy with beta < tau*. The former D2 (bounded

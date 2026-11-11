@@ -7,22 +7,22 @@ GDC-0879 (row 23): released top constructs BRAF(V600E) 9.745, BRAF 9.721, RAF1 8
 Result                                             released 433        curated  best per gene
 targets                                                     433            363            363
 mean active targets per compound                         77.515         60.721         61.971
-Table 1: s_score vs entropy                               0.946          0.963          0.960
-Table 1: s_score vs gini                                  0.952          0.963          0.960
-Table 1: s_score vs ratio                                 0.456          0.563          0.511
-Table 1: entropy vs gini                                  0.999          0.999          1.000
-Table 1: entropy vs ratio                                 0.343          0.513          0.478
-Table 1: gini vs ratio                                    0.343          0.510          0.474
-Table 2: n_active vs entropy instability                 -0.279         -0.301         -0.268
-Table 2: n_active vs entropy instability (p)              0.021          0.013          0.027
-Table 2: n_active vs gini instability                    -0.300         -0.313         -0.298
-Table 2: n_active vs gini instability (p)                 0.013         0.0094          0.014
-Table 2: n_active vs ratio instability                    0.294          0.007          0.189
-Table 2: n_active vs ratio instability (p)                0.015           0.95           0.12
-Table 2: top1-top2 gap vs ratio instability              -0.444         -0.445         -0.566
-Table 2: top1-top2 gap vs ratio instability (p)         0.00015        0.00015        4.8e-07
-Table 2: top2 pKd vs ratio instability                    0.296          0.147          0.203
-Table 2: top2 pKd vs ratio instability (p)                0.014           0.23          0.096
+Table 3: s_score vs entropy                               0.946          0.963          0.960
+Table 3: s_score vs gini                                  0.952          0.963          0.960
+Table 3: s_score vs ratio                                 0.456          0.563          0.511
+Table 3: entropy vs gini                                  0.999          0.999          1.000
+Table 3: entropy vs ratio                                 0.343          0.513          0.478
+Table 3: gini vs ratio                                    0.343          0.510          0.474
+SI Table S4: n_active vs entropy instability             -0.279         -0.301         -0.268
+SI Table S4: n_active vs entropy instability (p)          0.021          0.013          0.027
+SI Table S4: n_active vs gini instability                -0.300         -0.313         -0.298
+SI Table S4: n_active vs gini instability (p)             0.013         0.0094          0.014
+SI Table S4: n_active vs ratio instability                0.294          0.007          0.189
+SI Table S4: n_active vs ratio instability (p)            0.015           0.95           0.12
+SI Table S4: top1-top2 gap vs ratio instability          -0.444         -0.445         -0.566
+SI Table S4: top1-top2 gap vs ratio instability (p)        0.00015        0.00015        4.8e-07
+SI Table S4: top2 pKd vs ratio instability                0.296          0.147          0.203
+SI Table S4: top2 pKd vs ratio instability (p)            0.014           0.23          0.096
 compounds with top1-top2 gap < 0.05                          15              8              8
 mean overall rank sd                                      8.478          7.496          7.802
 candidate vs entropy, scored compounds                    0.956          0.969          0.963

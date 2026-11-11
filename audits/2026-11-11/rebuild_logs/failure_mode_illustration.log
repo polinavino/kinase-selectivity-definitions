@@ -1,0 +1,14 @@
+D1: rank std, zero-active = 77.9; active = 32.2 (n_zero=22, n_active=200; Mann-Whitney U=4399, p=1.49e-14, two-sided)
+D1: max pK_d among the 22 zero-active compounds: 5.00 to 5.99; 16 bind some kinase above the floor of 5.0
+
+D1 decomposed per definition (mean rank std within that definition's own sweep):
+  s_score  zero-active  18.98   active  25.74   REVERSES   (Mann-Whitney p=0.011)
+  entropy  zero-active  11.94   active  12.61   REVERSES   (Mann-Whitney p=0.91)
+  gini     zero-active  64.97   active  16.32   holds   (Mann-Whitney p=2.3e-05)
+  ratio    zero-active  17.45   active  19.10   REVERSES   (Mann-Whitney p=0.51)
+  (the S-score reverses because its score is exactly 0 for every zero-active
+   compound at thresholds of pK_d 6 or above, i.e. stable by degeneracy)
+Boundary sweep: corr(n_active, instability) -- entropy r=-0.163 (p=2.1e-02); gated entropy, gate swept r=-0.204 (p=3.7e-03)
+Boundary sweep: mean instability over B=[5.0,6.0] -- entropy (baseline swept) 7.025; gated entropy (gate swept) 6.664 (0.95x the entropy's)
+
+Saved failure_modes.png

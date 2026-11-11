@@ -9,16 +9,15 @@ agree, how much a ranking moves when the activity boundary moves, and how much
 of a ranking a small panel retains. Selectivity analyses should state
 them, apply an activity-eligibility rule, fix the activity boundary in advance
 and report its effect, and report how many compounds remain scorable on small
-panels. The gated entropy gives weight to binding below the activity threshold
-and remains monotone under weak-target addition. Among scores that weight each
-target by its distance above the activity boundary and satisfy Shannon's
-grouping rule, the criteria leave only the gated entropies. Their scale is the
-readout difference over which a weight grows by a factor of $e$. It must be at
-least the distance between the floor and the activity threshold. The smallest
-scale
-makes the score depend most on affinity differences. On these data, it
-recovers rankings from small panels more slowly than the share of targets with
-detected binding. Twice the scale gives the targets more nearly equal weights,
-and the score then recovers rankings as fast, and also ranks compounds almost as that
-share does. Analyses that use the gated entropy should therefore report its
-scale.
+panels. In particular, high agreement among compounds that remain eligible on
+a smaller panel can conceal the loss of narrowly active compounds.
+
+The formal contribution is a characterization within an explicit class of
+distance-based weights and Shannon grouping: the proposed criteria retain
+gated exponential entropies, including their equal-weight limit, and set a
+sharp lower bound on their scale for monotonicity under weak-target addition.
+The criteria do not select one score, and satisfying them does not establish
+superior biological validity or empirical recovery. The gated entropy's scale
+is another analysis choice that must be reported. The central practical
+conclusion is therefore to interpret score agreement and small-panel recovery
+together with the implementation, eligible compounds and retained coverage.

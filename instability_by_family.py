@@ -176,7 +176,7 @@ for ax, fam in zip(axes, families):
 fig.suptitle("Within-definition rank instability against its most strongly correlated feature "
              "(Klaeger, compounds with an active kinase, ranked among themselves)", fontsize=14)
 plt.tight_layout(rect=[0, 0, 1, 0.96])
-plt.savefig("instability_by_family.png", dpi=150, bbox_inches='tight')
+script_logging.save_figure(fig, "instability_by_family.png", bbox_inches='tight')
 print("\nSaved instability_by_family.png")
 
 # ---- Davis (SI Table S4, right) ----

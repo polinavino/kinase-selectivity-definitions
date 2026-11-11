@@ -1,34 +1,6 @@
 #!/usr/bin/env bash
-# Regenerate the Molecular Informatics Word submission from the modular LaTeX
-# source. Run from the paper/ directory after editing any sections/*.tex.
-#
-#   - numbered citations + numbered reference list in the Angewandte Chemie
-#     (Wiley-VCH) style used by Molecular Informatics (angewandte-chemie.csl,
-#     bundled in this directory)
-#   - run-in \paragraph headings (definitions, required properties) via the
-#     Lua filter, matching the PDF
-#   - "References" heading on the bibliography
+# Build the current Word manuscript and synchronized submission text/tables.
+# For both PDFs too: python3 paper/build_submission.py
 set -euo pipefail
-
-CSL="angewandte-chemie.csl"
-
-# references.bib uses achemso's "and {et~al.}" form so the LaTeX/PDF renders
-# "et al." (achemso prints a literal "others" otherwise). citeproc wants the
-# standard "and others" marker, so derive a citeproc-form bib on the fly.
-CSL_BIB="${TMPDIR:-/tmp}/refs_csl_$$.bib"
-trap 'rm -f "$CSL_BIB"' EXIT
-sed 's/and {et~al\.}}/and others}/' references.bib > "$CSL_BIB"
-
-pandoc main.tex \
-  --resource-path=.:sections \
-  --citeproc \
-  --bibliography="$CSL_BIB" \
-  --csl="$CSL" \
-  --metadata reference-section-title=References \
-  --lua-filter=runin-headings.lua \
-  -o molecular_informatics_submission.docx
-
-# pandoc drops achemso's \affiliation/\email; restore them after the author name
-python3 add_author_block.py molecular_informatics_submission.docx
-
-echo "Wrote molecular_informatics_submission.docx"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+python3 "$SCRIPT_DIR/build_submission.py" --word-only

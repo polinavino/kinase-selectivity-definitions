@@ -1,7 +1,7 @@
 """
 Additional-dataset robustness analysis (revision for Molecular Informatics).
 
-Replicates the two-family clustering and rank-instability analyses of the main
+Replicates the implementation-dependent agreement and rank-instability analyses of the main
 paper on two further kinase profiling datasets that use different assay
 technologies from Davis (pKd binding) and Klaeger (pKd chemoproteomics):
 
@@ -21,9 +21,9 @@ to compound x kinase potency matrices and written next to this script.
   Metz:          https://static-content.springer.com/esm/art%3A10.1038%2Fnchembio.530/MediaObjects/41589_2011_BFnchembio530_MOESM137_ESM.xls
 
 Each metric is computed on the native potency scale of its dataset with a
-scale-appropriate parameter sweep; because the analysis concerns rank
-correlations between metrics and rank instability (both invariant to a common
-monotone rescaling within a dataset), the metrics remain directly comparable.
+scale-appropriate parameter sweep. Only the resulting within-dataset rankings
+are compared across datasets. A nonlinear transformation of the raw readout
+can change a score's ranking, particularly for entropy and Gini weights.
 """
 import script_logging; script_logging.capture(__file__)
 import os
@@ -33,6 +33,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr, rankdata
 import matplotlib.pyplot as plt
+from panel_curation import load_anastassiadis_panel
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -78,7 +79,7 @@ def analyze(M, s_thr, baselines, ratio_floor, active_thr, label):
     }
     all_ranks = np.vstack(list(ranks.values()))
     rank_std = all_ranks.std(axis=0)
-    # feature associations: compounds with an active kinase, ranked among themselves (as Table 2)
+    # feature associations: compounds with an active kinase, ranked among themselves (as SI Table S4)
     act_c = (M > active_thr).any(1)
     Ma_ = M[act_c]
     ranks_a = {
@@ -126,16 +127,7 @@ def load_klaeger():
                    "Klaeger (pKd chemoproteomics)")
 
 def load_anastassiadis():
-    csv = os.path.join(HERE, "anastassiadis_matrix.csv")
-    if os.path.exists(csv):
-        M = pd.read_csv(csv, index_col=0).values
-    else:
-        raw = pd.read_excel(os.path.join(HERE, "anastassiadis.xls"), sheet_name='Sheet1', header=None)
-        comp = raw.iloc[1, 1:].tolist()
-        kin = raw.iloc[3:, 0].tolist()
-        pct = raw.iloc[3:, 1:].apply(pd.to_numeric, errors='coerce').values
-        M = np.nan_to_num(np.clip(100 - pct, 0, 100), nan=0.0).T
-        pd.DataFrame(M, index=comp, columns=kin).to_csv(csv)
+    M = load_anastassiadis_panel(HERE).values
     return analyze(M, np.arange(50, 95, 5), np.arange(0, 35, 5), 0.0, 50.0,
                    "Anastassiadis (% inhibition)")
 
@@ -205,5 +197,5 @@ fig.colorbar(im, ax=axes, fraction=0.013, pad=0.02, label='Spearman r')
 fig.suptitle("Spearman correlations between median rankings of the four definitions "
              "(top: compounds with an active kinase, ranked among themselves; bottom: all compounds)", fontsize=11)
 out = os.path.join(HERE, "cross_dataset_correlations.png")
-plt.savefig(out, dpi=150, bbox_inches='tight')
+script_logging.save_figure(fig, out, bbox_inches='tight')
 print(f"Saved {out}")

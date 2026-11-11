@@ -1,0 +1,25 @@
+Figure legends (place together at the end of the manuscript, after the
+references, per Molecular Informatics style, and figures upload as separate files).
+
+Figure 1. Rankings under association-constant weights (x-axis) against the
+baseline-subtracted log-affinity form (y-axis, median rank over the baseline
+sweep), on Davis and Klaeger. Top: entropy, for which association-constant
+weights are the published form. Bottom: Gini, shown for comparison. Its
+published form uses percent inhibition. Grey: floor-coded pairs kept at the
+floor. Blue: floor-coded pairs given zero weight. Spearman r above each panel.
+
+Figure 2. Binding profiles of two Davis compounds, targets sorted by affinity.
+Left: fedratinib, the most ratio-sensitive compound, with JAK2 and GAK tied
+among 123 active targets. Right: PHA-665752, the most unstable compound overall
+(sigma = 16.4), with one dominant target among 60 active targets. Dashed line:
+pKd = 6 activity threshold. Dotted line: pKd = 5 assay floor.
+
+Figure 3. Recovery from random subpanels with D1 applied to every score, on all
+four datasets (50 subpanels per size). Top: coverage, the share of compounds
+scored on the full panel that are still scored. Middle: recoverability, the
+share of clearly separated full-panel pairs that are scored on the subpanel and
+keep their order. Bottom: mean Spearman correlation between subpanel and
+full-panel rankings over compounds scored on both, with +/-1 standard deviation
+across subpanels shaded. Each score is compared with its own full-panel
+ranking. The published entropy and P_max give floor-coded pairs zero weight
+and are not defined on Anastassiadis. Dashed line: 0.90.

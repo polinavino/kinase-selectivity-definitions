@@ -22,6 +22,14 @@ import os
 import sys
 import atexit
 import shutil
+from pathlib import Path
+
+
+def save_figure(figure, filename, *, dpi=600, **kwargs):
+    """Render source artwork as a high-resolution PNG and a vector PDF."""
+    filename = Path(filename)
+    figure.savefig(filename, dpi=dpi, **kwargs)
+    figure.savefig(filename.with_suffix(".pdf"), **kwargs)
 
 # Manuscript figure basename (as written next to the scripts) -> journal figure
 # number. Order follows the figures' appearance in the compiled paper.
@@ -58,8 +66,20 @@ def _mirror_figures(repo, before):
         os.makedirs(fig_dir, exist_ok=True)
         os.makedirs(sub_dir, exist_ok=True)
         shutil.copyfile(src, os.path.join(fig_dir, name))
+        pdf = str(Path(src).with_suffix(".pdf"))
+        if os.path.exists(pdf):
+            shutil.copyfile(pdf, os.path.join(fig_dir, Path(name).with_suffix(".pdf")))
         if journal_name:
             shutil.copyfile(src, os.path.join(sub_dir, journal_name))
+            if os.path.exists(pdf):
+                shutil.copyfile(pdf, os.path.join(sub_dir, Path(journal_name).with_suffix(".pdf")))
+            # Preserve the newly rendered pixels; encode their final width
+            # without resampling or inflating a low-resolution image.
+            from PIL import Image
+            with Image.open(src) as artwork:
+                final_dpi = artwork.width / (17.5 / 2.54)
+                artwork.save(os.path.join(sub_dir, Path(journal_name).with_suffix(".tif")),
+                             compression="tiff_lzw", dpi=(final_dpi, final_dpi))
 
 
 def capture(script_path):

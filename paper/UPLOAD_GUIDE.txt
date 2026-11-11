@@ -5,6 +5,8 @@ Which file to upload in each slot
 MAIN DOCUMENT (Word, with tracked changes)
   Your Google-Docs tracked-changes file (the full manuscript text with redline
   markup vs. the reviewed version).
+  The exact reviewed baseline must be confirmed before generating a redline;
+  historical Word filenames in archive/ do not establish that baseline.
   - This is the marked-up Main Document.
   - Keep the figure and table CAPTIONS in it. Figures and tables themselves are
     uploaded separately (see below); at revision Molecular Informatics wants
@@ -22,11 +24,11 @@ COVER LETTER
   cover_letter.txt
 
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
-  Figure1.png  = published vs log-affinity entropy and Gini, two treatments
+  Figure1.pdf / Figure1.tif = published vs log-affinity entropy and Gini, two treatments
                  of floor-coded pairs
-  Figure2.png  = binding profiles of two Davis compounds (near-tied top
+  Figure2.pdf / Figure2.tif = binding profiles of two Davis compounds (near-tied top
                  targets; broad profile with one dominant target)
-  Figure3.png  = recovery from random subpanels: coverage, pair recovery and
+  Figure3.pdf / Figure3.tif = recovery from random subpanels: coverage, pair recovery and
                  conditional agreement, all scores
 
 TABLES  (one file per table, separate slot each)  -> submission_tables/
@@ -35,12 +37,14 @@ TABLES  (one file per table, separate slot each)  -> submission_tables/
   table3.tex   = Spearman correlations between definitions, including the
                  published entropy
   table4.tex   = the four criteria for each score
-  (The Table*.docx files predate this reorganization and must be rebuilt
-  from these .tex tables before upload.)
+  Table1.docx through Table4.docx are current editable Word copies generated
+  from the same source as the manuscript. PNG copies of all figures are also
+  available for systems that require them.
 
 GRAPHICAL ABSTRACT / TOC
   Image:  figures/toc_graphic.png   (5.0 x 5.6 cm at 600 dpi; rebuild with toc_graphic.py)
   Text:   graphical_abstract_text.txt   (<= 80 words / 3 sentences)
+  Combined Word entry: graphical_abstract.docx
 
 SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
@@ -55,7 +59,14 @@ SUPPORTING INFORMATION
 
 Notes
 -----
-- Figures are PNG, 1484-1784 px wide (Figure 1 is the narrowest). If the
-  system requires TIFF/EPS or a higher nominal dpi, the plotting scripts can
-  re-export. Figure 3 and Supporting Figure S4 use random subsampling with a
-  fixed seed, so a re-run reproduces them exactly.
+- Main figures are provided as vector PDFs, source-rendered 600-dpi PNGs and
+  lossless TIFFs encoded at a 17.5 cm final width; no old bitmap was enlarged.
+- Rebuild all text/table/Word/PDF artifacts with:
+    python3 build_submission.py
+- Old submissions and comparison files are in archive/ and must not be used
+  as current upload files. The previous audit-only draft package is also
+  superseded. Source hashes and document checks are in submission_checks.json.
+- Five alphabetized keywords are supplied; Chemoinformatics and Drug discovery
+  were verified against the Wiley catalogue. The author postal address is
+  deferred as requested. Final upload roles and any marked-up version must
+  follow the manuscript-specific editorial instructions.

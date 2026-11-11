@@ -15,18 +15,18 @@ kinases                                                 343              217
 zero-active compounds                                    16               22
 active share of matrix (%)                          3.62856          4.49828
 mean active kinases per compound                   12.44595          9.76126
-Table 1: s_score vs entropy                         0.91009          0.89567
-Table 1: s_score vs gini                            0.72210          0.50812
-Table 1: s_score vs ratio                           0.22281          0.07777
-Table 1: entropy vs gini                            0.84026          0.65792
-Table 1: entropy vs ratio                           0.45546          0.34433
-Table 1: gini vs ratio                              0.61641          0.65530
-Table 1, active compounds: s_score vs entropy       0.91316          0.89740
-Table 1, active compounds: s_score vs gini          0.91147          0.89184
-Table 1, active compounds: s_score vs ratio         0.41775          0.37778
-Table 1, active compounds: entropy vs gini          0.99835          0.99725
-Table 1, active compounds: entropy vs ratio         0.62114          0.62199
-Table 1, active compounds: gini vs ratio            0.63407          0.63531
+Table 3: s_score vs entropy                         0.91009          0.89567
+Table 3: s_score vs gini                            0.72210          0.50812
+Table 3: s_score vs ratio                           0.22281          0.07777
+Table 3: entropy vs gini                            0.84026          0.65792
+Table 3: entropy vs ratio                           0.45546          0.34433
+Table 3: gini vs ratio                              0.61641          0.65530
+Table 3, active compounds: s_score vs entropy       0.91316          0.89740
+Table 3, active compounds: s_score vs gini          0.91147          0.89184
+Table 3, active compounds: s_score vs ratio         0.41775          0.37778
+Table 3, active compounds: entropy vs gini          0.99835          0.99725
+Table 3, active compounds: entropy vs ratio         0.62114          0.62199
+Table 3, active compounds: gini vs ratio            0.63407          0.63531
 active compounds                                        206              200
 r(S,G) - r(G,R), all: 2.5%                         -0.05825         -0.34643
 r(S,G) - r(G,R), all: 97.5%                         0.25596          0.05782
@@ -35,14 +35,14 @@ r(S,G) - r(G,R), active: 97.5%                      0.37499          0.35511
 aggregated rank sd, zero-active                    73.96784         77.91281
 aggregated rank sd, active                         31.16375         32.20944
 Mann-Whitney p                                      2.8e-11         1.49e-14
-Table 2: n_active vs entropy instability           -0.30228         -0.31177
-Table 2: n_active vs entropy instability (p)       1.01e-05         6.99e-06
-Table 2: top1-top2 gap vs ratio instability        -0.29059         -0.27508
-Table 2: top1-top2 gap vs ratio instability (p)    2.26e-05         8.08e-05
-Table 2: active range vs S-score instability       -0.31469         -0.31720
-Table 2: active range vs S-score instability (p)   4.09e-06         4.73e-06
-Table 2: skewness vs Gini instability               0.10706          0.07216
-Table 2: skewness vs Gini instability (p)             0.126             0.31
+SI Table S4: n_active vs entropy instability       -0.30228         -0.31177
+SI Table S4: n_active vs entropy instability (p)   1.01e-05         6.99e-06
+SI Table S4: top1-top2 gap vs ratio instability    -0.29059         -0.27508
+SI Table S4: top1-top2 gap vs ratio instability (p)   2.26e-05         8.08e-05
+SI Table S4: active range vs S-score instability   -0.31469         -0.31720
+SI Table S4: active range vs S-score instability (p)   4.09e-06         4.73e-06
+SI Table S4: skewness vs Gini instability           0.10706          0.07216
+SI Table S4: skewness vs Gini instability (p)         0.126             0.31
 candidate vs n_active (orientation)                -0.92020         -0.92185
 candidate vs entropy, scored compounds              0.98346          0.98369
 D3 at tau*: % non-increasing (scored)             100.00000        100.00000

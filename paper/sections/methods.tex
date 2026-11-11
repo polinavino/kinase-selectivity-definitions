@@ -155,7 +155,8 @@ compound's molecules that would bind a reference target in a mixture of all pane
 $K_{a,\mathrm{ref}} / \sum_j K_{a,j}$. Only Klaeger names an intended target
 for each compound, so we use the most strongly bound target as the reference
 ($P_{\max}$), as Uitdehaag and Zaman\cite{Uitdehaag2011} did. Like the
-published entropy, it is not computed on Anastassiadis. The CATDS score
+published entropy, it is not computed on Anastassiadis. The concentration-
+and target-dependent selectivity (CATDS) score
 of Klaeger et al.\ is the same kind of fraction, for a designated target at one
 concentration. It needs Kinobeads dose--response curves, which the other three
 datasets lack, so it is not compared across datasets (Supporting Information,
@@ -247,11 +248,19 @@ definitions), while other $p$-values are uncorrected.
 
 To compare how much rankings change between datasets with how much they
 change between definitions, we matched 46 compounds profiled in both Davis and
-Klaeger by PubChem CID and restricted both panels to the 201 kinases they share
+Klaeger by PubChem compound identifier (CID) and restricted both panels to the 201 kinases they share
 (matched by gene symbol, with renamed symbols mapped to current ones). We then
 computed the Spearman correlation between each definition's median ranking on
 Davis and on Klaeger, and between each pair of definitions' median rankings
 within each dataset.
+
+Separately, on these 46 compounds we explored whether cross-dataset rank
+displacement is associated with instability within either dataset. This
+diagnostic uses each dataset's full curated target panel and its original
+compound ranking population. We distinguish instability aggregated over all
+four definitions from instability within the displaced definition's own
+parameter sweep. The eight within-definition associations (four definitions
+and two datasets) form a separate exploratory family of tests.
 
 \subsection{Evaluation Criteria}
 \label{sec:methods:criteria}

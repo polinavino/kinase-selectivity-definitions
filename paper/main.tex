@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{microtype}
+\usepackage{xurl}
 
 % citations stay where they are written, before punctuation
 \renewcommand*\natmovechars{}
@@ -22,8 +23,8 @@
   Selectivity Scores}
 
 \abbreviations{S-score, CATDS, pKd, FAERS}
-\keywords{binding selectivity, cancer drug discovery,
-  cheminformatics, kinase inhibition, research methodology}
+\keywords{binding selectivity, chemoinformatics,
+  drug discovery, kinase inhibition, ranking stability}
 
 \begin{document}
 
@@ -43,6 +44,8 @@ Specifically, Claude was used to assist with: data analysis code development and
 debugging in Python; literature search and identification of related work;
 drafting and editing of manuscript text; and research planning and
 interpretation of results.
+ChatGPT/Codex (OpenAI) was used for an additional audit of analysis code and
+claims, document consistency checks, and preparation of submission files.
 All scientific conclusions, the conceptual framework, the criteria
 D1--D4, and the final manuscript content were developed, verified, and
 approved by the author.
@@ -71,7 +74,8 @@ All analysis scripts, processed data files, and the \LaTeX\ source for
 this manuscript are available at
 \url{https://github.com/polinavino/kinase-selectivity-definitions};
 this repository includes the code and full per-definition results for the
-secondary clinical-outcome analysis (FAERS adverse-event report rates for
+secondary clinical-outcome analysis (FDA Adverse Event Reporting System
+(FAERS) adverse-event report rates for
 the FDA-approved Klaeger compounds, obtained via openFDA queries).
 The analyses used Python 3 with NumPy\cite{NumPy}, pandas\cite{pandas} and
 SciPy\cite{SciPy}, and Supporting Information (Table~S9) names the script

@@ -38,7 +38,7 @@ def patch(path):
     if ANCHOR not in doc:
         sys.exit("could not locate the author paragraph; aborting")
 
-    block = ANCHOR + "\n" + _para(AFFILIATION) + "\n" + _para(ORCID_EMAIL)
+    block = ANCHOR.replace(f'>{AUTHOR}</w:t>', f'>{AUTHOR}*</w:t>') + "\n" + _para(AFFILIATION) + "\n" + _para(ORCID_EMAIL)
     doc = doc.replace(ANCHOR, block, 1)
     data["word/document.xml"] = doc.encode("utf-8")
 

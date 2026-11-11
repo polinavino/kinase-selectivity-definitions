@@ -5,12 +5,12 @@ Reviewer 1, major comment on filtered/imputed/undefined entries).
 The manuscript matrix (klaeger_matrix.csv) keeps only the 5,123 drug-target
 pairs annotated "High confidence" by Klaeger et al., out of 5,916 pairs with
 any Apparent Kd measurement at all; the 793 "Low confidence" pairs are dropped
-and, like every other untested pair, assigned the pKd=5.0 detection floor.
+and, like every other untested pair, assigned the pKd=5.0 coded floor.
 A true binding interaction removed by that filter is therefore folded into the
 non-binding background rather than the active set.
 
 This script reports (1) exactly how many entries the filter removes, and
-(2) the sensitivity of the Table 1 Klaeger correlations and the panel-size p*
+(2) the sensitivity of the Table 3 Klaeger correlations and the panel-size p*
 values to relaxing the filter (keeping High+Low confidence pairs instead of
 High confidence only).
 """
@@ -192,7 +192,7 @@ for d in ['entropy', 'gini', 's_score', 'ratio', 'candidate']:
     print(f"  {d:9s}: {pstar(panel_sizes_h, results_h, d)} vs. {pstar(panel_sizes_r, results_r, d)}")
 
 
-# Gated recovery (main text, Figure 6; panel_recovery.py): same subpanel sizes, seed and D1
+# Gated recovery (main text, Figure 3; panel_recovery.py): same subpanel sizes, seed and D1
 # gate, Spearman over compounds scored on the full panel and the subpanel.
 def neg_entropy(w):
     tot = w.sum(-1, keepdims=True)

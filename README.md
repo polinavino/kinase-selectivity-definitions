@@ -3,7 +3,7 @@
 **Paper:** Analysis Choices and Ranking Stability in Kinase Inhibitor
 Selectivity Scores (submitted revision; the preprint below has an earlier
 title)
-**Author:** Polina Vinogradova (Input Output Global, Singapore)
+**Author:** Polina Vinogradova (Independent Researcher)
 **Preprint:** https://doi.org/10.26434/chemrxiv.15001618/v1
 
 ---
@@ -21,7 +21,7 @@ a specific kinase. Imatinib (Gleevec) was the first famous example.
 
 ### The problem: kinases look almost identical
 
-All 500+ kinases share a nearly identical region where drugs bind, so a drug
+Many kinases have similar ATP-binding regions, so a drug
 designed for one kinase very often hits several others too. Sometimes that is
 harmless; sometimes it causes side effects. The property describing how
 concentrated a drug's effect is on its intended target versus everything else is
@@ -68,6 +68,13 @@ no longer be scored, and formulas that follow the share of targets with
 detected binding recover the rankings from fewer targets than the ratio or the
 entropy as originally published.
 
+The main contribution is to separate score implementation and activity
+eligibility effects, and evaluate ranking recovery together with retained
+compound coverage. High agreement among compounds still eligible on a small
+panel can conceal the loss of narrowly active compounds. The entropy
+characterization is a separate mathematical contribution within explicit
+assumptions, rather than evidence of superior empirical performance.
+
 ### What we proposed
 
 Four **criteria** for a selectivity formula:
@@ -94,7 +101,8 @@ cutoff at the floor, but not for the S-score with a higher cutoff, the Gini,
 or the entropy with a low baseline. We derive a **gated entropy**, a Shannon
 entropy with exponential affinity weights. Among formulas that weight each
 kinase by its distance above the cutoff and satisfy Shannon's grouping rule,
-criteria 2 and 4 leave only these weights, and criterion 3 holds exactly when
+criteria 2 and 4 leave exponential weights and their equal-weight limit.
+For the finite-scale entropies, criterion 3 holds exactly when
 their scale (the affinity difference over which a weight grows by a factor of
 e) is at least the distance between the floor and the activity
 threshold. On these data it ranks drugs similarly to the share of targets with
@@ -115,19 +123,43 @@ formulas disagree; it does not single out one formula.
 
 ---
 
+## Current submission files
+
+The current clean manuscript is `paper/molecular_informatics_submission.docx`.
+The source is `paper/main.tex` plus `paper/sections/`, and the current response
+is `paper/response_to_reviewers_round2.txt`. Earlier submissions and comparisons
+are preserved under `paper/archive/`; earlier audit-only draft assets are
+under `audits/2026-11-11/archive/` and are not current upload files.
+
+After changing manuscript text, run:
+
+    python3 paper/build_submission.py
+
+This updates both PDFs, the main Word document, all four standalone Word and
+LaTeX tables, the plain abstract, figure legends and combined graphical
+abstract. `paper/submission_checks.json` records document checks and source
+hashes. The Word file uses editable equations and tables. Its figure legends
+are collected after the references, and the figures remain embedded near
+their first discussion. The author postal address remains deferred.
+
+Figures must be rebuilt from their analysis scripts after changes to the data
+or scoring code. `script_logging.save_figure` exports high-resolution PNG and
+vector PDF artwork; the logging helper synchronizes paper and upload copies,
+including lossless TIFFs for the three main figures.
+
 ## Part 2: Reproducing the results
 
 ### Requirements
 
 Python 3.10 with:
 
-    numpy pandas scipy matplotlib openpyxl xlrd requests
+    numpy pandas scipy matplotlib openpyxl xlrd requests pillow
 
 Install with conda:
 
     conda create -n selectivity python=3.10
     conda activate selectivity
-    pip install numpy pandas scipy matplotlib openpyxl xlrd requests
+    pip install numpy pandas scipy matplotlib openpyxl xlrd requests pillow
 
 On Apple Silicon, set this before running any script:
 
@@ -266,6 +298,8 @@ floor, D4 for the entropy and Gini at baselines below the floor (sections 9 to
 Every other script in the table above runs the same way; SI Table S9 maps each reported result to its script.
 `additional_datasets_analysis.py` reads `anastassiadis_matrix.csv` / `metz_matrix.csv`
 if present, otherwise regenerates them from the raw `.xls` files.
+The Anastassiadis loader uses the shared `panel_curation.py` selection in both
+paths and validates cached target identities, compound order and values.
 `clinical_outcomes_correlation.py` requires `selectivity_outcomes_merged.csv`
 (see Data files above), already committed — it does not need internet access.
 

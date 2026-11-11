@@ -1,0 +1,86 @@
+
+Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (complete matrix, floor-coded entries included)
+        s_score entropy gini    ratio   
+s_score    1.000   0.344   0.963   0.563
+entropy    0.344   1.000   0.368   0.688
+gini       0.963   0.368   1.000   0.510
+ratio      0.563   0.688   0.510   1.000
+Davis floor-coded entries: 71.13%; Ka entropy with vs without them: Spearman 0.7946
+
+Davis (n=68): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
+        s_score entropy gini    ratio   
+s_score    1.000   0.738   0.963   0.563
+entropy    0.738   1.000   0.736   0.861
+gini       0.963   0.736   1.000   0.510
+ratio      0.563   0.861   0.510   1.000
+Klaeger compounds with no measured curated target (entropy undefined, set to 0): 6
+
+Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
+        s_score entropy gini    ratio   
+s_score    1.000   0.571   0.508   0.078
+entropy    0.571   1.000   0.530   0.657
+gini       0.508   0.530   1.000   0.655
+ratio      0.078   0.657   0.655   1.000
+
+Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries included)
+        s_score entropy gini    ratio   
+s_score    1.000  -0.597   0.508   0.078
+entropy   -0.597   1.000   0.077   0.648
+gini       0.508   0.077   1.000   0.655
+ratio      0.078   0.648   0.655   1.000
+
+Klaeger, the 200 compounds with an active kinase: manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries excluded)
+        s_score entropy gini    ratio   
+s_score    1.000   0.564   0.892   0.378
+entropy    0.564   1.000   0.782   0.916
+gini       0.892   0.782   1.000   0.635
+ratio      0.378   0.916   0.635   1.000
+
+Klaeger, the 200 compounds with an active kinase: manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-coded entries included)
+        s_score entropy gini    ratio   
+s_score    1.000  -0.412   0.892   0.378
+entropy   -0.412   1.000  -0.094   0.591
+gini       0.892  -0.094   1.000   0.635
+ratio      0.378   0.591   0.635   1.000
+
+Klaeger measured high-confidence cells on the curated panel: 4000; below the floor: 194 (in 84 compounds)
+
+Klaeger (n=222): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (every measured affinity retained at its value)
+        s_score entropy gini    ratio   
+s_score    1.000   0.558   0.508   0.078
+entropy    0.558   1.000   0.531   0.663
+gini       0.508   0.531   1.000   0.655
+ratio      0.078   0.663   0.655   1.000
+
+Klaeger, the 200 compounds with an active kinase: manuscript S/Gini/ratio vs. literal Ka-weighted entropy (every measured affinity retained at its value)
+        s_score entropy gini    ratio   
+s_score    1.000   0.558   0.892   0.378
+entropy    0.558   1.000   0.778   0.918
+gini       0.892   0.778   1.000   0.635
+ratio      0.378   0.918   0.635   1.000
+Spearman between the floor-excluded and measured-retained published entropy: all compounds 0.9987; active compounds 0.9996
+Klaeger published entropy, floor-excluded   : recovery p* = 200; mean Spearman at 50 targets = 0.6014
+Klaeger published entropy, measured-retained: recovery p* = 200; mean Spearman at 50 targets = 0.6025
+
+Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-imputed entries excluded: measured entries only)
+        s_score entropy gini    ratio   
+s_score    1.000   0.291   0.821   0.193
+entropy    0.291   1.000   0.385   0.758
+gini       0.821   0.385   1.000   0.155
+ratio      0.193   0.758   0.155   1.000
+
+Metz (n=704): manuscript S/Gini/ratio vs. literal Ka-weighted entropy (floor-imputed entries included)
+        s_score entropy gini    ratio   
+s_score    1.000   0.241   0.821   0.193
+entropy    0.241   1.000   0.342   0.742
+gini       0.821   0.342   1.000   0.155
+ratio      0.193   0.742   0.155   1.000
+
+Anastassiadis (n=178): manuscript S/entropy/ratio vs. native %inhibition Gini (no baseline subtraction)
+        s_score entropy gini    ratio   
+s_score    1.000   0.880   0.340   0.478
+entropy    0.880   1.000   0.629   0.524
+gini       0.340   0.629   1.000   0.326
+ratio      0.478   0.524   0.326   1.000
+
+Done: original-operationalization robustness check complete for all four datasets.

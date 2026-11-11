@@ -37,7 +37,8 @@ the profile can raise the score.
 
 Among the scores studied, only the gated entropy meets all four criteria and
 weights targets by affinity. Within the class of Proposition 2, the criteria
-leave only exponential weights, and D3 requires the scale to be at least the
+leave exponential weights and their equal-weight limit, and D3 requires a
+finite scale to be at least the
 distance between the floor and the activity threshold. The published
 entropy, with floor-coded pairs given zero weight, is a member of this family
 whose scale is smaller than this distance on these datasets, so it violates
@@ -72,8 +73,10 @@ Each recommendation follows from a result above.
         among themselves. 
   \item Fix the activity boundary in the analysis protocol and report how
         rankings change when it is moved, for example by each compound's rank
-        instability across the sweep. Rank instability is not a guide to
-        robustness across datasets.
+        instability across the sweep. Assess agreement across datasets
+        separately: the weak associations found here for aggregated
+        instability do not establish that every within-score sensitivity
+        diagnostic is uninformative across datasets.
   \item For small panels, report how many compounds remain scorable as well as
         how well the ranking of those compounds is recovered.
   \item When comparing studies that use different scores, fix the comparison
@@ -105,7 +108,9 @@ the same affinity distribution receive the same score whether their
 off-targets are inert or linked to a class toxicity, and an affinity alone does
 not establish whether a target is occupied at a tolerated dose. A selectivity
 score is at best a summary of the binding profile, to be weighed with
-target-specific liability knowledge and exposure modeling. Selectivity rankings
-of the approved Klaeger compounds were not associated with the proportions of
+target-specific liability knowledge and exposure modeling. In the exploratory
+analysis of 46 approved Klaeger compounds, we detected no statistically
+significant correlations between selectivity rankings and the proportions of
 their adverse-event reports that were serious, fatal or led to hospitalization
-(Supporting Information, Section~S7).
+(Supporting Information, Section~S7). This result does not establish an absence
+of clinically relevant associations.

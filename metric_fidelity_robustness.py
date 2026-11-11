@@ -89,7 +89,7 @@ for col, (name, M) in enumerate(datasets.items()):
 axes[0, 0].legend(fontsize=8, loc='lower right', frameon=False)
 plt.tight_layout()
 out = os.path.join(HERE, "metric_fidelity.png")
-plt.savefig(out, dpi=150, bbox_inches='tight')
+script_logging.save_figure(fig, out, bbox_inches='tight')
 print(f"\nSaved {out}")
 print("Both the weighting and the treatment of floor-coded entries change the rankings;")
 print("the negative Klaeger correlations come from the floor-coded entries.")

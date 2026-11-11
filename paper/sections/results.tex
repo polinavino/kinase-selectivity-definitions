@@ -132,8 +132,10 @@ coding untested pairs at the floor affects rankings.
 ratio agrees less with the other definitions than on the curated panel
 ($0.34$--$0.46$ against $0.51$--$0.56$, Supporting Information,
 Section~S1). Restoring the low-confidence Klaeger pairs shifts the
-all-compound Klaeger correlations by at most $0.08$ and the active-compound
-correlations by at most $0.01$. It leaves every $p^*$ of the recovery
+all-compound Klaeger correlations by at most $0.08$ and correlations among
+the 200 compounds active under both filters by about $0.006$. Restoring the
+fits makes two additional compounds eligible, increasing the active population
+to 202. It leaves every $p^*$ of the recovery
 analysis unchanged (Supporting Information, Section~S1).
 
 \paragraph{Effects of scoring against a different dataset versus a different measure.}
@@ -188,7 +190,7 @@ most unstable ratio ranking (Figure~\ref{fig:profiles}, left).
            GAK tied among 123 active targets. Right: PHA-665752, the most
            unstable compound overall ($\sigma = 16.4$), with one dominant target
            among 60 active targets. Dashed line: $\mathrm{p}K_d = 6$ activity
-           threshold. Dotted line: $\mathrm{p}K_d = 5$ assay floor.}
+           threshold. Dotted line: $\mathrm{p}K_d = 5$ coded floor.}
   \label{fig:profiles}
 \end{figure}
 
@@ -243,9 +245,11 @@ S-score with $\tau > x_0$, the entropy with $\beta = x_0$, the Gini and the
 published entropy violate D3. The other scores, including $P_{\max}$, satisfy
 it. Every score in the table satisfies D4, and so do $P_{\max}$ and the
 published entropy with floor-coded pairs given zero weight. D2 does not make
-a ranking independent of where the boundary is placed: for every score, moving
-the boundary across $B$ reverses at least $13.7\%$ of pairs on at least one
-dataset (Supporting Information, Table~S3).
+a ranking independent of where the boundary is placed. Every boundary
+parameter studied reverses compound pairs, but the magnitude depends on the
+dataset and score setting. For the ratio, the largest fraction across datasets
+is $3.0\%$ at $k = 1$, rising to $13.7\%$ at $k = 5$
+(Supporting Information, Table~S3).
 
 \begin{table}[h]
   \centering

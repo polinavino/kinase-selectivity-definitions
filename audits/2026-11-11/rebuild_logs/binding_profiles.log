@@ -1,0 +1,6 @@
+most stable           : Drug 66 (Nintedanib)  sigma=2.10  n_active=153  top1-top2 gap=0.087  top two: MEK5, BIKE
+most unstable         : Drug 41 (PHA-665752)  sigma=16.42  n_active=60  top1-top2 gap=2.181  top two: MET, SRPK1
+most ratio-sensitive  : Drug 60 (Fedratinib)  sigma=9.41  n_active=123  top1-top2 gap=0.000  top two: JAK2(JH1domain-catalytic), GAK
+compounds whose two best-bound constructs are the same gene: 0 of 68
+
+Saved binding_profiles.png

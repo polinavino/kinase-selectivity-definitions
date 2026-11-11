@@ -1,0 +1,172 @@
+[
+  {
+    "script": "curate_panels.py",
+    "exit_code": 0,
+    "seconds": 1.3
+  },
+  {
+    "script": "selectivity_analysis.py",
+    "exit_code": 0,
+    "seconds": 20.8
+  },
+  {
+    "script": "klaeger_analysis.py",
+    "exit_code": 0,
+    "seconds": 1.5
+  },
+  {
+    "script": "d2_near_tie_sensitivity.py",
+    "exit_code": 0,
+    "seconds": 0.6
+  },
+  {
+    "script": "metz_coverage.py",
+    "exit_code": 0,
+    "seconds": 1.2
+  },
+  {
+    "script": "dataset_descriptive_stats.py",
+    "exit_code": 0,
+    "seconds": 2.0
+  },
+  {
+    "script": "original_operationalization_robustness.py",
+    "exit_code": 0,
+    "seconds": 3.9
+  },
+  {
+    "script": "panel_size_analysis.py",
+    "exit_code": 0,
+    "seconds": 11.5
+  },
+  {
+    "script": "feature_placeholder_sensitivity.py",
+    "exit_code": 0,
+    "seconds": 1.4
+  },
+  {
+    "script": "candidate_validation.py",
+    "exit_code": 0,
+    "seconds": 14.0
+  },
+  {
+    "script": "klaeger_protein_kinases.py",
+    "exit_code": 0,
+    "seconds": 5.8
+  },
+  {
+    "script": "davis_klaeger_overlap.py",
+    "exit_code": 0,
+    "seconds": 0.5
+  },
+  {
+    "script": "family_alternatives.py",
+    "exit_code": 0,
+    "seconds": 1.4
+  },
+  {
+    "script": "davis_gene_level.py",
+    "exit_code": 0,
+    "seconds": 5.7
+  },
+  {
+    "script": "instability_by_family.py",
+    "exit_code": 0,
+    "seconds": 3.6
+  },
+  {
+    "script": "failure_mode_illustration.py",
+    "exit_code": 0,
+    "seconds": 2.9
+  },
+  {
+    "script": "d3_pair_reversals.py",
+    "exit_code": 0,
+    "seconds": 35.9
+  },
+  {
+    "script": "toc_graphic.py",
+    "exit_code": 0,
+    "seconds": 2.4
+  },
+  {
+    "script": "candidate_measure.py",
+    "exit_code": 0,
+    "seconds": 20.8
+  },
+  {
+    "script": "family_construction.py",
+    "exit_code": 0,
+    "seconds": 1.3
+  },
+  {
+    "script": "metric_fidelity_robustness.py",
+    "exit_code": 0,
+    "seconds": 4.4
+  },
+  {
+    "script": "platform_vs_definition.py",
+    "exit_code": 0,
+    "seconds": 1.3
+  },
+  {
+    "script": "additional_datasets_analysis.py",
+    "exit_code": 0,
+    "seconds": 4.6
+  },
+  {
+    "script": "klaeger_filter_sensitivity.py",
+    "exit_code": 0,
+    "seconds": 10.5
+  },
+  {
+    "script": "binding_profiles.py",
+    "exit_code": 0,
+    "seconds": 3.7
+  },
+  {
+    "script": "undefined_score_convention.py",
+    "exit_code": 0,
+    "seconds": 1.3
+  },
+  {
+    "script": "family_panelsize.py",
+    "exit_code": 0,
+    "seconds": 41.4
+  },
+  {
+    "script": "bosc_catds_comparison.py",
+    "exit_code": 0,
+    "seconds": 1.4
+  },
+  {
+    "script": "pstar_bar_sensitivity.py",
+    "exit_code": 0,
+    "seconds": 7.9
+  },
+  {
+    "script": "instability_predictor_candidates.py",
+    "exit_code": 0,
+    "seconds": 1.2
+  },
+  {
+    "script": "d4_entropy_vs_candidate.py",
+    "exit_code": 0,
+    "seconds": 9.7
+  },
+  {
+    "script": "panel_recovery.py",
+    "exit_code": 0,
+    "seconds": 80.3
+  },
+  {
+    "script": "clinical_outcomes_correlation.py",
+    "exit_code": 0,
+    "seconds": 1.3
+  },
+  {
+    "script": "claim_checks.py",
+    "exit_code": 0,
+    "seconds": 37.2
+  }
+]

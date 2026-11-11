@@ -141,7 +141,7 @@ for ax, (idx, title, color) in zip(axes, panels):
     sorted_desc = np.sort(profile)[::-1]
     ax.bar(range(len(sorted_desc)), sorted_desc, color=color, width=1.0)
     ax.axhline(ACTIVE_THRESHOLD, ls='--', color='black', lw=1, label='pKd=6 threshold')
-    ax.axhline(BASELINE, ls=':', color='gray', lw=1, label='assay floor')
+    ax.axhline(BASELINE, ls=':', color='gray', lw=1, label='coded floor')
     ax.set_ylim(4.8, 11)
     ax.set_title(f"{drug_name(idx)} — {title}\n({n_active} active kinases, {note})")
     ax.set_xlabel("Kinases (sorted by affinity)")
@@ -149,5 +149,5 @@ for ax, (idx, title, color) in zip(axes, panels):
     ax.legend(loc='upper right')
 
 plt.tight_layout()
-plt.savefig("binding_profiles.png", dpi=150, bbox_inches='tight')
+script_logging.save_figure(fig, "binding_profiles.png", bbox_inches='tight')
 print("\nSaved binding_profiles.png")

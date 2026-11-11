@@ -7,12 +7,19 @@ Motivated Properties for a Well-Formed Measure" to "Analysis Choices and
 Ranking Stability in Kinase Inhibitor Selectivity Scores", to describe the
 revised content.
 
+This study fits Molecular Informatics because it evaluates how computational
+summaries of kinase profiling data support compound comparisons in drug
+discovery, and provides empirical and formal guidance for interpreting those
+summaries.
+
 I am grateful to the reviewer for a second constructive assessment. In
 response, the manuscript has been revised as follows:
 
   - the manuscript is consolidated around one question, which analysis
-    choices change selectivity rankings, and shortened from about 11,100 to
-    about 10,100 words, with the full evidence for each check in a
+    choices change selectivity rankings, with a clear distinction between
+    the empirical comparison of implementation, eligibility and coverage,
+    and the conditional mathematical characterization. The full evidence
+    for each check is in a
     Supporting Information file that follows the same order;
 
   - the analyses now use one reference target per human protein kinase,
@@ -26,8 +33,8 @@ response, the manuscript has been revised as follows:
 
   - the criteria and the gated entropy are defined in Methods and
     evaluated together in Results, against simple comparators and the
-    partition index, and the claims are narrowed accordingly: moving the
-    activity boundary reorders compounds under every score, and the gated
+    partition index, and the claims are narrowed accordingly: the boundary
+    parameters studied can reorder compounds, and the gated
     entropy, now with exponential weights, is derived from the criteria
     within a stated class of scores, with a proved range for its scale, and
     is not an empirical improvement on simpler scores;

@@ -1,0 +1,30 @@
+{
+  "current_title": true,
+  "corresponding_author": true,
+  "tables": 4,
+  "figures": 3,
+  "editable_equations": 687,
+  "bibliography_entries": 23,
+  "figure_legends": [
+    "Figure 1. Rankings under association-constant weights (x-axis) against the baseline-subtracted log-affinity form (y-axis, median rank over the baseline sweep), on Davis and Klaeger. Top: entropy, for which association-constant weights are the published form. Bottom: Gini, shown for comparison. Its published form uses percent inhibition. Grey: floor-coded pairs kept at the floor. Blue: floor-coded pairs given zero weight. Spearman r above each panel.",
+    "Figure 2. Binding profiles of two Davis compounds, targets sorted by affinity. Left: fedratinib, the most ratio-sensitive compound, with JAK2 and GAK tied among 123 active targets. Right: PHA-665752, the most unstable compound overall (\u03c3=16.4), with one dominant target among 60 active targets. Dashed line: pKd=6 activity threshold. Dotted line: pKd=5 coded floor.",
+    "Figure 3. Recovery from random subpanels with D1 applied to every score, on all four datasets (50 subpanels per size). Top: coverage, the share of compounds scored on the full panel that are still scored. Middle: recoverability, the share of clearly separated full-panel pairs that are scored on the subpanel and keep their order. Bottom: mean Spearman correlation between subpanel and full-panel rankings over compounds scored on both, with \u00b11 standard deviation across subpanels shaded. Each score is compared with its own full-panel ranking. The published entropy and Pmax give floor-coded pairs zero weight and are not defined on Anastassiadis. Dashed line: 0.90."
+  ],
+  "unresolved_labels": [],
+  "missing_internal_targets": [],
+  "abstract_characters": 982,
+  "toc_words": 64,
+  "source_hashes": {
+    "main.tex": "176c8d76165fea32077a07e2b75c0eb0ba7f8ab63eba10b9d888ed422399920a",
+    "sections/abstract.tex": "320d4911dcb7c170c57ff3f3787930c912c07a61935d2c1ab7ef6447463c2372",
+    "sections/introduction.tex": "d4e5fbf49a3d4ccea1dbfa9000800e4904900ea73e56244085e83a9db8a75ca2",
+    "sections/methods.tex": "c60052ab0a315281d88c5cef2c3d51301eaa81fbf38059544f9e61fc90dced13",
+    "sections/results.tex": "847e33fbfeea7fefa4f3921ddc4695edec7f6a4d4209b4c21cc9b78a630047f7",
+    "sections/discussion.tex": "9fd25339e317a9c5d8b2c796c821623d76cdf76a2963463b48a26637f2c12a8e",
+    "sections/conclusion.tex": "6a7bb0e74c8aa0e63e7c3fde6222f672557a3b0b805d1d11fd19bd8403040e61",
+    "references.bib": "314661d8473459ccf77aa262729ba0b46e203c7f33548de1abcdd41a93833172",
+    "supporting_information.tex": "52499689a62b1f12e3dfbdb4d7e5cd3faf750d5eda4693ef615e473bb1803159",
+    "response_to_reviewers_round2.txt": "f0151bc761b9b876a67aed7d03e88641ed6e0811328de28cdfbdb4b78f08e05e",
+    "cover_letter.txt": "f5d875980cda46fa889a6c9b4127daac697c43e182e1675f641d55714274225d"
+  }
+}

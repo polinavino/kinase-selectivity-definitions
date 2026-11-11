@@ -1,11 +1,11 @@
 """
-Sensitivity of the Table 2 instability predictors to the placeholder value given
+Sensitivity of the SI Table S4 instability predictors to the placeholder value given
 to undefined profile features.
 
 The skewness of a compound's active affinities is undefined with fewer than three
 active kinases, and their standard deviation and range with fewer than two.
 instability_by_family.py assigns these compounds the value 0 (the vertical
-clusters at exactly zero in Figure 3). Here each such correlation is recomputed
+clusters at exactly zero in SI Figure S3). Here each such correlation is recomputed
 over only the compounds for which the feature is defined, to confirm that the
 reported associations do not depend on that placeholder.
 
@@ -66,7 +66,7 @@ FEATURES = {'active_std': 2, 'active_range': 2, 'active_skew': 3}
 
 
 def run(M, label):
-    # ranks among the compounds with an active kinase, as in Table 2 (instability_by_family.py)
+    # ranks among the compounds with an active kinase, as in SI Table S4 (instability_by_family.py)
     act = (M > ACTIVE_THRESHOLD).any(1)
     MA = M[act]
     inst_a = {
