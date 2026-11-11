@@ -165,16 +165,17 @@ FAM_NAME = {'s_score': 'S-score', 'entropy': 'Entropy', 'gini': 'Gini', 'ratio':
 FEAT_NAME = {'n_active': 'number of active kinases', 'top1_top2_gap': 'top1-top2 gap (pKd)',
              'active_std': 'active-affinity std (pKd)', 'active_range': 'active-affinity range (pKd)',
              'top2_pkd': 'second-ranked pKd', 'active_skew': 'active-affinity skewness'}
-fig, axes = plt.subplots(1, 4, figsize=(20, 5))
-for ax, fam in zip(axes, families):
+plt.rcParams.update({'font.size': 13, 'axes.titlesize': 14})
+fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+for ax, fam in zip(axes.ravel(), families):
     col, r, p = best[fam]
     ax.scatter(feat_df[col].values[mask], instability[fam][mask],
                color=colors[fam], edgecolors='white', linewidths=0.5, alpha=0.8, s=60)
     ax.set_title(f"{FAM_NAME[fam]}\nr={r:.2f}, " + ("p<0.001" if p < 0.001 else f"p={p:.3f}"))
     ax.set_xlabel(FEAT_NAME[col])
     ax.set_ylabel("Rank std")
-fig.suptitle("Within-definition rank instability against its most strongly correlated feature "
-             "(Klaeger, compounds with an active kinase, ranked among themselves)", fontsize=14)
+fig.suptitle("Within-definition instability and profile features\n"
+             "Klaeger: active compounds ranked among themselves", fontsize=14)
 plt.tight_layout(rect=[0, 0, 1, 0.96])
 script_logging.save_figure(fig, "instability_by_family.png", bbox_inches='tight')
 print("\nSaved instability_by_family.png")

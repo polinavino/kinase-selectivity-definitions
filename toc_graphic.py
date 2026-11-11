@@ -139,7 +139,7 @@ GRAYS = ["#ecebe8", "#c9c8c3", "#a3a29c", "#7d7c76", "#585752", "#3a3936"]
 W, H = 5.0, 5.6   # cm; the width is fixed by the journal
 fig = plt.figure(figsize=(W * CM, H * CM))
 axh = fig.add_axes([0.25, 0.655, 0.72, 0.23])
-axr = fig.add_axes([0.25, 0.14, 0.72, 0.32])
+axr = fig.add_axes([0.25, 0.12, 0.72, 0.29])
 
 # Top: the six distinct pairs (lower triangle), log-affinity entropy and Gini.
 from matplotlib.colors import LinearSegmentedColormap
@@ -174,7 +174,7 @@ axr.set_ylabel("Spearman with\nfull-panel ranking", labelpad=1)
 for s in ("top", "right"):
     axr.spines[s].set_visible(False)
 fig.text(0.5, 0.565, "Recovery from random subpanels\n(scorable compounds, Davis)", ha="center", va="top", fontsize=6.5)
-fig.text(0.5, 0.485,
+fig.text(0.5, 0.465,
          f"At 50 targets, one-hit coverage: {50 / Md.shape[1]:.0%}",
          ha="center", va="top", fontsize=5.5)
 

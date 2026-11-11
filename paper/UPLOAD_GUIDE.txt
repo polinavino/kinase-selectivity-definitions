@@ -3,11 +3,15 @@ Which file to upload in each slot
 ========================================================
 
 MAIN DOCUMENT (Word, with tracked changes)
-  Your Google-Docs tracked-changes file (the full manuscript text with redline
-  markup vs. the reviewed version).
-  The exact reviewed baseline must be confirmed before generating a redline;
-  historical Word filenames in archive/ do not establish that baseline.
-  - This is the marked-up Main Document.
+  molecular_informatics_changes_since_2026-09-23.docx
+  Comparison against the September 23 repository snapshot (commit 96a38d7),
+  the latest committed version before the author-reported September 26
+  submission. Baseline copy: submission_exports/submission_snapshot_2026-09-23.docx.
+  This baseline was recovered from Git, rather than downloaded from the journal.
+  The comparison is for reviewing changes. Use the clean revised DOCX as the
+  final manuscript: LibreOffice does not reliably accept/reject math-object
+  revisions. Explicit blue/red math formatting is included for Word, but is
+  not rendered reliably by LibreOffice either.
   - Keep the figure and table CAPTIONS in it. Figures and tables themselves are
     uploaded separately (see below); at revision Molecular Informatics wants
     them as separate files, so you may either leave them embedded for the
@@ -15,7 +19,7 @@ MAIN DOCUMENT (Word, with tracked changes)
     "[Table N here]" callout. Leaving them embedded is the safer default.
 
 CLEAN MAIN DOCUMENT (Word, no tracked changes) — if the system asks for one
-  molecular_informatics_submission.docx
+  molecular_informatics_submission_revised_2026-11-11_2.docx
 
 AUTHOR RESPONSE LETTER
   response_to_reviewers_round2.txt  (paste into the response box, or upload as-is)
@@ -37,14 +41,15 @@ TABLES  (one file per table, separate slot each)  -> submission_tables/
   table3.tex   = Spearman correlations between definitions, including the
                  published entropy
   table4.tex   = the four criteria for each score
-  Table1.docx through Table4.docx are current editable Word copies generated
-  from the same source as the manuscript. PNG copies of all figures are also
+  Current editable Word copies are in submission_exports/Table1.docx through
+  Table4.docx, generated from the same source as the manuscript. Older Word
+  copies in submission_tables/ are preserved and are not the current uploads. PNG copies of all figures are also
   available for systems that require them.
 
 GRAPHICAL ABSTRACT / TOC
   Image:  figures/toc_graphic.png   (5.0 x 5.6 cm at 600 dpi; rebuild with toc_graphic.py)
   Text:   graphical_abstract_text.txt   (<= 80 words / 3 sentences)
-  Combined Word entry: graphical_abstract.docx
+  Combined Word entry: submission_exports/graphical_abstract.docx
 
 SUPPORTING INFORMATION
   supporting_information.pdf (compiles with: latexmk -pdf supporting_information.tex)
@@ -70,3 +75,9 @@ Notes
   were verified against the Wiley catalogue. The author postal address is
   deferred as requested. Final upload roles and any marked-up version must
   follow the manuscript-specific editorial instructions.
+
+RENDER AND FRESHNESS CHECKS
+  molecular_informatics_submission_revised_2026-11-11_2_rendered.pdf is the visual proof
+  of the exact current DOCX (hashes in render_checks.json). It is for review.
+  Run python3 check_submission.py after rebuilding and rendering.
+  Audit evidence, generated checks and render proofs are local files ignored by Git.

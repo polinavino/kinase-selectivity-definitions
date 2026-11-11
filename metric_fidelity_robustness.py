@@ -67,6 +67,8 @@ datasets['Klaeger'] = pd.read_csv(os.path.join(HERE, "klaeger_matrix.csv"), inde
 
 base = np.arange(5.0, 6.75, 0.25)
 print(f"{'Dataset':10s}{'floor-coded entries':>22s}{'entropy: r(literal, manuscript)':>34s}{'Gini: r(literal, manuscript)':>32s}")
+plt.rcParams.update({'font.size': 14, 'axes.titlesize': 13,
+                     'xtick.labelsize': 12, 'ytick.labelsize': 12})
 fig, axes = plt.subplots(2, 2, figsize=(10, 8.5))
 STYLE = {True: dict(color='#888888', marker='o', label='floor-coded pairs at the floor'),
          False: dict(color='#2a78d6', marker='s', label='floor-coded pairs given zero weight')}
@@ -83,10 +85,10 @@ for col, (name, M) in enumerate(datasets.items()):
         axes[1, col].scatter(gini_lit, gini_man, s=14, alpha=0.6, edgecolors='white', linewidths=0.3, **STYLE[fw])
     for row, what in enumerate(("entropy", "Gini")):
         ax = axes[row, col]
-        ax.set_xlabel(f"{what} rank: association constants (1/Kd)")
-        ax.set_ylabel(f"{what} rank: log-affinity (pKd - baseline)")
+        ax.set_xlabel("Association-constant rank")
+        ax.set_ylabel("Log-affinity rank")
         ax.set_title(f"{name}: {what} ranking\nSpearman r = {r[True][row]:.2f} (grey), {r[False][row]:.2f} (blue)")
-axes[0, 0].legend(fontsize=8, loc='lower right', frameon=False)
+axes[0, 0].legend(fontsize=11, loc='lower right', frameon=False)
 plt.tight_layout()
 out = os.path.join(HERE, "metric_fidelity.png")
 script_logging.save_figure(fig, out, bbox_inches='tight')

@@ -224,8 +224,8 @@ ORDER = ["candidate", "entropy x0", "entropy tau*", "S-score", "Gini", "ratio", 
 # plotted: the entropy and Gini at x0 lie on the curve of the S-score at x0
 # (differences printed above), so they are not drawn
 PLOT = ["S-score x0", "candidate", "S-score", "entropy tau*", "ratio", "entropy Ka", "partition Ka"]
-plt.rcParams.update({"font.size": 13, "axes.titlesize": 13, "axes.labelsize": 13,
-                     "xtick.labelsize": 11, "ytick.labelsize": 11})
+plt.rcParams.update({"font.size": 14, "axes.titlesize": 14, "axes.labelsize": 14,
+                     "xtick.labelsize": 12, "ytick.labelsize": 12})
 LABEL = {"candidate": "gated entropy", "entropy x0": "entropy, β = x₀", "entropy tau*": "entropy, β = τ*",
          "S-score": "S-score, τ = τ* (= active count)", "Gini": "Gini, β = x₀", "ratio": "ratio R(1)",
          "S-score x0": "S-score, τ = x₀ (≈ entropy, Gini at x₀)", "entropy Ka": "entropy, published (1/Kd)",
@@ -261,7 +261,7 @@ for c, (ds, (sizes, cover, res)) in enumerate(curves.items()):
         if r == 2:
             ax.set_xlabel("targets")
 h, l = axes[1, 0].get_legend_handles_labels()
-fig.legend(h, l, loc="lower center", ncol=3, fontsize=12, frameon=False, bbox_to_anchor=(0.5, -0.09))
+fig.legend(h, l, loc="lower center", ncol=3, fontsize=13, frameon=False, bbox_to_anchor=(0.5, -0.09))
 plt.tight_layout()
 script_logging.save_figure(fig, "panel_recovery.png", bbox_inches="tight")
 print("\nSaved panel_recovery.png")

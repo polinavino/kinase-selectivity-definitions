@@ -127,6 +127,8 @@ print(f"Boundary sweep: mean instability over B=[5.0,6.0] -- entropy (baseline s
       f"{cand_floor_instab[has_active].mean():.3f} ({ratio_gate:.2f}x the entropy's)")
 
 # ---------------- figure ----------------
+plt.rcParams.update({'font.size': 14, 'axes.titlesize': 14,
+                     'xtick.labelsize': 12, 'ytick.labelsize': 12})
 fig, (axL, axR) = plt.subplots(1, 2, figsize=(11, 4.5))
 
 bars = axL.bar(['No active\nkinase', 'Has an active\nkinase'],
@@ -134,22 +136,22 @@ bars = axL.bar(['No active\nkinase', 'Has an active\nkinase'],
 bars[0].set_hatch('///'); bars[0].set_edgecolor('white')
 for b, v in zip(bars, [sigma_zero, sigma_active]):
     axL.text(b.get_x() + b.get_width() / 2, v + 1.5, f"{v:.0f}", ha='center', fontsize=11)
-axL.set_ylabel('Rank std across existing definitions\' parameter sweeps')
-axL.set_title('D1: rank instability by activity status (Klaeger)')
+axL.set_ylabel('Aggregated rank std')
+axL.set_title('Activity eligibility (Klaeger)')
 axL.text(0, sigma_zero + 9, 'not scored\nunder D1',
-          ha='center', fontsize=8.5, color='C1')
+          ha='center', fontsize=12, color='C1')
 axL.set_ylim(0, max(sigma_zero, sigma_active) * 1.35)
 
 axR.scatter(n_active[has_active], ent_instab[has_active], s=16, color='C1', alpha=0.6,
             label=f'entropy, baseline swept (r={r_ent:+.2f})')
 axR.scatter(n_active[has_active], cand_floor_instab[has_active], s=16, color='C2', alpha=0.6,
             label=f'gated entropy, gate swept (r={r_cand_floor:+.2f})')
-axR.set_xlabel('n_active (kinases bound)'); axR.set_ylabel('Rank std across the swept parameter')
-axR.set_title('Rank instability when the boundary moves (Klaeger)')
-axR.legend(fontsize=7.5, loc='upper right'); axR.set_ylim(bottom=-2)
+axR.set_xlabel('Active kinases'); axR.set_ylabel('Within-score rank std')
+axR.set_title('Boundary sensitivity (Klaeger)')
+axR.legend(fontsize=11, loc='upper right'); axR.set_ylim(bottom=-2)
 axR.text(0.97, 0.55, f"mean: entropy {ent_instab[has_active].mean():.1f}, "
           f"gated entropy {cand_floor_instab[has_active].mean():.1f}",
-          ha='right', va='top', fontsize=7.5, transform=axR.transAxes)
+          ha='right', va='top', fontsize=12, transform=axR.transAxes)
 
 plt.tight_layout()
 script_logging.save_figure(fig, 'failure_modes.png', bbox_inches='tight')

@@ -1,9 +1,0 @@
-Dataset      floor-coded entries   entropy: r(literal, manuscript)    Gini: r(literal, manuscript)
-Davis               at the floor                      0.3681                          0.0119
-Davis                zero weight                      0.7354                          0.8293
-Klaeger             at the floor                     -0.3108                         -0.2036
-Klaeger              zero weight                      0.7858                          0.7088
-
-Saved /Users/polina/Documents/BioInfStuff/selectivity/metric_fidelity.png
-Both the weighting and the treatment of floor-coded entries change the rankings;
-the negative Klaeger correlations come from the floor-coded entries.

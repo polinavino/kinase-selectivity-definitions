@@ -27,6 +27,7 @@ gini       0.586   0.711   1.000   0.633
 ratio      0.124   0.368   0.633   1.000
 
 Max absolute change in any off-diagonal cell: 0.078
+Active compounds under high-confidence filter: 200; under relaxed filter: 202; newly eligible: Brivanib_alaninate, TG-100115
 
 Compounds with an active kinase under both filters (200), re-ranked among themselves: max absolute change in any off-diagonal cell: 0.006
 

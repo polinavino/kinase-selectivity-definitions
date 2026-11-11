@@ -27,12 +27,14 @@ def main():
     checks = json.loads((HERE / "submission_checks.json").read_text())
     for name, expected in checks["source_hashes"].items():
         assert digest(HERE / name) == expected, f"Build is stale: {name}"
-    files = read_docx(HERE / "molecular_informatics_submission.docx")
+    manuscript = HERE / checks['document']
+    exports = HERE / checks['exports_directory']
+    files = read_docx(manuscript)
     document = ET.fromstring(files["word/document.xml"])
-    validate_main(HERE / "molecular_informatics_submission.docx")
+    validate_main(manuscript)
     tables = document.findall('.//w:tbl', NS)
     for number, table in enumerate(tables, 1):
-        standalone = ET.fromstring(read_docx(HERE / f"submission_tables/Table{number}.docx")["word/document.xml"])
+        standalone = ET.fromstring(read_docx(exports / f"Table{number}.docx")["word/document.xml"])
         assert tokens(table) == tokens(standalone.find('.//w:tbl', NS)), f"Stale Table {number}"
     relationships = ET.fromstring(files['word/_rels/document.xml.rels'])
     rel = {r.get('Id'): r.get('Target') for r in relationships}
@@ -72,7 +74,11 @@ def main():
             assert set(group.split(',')) <= keys, group
     for name in ('main', 'supporting_information'):
         log = (HERE / (name + '.log')).read_text(errors='replace')
-        assert not re.search(r'undefined|Overfull|^! ', log, flags=re.M), f'Check {name}.log'
+        assert not re.search(r'undefined|Overfull|Float too large|^! ', log, flags=re.M), f'Check {name}.log'
+    if (HERE/'render_checks.json').exists():
+        for rendered in json.loads((HERE/'render_checks.json').read_text()):
+            assert digest(HERE/rendered['document']) == rendered['document_sha256'], 'Rendered document is stale'
+            assert digest(HERE/rendered['pdf']) == rendered['pdf_sha256'], 'Rendered PDF is stale'
     inventory = []
     for directory, dirs, names in os.walk(ROOT):
         dirs[:] = sorted(d for d in dirs if d not in {'.git', '__pycache__', '.vscode', '.claude', '.pytest_cache'})
@@ -89,7 +95,7 @@ def main():
             elif name == 'reviewer1_round2_review.txt':
                 kind = 'review_input'
             inventory.append(dict(path=str(relative), role=kind, bytes=path.stat().st_size, sha256=digest(path)))
-    output = dict(document_checks=validate_main(HERE/'molecular_informatics_submission.docx'),
+    output = dict(document_checks=validate_main(manuscript),
                   figure_checks=figure_checks, files=inventory)
     (HERE / 'submission_manifest.json').write_text(json.dumps(output, indent=2) + '\n')
     print(f"Consistency checks passed; inventoried {len(inventory)} files. Historical files are explicitly classified.")

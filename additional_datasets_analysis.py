@@ -180,22 +180,26 @@ pd.DataFrame(rows).to_csv(os.path.join(HERE, "cross_dataset_summary.csv"), index
 print("\nSaved cross_dataset_summary.csv")
 
 # ------------------------------- figure ------------------------------------
-fig, axes = plt.subplots(2, 4, figsize=(16, 8.4))
+fig, axes = plt.subplots(4, 2, figsize=(9, 10.8))
 labels = ['S', 'Ent', 'Gini', 'Ratio']
-for row, (key, what) in enumerate((("corr_act", "compounds with an active kinase"), ("corr", "all compounds"))):
-    for ax, r in zip(axes[row], results):
+for row, r in enumerate(results):
+    for col, (key, what) in enumerate((("corr_act", "active"), ("corr", "all compounds"))):
+        ax = axes[row, col]
         C = r[key]
         im = ax.imshow(C, vmin=0, vmax=1, cmap='RdYlGn')
         ax.set_xticks(range(4)); ax.set_yticks(range(4))
-        ax.set_xticklabels(labels, fontsize=9); ax.set_yticklabels(labels, fontsize=9)
+        ax.set_xticklabels(labels, fontsize=11); ax.set_yticklabels(labels, fontsize=11)
         for i in range(4):
             for j in range(4):
-                ax.text(j, i, f"{C[i, j]:.2f}", ha='center', va='center', fontsize=8)
+                ax.text(j, i, f"{C[i, j]:.2f}", ha='center', va='center', fontsize=11)
         n = r['n_act'] if key == "corr_act" else r['n_cpd']
-        ax.set_title(f"{r['label']}\n{what}: {n}×{r['n_kin']}", fontsize=9)
-fig.colorbar(im, ax=axes, fraction=0.013, pad=0.02, label='Spearman r')
-fig.suptitle("Spearman correlations between median rankings of the four definitions "
-             "(top: compounds with an active kinase, ranked among themselves; bottom: all compounds)", fontsize=11)
+        ax.set_title(f"{r['label'].split(' ')[0]} ({n}×{r['n_kin']})", fontsize=11)
+fig.subplots_adjust(left=0.10, right=0.88, bottom=0.04, top=0.88, hspace=0.58, wspace=0.4)
+color_axis = fig.add_axes([0.91, 0.30, 0.015, 0.40])
+fig.colorbar(im, cax=color_axis, label='Spearman r')
+fig.suptitle("Spearman correlations between median rankings", fontsize=13, y=0.995)
+fig.text(0.31, 0.95, "Active compounds", ha='center', fontsize=13)
+fig.text(0.70, 0.95, "All compounds", ha='center', fontsize=13)
 out = os.path.join(HERE, "cross_dataset_correlations.png")
 script_logging.save_figure(fig, out, bbox_inches='tight')
 print(f"Saved {out}")

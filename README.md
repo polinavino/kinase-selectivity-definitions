@@ -125,22 +125,34 @@ formulas disagree; it does not single out one formula.
 
 ## Current submission files
 
-The current clean manuscript is `paper/molecular_informatics_submission.docx`.
+The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-11_2.docx`.
 The source is `paper/main.tex` plus `paper/sections/`, and the current response
 is `paper/response_to_reviewers_round2.txt`. Earlier submissions and comparisons
-are preserved under `paper/archive/`; earlier audit-only draft assets are
-under `audits/2026-11-11/archive/` and are not current upload files.
+are preserved under `paper/archive/`. Existing Word documents are preserved;
+rebuilds create a new dated manuscript filename.
 
 After changing manuscript text, run:
 
     python3 paper/build_submission.py
 
-This updates both PDFs, the main Word document, all four standalone Word and
-LaTeX tables, the plain abstract, figure legends and combined graphical
-abstract. `paper/submission_checks.json` records document checks and source
+This updates both PDFs, creates a new dated main Word document, and regenerates
+the standalone Word tables and graphical abstract under the ignored
+`paper/submission_exports/` directory. It also updates LaTeX tables, the plain
+abstract and figure legends. `paper/submission_checks.json` records document checks and source
 hashes. The Word file uses editable equations and tables. Its figure legends
 are collected after the references, and the figures remain embedded near
 their first discussion. The author postal address remains deferred.
+
+With LibreOffice and Poppler installed, render and check the upload files with:
+
+    python3 paper/render_docx.py
+    python3 paper/check_submission.py
+
+Rendered PDFs are visual QA copies. `paper/render_checks.json` ties each
+rendered PDF to the exact Word file checked; `paper/submission_manifest.json`
+inventories current and historical files and verifies figure/table copies.
+These generated checks, visual proofs and local audit evidence are ignored
+by Git; manuscript sources, data, figures and reproducible build tools stay tracked.
 
 Figures must be rebuilt from their analysis scripts after changes to the data
 or scoring code. `script_logging.save_figure` exports high-resolution PNG and
@@ -207,9 +219,10 @@ Raw supplementary files (downloaded programmatically):
 adverse-event API by `faers_pull.py` and is fully script-reproducible (though
 report counts grow over time, so re-running will not reproduce the exact
 frozen numbers in the paper). `selectivity_outcomes_merged.csv` holds
-the frozen FAERS counts and rates; its median-rank columns are superseded,
-because `clinical_outcomes_correlation.py` takes each drug's current ranks from
-`klaeger_selectivity_results.csv`. `bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
+the frozen FAERS counts and rates; `clinical_outcomes_correlation.py`
+refreshes its derived ranks, instability and active-target counts from the
+current Klaeger analysis without updating the report snapshot.
+`bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
 the permanent, reproducible scripts for the two correlation analyses computed
 from these files and cited in the Discussion/Limitations sections.
 
@@ -307,7 +320,7 @@ paths and validates cached target identities, compound order and values.
 
 | Result | Value |
 |--------|-------|
-| Two-family: ratio vs. distribution family, all compounds | r = 0.51–0.56 (Davis), 0.08–0.66 (Klaeger), 0.48–0.55 (Anastassiadis), 0.14–0.19 (Metz) |
+| Ratio vs. S-score/log-affinity entropy/Gini, all compounds | r = 0.51–0.56 (Davis), 0.08–0.66 (Klaeger), 0.48–0.55 (Anastassiadis), 0.14–0.19 (Metz) |
 | Within-distribution-family correlation, compounds with an active kinase | r = 0.81–0.999 |
 | Ratio vs. entropy correlation (Davis / Klaeger) | r = 0.513 / 0.344 |
 | top1–top2 gap vs. ratio instability (Klaeger, active compounds ranked among themselves) | r = −0.275, p < 0.001 |

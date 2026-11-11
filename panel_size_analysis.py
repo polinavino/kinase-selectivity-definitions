@@ -97,7 +97,9 @@ order = ['entropy', 'gini', 's_score', 'ratio']
 NAME = {'entropy': 'entropy', 'gini': 'Gini', 's_score': 'S-score', 'ratio': 'ratio'}
 colors = {'entropy': 'darkorange', 'gini': 'green', 's_score': 'steelblue', 'ratio': 'crimson'}
 
-fig, axes = plt.subplots(2, 2, figsize=(14, 10), squeeze=False)
+plt.rcParams.update({'font.size': 14, 'axes.titlesize': 14,
+                     'xtick.labelsize': 12, 'ytick.labelsize': 12})
+fig, axes = plt.subplots(2, 2, figsize=(10, 8), squeeze=False)
 for ax, ds in zip(axes.ravel(), DATASETS):
     M = load_matrix(ds)
     n_drugs, n_kinases = M.shape
@@ -121,9 +123,9 @@ for ax, ds in zip(axes.ravel(), DATASETS):
                         [m + s for m, s in zip(means, stds)], alpha=0.15, color=colors[d])
     ax.axhline(0.90, color='black', linestyle='--', linewidth=1)
     ax.set_xlabel('Panel size (number of kinases)')
-    ax.set_ylabel('Spearman r vs full panel ranking')
+    ax.set_ylabel('Spearman with full panel')
     ax.set_title(f"{ds['name']} ({n_drugs} cpd $\\times$ {n_kinases} kin)")
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=11)
     ax.set_ylim(-0.2, 1.01)
 
 fig.suptitle('Rank stability as a function of kinase panel size (50 subsamples per size)',

@@ -32,8 +32,10 @@ def analyze():
     # The FAERS counts in the merged file are a frozen snapshot, but its rank
     # columns are not: take each drug's median ranks from the current Klaeger
     # analysis (klaeger_analysis.py) so the correlations track the paper.
-    ranks = pd.read_csv(f"{HERE}/klaeger_selectivity_results.csv")[['drug'] + RANK_COLS]
-    so = so.drop(columns=RANK_COLS).merge(ranks, on='drug', how='left')
+    ranks = pd.read_csv(f"{HERE}/klaeger_selectivity_results.csv")[['drug', 'rank_std'] + RANK_COLS]
+    so = so.drop(columns=RANK_COLS + ['rank_std', 'n_active'], errors='ignore').merge(ranks, on='drug', how='left')
+    panel = pd.read_csv(f"{HERE}/klaeger_matrix.csv", index_col=0)
+    so['n_active'] = so['drug'].map((panel > 6.0).sum(axis=1))
     assert so[RANK_COLS].notna().all().all(), "a FAERS drug is missing from klaeger_selectivity_results.csv"
     merged = so
 
@@ -51,6 +53,9 @@ def analyze():
 
 if __name__ == "__main__":
     df, merged, r_tot, p_tot = analyze()
+    # Refresh only the derived selectivity fields; retain the frozen report
+    # totals and rates rather than querying a different live FAERS snapshot.
+    merged.to_csv(f"{HERE}/selectivity_outcomes_merged.csv", index=False)
     df.to_csv(f"{HERE}/clinical_outcomes_correlation.csv", index=False)
     print(df.to_string(index=False))
     print(f"\nmax |r| across all rate x rank pairs = {df['r'].abs().max():.3f}, "

@@ -394,20 +394,13 @@ concern a ratio of binding constants.
 
 
 
-5. Final consistency audit. We have narrowed the reversal statement: the ratio
-reaches 13.7% only at k = 5; at k = 1 its largest fraction across datasets is
-3.0%. The clinical analysis is now described as detecting no statistically
-significant associations in 46 drugs, without inferring that clinically
-relevant associations are absent. The filter-sensitivity summary explicitly
-uses the 200 compounds active under both filters. A missing-cache path that
-could rebuild Anastassiadis without target curation has been corrected and
-regression-tested; it did not affect the committed 291-target analysis. All
-local analysis outputs, manuscript figures, standalone tables and submission
-text have been rebuilt from the current source. Historical submissions are
-kept separately, and the clean Word document is generated from that source.
-The keywords now include Chemoinformatics and Drug discovery, verified against
-Wiley's catalogue. Zaman's given name in the 2011 entropy reference is
-corrected to Guido.
+5. Other corrections. The ratio reaches 13.7% reversals at k = 5; its maximum
+at k = 1 is 3.0%. Clinical null results no longer imply absence of relevant
+associations, and filter sensitivity is explicitly assessed on the 200
+compounds active under both filters. We fixed and regression-tested an
+Anastassiadis cache-rebuild error; the committed 291-target analysis was
+unaffected. Figures and tables were regenerated, the keywords checked against
+Wiley's catalogue, and Zaman's given name corrected to Guido.
 
 
 I hope the manuscript is now suitable for publication in Molecular

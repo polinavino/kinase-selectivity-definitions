@@ -59,20 +59,21 @@ diagnostics. Motivated by these sensitivities, we propose four design and
 reporting criteria for a selectivity measure: activity eligibility,
 locality of the activity boundary, monotonicity when a weakly bound kinase is
 added, and orientation on profiles with equally strong targets. We evaluate
-the existing scores and simple comparators against them. Our second contribution
+the existing scores and simple comparators against them.
+
+Our second contribution
 is a conditional characterization of gated entropies that satisfy all four.
 Among scores that weight each target by
 its distance above the activity boundary and combine the weights with Shannon's
-grouping rule, the criteria leave exponential weights, including the
-equal-weight limit. The exponential family has a single parameter, the
+grouping rule, the criteria allow exponential weights (including the limiting case
+in which every target above the boundary receives the same weight). At finite
+scales, the exponential family has a single parameter, the
 \emph{scale}, the readout difference over which a weight grows by a factor
 of $e$. Monotonicity fixes the range of the scale. Within that range, the
 scale can be chosen so that the score recovers rankings from small panels as
 fast as the share of targets with detected binding, but the construction
 guarantees do not confer an empirical recovery advantage. Stating such criteria
 follows the axiomatic approach Shannon\cite{Shannon1948} used for entropy.
-The empirical comparisons and the formal characterization answer distinct
-questions: how rankings behave on measured panels, and what follows from
-explicit requirements on a score. Together they support reporting the score
+Together these results support reporting the score
 implementation, activity eligibility, boundary sensitivity and compound
 coverage whenever selectivity rankings are compared.

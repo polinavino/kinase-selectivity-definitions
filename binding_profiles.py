@@ -134,6 +134,8 @@ panels = [
     (most_unstable,  "broad, one dominant target", '#eb6834'),
 ]
 
+plt.rcParams.update({'font.size': 16, 'axes.titlesize': 15,
+                     'xtick.labelsize': 14, 'ytick.labelsize': 14})
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 for ax, (idx, title, color) in zip(axes, panels):
     profile, s, n_active = describe(idx)

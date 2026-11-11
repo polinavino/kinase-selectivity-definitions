@@ -173,6 +173,9 @@ print("\nMax absolute change in any off-diagonal cell: "
 act_h = (M_high.values > 6.0).any(1)
 act_r = (M_relaxed.values > 6.0).any(1)
 both_act = act_h & act_r
+print(f"Active compounds under high-confidence filter: {int(act_h.sum())}; "
+      f"under relaxed filter: {int(act_r.sum())}; newly eligible: "
+      + ", ".join(M_high.index[act_r & ~act_h]))
 ch_a, cr_a = correlations(M_high.values[both_act]), correlations(M_relaxed.values[both_act])
 print(f"\nCompounds with an active kinase under both filters ({both_act.sum()}), re-ranked among themselves: "
       f"max absolute change in any off-diagonal cell: "

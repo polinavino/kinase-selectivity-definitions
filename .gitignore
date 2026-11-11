@@ -20,6 +20,17 @@ paper/*.snm
 paper/*.vrb
 paper/_minted-*
 paper/sections/*.aux
+paper/submission_tables/*.aux
+paper/submission_tables/*.log
+paper/submission_tables/*.pdf
+
+# Local audit evidence and reproducible submission/preview artifacts
+audits/
+paper/submission_exports/
+paper/*_rendered.pdf
+paper/submission_checks.json
+paper/submission_manifest.json
+paper/render_checks.json
 
 # Keep the PDF
 !paper/main.pdf
