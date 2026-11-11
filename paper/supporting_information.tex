@@ -77,11 +77,11 @@ ratio than with the S-score on the curated panel.
 \begin{table}[h]
 \centering
 \caption{Main Davis and Klaeger results on the released and curated panels.
+``Best per gene'' uses each compound's highest affinity for each gene.
 Correlations are Spearman $r$. The ``active'' rows re-rank the compounds with an
 active kinase among themselves, as do the ``Feature'' rows, which
 correlate a profile feature with instability (Section~S3). $p^*$ is from the
-panel-size analysis without D1 (Section~S5). (\texttt{davis\_gene\_level.py},
-\texttt{klaeger\_protein\_kinases.py})}
+panel-size analysis without D1 (Section~S5).}
 \footnotesize
 \begin{tabular}{lccc}
 \toprule
@@ -171,8 +171,10 @@ the correlations of the native percent-inhibition Gini on Anastassiadis.
 
 \begin{table}[h]
 \centering
-\caption{Spearman correlation of the published entropy (association-constant
-weighting) with the median rankings of the other definitions.}
+\caption{Spearman correlation of the published entropy (weights inversely
+proportional to binding constants) with the median rankings of the other
+definitions. The Anastassiadis row gives correlations with the published
+percent-inhibition Gini.}
 \begin{tabular}{llccc}
 \toprule
 Dataset & Floor-coded pairs & S-score & Gini & Ratio \\
@@ -284,7 +286,9 @@ Metz and $[20, 50]\%$ inhibition on Anastassiadis. For the ratio, the parameter
 is the level $b$ in $R_b(k) = x_{(1)} - \max(x_{(k+1)}, b)$. The gated
 entropy's gate is swept with $T$ fixed at $\tau^* - x_0$. Every parameter
 reverses more than $13\%$ of pairs on at least one dataset (the ratio's level only at $k = 5$). Figure~S2 shows the per-compound rank instability
-on Klaeger. (\texttt{d3\_pair\_reversals.py},
+on Klaeger. Using 101 grid points instead of 201 changes no reversal
+percentage by more than $0.01$ percentage point.
+(\texttt{d3\_pair\_reversals.py},
 \texttt{failure\_mode\_illustration.py})
 
 \begin{table}[h]
@@ -292,9 +296,7 @@ on Klaeger. (\texttt{d3\_pair\_reversals.py},
 \caption{Boundary sensitivity: pairs of scored compounds reversing in $B$
 (\%), for every swept parameter. The S-score's values are exact. The other parameters are
 evaluated at 201 equally spaced values, and the gate also at every observed
-value in $B$ and just below it, where its score jumps. These values are
-estimates: with 101 values instead of 201, none changes by more than $0.01$
-percentage point.}
+value in $B$ and just below it.}
 \small
 \begin{tabular}{lcccc}
 \toprule
@@ -355,7 +357,8 @@ or more, the gap--ratio correlation there is $-0.15$ ($p = 0.10$).
 \caption{Spearman correlations between profile features and within-definition
 rank instability. Top: Klaeger (200 compounds with an active kinase, ranked
 among themselves) and Davis (68). Bottom: the same 200 Klaeger compounds,
-ranked among all 222. S is the S-score, E the entropy, G the Gini and R the ratio. * $p<0.05$,
+ranked among all 222. S is the S-score, E the entropy, G the Gini and R the ratio.
+Stars denote unadjusted $p$-values: * $p<0.05$,
 ** $p<0.01$, *** $p<0.001$.}
 \footnotesize
 \setlength{\tabcolsep}{2.7pt}
@@ -392,11 +395,11 @@ Active affinity skew     & $-0.236^{***}$ & $-0.096$       & $+0.262^{***}$ & $-
 \begin{figure}[h]
   \centering
   \includegraphics[width=\textwidth]{figures/instability_by_family}
-  \caption{Within-definition rank instability against the profile feature most
-           strongly correlated with it (Klaeger, the 200 compounds with an
-           active kinase, ranked among themselves): active-affinity range
-           (S-score), number of active kinases (entropy and Gini), and
-           top$_1$--top$_2$ gap (ratio). Spearman $r$ above each panel.}
+  \caption{Within-definition rank instability against profile features for the
+           200 active Klaeger compounds, ranked among themselves. Panels:
+           S-score against active-affinity range; entropy and Gini against
+           number of active kinases; ratio against top$_1$--top$_2$ gap.
+           Spearman $r$ above each panel.}
 \end{figure}
 
 \paragraph{Undefined features.} The skewness of the active affinities is
@@ -635,6 +638,8 @@ agree at Spearman $0.79$ or higher, and for $T \geq 1$ at $0.985$ or higher.
 association-constant weights of the published entropy ($T = 1/\ln 10$) rank
 compounds with Spearman $0.963$--$0.978$ and $0.773$--$0.825$ against the gated
 entropy on Davis and Klaeger (Table~S6).
+D3 held for every scored compound in the measured profiles under every
+variant in Table~S6.
 (\texttt{family\_construction.py}, \texttt{family\_panelsize.py},
 \texttt{candidate\_validation.py})
 
@@ -656,9 +661,7 @@ three $\mathrm{p}K$ datasets, which is why it violates D3.
 \begin{table}[h]
 \centering
 \caption{Variants of the gated entropy on Davis and Klaeger, over the
-compounds D1 scores: Spearman correlation with the gated entropy's ranking.
-D3 held for every scored compound under every variant.
-(\texttt{family\_construction.py})}
+compounds D1 scores: Spearman correlation with the gated entropy's ranking.}
 \small
 \begin{tabular}{lcc}
 \toprule
@@ -723,8 +726,9 @@ reverses the order of two definitions on any dataset (Table~S7).
 
 \begin{table}[h]
 \centering
-\caption{$p^*$ (targets) without D1 at four correlation bars.
-(\texttt{pstar\_bar\_sensitivity.py})}
+\caption{Smallest tested panel size $p^*$ (number of targets) whose mean
+Spearman correlation exceeds each benchmark. Every compound is scored on
+every subpanel (D1 not applied).}
 \begin{tabular}{lcccc}
 \toprule
 Davis (363 targets) & entropy & Gini & S-score & ratio \\
@@ -839,7 +843,8 @@ published score. (\texttt{bosc\_catds\_comparison.py})
 \begin{table}[h]
 \centering
 \caption{Spearman correlation of WS and RS with the ratio, and of the CATDS proxy
-with the ratio, entropy and Gini.}
+with the ratio, entropy and Gini. WS: window score. RS: ranking score.
+CATDS proxy: the top target's share of the baseline-subtracted profile.}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{lccccc}
@@ -882,7 +887,7 @@ so rerunning a script reproduces its output.
 
 \small
 \begin{longtable}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}}
-\caption{Provenance of reported results.}\\
+\caption{Scripts and outputs for the reported results.}\\
 \toprule
 Location & Result & Script (output section) \\
 \midrule

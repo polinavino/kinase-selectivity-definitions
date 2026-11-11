@@ -8,16 +8,17 @@ activity boundary is placed. These choices change whether the common scores
 agree, how much a ranking moves when the activity boundary moves, and how much
 of a ranking a small panel retains. Selectivity analyses should state
 them, apply an activity-eligibility rule, fix the activity boundary in advance
-and report its effect, and report how many compounds remain scorable on small
-panels. In particular, high agreement among compounds that remain eligible on
-a smaller panel can conceal the loss of narrowly active compounds.
+and report its effect, as well as report how many compounds remain scorable on small
+panels. Rank agreement can remain high even when compounds with few active
+targets become unscorable on a smaller panel.
 
-The formal contribution is a characterization within an explicit class of
-distance-based weights and Shannon grouping: the proposed criteria retain
-gated exponential entropies, including their equal-weight limit, and set a
-sharp lower bound on their scale for monotonicity under weak-target addition.
-The criteria do not select one score, and satisfying them does not establish
-superior biological validity or empirical recovery. The gated entropy's scale
-is another analysis choice that must be reported. The central practical
-conclusion is therefore to interpret score agreement and small-panel recovery
-together with the implementation, eligible compounds and retained coverage.
+Within the class studied, the criteria allow gated entropy scores with
+exponential or equal weights. For exponential weights, they set the minimum
+scale at which adding a weakly bound target cannot make a compound appear
+more selective. The gated entropy therefore provides a way to meet all four
+criteria while retaining information about binding strength, including weak
+binding above the floor. On these datasets, it has no recovery advantage over
+simpler scores. The criteria still leave its scale free above the minimum.
+Increasing the scale makes the weights more nearly equal and changes both
+rankings and recovery from small panels. The scale must therefore be stated
+when the score is reported.

@@ -1,18 +1,17 @@
 \begin{abstract}
-Agreement between kinase selectivity scores can change with the analysis
-protocol. Across four profiling datasets, we show how affinity weighting,
-floor-coded pairs and compound eligibility alter agreement between scores.
-We evaluate recovery from random smaller panels jointly with compound
-coverage: high rank agreement among the compounds still scorable can conceal
-the loss of narrowly active compounds. Moving an activity boundary also
-changes rankings, so its value must be fixed by protocol. Separately, we
-propose four criteria for selectivity scores and characterize gated entropies
-within a stated class of affinity-weighted scores using Shannon's grouping
-rule. We prove the scale range that guarantees monotonicity when a weakly
-bound target is added. These guarantees do not confer an empirical recovery
-advantage over simpler scores. Selectivity comparisons should report score
-implementation, activity eligibility, boundary sensitivity and retained
-compound coverage.
+Across four kinase profiling datasets, affinity weighting, floor-coded pairs
+and compound eligibility alter agreement between selectivity scores. On
+random smaller panels, rank agreement with the full panel can remain high
+even as compounds with few active targets become unscorable. Moving the
+activity cutoff changes rankings, so it should be fixed by protocol. We also
+link four proposed design criteria to score formulas and parameters. Within
+the class studied, the criteria allow only exponential affinity weights. 
+We derive the scale range that
+prevents added weak binding from increasing apparent selectivity. On these
+datasets, the resulting gated entropy has no recovery advantage over simpler
+scores. Comparisons should report how scores are calculated, which compounds
+can be scored, sensitivity to the activity cutoff, and how many compounds
+remain scorable.
 \end{abstract}
 
 \noindent\textbf{Keywords:} binding selectivity,

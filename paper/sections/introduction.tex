@@ -1,10 +1,10 @@
 \section{Introduction}
 \label{sec:intro}
 
-Kinase inhibitors are among the most intensely investigated compound classes
+Kinase inhibitors are among the most investigated compound classes
 in drug discovery, with 94 agents approved by the U.S. Food and Drug
 Administration (FDA) and several hundred in
-clinical development\cite{Roskoski2026}. The human kinome comprises more than
+clinical development\cite{Roskoski2026}. The human kinome is comprised of more than
 500 proteins with a conserved adenosine triphosphate (ATP)-binding site\cite{Manning2002}, and
 selectivity is a primary criterion in lead optimization\cite{Bhullar2018}.
 Profiling assays measure a compound against a panel of tens to hundreds of
@@ -26,8 +26,8 @@ aspect of the profile.
 
 Earlier work established that these scores can disagree. Bosc et
 al.\cite{Bosc2017} compared six scores on the Davis and Anastassiadis datasets,
-computed several at more than one parameter value, compared them on compounds
-and kinases shared between datasets, and found that compound rankings differ
+computed several at more than one parameter value, then compared them on compounds
+and kinases shared between datasets. They found that compound rankings differ
 substantially between them. They attributed individual
 disagreements to profile shape, such as a broad binder with one dominant
 target. The KInhibition platform\cite{KInhibition2018} noted that conflicting
@@ -42,20 +42,22 @@ compounds vary when they are computed on random subpanels.
 These studies establish disagreement between scores and sensitivity to
 parameters and panel composition. We examine how score agreement changes
 when affinity weighting, floor-coded pairs, compound eligibility and target
-selection are varied explicitly. We also distinguish recovery of the order
-of compounds still eligible on a smaller panel from retention of the compounds
-that were eligible on the full panel. High agreement among the survivors need
-not mean that narrowly active compounds remain represented.
+selection are varied explicitly. On smaller panels, we assess both how well
+compounds that remain scorable retain their full-panel ranking and what
+fraction of the full panel's scorable compounds can still be scored.
+Rank agreement can remain high even when compounds with few active targets
+become unscorable.
 
-Our primary contribution is an empirical comparison of these analysis choices
-and a joint evaluation of ranking recovery and compound coverage. We compare
+Our primary contribution is an empirical comparison of these analysis choices,
+showing how ranking recovery on smaller panels depends on which compounds
+remain scorable. We compare
 the S-score, entropy, Gini and ratio on four datasets that span three assay technologies.
 Each is curated to one reference target per human protein kinase, and the
 entropy and Gini are computed in both a common log-affinity form and their
 published forms. We vary the compounds ranked, the treatment of
-pairs without detected binding and each score's parameter, and relate the
+pairs without detected binding, and each score's parameter, then relate the
 resulting instability to features of the binding profile as exploratory
-diagnostics. Motivated by these sensitivities, we propose four design and
+diagnostics. Motivated by these sensitivities, we propose and defend four design and
 reporting criteria for a selectivity measure: activity eligibility,
 locality of the activity boundary, monotonicity when a weakly bound kinase is
 added, and orientation on profiles with equally strong targets. We evaluate
@@ -63,17 +65,15 @@ the existing scores and simple comparators against them.
 
 Our second contribution
 is a conditional characterization of gated entropies that satisfy all four.
-Among scores that weight each target by
-its distance above the activity boundary and combine the weights with Shannon's
-grouping rule, the criteria allow exponential weights (including the limiting case
+We consider scores that weight each target according to its distance above
+the activity boundary. We require the same result whether targets are
+evaluated all at once or in groups: the score across groups plus the scores
+within each group, weighted by each group's share of the total weight.
+Under these assumptions, the criteria allow only exponential weights (including the limiting case
 in which every target above the boundary receives the same weight). At finite
 scales, the exponential family has a single parameter, the
 \emph{scale}, the readout difference over which a weight grows by a factor
 of $e$. Monotonicity fixes the range of the scale. Within that range, the
 scale can be chosen so that the score recovers rankings from small panels as
-fast as the share of targets with detected binding, but the construction
-guarantees do not confer an empirical recovery advantage. Stating such criteria
-follows the axiomatic approach Shannon\cite{Shannon1948} used for entropy.
-Together these results support reporting the score
-implementation, activity eligibility, boundary sensitivity and compound
-coverage whenever selectivity rankings are compared.
+fast as the share of targets with detected binding, but 
+an empirical recovery advantage over existing measures is not identified.

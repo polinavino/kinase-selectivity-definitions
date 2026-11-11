@@ -6,25 +6,25 @@
 
 Table~\ref{tab:datasets} summarizes the four datasets. The Davis
 dataset\cite{Davis2011} reports dissociation constants from a
-competition-binding assay, and the Klaeger dataset\cite{Klaeger2017} apparent
-dissociation constants from Kinobeads chemoproteomics in cell lysate (beads
-carrying kinase inhibitors that capture kinases from the lysate, with a
-mass-spectrometry readout). Both were
-converted, as in DeepDTA\cite{DeepDTA}, to
+competition-binding assay. The Klaeger dataset\cite{Klaeger2017} reports
+apparent dissociation constants from Kinobeads chemoproteomics in cell lysate.
+Kinobeads carry kinase inhibitors that capture kinases from the lysate;
+mass spectrometry measures the captured proteins. With constants in nM, we
+converted both datasets, as in DeepDTA\cite{DeepDTA}, to
 $\mathrm{p}K_d = -\log_{10}(K_d / 10^9)$. The
 Anastassiadis dataset\cite{Anastassiadis2011} reports residual kinase activity
-in a radiometric assay at $0.5~\mu$M inhibitor, which we converted to percent
+in a radiometric assay at $0.5~\mu$M inhibitor. We converted this to percent
 inhibition ($100$ minus residual activity, clipped to $[0, 100]$). The Metz
 dataset\cite{Metz2011} reports $\mathrm{p}K_i$ values from a
-medicinal-chemistry campaign. Because the assays and readouts differ, each
-score is computed on its dataset's own readout, and datasets are compared only
-through the rankings computed within each.
+medicinal-chemistry campaign. Because the assays and readouts differ, we
+compute each score on its dataset's own readout. We compare datasets through
+the resulting rankings.
 
 \begin{table}[h]
   \centering
   \caption{The four datasets. The floor $x_0$ is the value given to pairs with
            no detected binding (Davis, Klaeger) or not tested (Metz). On
-           Anastassiadis it is an operational cutoff for weak inhibition.
+           Anastassiadis it is a chosen cutoff for weak inhibition.
            $\tau^*$ is the activity threshold.}
   \label{tab:datasets}
   \footnotesize
@@ -41,54 +41,65 @@ through the rankings computed within each.
   \end{tabular}
 \end{table}
 
-\paragraph{Target selection.} Selectivity across kinases is expressed as a
-single value, so each kinase should be counted once. A panel that lists several
-constructs (recombinant forms of a protein, such as mutants or single domains)
-of one gene lists that kinase several times. The released Davis
-panel lists 433 constructs. They include mutant, phosphorylation-state
-and single-domain constructs of the same gene (12 for EGFR), 20 lipid kinases
-and three non-human kinases, and for 26 of the 68 compounds the two best-bound
-constructs are forms of one gene. We keep one reference construct per human
+\paragraph{Target selection.} Multiple constructs of one gene count that
+kinase several times. Constructs are recombinant forms
+of a protein, such as mutants or single domains. The released Davis panel
+lists 433 constructs. These include mutant, phosphorylation-state and
+single-domain forms of the same gene (12 for EGFR), 20 lipid kinases and three
+non-human kinases. For 26 of the 68 compounds, the two best-bound constructs
+are forms of one gene. We keep one reference construct per human
 protein-kinase gene: the wild-type construct, or its catalytic or N-terminal
 kinase domain where several domains are profiled. Genes profiled only as
-mutants are removed. The 343 Klaeger targets are all proteins that the beads
-captured and mass spectrometry measured, including complex subunits, such as
-cyclins, that bind the captured kinases. We keep the single-gene protein
-kinases that Klaeger et al.\ annotate, except Q6ZSR9 (which UniProt lists as an
-uncharacterized protein without a kinase domain), which leaves 217. This removes lipid kinases, four protein groups, and
-BCR and TRRAP, which the source does not annotate as kinases and flags as
-possibly co-enriched with ABL1 and CDK8. On Anastassiadis we keep the
-first-listed of nine kinases profiled in two complexes or isoforms. The Metz
-columns are already one human protein kinase each. We call the targets kept on
-each dataset its \emph{curated panel} (Table~\ref{tab:datasets}). The code repository lists
-every target with the reason it was kept or removed, and Supporting
-Information (Section~S1) compares the released panels.
+mutants are removed.
+
+The 343 Klaeger targets are proteins captured by the beads and measured by
+mass spectrometry. They include complex subunits, such as cyclins, that bind
+the captured kinases. We keep the targets that Klaeger et al.\ annotate as
+single-gene protein kinases, except Q6ZSR9. UniProt lists Q6ZSR9 as an
+uncharacterized protein without a kinase domain. This leaves 217 targets and
+removes lipid kinases, four protein groups, BCR and TRRAP. The source does not
+annotate BCR and TRRAP as kinases and flags them as possibly co-enriched with
+ABL1 and CDK8.
+
+On Anastassiadis, nine kinases are profiled in two complexes or isoforms; we
+keep the first-listed form of each. The Metz columns already represent one
+human protein kinase each. We call the targets kept in each dataset its
+\emph{curated panel} (Table~\ref{tab:datasets}). The code repository lists each
+target and the reason it was kept or removed. Supporting Information
+(Section~S1) compares results on the released panels.
 
 \paragraph{Floor-coded and missing values.} On Davis, Klaeger and Metz, several
-kinds of pairs receive the same floor value $x_0$, which is not a measured
+kinds of pairs receive the same floor value $x_0$. This value is not a measured
 detection limit. On Davis, the
 released matrix assigns $\mathrm{p}K_d = 5.0$ ($K_d = 10~\mu$M) to pairs with
 no detected binding, following DeepDTA\cite{DeepDTA}. Bosc et
-al.\cite{Bosc2017} used nearly the same value ($10.1~\mu$M). On Klaeger, we kept the 5{,}123
-drug--target pairs that the original authors classified as high confidence. We
-coded at $\mathrm{p}K_d = 5.0$ three kinds of pairs: those with no detected
+al.\cite{Bosc2017} used nearly the same value ($10.1~\mu$M).
+
+On Klaeger, we kept the 5{,}123 drug--target pairs that the original authors
+classified as high confidence. We assigned $\mathrm{p}K_d = 5.0$ to three
+kinds of pairs: those with no detected
 binding, those whose fit was classified as low confidence, and the 194 measured
 affinities weaker than $10~\mu$M. A low-confidence fit does not establish weak
 binding: of the 405 such pairs on curated targets, 375 have a fitted
 $\mathrm{p}K_d$ above 5. Giving all of these pairs the floor value is an
-analysis convention. On Metz, pairs that were not tested are coded at
-$\mathrm{p}K_i = 4.0$, the lowest value reported in the data. A median Metz
-compound is measured against only 21 of the 172 kinases, so we kept the 704
-compounds measured against at least 50 (median 64). On Anastassiadis, the
+analysis convention.
+
+On Metz, pairs that were not tested are coded at
+$\mathrm{p}K_i = 4.0$, the lowest value reported in the data. The median number
+of kinases measured per compound is only 21 out of 172. We therefore kept the
+704 compounds measured against at least 50 kinases (median 64).
+
+On Anastassiadis, the
 $1.1\%$ of missing entries were set to $0\%$ inhibition. Most pairs on this
 panel show little inhibition: $85\%$ of the entries are at or below $20\%$,
 and each $5\%$ interval above $20\%$ holds less than $3\%$ of the entries. We
-place $x_0$ at $20\%$, the upper end of these low values, as an operational
+place $x_0$ at $20\%$, the upper end of these low values, as a chosen
 cutoff for weak inhibition.
 
-A compound is \emph{active} against a target above the activity threshold $\tau^*$:
-$\mathrm{p}K_d$ or $\mathrm{p}K_i$ $6$ ($K_d$ or $K_i$ of $1~\mu$M) on the
-affinity datasets, and $50\%$ inhibition on Anastassiadis. With a Hill
+A compound is \emph{active} against a target if its readout exceeds the
+activity threshold $\tau^*$. On the affinity datasets, this threshold is
+$6$ on the $\mathrm{p}K_d$ or $\mathrm{p}K_i$ scale ($K_d$ or $K_i$ of $1~\mu$M).
+On Anastassiadis, it is $50\%$ inhibition. With a Hill
 coefficient of 1, $50\%$ inhibition at $0.5~\mu$M inhibitor means an IC$_{50}$
 of $0.5~\mu$M, close to the $1~\mu$M of the other datasets. Supporting
 Information (Section~S1) repeats the Davis comparison of the scores with the
@@ -103,37 +114,38 @@ readouts across the $N$ panel targets, with higher values for tighter binding
 or stronger inhibition. Every score is oriented so that higher values are more
 selective (Table~\ref{tab:implementations}).
 
-\paragraph{S-score.} The S-score of Karaman et al.\cite{Karaman2008} is the fraction of the panel
-bound above a threshold,
+\paragraph{S-score.} Karaman et al.\cite{Karaman2008} define the S-score as the
+fraction of the panel bound above a threshold:
 \begin{equation}
-  S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[x_i > \tau],
+  S(\tau) = \frac{1}{N} \sum_{i=1}^{N} \mathbf{1}[x_i > \tau].
 \end{equation}
-negated. They reported $K_d$ cutoffs of $3~\mu$M and $100$~nM, which lie
+We negate this fraction so that higher scores indicate greater selectivity.
+They reported $K_d$ cutoffs of $3~\mu$M and $100$~nM, which lie
 within our sweep of $\tau$.
 
 \paragraph{Selectivity entropy.} The selectivity entropy of Uitdehaag and
 Zaman\cite{Uitdehaag2011} is the Shannon entropy
-$H = -\sum_i p_i \log_2 p_i$ (in bits) of the profile normalized to a distribution,
-negated. In its published form, $p_i = K_{a,i} / \sum_j K_{a,j}$, with
+$H = -\sum_i p_i \log_2 p_i$ (in bits) of the profile normalized to a
+distribution. We negate it so that higher scores indicate greater
+selectivity. In its published form, $p_i = K_{a,i} / \sum_j K_{a,j}$, with
 association constants $K_{a,i} = 1/K_{d,i}$ ($1/K_{i,i}$ on Metz). It needs
-affinity constants, so it is not computed on Anastassiadis. To compute all
-four definitions from the same readout, we also use a log-affinity form (on Anastassiadis, percent
-inhibition), which weights each target by its readout above a baseline
-$\beta$:
+affinity constants, so we do not compute it on Anastassiadis. To compare all
+four definitions on the same readout, we also use a log-affinity form. This
+weights each target by its readout above a baseline $\beta$; on Anastassiadis,
+the readout is percent inhibition:
 \begin{equation}
   p_i = \frac{\max(x_i - \beta,\, 0)}{\sum_j \max(x_j - \beta,\, 0)}.
 \end{equation}
-The baseline is a parameter we introduce and has no published reference
-values.
+We introduce this baseline parameter; it has no published reference values.
 
 \paragraph{Gini coefficient.} Graczyk's Gini coefficient\cite{Graczyk2010} measures how unequally
 binding is spread over the panel. Its published form uses percent-inhibition
-values. We compute it on the same baseline-subtracted weights,
+values. We compute it on the same baseline-subtracted weights:
 \begin{equation}
   G(\beta) = \frac{2\sum_{i=1}^{N} i \cdot w_{(i)}}{N \sum_{i=1}^{N} w_{(i)}} - \frac{N+1}{N},
-  \qquad w_{(i)} = \max(x_i - \beta,\, 0)\ \text{sorted ascending},
+  \qquad w_{(i)} = \max(x_i - \beta,\, 0)\ \text{sorted ascending}.
 \end{equation}
-and on Anastassiadis also in its native form. 
+On Anastassiadis, we also compute the published percent-inhibition form.
 
 Unless stated otherwise, both the
 entropy and Gini are in their log-affinity forms.
@@ -144,23 +156,24 @@ ranked off-target,
   R_b(k) = x_{(1)} - \max(x_{(k+1)}, b),
 \end{equation}
 where $x_{(j)}$ is the $j$-th largest value. The level $b$ is the lowest coded
-value ($5.0$ on Davis and Klaeger, $4.0$ on Metz and $0\%$ on Anastassiadis),
-except in the recovery analysis, where it is $x_0$, and in the boundary sweep, where it is
-swept. At this level $R_b(k)$ equals the ranking score of Bosc
-et al.\cite{Bosc2017} at rank $k + 1$. We cap $k$ at 5 because half of the Klaeger compounds
-have fewer than five active kinases.
+value ($5.0$ on Davis and Klaeger, $4.0$ on Metz and $0\%$ on Anastassiadis).
+In the recovery analysis, we instead set it to $x_0$. In the boundary analysis,
+we vary it over the sweep. At the lowest coded value, $R_b(k)$ equals the
+ranking score of Bosc et al.\cite{Bosc2017} at rank $k + 1$. We cap $k$ at 5
+because half of the Klaeger compounds have fewer than five active kinases.
 
 \paragraph{Partition index.} The partition index of Cheng et al.\cite{Cheng2010} is the fraction of a
 compound's molecules that would bind a reference target in a mixture of all panel kinases,
 $K_{a,\mathrm{ref}} / \sum_j K_{a,j}$. Only Klaeger names an intended target
-for each compound, so we use the most strongly bound target as the reference
-($P_{\max}$), as Uitdehaag and Zaman\cite{Uitdehaag2011} did. Like the
-published entropy, it is not computed on Anastassiadis. The concentration-
-and target-dependent selectivity (CATDS) score
-of Klaeger et al.\ is the same kind of fraction, for a designated target at one
-concentration. It needs Kinobeads dose--response curves, which the other three
-datasets lack, so it is not compared across datasets (Supporting Information,
-Section~S6, compares a proxy).
+for each compound. We therefore use the most strongly bound target as the
+reference ($P_{\max}$), as Uitdehaag and Zaman\cite{Uitdehaag2011} did. Like
+the published entropy, it is not computed on Anastassiadis.
+
+Klaeger et al.'s concentration- and target-dependent selectivity (CATDS) score
+is the same kind of fraction, for a designated target at one concentration.
+It requires Kinobeads dose--response curves, which the other three datasets
+lack. We therefore do not compare it across datasets. Supporting Information
+(Section~S6) compares a proxy.
 
 \begin{table}[h]
   \centering
@@ -191,8 +204,9 @@ Section~S6, compares a proxy).
 
 \paragraph{Conventions.} Where the entropy and Gini are undefined, we set both
 to $0$. This ranks the compound as maximally selective under the entropy and
-minimally selective under the Gini. $R_b(k)$ uses $b$ for a missing
-off-target and so scores every compound, as Bosc et al.'s ranking score does.
+minimally selective under the Gini. $R_b(k)$ uses $b$ as a lower bound on
+the reference off-target value and scores every compound, as Bosc et al.'s
+ranking score does.
 Log-affinity weights with $\beta = x_0$ give floor-coded pairs zero weight.
 Association constants give them a small positive weight if they are kept at the
 floor value. For the published entropy and $P_{\max}$, we give them zero weight.
@@ -202,150 +216,153 @@ high-confidence affinity its measured value, including the 194 weaker than
 the floor, and the other floor-coded pairs zero weight. No data show whether
 floor-coded pairs should have zero weight or the floor value.
 
-\paragraph{Comparators.} The comparators are simple variants of existing
-scores. The only new score in this study is the gated
-entropy. The active count (the number of targets above $\tau^*$, which is the
-numerator of the S-score at $\tau^*$, with fewer more selective), the entropy
-with $\beta = \tau^*$
-and the S-score with $\tau = x_0$ (the share of the panel with detected
-binding) are scored only for active compounds. Otherwise, a compound with no
-active target would have an active count of 0, fewer than any active compound,
-and would rank as the most selective.
+\paragraph{Comparators.} We use three variants of existing scores. The active
+count is the number of targets above $\tau^*$, or the numerator of the S-score
+at $\tau^*$. A lower count indicates greater selectivity. The other two
+comparators are the entropy with $\beta = \tau^*$ and the S-score with
+$\tau = x_0$, the share of the panel with detected binding. We compute all
+three only for active compounds. Otherwise, a compound with no active target
+would have a count of 0 and rank as more selective than any active compound.
 
 \subsection{Ranking Comparisons and Sensitivity Analysis}
 \label{sec:methods:stability}
 
 For each score and parameter value, compounds are ranked from most selective
-(rank 1), with ties given their average rank. Ranks are always computed among
-a stated set of compounds. Analyses of compounds with an active kinase rank
-them among themselves. Analyses that compare
+(rank 1), with ties given their average rank. Analyses of compounds with an
+active kinase rank them among themselves. Analyses that compare
 compounds with and without an active kinase rank all compounds. Agreement
-between two definitions is taken to be the Spearman correlation between their median rank
-vectors over each definition's parameter sweep: $\tau$ in steps of $0.25$
-(11 values) and $\beta$ in steps of $0.25$ (7 values) on the $\mathrm{p}K$
-datasets, $\tau$ in steps of $5\%$ (9 values) and $\beta$ in steps of $5\%$
-(7 values) on Anastassiadis, and $k = 1, \ldots, 5$. Using mean ranks instead
-changes the correlations among all compounds by at most $0.08$. Bootstrap
+between two definitions is the Spearman correlation between their median
+rank vectors. We take the median over each definition's parameter sweep.
+On the $\mathrm{p}K$ datasets, we vary $\tau$ in steps of $0.25$ (11 values)
+and $\beta$ in steps of $0.25$ (7 values). On Anastassiadis, we vary $\tau$
+in steps of $5\%$ (9 values) and $\beta$ in steps of $5\%$ (7 values).
+For the ratio, we use $k = 1, \ldots, 5$. Bootstrap
 $95\%$ intervals use 1{,}000 resamples of compounds.
 
-Each parameter value gives one ranking of the compounds. A compound's
-\emph{rank instability} is the standard deviation of its ranks across one
-definition's sweep. Its \emph{aggregated rank instability} covers all four
-definitions. Aggregation is done by taking the standard deviation of the
-compound's ranks over the rankings from all four sweeps together. Each
+A compound's \emph{rank instability} is the standard deviation of its ranks
+across one definition's sweep. Its \emph{aggregated rank instability} is the standard
+deviation of its ranks across all four sweeps combined. Each
 definition therefore counts in proportion to its number of parameter values,
 and the S-score, with the most values, carries the most weight.
 We compute the Spearman correlation between within-definition instability and
-each profile feature: the number of active kinases, the top$_1$--top$_2$
-affinity gap, the second-ranked affinity, and the standard deviation, range
-and skewness of the active affinities. A feature undefined for a compound with
+each of six profile features. These are the number of active kinases, the
+top$_1$--top$_2$ affinity gap, the second-ranked affinity, and the standard
+deviation, range and skewness of the active affinities. A feature undefined for a compound with
 too few active kinases is set to $0$. Supporting Information (Section~S3)
 repeats the analysis with these compounds excluded.
-These associations are exploratory. A Bonferroni correction, checked against
-the Holm and Benjamini--Hochberg procedures, is applied only to the 24 tests per
-dataset in Supporting Information Table~S4 (six features and four
-definitions), while other $p$-values are uncorrected.
+These associations are exploratory. We apply a Bonferroni correction to the
+24 tests per dataset in Supporting Information Table~S4: six features for each
+of four definitions. We also check the Holm and Benjamini--Hochberg procedures.
 
-To compare how much rankings change between datasets with how much they
-change between definitions, we matched 46 compounds profiled in both Davis and
-Klaeger by PubChem compound identifier (CID) and restricted both panels to the 201 kinases they share
-(matched by gene symbol, with renamed symbols mapped to current ones). We then
-computed the Spearman correlation between each definition's median ranking on
-Davis and on Klaeger, and between each pair of definitions' median rankings
-within each dataset.
+We also compare changes in ranking between datasets with changes between
+definitions. We matched 46 compounds profiled in both Davis and Klaeger by
+PubChem compound identifier (CID). We restricted both panels to their 201
+shared kinases, matched by gene symbol after updating renamed symbols. We
+then computed two sets of Spearman correlations: between each definition's
+median rankings on Davis and Klaeger, and between pairs of definitions'
+median rankings within each dataset.
 
 For these 46 compounds, we also tested whether cross-dataset rank displacement
 was associated with instability aggregated over all four definitions or
 calculated within the same definition's parameter sweep. These exploratory
 analyses used each dataset's full curated target panel and original compound
-ranking population. The within-definition tests were grouped into a separate
-family of eight (four definitions in each of two datasets).
+ranking population. We apply a separate Bonferroni correction to the eight
+within-definition tests: four definitions in each of two datasets. Other
+$p$-values are uncorrected.
 
 \subsection{Evaluation Criteria}
 \label{sec:methods:criteria}
 
-A selectivity measure $f$ is a function that, for a given profile $\mathbf{x}$
-of any length $N$, returns a real number $f(\mathbf{x})$, with higher values
-for more selective profiles. Let $B = [x_0, \tau^*]$ be the interval between
-the floor and the activity threshold. We present four criteria. D1 decides
-which compounds are scored, D2 and D3 concern how their scores change when the
-activity boundary moves and when the panel grows, and D4 concerns the direction
-of the score. All four are judged by construction.
+A selectivity measure $f$ assigns a real number $f(\mathbf{x})$ to a profile
+$\mathbf{x}$ of any length $N$. Higher values indicate greater selectivity.
+Let $B = [x_0, \tau^*]$ be the interval between the floor and the activity
+threshold. D1 decides which compounds are scored.
+D2 concerns moving the activity boundary, and D3 concerns adding targets to
+the panel. D4 concerns the direction of the score. We judge all four from the
+score definitions.
 
 \textbf{D1 (activity eligibility).} $f(\mathbf{x})$ is undefined, or flagged as
-not eligible, whenever $\max_i x_i \leq \tau^*$. A compound with no target
+ineligible, whenever $\max_i x_i \leq \tau^*$. A compound with no target
 above $\tau^*$ has no target against which to judge selectivity. D1 is a
 reporting rule: a score satisfies it if its definition withholds or flags
 these compounds. Bosc et
 al.\cite{Bosc2017} withheld ranks for such compounds under the S-score only,
 whereas D1 applies the rule to every score.
 
-\textbf{D2 (boundary locality).} Let $\theta$ be the parameter that places a
-score's activity boundary, i.e. the S-score's $\tau$, the entropy's and Gini's
-$\beta$ and the ratio's level $b$. If no value
-of $\mathbf{x}$ lies between $\theta$ and $\theta'$, then
-$f(\mathbf{x}; \theta) = f(\mathbf{x}; \theta')$. Moving the boundary should
-change a compound's score only when it changes which of the compound's targets
-lie above the boundary.
+\textbf{D2 (boundary locality).} Let $\theta$ be the score's boundary
+parameter: the S-score's $\tau$, the entropy's and Gini's $\beta$, the ratio's
+level $b$, or the gated entropy's gate $g$. With all other parameters held
+fixed, D2 requires
+\[
+  \{i : x_i > \theta\} = \{i : x_i > \theta'\}
+  \quad\Longrightarrow\quad
+  f(\mathbf{x}; \theta) = f(\mathbf{x}; \theta').
+\]
+Moving the boundary may change a compound's score only if it changes which
+targets lie above it. D2 concerns the score itself, not just the compound's
+rank. We keep D1's eligibility threshold $\tau^*$ fixed as $\theta$ changes.
 
-D2 allows rankings to change when the boundary passes a compound's values. To
-measure how much they change, we move $\theta$ across $B$. A pair of compounds
-\emph{reverses in $B$} if $f(\mathbf{x}; \theta) - f(\mathbf{y}; \theta)$ is
-positive at some $\theta \in B$ and negative at another, and we report the
-share of the pairs of compounds scored under D1 that reverse. To count
-reversals, each score is evaluated at a set of values of $\theta$ in $B$. The S-score changes
-only where $\tau$ passes an observed value, so it is evaluated at every observed
-value in $B$ and its percentages are exact. The other parameters are
-evaluated at 201 equally spaced values. Apart from the S-score's, the
-percentages are therefore estimates.
+D2 allows rankings to change when the boundary crosses a target's measured
+value. To measure these changes, we move $\theta$ across $B$. A pair of
+compounds \emph{reverses in $B$} if
+$f(\mathbf{x}; \theta) - f(\mathbf{y}; \theta)$ is positive at one value of
+$\theta \in B$ and negative at another. We report the fraction of pairs that
+reverse among compounds eligible under D1.
 
-Some scores fix the boundary at one value, e.g. the active count, which
-counts the targets above $\tau^*$. Such a score is assessed, in D2 and in the
-reversal counts, by moving that value over $B$. The value of $\theta$ is set
-in the analysis protocol according to the intended use, e.g. by whether binding
-weaker than $\tau^*$ matters at the concentration at which the compound will
-be used in practice. At different values of $\theta$, a score
-can measure different things: on Davis, the S-score at $\tau = 5$ counts the
-targets with $K_d$ below $10~\mu$M, and at $\tau = 6$ those below $1~\mu$M.
-Its rankings can reasonably differ between the two.
+For the S-score, we check every observed value in $B$, values between
+consecutive observations and the endpoints. These checks capture every score
+change, so the reversal percentages are exact. For the entropy, Gini and
+ratio, we use 201 equally spaced boundary values. Their reversal percentages
+are estimates from this grid. For the gated entropy, we also check values at
+and just below each jump, as described below.
+
+Some scores use a fixed boundary. For example, the active count counts
+targets above $\tau^*$. We assess its sensitivity by varying the counting
+threshold over $B$, while keeping D1's eligibility rule fixed.
+
+The analysis protocol should set $\theta$ in advance to suit the intended
+use. For example, binding weaker than $\tau^*$ may matter at the concentration
+used in practice. Different boundary values can address different questions.
+On Davis, the S-score at $\tau = 5$ counts targets with $K_d < 10~\mu$M;
+at $\tau = 6$, it counts those with $K_d < 1~\mu$M. Its rankings can
+reasonably differ between these cutoffs.
 
 \textbf{D3 (monotonicity under weak-target addition).} For any $\mathbf{x}$ with
 $\max_i x_i > \tau^*$, if $\mathbf{x}' = (x_1, \ldots, x_N, x_{N+1})$ with
 $x_0 < x_{N+1} \leq \tau^*$, then $f(\mathbf{x}') \leq f(\mathbf{x})$. Otherwise a
 compound can be made to look more selective by profiling it against more
-kinases it binds weakly. A score satisfies D3 if adding such a target can be
-proved never to raise the score, and violates it if a profile can be
-constructed on which it does. Tests on
-measured profiles (Results) are secondary checks of D3.
+kinases it binds weakly. Tests on measured profiles (Results) provide
+secondary checks.
 
 \textbf{D4 (orientation).} Fix the panel size $N \geq 2$ and all of the
 score's parameters. For every value $a$ above $\tau^*$ and above every cutoff
 and baseline the score uses, let $\mathbf{v}_m$ be the profile with $m$ targets
 at $a$ and the other $N - m$ at the floor, for $m = 1, \ldots, N$. D4 requires
 $f(\mathbf{v}_{m+1}) \leq f(\mathbf{v}_m)$ for $m = 1, \ldots, N - 1$, and
-$f(\mathbf{v}_1) > f(\mathbf{v}_N)$. These two conditions define what we take as
-the correct direction of a score: on the same panel, binding equally strongly
-to more targets must not make a compound look more selective, and binding to
-one target must be more selective than binding equally strongly to all. Strict
-decrease at every step is not required: $R_b(k)$ with $1 \leq k < N$ equals
+$f(\mathbf{v}_1) > f(\mathbf{v}_N)$. These conditions set the direction of the
+score. On the same panel, binding equally strongly to more targets must not
+make a compound look more selective. Binding to one target must also be more
+selective than binding equally strongly to all. The score need not decrease
+at every step: $R_b(k)$ with $1 \leq k < N$ equals
 $a - \max(x_0, b)$ for $m \leq k$ and $0$ for $m > k$.
 
 When floor-coded pairs have zero weight, the profiles $\mathbf{v}_m$ become
 both broader and more evenly weighted as $m$ increases. When they keep a
-positive weight, they form a background of small weights, and turning them
-into equally strong targets moves weight from this background into a few large
-weights. The distribution can then become less even and the score rise, so a
-score can fail D4 because of its floor treatment, and each implementation is
-assessed with its own (example in Supporting Information, Section~S4).
+positive weight, they form a background of small weights. Turning them into
+equally strong targets moves weight from this background into a few large
+weights. The distribution can then become less even and the score can rise.
+A score can therefore fail D4 because of how it treats floor-coded pairs.
+We assess each implementation with its own treatment (Supporting Information,
+Section~S4, gives an example).
 
 D4 constrains only the profiles $\mathbf{v}_m$. On a profile with unequal
 affinities, adding an active target that binds much more strongly than the
-others moves most of the weight to it, and a score that measures how
-concentrated binding is, such as the entropy or $P_{\max}$, then rates the
-compound as more selective (Supporting Information, Section~S4). Whether that
-rating is correct depends on whether selectivity is taken to mean breadth (how
-many targets are bound) or concentration (how much of the binding falls on a
-few targets), which D4 leaves open.
+others moves most of the weight to it. A score that measures how concentrated
+binding is, such as the entropy or $P_{\max}$, then rates the compound as more
+selective (Supporting Information, Section~S4). Whether this rating is correct
+depends on what selectivity means: breadth (how many targets are bound) or
+concentration (how much binding falls on a few targets). D4 leaves this
+question open.
 
 We state no criterion for the ratio's choice of reference off-target, because
 different references answer different questions.
@@ -361,10 +378,10 @@ For a profile with $\max_i x_i > \tau^*$
   f(\mathbf{x}) = \sum_i p_i \log_2 p_i,
   \label{eq:candidate}
 \end{equation}
-with the gate $g = x_0$ and the scale $T = \tau^* - x_0$, the readout
-difference over which a weight grows by a factor of $e$ ($1$ $\mathrm{p}K$
-unit on Davis and Klaeger, $2$ on Metz, and $30$ percentage points on
-Anastassiadis). It is the negative Shannon entropy of a gated, exponentially
+with the gate $g = x_0$ and the scale $T = \tau^* - x_0$. The scale is the
+readout difference over which a weight grows by a factor of $e$. It is $1$
+$\mathrm{p}K$ unit on Davis and Klaeger, $2$ on Metz, and $30$ percentage
+points on Anastassiadis. The score is the negative Shannon entropy of a gated, exponentially
 weighted profile. The gate gives floor-coded pairs zero weight, and a kinase
 just above the gate has weight close to $1$. Under the entropy's hard cutoff
 $\max(x_i - \beta, 0)$, such a kinase has weight close to $0$. On
@@ -372,12 +389,12 @@ $\mathrm{p}K$ data the weights are powers of the association constants,
 $w_i \propto K_{a,i}^{1/(T \ln 10)}$. The published entropy with floor-coded
 pairs given zero weight has the same form with $T = 1/\ln 10 \approx 0.43$
 $\mathrm{p}K$ units. Moving the gate without passing a value multiplies every
-weight above it by the same factor, which cancels in the shares, so the gated
-entropy satisfies D2. A reference value subtracted from
+weight above it by the same factor. This factor cancels in the shares, so the
+gated entropy satisfies D2. A reference value subtracted from
 every readout cancels in the same way, so the score has no baseline parameter.
-When the gate passes an observed value, the score jumps, so in the reversal
-counts the gate is evaluated at each observed value in $B$ and just below
-each, as well as at the 201 equally spaced values.
+The score jumps when the gate passes an observed value. To count reversals,
+we therefore check each observed value in $B$, a value just below each one,
+and the 201 equally spaced values.
 
 \textbf{Proposition 1 (monotonicity).} Adding a kinase with a value in
 $(x_0, \tau^*]$ never raises $f$ if and only if $T \geq \tau^* - g$. With
@@ -394,60 +411,63 @@ higher after a kinase is added at $\tau^*$.
 Proposition 1 leaves $T$ free above $\tau^* - x_0$. Two targets whose readouts
 differ by $\Delta x$ have weights in the ratio $e^{\Delta x/T}$, so a smaller
 $T$ makes the score depend more on affinity differences. We take the smallest
-$T$ that D3 allows, $T = \tau^* - x_0$. This is a choice: the criteria allow
-any larger $T$. Results (``Scale of the Gated Entropy and Recovery'')
-compares $T = 2(\tau^* - x_0)$.
+$T$ that D3 allows, $T = \tau^* - x_0$. Results (``Scale of the Gated Entropy
+and Recovery'') compares $T = 2(\tau^* - x_0)$.
 
 Because a target at the gate has weight $0$ and any target above it has weight
 above $1$, the score jumps when a target's value crosses $x_0$. For example,
 on Davis or Klaeger ($x_0 = 5$, $T = 1$), take a profile with one active target
 at $\mathrm{p}K_d = 7$. Adding a second target at the floor leaves the score
-at $0$, and adding one just above the floor lowers it by $0.53$ bits. Measurement noise near the floor could therefore change scores.
-To measure this effect, we perturbed the measured values
-above the floor (normal noise with standard deviation $0.1$ and $0.3$
-$\mathrm{p}K$ units), set values pushed below the floor to the floor, and left
-floor-coded pairs fixed. On Anastassiadis, every entry was perturbed, with
-standard deviation $3$ and $9$ percentage points. Each setting used 50 draws.
+at $0$. Adding one just above the floor lowers it by $0.53$ bits. Measurement
+noise near the floor could therefore change scores.
+
+To measure this effect, we added normal noise to measured values above the
+floor, using standard deviations of $0.1$ and $0.3$ $\mathrm{p}K$ units. We
+set values pushed below the floor to the floor and left floor-coded pairs
+fixed. On Anastassiadis, we added noise to every entry, using standard
+deviations of $3$ and $9$ percentage points. Each setting used 50 draws.
 Noise can also change which compounds are scored: a compound whose strongest
 target lies just above $\tau^*$ can fall below it, and the reverse. D1 was
-therefore applied to each noisy profile, and rankings were compared over the
-compounds scored both with and without noise.
+therefore applied to each noisy profile. We compared rankings among compounds
+scored both with and without noise.
 
-\textbf{Proposition 2 (characterization).} Let a score give each target with
-a value above the gate $g$ the weight $h(x_i - g)$, where $h$ is positive,
-continuous, nondecreasing and the same for every target, and give the other
-targets zero weight. Let the score have the form $-F(\mathbf{p})$ of the
-weight shares $\mathbf{p}$, where $F$ is continuous and has Shannon's grouping
-property\cite{Shannon1948}: when the kinases are split into groups, $F$ equals
-its value across the groups plus the share-weighted values within them. If the
-score satisfies D2 and D4, then $h$ is constant or $h(t) = C e^{t/T}$ for some
-$C > 0$ and $T > 0$, and the score is a positive multiple of the gated entropy
-with that $T$ (with equal weights if $h$ is constant).
+\textbf{Proposition 2 (characterization).} Let a score give each target above
+the gate $g$ the weight $h(x_i - g)$ and give the other targets zero weight.
+Here $h$ is positive, continuous, nondecreasing and the same for every target.
+Let the score have the form $-F(\mathbf{p})$ of the weight shares
+$\mathbf{p}$. Require $F$ to be continuous and to have Shannon's grouping
+property\cite{Shannon1948}. This means that, when kinases are split into
+groups, $F$ equals its value across the groups plus its values within them,
+weighted by each group's share. If the score satisfies D2 and D4, then $h$ is
+constant or $h(t) = C e^{t/T}$ for some $C > 0$ and $T > 0$. The score is a
+positive multiple of the gated entropy with that $T$, or with equal weights
+if $h$ is constant.
 
 The proof (Supporting Information, Section~S4) has two steps. D4 gives the
 condition on equal shares in Shannon's theorem, which then fixes $F$ up to a
 positive factor. D2, applied to profiles with two targets above $\tau^*$,
 then requires the ratio of their weights to stay the same when the gate moves
-without passing a value, so the ratio can depend only on the difference
-between their readouts. Only exponential and constant $h$ have this property,
-and D2 rejects every other function of the distance above the gate. For
-example, the entropy's weights $\max(x_i - \beta, 0)$ have this form with
-$\beta$ as the gate: for two targets $1.0$ and $0.5$ units above $\beta$,
-lowering $\beta$ by $0.5$ changes their weight ratio from $2$ to $1.5$. The assumption that a weight depends only on the distance
-above the gate is needed: weights measured from a separate fixed reference
-satisfy D2 for any $h$. R\'enyi entropies of order other than 1 lack the
-grouping property, so they are excluded. By Propositions 1 and 2, the scores
-of this form that also satisfy D3 are the gated entropies with
-$T \geq \tau^* - x_0$, together with the score that weights every target
-above the gate equally (the limit $T \to \infty$).
+without passing a value. The ratio can therefore depend only on the
+difference between their readouts. Only exponential and constant $h$ have
+this property. For example, the entropy uses weights $\max(x_i - \beta, 0)$, with
+$\beta$ as the gate. Consider two targets $1.0$ and $0.5$ units above $\beta$.
+Lowering $\beta$ by $0.5$ changes their weight ratio from $2$ to $1.5$.
 
-We call shares $\mathbf{q}$ \emph{more even} than shares $\mathbf{p}$ on the
-same panel if, for every $j$, the $j$ largest entries of $\mathbf{q}$ sum to no more
-than the $j$ largest entries of $\mathbf{p}$.
+This result requires weights to depend only on distance above the gate.
+Weights measured from a separate fixed reference satisfy D2 for any $h$.
+R\'enyi entropies of order other than 1 lack the grouping property, so they
+are excluded. Among scores of this form, the gated entropies satisfy D3
+exactly when $T \geq \tau^* - x_0$ (Propositions 1 and 2). The equal-weight
+limit $T \to \infty$ also satisfies D3.
+
+To compare how evenly weight is spread on the same panel, we sum the $j$
+largest entries of each set of shares. We call shares $\mathbf{q}$
+\emph{more even} than shares $\mathbf{p}$ if this sum is no larger for
+$\mathbf{q}$ than for $\mathbf{p}$, for every $j$.
 
 \textbf{Proposition 3 (broadening).} On a fixed panel, let a profile have
-positive weights $w_1, \ldots, w_r$ ($r \geq 1$) and zero weights elsewhere,
-and let a score be a function $f$ of the profile's weight shares with
+positive weights $w_1, \ldots, w_r$ ($r \geq 1$) and zero weights elsewhere.
+Let a score be a function $f$ of the profile's weight shares. Require
 $f(\mathbf{q}) \leq f(\mathbf{p})$ whenever $\mathbf{q}$ is more even than
 $\mathbf{p}$. Changing one zero weight to $a$ with $0 < a \leq \min_i w_i$
 does not raise $f$.
@@ -455,52 +475,54 @@ does not raise $f$.
 The proof (Supporting Information, Section~S4) shows that the added weight,
 being the smallest, makes the new shares more even than the old ones. The
 negative Shannon and R\'enyi entropies, the largest share and the Gini
-coefficient all have this property. For a score whose
-weight increases with affinity, such as the entropy, the gated entropy,
-$P_{\max}$ and the Gini, Proposition 3 therefore means that turning a
-floor-coded pair into a target bound no more strongly than the weakest
-weighted target never makes the compound look more selective. The condition on $a$ is needed: adding a target
-tied with the strongest can lower the entropy.
+coefficient all have this property. For the entropy, gated entropy,
+$P_{\max}$ and Gini, weights increase with affinity. Proposition 3 therefore
+means that a floor-coded pair can gain a positive weight without raising
+the score, provided it binds no more strongly than the weakest weighted
+target. The condition on $a$ is needed: adding a target tied with the
+strongest can lower the entropy.
 
 
 \subsection{Recovery from Smaller Panels}
 \label{sec:methods:recovery}
 
-Profiling panels range from tens to hundreds of kinases, so a score computed on
-a smaller panel is only useful if it ranks compounds as it would on a larger
-one. We therefore measure how much of each score's full-panel ranking random
-smaller panels retain, and for how many compounds.
+We measure how well random smaller panels recover each score's full-panel
+ranking and how many
+compounds remain scorable.
 
-Subpanels of $m$ targets were drawn uniformly at random from the curated
-targets, 50 per size, at $m = 10$, $20$, $30$, $40$, $50$, $65$, $80$, $100$,
-$125$, $150$, $200$, $250$ and $300$ below the full panel. Every score in
+We drew 50 subpanels of $m$ targets uniformly at random from the curated
+panel at each tested size. We tested $m = 10$, $20$, $30$, $40$, $50$, $65$,
+$80$, $100$, $125$, $150$, $200$, $250$ and $300$, using only sizes below
+the full panel. Every score in
 Table~\ref{tab:implementations}, including the comparators, was computed on the
 same subpanels, with $\tau = \tau^*$ for the S-score, $\beta = x_0$ for the
-entropy and Gini, and $k = 1$ and $b = x_0$ for the ratio. D1 was applied to every score on every
-subpanel. \emph{Coverage} is the share of compounds scored on the full panel that are
-still scored on a subpanel, averaged over the 50 subpanels of each size. It
-varies between subpanels, but on any one subpanel it is the same for every
-score, because D1 scores a compound under all scores or none.
+entropy and Gini, and $k = 1$ and $b = x_0$ for the ratio. We applied D1 to
+every score on every subpanel.
 
-\emph{Recoverability}
-is the share of clearly separated full-panel pairs (ranks at least a quarter
-of the scored compounds apart) that are scored on the subpanel in the same
-order, with a pair tied on the subpanel counted as one half. \emph{Conditional
-agreement} is the Spearman correlation between subpanel and full-panel scores
-over the compounds scored on both. Each score is compared with its own
-full-panel ranking, and its clearly separated pairs are chosen from that
-ranking, so recoverability measures how much of the score's own ordering a
-subpanel keeps. We write $p^*$ for the smallest tested
-size at which the mean conditional agreement over subpanels exceeds $0.90$, a
-descriptive benchmark that we chose. To test whether
-compounds whose score depends heavily on one target are harder to recover, we
-compute two quantities for each compound: its rank error at 50 targets, the
-mean absolute change in its rank (as a share of the compounds) over the
-subpanels on which it is scored, and the largest change in its full-panel score
-when one target is left out. We report the Spearman correlation between them
-over the scored compounds. As published, none of the four definitions has an
-eligibility rule, so Supporting Information (Section~S5) also reports recovery
-with every compound scored, without D1. These results depend partly on the
-conventions for undefined scores. For example, the Gini recovers as fast as
-the entropy once the compounds with an undefined Gini, which the convention
-ranks least selective, are left out.
+\emph{Coverage} is the share of compounds scored on the full panel that remain
+scorable on a subpanel. We average it over the 50 subpanels of each size.
+Within a subpanel, it is the same for
+every score because D1 makes a compound eligible for all scores or none.
+
+For \emph{recoverability}, we first select clearly separated pairs from each
+score's full-panel ranking. Their rank gap must be at least a quarter of the
+number of scored compounds. Recoverability is the fraction of these pairs
+that remain scorable on a subpanel and keep their order. A pair tied on the
+subpanel counts as one half.
+
+\emph{Conditional agreement} is the Spearman correlation between subpanel and
+full-panel scores among compounds scored on both. We write $p^*$ for the
+smallest tested panel size at which mean conditional agreement exceeds
+$0.90$. This is a descriptive benchmark that we chose.
+
+We also test whether compounds whose score depends heavily on one target are
+harder to recover. For each compound, we compute its mean absolute rank
+change at 50 targets, using only subpanels on which it remains scorable.
+Ranks are computed among compounds scored on both panels and divided by
+their number. We also measure the largest change in the full-panel score
+when one target is left out. We report the Spearman correlation between
+these two quantities among scored compounds.
+
+Supporting Information (Section~S5) also reports recovery without D1, with
+every compound scored. These results depend partly on the conventions for
+undefined scores.
