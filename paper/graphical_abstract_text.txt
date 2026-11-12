@@ -3,9 +3,9 @@ Analysis Choices and Ranking Stability in Kinase Inhibitor Selectivity Scores
 Polina Vinogradova*
 
 Kinase selectivity rankings depend on affinity weighting, floor-coded pairs
-and the compounds eligible for scoring. Across four datasets, agreement among
-compounds retained on small panels can conceal the loss of narrowly active
-compounds, so recovery must be reported with coverage. A conditional
-characterization of gated entropies gives a monotonicity guarantee under
-weak-target addition, but does not establish an empirical recovery advantage
-over simpler scores.
+and the compounds eligible for scoring. Across four datasets, rank agreement
+on smaller panels can remain high even when compounds with few active targets
+become unscorable, so recovery must be reported with compound coverage. A
+conditional characterization of gated entropies gives a monotonicity guarantee
+under weak-target addition, but does not establish an empirical recovery
+advantage over simpler scores.

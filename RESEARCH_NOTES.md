@@ -20,8 +20,8 @@ Introduction (merged with Background); Methods (datasets and target selection,
 score implementations, ranking comparisons, evaluation criteria, the gated
 entropy, recovery design); Results (analysis choices and agreement; parameter
 sensitivity and profile associations; criteria and the gated entropy;
-recovery from small panels; scale of the gated entropy and recovery); Discussion (roles of the criteria
-and the gated entropy; reporting recommendations; limitations); Conclusion.
+recovery from small panels; scale of the gated entropy and recovery); Discussion (what the design criteria guarantee; reporting recommendations;
+limitations); Conclusion.
 SI Sections S1-S8 follow the same
 order.
 
@@ -35,7 +35,8 @@ ratio) are used interchangeably. The paper:
    monotonicity under weak-target addition, D4 orientation on profiles with
    equally strong targets), all judged by construction, and evaluates the
    four definitions, three comparators and a candidate against them; derives
-   the candidate (gated entropy with exponential weights) from them
+   the gated entropy with exponential or equal weights within the stated
+   class of distance-based weights and grouping assumptions
 4. Evaluates recovery from random subpanels separately (panel_recovery.py)
 
 The criteria are proposed design/reporting requirements motivated by the

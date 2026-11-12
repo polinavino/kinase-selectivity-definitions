@@ -3,10 +3,10 @@ Which file to upload in each slot
 ========================================================
 
 MAIN DOCUMENT (Word, with tracked changes)
-  molecular_informatics_changes_since_2026-09-23.docx
+  molecular_informatics_changes_2026-09-23_to_2026-11-12.docx
   Comparison against the September 23 repository snapshot (commit 96a38d7),
   the latest committed version before the author-reported September 26
-  submission. Baseline copy: submission_exports/submission_snapshot_2026-09-23.docx.
+  submission. Baseline copy: archive/submitted_revision_snapshot_2026-09-23.docx.
   This baseline was recovered from Git, rather than downloaded from the journal.
   The comparison is for reviewing changes. Use the clean revised DOCX as the
   final manuscript: LibreOffice does not reliably accept/reject math-object
@@ -19,7 +19,7 @@ MAIN DOCUMENT (Word, with tracked changes)
     "[Table N here]" callout. Leaving them embedded is the safer default.
 
 CLEAN MAIN DOCUMENT (Word, no tracked changes) — if the system asks for one
-  molecular_informatics_submission_revised_2026-11-11_2.docx
+  molecular_informatics_submission_revised_2026-11-12.docx
 
 AUTHOR RESPONSE LETTER
   response_to_reviewers_round2.txt  (paste into the response box, or upload as-is)
@@ -42,9 +42,9 @@ TABLES  (one file per table, separate slot each)  -> submission_tables/
                  published entropy
   table4.tex   = the four criteria for each score
   Current editable Word copies are in submission_exports/Table1.docx through
-  Table4.docx, generated from the same source as the manuscript. Older Word
-  copies in submission_tables/ are preserved and are not the current uploads. PNG copies of all figures are also
-  available for systems that require them.
+  Table4.docx, generated from the same source as the manuscript. Superseded Word table
+  builds have been removed. PNG copies of all figures are also available
+  for systems that require them.
 
 GRAPHICAL ABSTRACT / TOC
   Image:  figures/toc_graphic.png   (5.0 x 5.6 cm at 600 dpi; rebuild with toc_graphic.py)
@@ -77,7 +77,7 @@ Notes
   follow the manuscript-specific editorial instructions.
 
 RENDER AND FRESHNESS CHECKS
-  molecular_informatics_submission_revised_2026-11-11_2_rendered.pdf is the visual proof
+  molecular_informatics_submission_revised_2026-11-12_rendered.pdf is the visual proof
   of the exact current DOCX (hashes in render_checks.json). It is for review.
   Run python3 check_submission.py after rebuilding and rendering.
   Audit evidence, generated checks and render proofs are local files ignored by Git.

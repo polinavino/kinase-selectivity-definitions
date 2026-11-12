@@ -286,17 +286,19 @@ Metz and $[20, 50]\%$ inhibition on Anastassiadis. For the ratio, the parameter
 is the level $b$ in $R_b(k) = x_{(1)} - \max(x_{(k+1)}, b)$. The gated
 entropy's gate is swept with $T$ fixed at $\tau^* - x_0$. Every parameter
 reverses more than $13\%$ of pairs on at least one dataset (the ratio's level only at $k = 5$). Figure~S2 shows the per-compound rank instability
-on Klaeger. Using 101 grid points instead of 201 changes no reversal
+on Klaeger. The S-score's reversal counts are exact. For the other scores,
+we evaluate the boundary at 201 equally spaced values. For the gated entropy,
+we also evaluate the gate at each observed value in $B$ and just below it.
+Using 101 grid points instead of 201 changes no reversal
 percentage by more than $0.01$ percentage point.
 (\texttt{d3\_pair\_reversals.py},
 \texttt{failure\_mode\_illustration.py})
 
 \begin{table}[h]
 \centering
-\caption{Boundary sensitivity: pairs of scored compounds reversing in $B$
-(\%), for every swept parameter. The S-score's values are exact. The other parameters are
-evaluated at 201 equally spaced values, and the gate also at every observed
-value in $B$ and just below it.}
+\caption{Boundary sensitivity: percentage of pairs of D1-eligible compounds
+whose order reverses as each boundary parameter is varied over
+$B = [x_0, \tau^*]$.}
 \small
 \begin{tabular}{lcccc}
 \toprule

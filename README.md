@@ -125,10 +125,10 @@ formulas disagree; it does not single out one formula.
 
 ## Current submission files
 
-The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-11_2.docx`.
+The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-12.docx`.
 The source is `paper/main.tex` plus `paper/sections/`, and the current response
-is `paper/response_to_reviewers_round2.txt`. Earlier submissions and comparisons
-are preserved under `paper/archive/`. Existing Word documents are preserved;
+is `paper/response_to_reviewers_round2.txt`. Historical submission and review documents
+are preserved under `paper/archive/`. Superseded Word builds have been removed;
 rebuilds create a new dated manuscript filename.
 
 After changing manuscript text, run:

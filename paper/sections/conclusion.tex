@@ -12,13 +12,14 @@ and report its effect, as well as report how many compounds remain scorable on s
 panels. Rank agreement can remain high even when compounds with few active
 targets become unscorable on a smaller panel.
 
-Within the class studied, the criteria allow gated entropy scores with
-exponential or equal weights. For exponential weights, they set the minimum
-scale at which adding a weakly bound target cannot make a compound appear
-more selective. The gated entropy therefore provides a way to meet all four
-criteria while retaining information about binding strength, including weak
-binding above the floor. On these datasets, it has no recovery advantage over
-simpler scores. The criteria still leave its scale free above the minimum.
-Increasing the scale makes the weights more nearly equal and changes both
-rankings and recovery from small panels. The scale must therefore be stated
+The gated entropy meets all four design criteria while weighting targets by
+binding strength, including weak binding above the floor. Under the
+assumptions of Proposition 2, the criteria allow only exponential or equal
+weights. For exponential weights, criterion D3 sets the minimum scale at which adding
+a weakly bound target cannot make a compound appear more selective.
+On the datasets analyzed here (Davis, Klaeger, Anastassiadis and Metz), 
+it has no recovery advantage over
+simpler scores. Any scale at or above this minimum satisfies the criteria.
+Increasing the scale reduces weight differences between targets and changes both
+rankings and recovery from small panels, so the scale must be stated
 when the score is reported.

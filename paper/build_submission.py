@@ -92,9 +92,18 @@ def main():
     checks = validate_main(output)
     checks.update(document=output.name, exports_directory='submission_exports')
     checks.update(abstract_characters=len(abstract), toc_words=len(toc_body.split()))
+    source_files = [HERE / "main.tex", *parts, HERE / "references.bib",
+                    HERE / "supporting_information.tex", HERE / "response_to_reviewers_round2.txt",
+                    HERE / "cover_letter.txt", HERE / "graphical_abstract_text.txt",
+                    HERE / "abstract_plain.txt", HERE / "FIGURE_LEGENDS.txt",
+                    HERE / "build_submission.py", HERE / "docx_tools.py",
+                    HERE / "add_author_block.py", HERE / "runin-headings.lua",
+                    HERE / "angewandte-chemie.csl"]
+    source_files += sorted((HERE / "figures").glob("*.png"))
+    source_files += sorted((HERE / "figures").glob("*.pdf"))
+    source_files += sorted((HERE / "submission_tables").glob("*.tex"))
     checks["source_hashes"] = {str(path.relative_to(HERE)): hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in [HERE / "main.tex", *parts, HERE / "references.bib", HERE / "supporting_information.tex",
-                     HERE / "response_to_reviewers_round2.txt", HERE / "cover_letter.txt"]}
+                              for path in source_files}
     if not args.word_only:
         for document in ("main.tex", "supporting_information.tex"):
             run(["latexmk", "-pdf", "-interaction=nonstopmode", "-halt-on-error", document],

@@ -1,1 +1,5 @@
-Historical submissions and comparison files. These are preserved unchanged as provenance and must not be uploaded as the current manuscript. submission_before_2026-11-11.docx is the clean Word file that existed before this audit; it is not certified as the version actually reviewed. The active manuscript is ../molecular_informatics_submission.docx and the active response is ../response_to_reviewers_round2.txt.
+Historical submission and review documents, preserved unchanged. Do not upload these as the current manuscript.
+
+submitted_revision_snapshot_2026-09-23.docx was recovered from Git commit 96a38d71061c843338dbc18ba735542f63fea9a2, the latest committed version before the author-reported September 26 submission. It is the comparison baseline, not an independently downloaded journal upload.
+
+The dated revised DOCX in the parent directory is the current clean manuscript; response_to_reviewers_round2.txt is the current response. See ../UPLOAD_GUIDE.txt for exact filenames.

@@ -8,7 +8,7 @@ Table~\ref{tab:datasets} summarizes the four datasets. The Davis
 dataset\cite{Davis2011} reports dissociation constants from a
 competition-binding assay. The Klaeger dataset\cite{Klaeger2017} reports
 apparent dissociation constants from Kinobeads chemoproteomics in cell lysate.
-Kinobeads carry kinase inhibitors that capture kinases from the lysate;
+Kinobeads carry kinase inhibitors that capture kinases from the lysate, and
 mass spectrometry measures the captured proteins. With constants in nM, we
 converted both datasets, as in DeepDTA\cite{DeepDTA}, to
 $\mathrm{p}K_d = -\log_{10}(K_d / 10^9)$. The
@@ -41,8 +41,8 @@ the resulting rankings.
   \end{tabular}
 \end{table}
 
-\paragraph{Target selection.} Multiple constructs of one gene count that
-kinase several times. Constructs are recombinant forms
+\paragraph{Target selection.} A kinase may appear several times in a profile 
+as there may be multiple constructs of one gene. Constructs are recombinant forms
 of a protein, such as mutants or single domains. The released Davis panel
 lists 433 constructs. These include mutant, phosphorylation-state and
 single-domain forms of the same gene (12 for EGFR), 20 lipid kinases and three
@@ -61,7 +61,7 @@ removes lipid kinases, four protein groups, BCR and TRRAP. The source does not
 annotate BCR and TRRAP as kinases and flags them as possibly co-enriched with
 ABL1 and CDK8.
 
-On Anastassiadis, nine kinases are profiled in two complexes or isoforms; we
+On Anastassiadis, nine kinases are profiled in two complexes or isoforms. We
 keep the first-listed form of each. The Metz columns already represent one
 human protein kinase each. We call the targets kept in each dataset its
 \emph{curated panel} (Table~\ref{tab:datasets}). The code repository lists each
@@ -131,12 +131,12 @@ selectivity. In its published form, $p_i = K_{a,i} / \sum_j K_{a,j}$, with
 association constants $K_{a,i} = 1/K_{d,i}$ ($1/K_{i,i}$ on Metz). It needs
 affinity constants, so we do not compute it on Anastassiadis. To compare all
 four definitions on the same readout, we also use a log-affinity form. This
-weights each target by its readout above a baseline $\beta$; on Anastassiadis,
+weights each target by its readout above a baseline $\beta$. On Anastassiadis,
 the readout is percent inhibition:
 \begin{equation}
   p_i = \frac{\max(x_i - \beta,\, 0)}{\sum_j \max(x_j - \beta,\, 0)}.
 \end{equation}
-We introduce this baseline parameter; it has no published reference values.
+We introduce this baseline parameter, which has no published reference values.
 
 \paragraph{Gini coefficient.} Graczyk's Gini coefficient\cite{Graczyk2010} measures how unequally
 binding is spread over the panel. Its published form uses percent-inhibition
@@ -323,8 +323,8 @@ threshold over $B$, while keeping D1's eligibility rule fixed.
 The analysis protocol should set $\theta$ in advance to suit the intended
 use. For example, binding weaker than $\tau^*$ may matter at the concentration
 used in practice. Different boundary values can address different questions.
-On Davis, the S-score at $\tau = 5$ counts targets with $K_d < 10~\mu$M;
-at $\tau = 6$, it counts those with $K_d < 1~\mu$M. Its rankings can
+On Davis, the S-score at $\tau = 5$ counts targets with $K_d < 10~\mu$M.
+At $\tau = 6$, it counts those with $K_d < 1~\mu$M. Its rankings can
 reasonably differ between these cutoffs.
 
 \textbf{D3 (monotonicity under weak-target addition).} For any $\mathbf{x}$ with

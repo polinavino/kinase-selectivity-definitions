@@ -46,6 +46,13 @@ def main():
         embedded_id = drawing.find('.//a:blip', drawing_ns).get(
             '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}embed')
         assert hashlib.sha256(files['word/' + rel[embedded_id]]).hexdigest() == digest(source), source
+    toc_files = read_docx(exports / 'graphical_abstract.docx')
+    toc_images = [data for name, data in toc_files.items() if name.startswith('word/media/')]
+    assert len(toc_images) == 1
+    assert hashlib.sha256(toc_images[0]).hexdigest() == digest(HERE / 'figures/toc_graphic.png'), 'Stale TOC artwork'
+    toc_document = ET.fromstring(toc_files['word/document.xml'])
+    toc_body = ' '.join((HERE / 'graphical_abstract_text.txt').read_text().strip().split('\n\n')[-1].split())
+    assert toc_body in ' '.join(tokens(toc_document).split()), 'Stale TOC text'
     mapping = {'metric_fidelity': 'Figure1', 'binding_profiles': 'Figure2', 'panel_recovery': 'Figure3'}
     figure_checks = {}
     for basename, number in mapping.items():
@@ -88,7 +95,9 @@ def main():
             if name == '.DS_Store' or name == 'submission_manifest.json' or path.suffix in {'.aux','.log','.blg','.bbl','.fls','.fdb_latexmk','.out','.synctex.gz'}:
                 continue
             kind = 'current'
-            if 'archive' in relative.parts or name in {'AUDIT_FINDINGS.md','findings.txt','contribution_review.txt','verification.json'}:
+            if relative.parts[0] == 'audits':
+                kind = 'local_audit_evidence'
+            elif 'archive' in relative.parts or name in {'AUDIT_FINDINGS.md','findings.txt','contribution_review.txt','verification.json'}:
                 kind = 'historical_provenance'
             elif name in {'faers_counts.csv','selectivity_outcomes_merged.csv','faers_pull.txt','clinical_safety_data.csv','label_texts.json','extended_labels.json'}:
                 kind = 'frozen_or_retired_data_provenance'

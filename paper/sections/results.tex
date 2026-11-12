@@ -141,7 +141,7 @@ fits makes two additional compounds eligible, increasing the active population
 to 202. Every $p^*$ in the recovery analysis remains unchanged (Supporting
 Information, Section~S1).
 
-\paragraph{Changing the dataset or the score.}
+\paragraph{Changing the dataset vs. changing the score.}
 We compared the 46 compounds profiled in both Davis and Klaeger on the 201
 kinases shared by the panels. For the same definition across datasets,
 rankings correlate at $0.34$--$0.84$ (mean $0.61$). For different definitions
@@ -494,18 +494,13 @@ These compounds are otherwise ranked as least selective.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\textwidth]{figures/panel_recovery}
-  \caption{Recovery from random subpanels with D1 applied to every score, on
-           all four datasets (50 subpanels per size). Top: coverage, the share
-           of compounds scored on the full panel that are still scored.
-           Middle: recoverability, the share of clearly separated full-panel
-           pairs that remain scored and keep their order. Their full-panel
-           rank gap is at least a quarter of the number of scored compounds;
-           subpanel ties count as one half. Bottom:
-           mean Spearman correlation between subpanel and full-panel rankings
-           over compounds scored on both, with $\pm 1$ standard deviation across
-           subpanels shaded. Each score is compared with its own full-panel
-           ranking. The published entropy and $P_{\max}$ give floor-coded pairs
-           zero weight and are not defined on Anastassiadis. Dashed line: $0.90$.}
+  \caption{Recovery from random subpanels, with D1 applied to all scores
+           (50 subpanels per size). Top: share of compounds scored on the full
+           panel that remain scorable. Middle: share of clearly separated
+           full-panel pairs retained in order. Bottom: mean Spearman
+           correlation with each score's full-panel ranking among compounds
+           scored on both panels. Shading: $\pm 1$ standard deviation.
+           Dashed line: $0.90$.}
   \label{fig:candidate}
 \end{figure}
 
@@ -516,12 +511,13 @@ The gated entropy satisfies D1 to D4 for any scale $T \geq \tau^* - x_0$.
 At $T = 2(\tau^* - x_0)$, it reaches $p^*$ at 20, 50, 30 and 65 targets on
 Davis, Klaeger, Anastassiadis and Metz. These are the same sizes needed by the
 share-following scores, compared with 50, 65, 30 and 80 at
-$T = \tau^* - x_0$. A larger scale makes the target weights more nearly
-equal. The rankings then approach those of the S-score with $\tau = x_0$
+$T = \tau^* - x_0$. A larger scale reduces weight differences between
+targets. The rankings then approach those of the S-score with $\tau = x_0$
 (Spearman $0.9968$--$0.9996$).
 
-Recovery compares each score with its own full-panel ranking. Faster recovery
-therefore does not show that a larger scale measures selectivity better.
+Increasing the scale changes the full-panel ranking as well as its recovery 
+from smaller panels. Faster recovery shows that the new ranking is easier to 
+reproduce, but it does not establish that it better represents selectivity.
 The other analyses use $T = \tau^* - x_0$, the smallest allowed scale and
 the one most sensitive to affinity differences. Supporting Information,
 Section~S5, gives the same comparison for $T = 4(\tau^* - x_0)$.
