@@ -28,7 +28,7 @@ response, the manuscript has been revised as follows:
     do not annotate as protein kinases from Klaeger;
 
   - the published entropy is compared with our log-affinity form under two
-    treatments of pairs without detected binding, in both the agreement and
+    treatments of floor-coded pairs, in both the agreement and
     the small-panel analyses;
 
   - the criteria and the gated entropy are defined in Methods and

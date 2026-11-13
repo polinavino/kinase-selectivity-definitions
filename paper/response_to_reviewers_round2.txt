@@ -40,8 +40,13 @@ parameter we introduce. Results and Discussion now limit the grouping of
 the S-score, entropy and Gini to the log-affinity forms among active
 compounds. The separation from the ratio is weak on Anastassiadis.
 
-Table 3, Figure 1 and Supporting Information Table S2 compare the published
-forms. For the published entropy, we report both zero weight for floor-coded
+Table 3 and Supporting Information Table S2 compare the published entropy
+and the native percent-inhibition Gini where their required readouts are
+available. Figure 1 compares association-constant and baseline-subtracted
+weights for entropy and Gini. Methods and its caption credit the
+association-constant Gini variant to Uitdehaag and Zaman (2011), distinguishing
+it from Graczyk's percent-inhibition Gini.
+For the published entropy, we report both zero weight for floor-coded
 pairs and their retention at the floor. Under both treatments, it correlates
 more with the ratio than with the S-score or Gini on Davis, Klaeger and Metz.
 Its correlation with the log-affinity entropy is 0.74 on Davis and 0.79 on
@@ -231,6 +236,9 @@ label discontinuation rates after finding two dose-reduction rates recorded
 as discontinuation rates, three untraceable values and one combination-therapy
 rate. The FAERS results do not establish the absence of clinically relevant
 associations.
+Supporting Information Section S7 now identifies the frozen snapshot used
+for the correlations, distinguishes it from the later count file, and states
+the query scope and the unrecorded exact retrieval date.
 
 
 11. Introduce the properties and candidate in Methods, evaluate them in

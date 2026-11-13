@@ -1,6 +1,6 @@
 Figure legends
 
-Figure 1. Rankings using weights inversely proportional to binding constants (x-axis) against the baseline-subtracted log-affinity form (y-axis, median rank over the baseline sweep), on Davis and Klaeger. Top: entropy. Bottom: Gini. Grey: floor-coded pairs kept at the floor. Blue: floor-coded pairs given zero weight. Spearman r above each panel.
+Figure 1. Rankings using weights inversely proportional to binding constants (x-axis) against the baseline-subtracted log-affinity form (y-axis, median rank over the baseline sweep), on Davis and Klaeger. Top: the published association-constant entropy. Bottom: the association-constant Gini (K_(a)-Gini) of Uitdehaag and Zaman (2011), distinct from Graczyk’s percent-inhibition Gini. Grey: floor-coded pairs kept at the floor. Blue: floor-coded pairs given zero weight. Spearman r above each panel.
 
 Figure 2. Binding profiles of two Davis compounds, targets sorted by affinity. Left: fedratinib. Right: PHA-665752. Dashed line: pK_(d) = 6 activity threshold. Dotted line: pK_(d) = 5 coded floor.
 

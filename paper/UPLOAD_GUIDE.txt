@@ -3,6 +3,8 @@ Which file to upload in each slot
 ========================================================
 
 MAIN DOCUMENT (Word, with tracked changes)
+  The comparison below predates the November 13 text edits. Regenerate it
+  against the final clean manuscript before using it for submission.
   molecular_informatics_changes_2026-09-23_to_2026-11-12.docx
   Comparison against the September 23 repository snapshot (commit 96a38d7),
   the latest committed version before the author-reported September 26
@@ -19,7 +21,7 @@ MAIN DOCUMENT (Word, with tracked changes)
     "[Table N here]" callout. Leaving them embedded is the safer default.
 
 CLEAN MAIN DOCUMENT (Word, no tracked changes) — if the system asks for one
-  molecular_informatics_submission_revised_2026-11-12.docx
+  molecular_informatics_submission_revised_2026-11-13.docx
 
 AUTHOR RESPONSE LETTER
   response_to_reviewers_round2.txt  (paste into the response box, or upload as-is)
@@ -28,8 +30,9 @@ COVER LETTER
   cover_letter.txt
 
 FIGURES  (one file per figure, separate slot each)  -> submission_figures/
-  Figure1.pdf / Figure1.tif = published vs log-affinity entropy and Gini, two treatments
-                 of floor-coded pairs
+  Figure1.pdf / Figure1.tif = association-constant vs baseline-subtracted entropy
+                 and Gini (the Ka-Gini variant of Uitdehaag and Zaman), two
+                 treatments of floor-coded pairs
   Figure2.pdf / Figure2.tif = binding profiles of two Davis compounds (near-tied top
                  targets; broad profile with one dominant target)
   Figure3.pdf / Figure3.tif = recovery from random subpanels: coverage, pair recovery and
@@ -77,7 +80,7 @@ Notes
   follow the manuscript-specific editorial instructions.
 
 RENDER AND FRESHNESS CHECKS
-  molecular_informatics_submission_revised_2026-11-12_rendered.pdf is the visual proof
+  molecular_informatics_submission_revised_2026-11-13_rendered.pdf is the visual proof
   of the exact current DOCX (hashes in render_checks.json). It is for review.
   Run python3 check_submission.py after rebuilding and rendering.
   Audit evidence, generated checks and render proofs are local files ignored by Git.

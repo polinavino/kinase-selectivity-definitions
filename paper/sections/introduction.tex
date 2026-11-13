@@ -53,9 +53,9 @@ showing how ranking recovery on smaller panels depends on which compounds
 remain scorable. We compare
 the S-score, entropy, Gini and ratio on four datasets that span three assay technologies.
 Each is curated to one reference target per human protein kinase, and the
-entropy and Gini are computed in both a common log-affinity form and their
-published forms. We vary the compounds ranked, the treatment of
-pairs without detected binding, and each score's parameter, then relate the
+entropy and Gini are compared in baseline-subtracted and published forms
+where the required readout is available. We vary the compounds ranked, the treatment of
+floor-coded pairs, and each score's parameter, then relate the
 resulting instability to features of the binding profile as exploratory
 diagnostics. Motivated by these sensitivities, we propose and defend four design and
 reporting criteria for a selectivity measure: activity eligibility,
@@ -75,5 +75,5 @@ scales, the exponential family has a single parameter, the
 \emph{scale}, the readout difference over which a weight grows by a factor
 of $e$. Monotonicity fixes the range of the scale. Within that range, the
 scale can be chosen so that the score recovers rankings from small panels as
-fast as the share of targets with detected binding, but 
+fast as the share of panel entries above the operational floor, but
 an empirical recovery advantage over existing measures is not identified.

@@ -866,8 +866,21 @@ Metz          & 704 & 0.910 & 0.899 & 0.447 & 0.883 / 0.906 \\
 
 For the 46 FDA-approved Klaeger compounds with FAERS records, we correlated
 each definition's median selectivity rank with the proportions of FAERS
-reports that were serious, fatal or involved hospitalization. FAERS counts
-were retrieved from the openFDA adverse-event interface (\texttt{faers\_pull.py}).
+reports that were serious, fatal or involved hospitalization. The analysis
+uses the frozen report totals and proportions in
+\texttt{selectivity\_outcomes\_merged.csv}. These match the counts archived
+in repository commit \texttt{d9d4f04} on April 2, 2026; this is an archival
+date, and the exact retrieval date was not recorded. The current
+\texttt{faers\_counts.csv} contains a later pull and is not the snapshot
+used for these correlations.
+
+The supplied retrieval script (\texttt{faers\_pull.py}) queries the openFDA
+drug adverse-event interface by generic name and counts matching reports,
+then counts the subsets flagged as serious, fatal or involving
+hospitalization. It imposes no report-date or drug-role restriction.
+It documents the query approach but cannot reconstruct the exact historical
+API state. The correlations are reproducible from the frozen snapshot;
+repeating a live query may return different counts.
 No correlation was statistically significant in this exploratory analysis
 (all $|r| \leq 0.20$, all $p > 0.19$); this does not establish the absence of
 clinically relevant associations. Raw
@@ -905,7 +918,7 @@ Methods; S1; Discussion & Active fractions, entries at or below the activity thr
 Methods; S1 & Metz coverage of the retained compounds & \texttt{metz\_\allowbreak{}coverage.py}, \texttt{claim\_\allowbreak{}checks.py} (10) \\
 Methods; S2 & Mean instead of median ranks & \texttt{claim\_\allowbreak{}checks.py} (3) \\
 Table~3; Results, Agreement & Correlations between definitions; Klaeger active compounds; bootstrap & \texttt{selectivity\_\allowbreak{}analysis.py}, \texttt{klaeger\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (2) \\
-Table~3; Figure~1; Table~S2 & Published entropy and Gini, both floor treatments; every measured Klaeger affinity retained & \texttt{original\_\allowbreak{}operationalization\_\allowbreak{}robustness.py}, \texttt{metric\_\allowbreak{}fidelity\_\allowbreak{}robustness.py} \\
+Table~3; Figure~1; Table~S2 & Published entropy, native percent-inhibition Gini and association-constant Gini; both floor treatments; every measured Klaeger affinity retained & \texttt{original\_\allowbreak{}operationalization\_\allowbreak{}robustness.py}, \texttt{metric\_\allowbreak{}fidelity\_\allowbreak{}robustness.py} \\
 Results, Agreement; S3 & Compounds with no active kinase: ranks, aggregated and per-definition instability, undefined configurations & \texttt{claim\_\allowbreak{}checks.py} (13, 20), \texttt{failure\_\allowbreak{}mode\_\allowbreak{}illustration.py}, \texttt{undefined\_\allowbreak{}score\_\allowbreak{}convention.py} \\
 Results, Agreement; S3 & Targets of the compounds with no detected binding & \texttt{claim\_\allowbreak{}checks.py} (1) \\
 Results, Agreement; Figure~S1; S2 & Four datasets, all and active compounds; Metz coverage dependence & \texttt{additional\_\allowbreak{}datasets\_\allowbreak{}analysis.py}, \texttt{claim\_\allowbreak{}checks.py} (10, 11) \\

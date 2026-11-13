@@ -64,9 +64,9 @@ We checked this on **four datasets spanning three assay technologies**
 analyses count one reference target per human protein kinase: the released
 panels include mutant and domain constructs of the same gene (Davis) and
 proteins that are not kinases (Klaeger). On small random panels some drugs can
-no longer be scored, and formulas that follow the share of targets with
-detected binding recover the rankings from fewer targets than the ratio or the
-entropy as originally published.
+no longer be scored, and formulas that follow the share of panel
+entries above the operational floor recover the rankings from fewer targets
+than the ratio or the entropy as originally published.
 
 The main contribution is to separate score implementation and activity
 eligibility effects, and evaluate ranking recovery together with retained
@@ -105,9 +105,9 @@ criteria 2 and 4 leave exponential weights and their equal-weight limit.
 For the finite-scale entropies, criterion 3 holds exactly when
 their scale (the affinity difference over which a weight grows by a factor of
 e) is at least the distance between the floor and the activity
-threshold. On these data it ranks drugs similarly to the share of targets with
-detected binding but recovers rankings from small panels more slowly, so it is
-not an empirical improvement on simpler formulas. With twice the scale it
+threshold. On these data it ranks drugs similarly to the share of panel
+entries above the operational floor but recovers rankings from small panels
+more slowly, so it is not an empirical improvement on simpler formulas. With twice the scale it
 recovers them as fast and ranks drugs almost as that share does, so the scale
 should be reported. Every formula studied
 satisfies criterion 4 when pairs without detected binding get zero weight; the
@@ -125,7 +125,7 @@ formulas disagree; it does not single out one formula.
 
 ## Current submission files
 
-The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-12.docx`.
+The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-13.docx`.
 The source is `paper/main.tex` plus `paper/sections/`, and the current response
 is `paper/response_to_reviewers_round2.txt`. Historical submission and review documents
 are preserved under `paper/archive/`. Superseded Word builds have been removed;
@@ -215,13 +215,17 @@ Raw supplementary files (downloaded programmatically):
 | bosc_catds_comparison.csv | Bosc et al. window/ranking score and CATDS-proxy comparison (SI Section S6) |
 | clinical_outcomes_correlation.csv | FAERS vs. selectivity-rank correlations (Discussion, Limitations) |
 
-**Clinical data provenance.** `faers_counts.csv` is pulled live from the openFDA
-adverse-event API by `faers_pull.py` and is fully script-reproducible (though
-report counts grow over time, so re-running will not reproduce the exact
-frozen numbers in the paper). `selectivity_outcomes_merged.csv` holds
-the frozen FAERS counts and rates; `clinical_outcomes_correlation.py`
-refreshes its derived ranks, instability and active-target counts from the
-current Klaeger analysis without updating the report snapshot.
+**Clinical data provenance.** The paper uses the frozen report totals and
+proportions in `selectivity_outcomes_merged.csv`. They match all 46 drugs'
+counts in `faers_counts.csv` at commit `d9d4f04` (April 2, 2026). This is the
+archival date; the exact retrieval date was not recorded. The current
+`faers_counts.csv` contains a later pull and does not supply the paper's
+snapshot. `faers_pull.py` queries openFDA by generic name, with no report-date
+or drug-role restriction, and counts reports and serious/fatal/hospitalization
+subsets. Repeating a live pull cannot recreate the historical API state.
+`clinical_outcomes_correlation.py` reproduces the correlations from the frozen
+snapshot and refreshes only its derived ranks, instability and active-target
+counts from the current Klaeger analysis.
 `bosc_catds_comparison.py` and `clinical_outcomes_correlation.py` are
 the permanent, reproducible scripts for the two correlation analyses computed
 from these files and cited in the Discussion/Limitations sections.
@@ -235,7 +239,7 @@ from these files and cited in the Discussion/Limitations sections.
 | additional_datasets_analysis.py | Anastassiadis + Metz; correlations on four datasets, all and active compounds (SI Figure S1), and `cross_dataset_summary.csv` |
 | instability_by_family.py | Profile features against instability, active compounds ranked among themselves, with the all-compound ranking as a check (SI Table S4, Figure S3) |
 | binding_profiles.py | Most ratio-sensitive and most unstable Davis profiles (Figure 2) |
-| metric_fidelity_robustness.py | Published vs. log-affinity entropy/Gini, with floor-coded pairs at the floor or given zero weight (Figure 1) |
+| metric_fidelity_robustness.py | Association-constant entropy and Ka-Gini (Uitdehaag and Zaman, 2011) vs. baseline-subtracted forms, with two floor treatments (Figure 1) |
 | panel_size_analysis.py | Panel-size subsampling on all four datasets without the D1 gate (SI Section S5, Figure S4) |
 | candidate_measure.py | Candidate measure: correlation with the number of active kinases, agreement with the entropy, gate sweep and D3 checks on Klaeger |
 | faers_pull.py | Pulls FAERS adverse-event counts from the openFDA API (clinical analysis, Limitations) |

@@ -146,6 +146,11 @@ values. We compute it on the same baseline-subtracted weights:
   \qquad w_{(i)} = \max(x_i - \beta,\, 0)\ \text{sorted ascending}.
 \end{equation}
 On Anastassiadis, we also compute the published percent-inhibition form.
+On Davis and Klaeger, we also compute the association-constant Gini
+($K_a$-Gini) introduced by Uitdehaag and Zaman\cite{Uitdehaag2011}.
+This variant applies the Gini formula to $K_a$ values rather than percent
+inhibition. Figure~\ref{fig:fidelity} compares it with the baseline-subtracted
+form.
 
 Unless stated otherwise, both the
 entropy and Gini are in their log-affinity forms.
@@ -220,7 +225,11 @@ floor-coded pairs should have zero weight or the floor value.
 count is the number of targets above $\tau^*$, or the numerator of the S-score
 at $\tau^*$. A lower count indicates greater selectivity. The other two
 comparators are the entropy with $\beta = \tau^*$ and the S-score with
-$\tau = x_0$, the share of the panel with detected binding. We compute all
+$\tau = x_0$, the share of panel entries above the operational floor.
+On Davis and Klaeger, these are retained affinities stronger than the coded
+floor; on Anastassiadis, inhibition above $20\%$; and on Metz, almost every
+measured entry. This share therefore has a different interpretation on each
+dataset. We compute all
 three only for active compounds. Otherwise, a compound with no active target
 would have a count of 0 and rank as more selective than any active compound.
 

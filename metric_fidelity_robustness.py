@@ -7,10 +7,11 @@ different underlying quantities:
 
   * Uitdehaag & Zaman (2011) normalise association constants,
     p_i = Ka_i / sum_j Ka_j  with  Ka_i = 1/Kd_i = 10^(pKd_i - 9).
-  * Graczyk (2010) computes the Gini coefficient of percent-inhibition values.
+  * Graczyk (2007) computes the Gini coefficient of percent-inhibition values.
+  * Uitdehaag & Zaman (2011) introduce the association-constant Gini (Ka-Gini).
 
-This script recomputes entropy and Gini using forms closer to the originals
-(association-constant weighting) and compares the resulting selectivity
+This script computes association-constant entropy and the published Ka-Gini
+variant and compares the resulting selectivity
 rankings with the manuscript's log-affinity forms.  The point is not that one
 form is correct and the other wrong: it is that the two reasonable
 operationalizations produce substantially different rankings, so the choice of

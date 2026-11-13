@@ -71,7 +71,10 @@ recovery change by at most $0.02$ (Supporting Information, Section~S2).
   \includegraphics[width=\textwidth]{figures/metric_fidelity}
   \caption{Rankings using weights inversely proportional to binding constants ($x$-axis) against the
            baseline-subtracted log-affinity form ($y$-axis, median rank over
-           the baseline sweep), on Davis and Klaeger. Top: entropy. Bottom: Gini.
+           the baseline sweep), on Davis and Klaeger. Top: the published
+           association-constant entropy. Bottom: the association-constant
+           Gini ($K_a$-Gini) of Uitdehaag and Zaman (2011),
+           distinct from Graczyk's percent-inhibition Gini.
            Grey: floor-coded pairs kept at the floor. Blue: floor-coded pairs
            given zero weight. Spearman $r$ above each panel.}
   \label{fig:fidelity}
@@ -443,7 +446,7 @@ Among compounds scored on both panels, scores whose rankings depend mostly
 on the few strongest targets recover slowest (Figure~\ref{fig:candidate},
 bottom).
 The S-score with $\tau = x_0$, the entropy with $\beta = x_0$ and the Gini
-rank compounds almost as the share of targets with detected binding does
+rank compounds almost as the share of panel entries above the operational floor does
 (Spearman above $0.97$ with the S-score at $\tau = x_0$ on every dataset). We
 call these three the \emph{share-following scores}. The entropy and Gini
 curves differ from the S-score's by at most $0.012$.
@@ -472,7 +475,7 @@ tested on Davis (300 of 363), Anastassiadis (250 of 291) or Metz (150 of 172).
 The published entropy gives weak binding a small positive weight. Including
 weak binding therefore does not by itself ensure fast recovery.
 
-The gated entropy follows the share of targets with detected binding less
+The gated entropy follows the share of entries above the operational floor less
 closely (Spearman $0.964$--$0.996$ with the S-score at $\tau = x_0$).
 Its mean Spearman curve lies below that of the S-score with $\tau = x_0$ on
 every dataset, by up to $0.069$. It reaches $p^*$ at 50, 65, 30 and 80
