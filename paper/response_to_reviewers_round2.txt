@@ -171,8 +171,8 @@ index at the strongest target. The S-score at the floor also meets all four
 criteria. On Davis, Klaeger, Anastassiadis and Metz, it reaches p* at
 20, 50, 30 and 65 targets, against 50, 65, 30 and 80 for the gated entropy.
 Doubling the gated entropy's scale gives the same p* as that S-score, with
-nearly identical rankings (Spearman 0.9968-0.9996; Results, "Scale of the
-Gated Entropy and Recovery").
+nearly identical rankings (Spearman 0.9968-0.9996; Results, "Recovery from
+Small Panels").
 
 The gated entropy combines the four criteria with affinity weighting,
 including weak binding above the floor. Proposition 2 characterizes it

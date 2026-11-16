@@ -420,8 +420,8 @@ higher after a kinase is added at $\tau^*$.
 Proposition 1 leaves $T$ free above $\tau^* - x_0$. Two targets whose readouts
 differ by $\Delta x$ have weights in the ratio $e^{\Delta x/T}$, so a smaller
 $T$ makes the score depend more on affinity differences. We take the smallest
-$T$ that D3 allows, $T = \tau^* - x_0$. Results (``Scale of the Gated Entropy
-and Recovery'') compares $T = 2(\tau^* - x_0)$.
+$T$ that D3 allows, $T = \tau^* - x_0$. Results (``Recovery from Small Panels'')
+compares $T = 2(\tau^* - x_0)$.
 
 Because a target at the gate has weight $0$ and any target above it has weight
 above $1$, the score jumps when a target's value crosses $x_0$. For example,
@@ -492,46 +492,26 @@ target. The condition on $a$ is needed: adding a target tied with the
 strongest can lower the entropy.
 
 
-\subsection{Recovery from Smaller Panels}
+\subsection{Subpanel Sampling and Evaluation}
 \label{sec:methods:recovery}
 
-We measure how well random smaller panels recover each score's full-panel
-ranking and how many
-compounds remain scorable.
+We drew 50 target subpanels uniformly at random from each curated panel at
+each tested size, using the same subpanels for every score and applying D1
+on each. We set
+$\tau = \tau^*$ for the S-score, $\beta = x_0$ for entropy and Gini, and
+$k = 1$, $b = x_0$ for the ratio. Panel sizes and secondary diagnostics are
+specified in Supporting Information (Section~S5).
 
-We drew 50 subpanels of $m$ targets uniformly at random from the curated
-panel at each tested size. We tested $m = 10$, $20$, $30$, $40$, $50$, $65$,
-$80$, $100$, $125$, $150$, $200$, $250$ and $300$, using only sizes below
-the full panel. Every score in
-Table~\ref{tab:implementations}, including the comparators, was computed on the
-same subpanels, with $\tau = \tau^*$ for the S-score, $\beta = x_0$ for the
-entropy and Gini, and $k = 1$ and $b = x_0$ for the ratio. We applied D1 to
-every score on every subpanel.
+\emph{Coverage} is the fraction of compounds scored on the full panel that
+remain scorable on a subpanel, averaged over draws. D1 makes this fraction
+the same for every score.
 
-\emph{Coverage} is the share of compounds scored on the full panel that remain
-scorable on a subpanel. We average it over the 50 subpanels of each size.
-Within a subpanel, it is the same for
-every score because D1 makes a compound eligible for all scores or none.
+\emph{Pair recoverability} is the fraction of clearly separated full-panel
+pairs that remain scorable and retain their order. A pair is clearly
+separated if its full-panel rank gap is at least one quarter of the number
+of scored compounds. A subpanel tie counts as one half.
 
-For \emph{recoverability}, we first select clearly separated pairs from each
-score's full-panel ranking. Their rank gap must be at least a quarter of the
-number of scored compounds. Recoverability is the fraction of these pairs
-that remain scorable on a subpanel and keep their order. A pair tied on the
-subpanel counts as one half.
-
-\emph{Conditional agreement} is the Spearman correlation between subpanel and
-full-panel scores among compounds scored on both. We write $p^*$ for the
-smallest tested panel size at which mean conditional agreement exceeds
-$0.90$. This is a descriptive benchmark that we chose.
-
-We also test whether compounds whose score depends heavily on one target are
-harder to recover. For each compound, we compute its mean absolute rank
-change at 50 targets, using only subpanels on which it remains scorable.
-Ranks are computed among compounds scored on both panels and divided by
-their number. We also measure the largest change in the full-panel score
-when one target is left out. We report the Spearman correlation between
-these two quantities among scored compounds.
-
-Supporting Information (Section~S5) also reports recovery without D1, with
-every compound scored. These results depend partly on the conventions for
-undefined scores.
+\emph{Conditional agreement} is the Spearman correlation between each score's
+subpanel and full-panel values among compounds scored on both. We define
+$p^*$ as the smallest tested panel size whose mean conditional agreement
+exceeds $0.90$, a chosen descriptive benchmark.

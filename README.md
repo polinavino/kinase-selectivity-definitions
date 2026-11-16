@@ -125,7 +125,7 @@ formulas disagree; it does not single out one formula.
 
 ## Current submission files
 
-The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-13_2.docx`.
+The current clean manuscript is `paper/molecular_informatics_submission_revised_2026-11-16_3.docx`.
 The source is `paper/main.tex` plus `paper/sections/`, and the current response
 is `paper/response_to_reviewers_round2.txt`. Historical submission and review documents
 are preserved under `paper/archive/`. Superseded Word builds have been removed;
@@ -249,7 +249,7 @@ from these files and cited in the Discussion/Limitations sections.
 | curate_panels.py | Builds the curated panels (one reference target per human protein kinase) from the released Davis, Klaeger and Anastassiadis files, and the target_curation_*.csv tables (Methods) |
 | klaeger_protein_kinases.py | Klaeger panel composition (122 of 343 targets removed besides four protein groups) and the main Klaeger results on the released and curated panels (SI Table S1) |
 | davis_gene_level.py | The main Davis results on the released constructs, the curated panel and the best affinity per gene (SI Table S1) |
-| panel_recovery.py | Recovery from random subpanels for all measures, including the S-score at the floor and the published entropy, with coverage, pair recovery, p* at other bars, the probability that a compound stays scored, an influence diagnostic, and the gated entropy at twice and four times its scale (Results, Figure 3, "Scale of the Gated Entropy and Recovery") |
+| panel_recovery.py | Recovery from random subpanels for all measures, including the S-score at the floor and the published entropy, with coverage, pair recovery, p* at other bars, the probability that a compound stays scored, an influence diagnostic, and the gated entropy at twice and four times its scale (Results, Figure 3, "Recovery from Small Panels") |
 | metz_coverage.py | Per-compound kinase-coverage distribution among the 704 retained Metz compounds (Methods) |
 | dataset_descriptive_stats.py | Active-fraction, zero-active-threshold, and missing-entry percentages cited in Methods for all four datasets, plus the Davis check with the S-score sweep shifted to [6.5, 9.0] (SI Section S1) |
 | d2_near_tie_sensitivity.py | The ratio's reference-choice sensitivity: Klaeger compounds with an active kinase and a top1-top2 gap < 0.05 and their R(1) vs. R(2) swing (Results, Parameter Sensitivity) |

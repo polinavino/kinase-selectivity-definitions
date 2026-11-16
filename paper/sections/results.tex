@@ -425,73 +425,54 @@ Section~S4, compares other variants.
 \subsection{Recovery from Small Panels}
 \label{sec:recovery}
 
-On small random panels, some compounds can no longer be scored. At 50 targets,
-$88\%$ of the compounds scored on the full panel are still scored on Davis,
-$71\%$ on Klaeger, $77\%$ on Anastassiadis and $99\%$ on Metz
-(Figure~\ref{fig:candidate}, top). Compounds with few active targets are most
-often lost. On a 50-target Klaeger subpanel, a compound with one active target
-remains scorable with probability $0.23$. With ten active targets, the
-probability is $0.93$. Rank agreement among compounds that remain scorable
-can therefore be high even when many compounds with few active targets are
-lost.
+Rank agreement among compounds retained on a small panel can remain high
+while compounds with few active targets become unscorable. At 50 targets,
+coverage is $88\%$ on Davis, $71\%$ on Klaeger, $77\%$ on Anastassiadis and
+$99\%$ on Metz (Figure~\ref{fig:candidate}, top). On Klaeger, a compound with
+one active target remains scorable with probability $0.23$, compared with
+$0.93$ for one with ten. Conditional agreement therefore describes a subset
+that preferentially retains compounds with more active targets.
 
-Coverage limits how many pairs can retain their order. To keep $90\%$ of
-clearly separated pairs, most scores need 150 targets on Davis, 200 on
-Klaeger and Anastassiadis, and 40 on Metz. The ratio, published entropy and
-$P_{\max}$ need as many targets or more
-(Figure~\ref{fig:candidate}, middle).
+Pair recoverability accounts for both eligibility and ordering. To retain
+$90\%$ of clearly separated full-panel pairs in order, most scores need
+150 targets on Davis, 200 on Klaeger and Anastassiadis, and 40 on Metz.
+The ratio, published entropy and $P_{\max}$ need as many targets or more
+(Figure~\ref{fig:candidate}, middle). On Davis, Klaeger and Anastassiadis,
+the fastest scores exceed mean Spearman $0.90$ with far fewer targets.
 
-Among compounds scored on both panels, scores whose rankings depend mostly
-on the few strongest targets recover slowest (Figure~\ref{fig:candidate},
-bottom).
-The S-score with $\tau = x_0$, the entropy with $\beta = x_0$ and the Gini
-rank compounds almost as the share of panel entries above the operational floor does
-(Spearman above $0.97$ with the S-score at $\tau = x_0$ on every dataset). We
-call these three the \emph{share-following scores}. The entropy and Gini
-curves differ from the S-score's by at most $0.012$.
-Figure~\ref{fig:candidate} therefore shows only the S-score with
-$\tau = x_0$ for this group.
+Among compounds scored on both panels, the S-score at $\tau = x_0$, entropy
+at $\beta = x_0$ and Gini recover fastest on Davis, Klaeger and Anastassiadis
+(Figure~\ref{fig:candidate}, bottom). Their rankings closely follow the share
+of entries above the operational floor (Spearman above $0.97$); we call them
+\emph{share-following scores}. The figure shows the S-score at $x_0$ for this
+group; the entropy and Gini mean agreement curves differ from it by at most $0.012$.
+The S-score at $\tau^*$ and active count give identical rankings and also
+share a curve. On Metz, where floor-coded entries are mostly untested pairs,
+these two scores and entropy at $\beta = \tau^*$ recover fastest, reaching
+mean Spearman above $0.90$ at 50 targets, against 65 for the share-following
+scores.
 
-The share-following scores recover fastest on Davis, Klaeger and
-Anastassiadis, reaching $p^*$ at 20, 50 and 30 targets. The S-score at
-$\tau^*$ and active count need 30, 80 and 50 targets. These two give identical
-rankings on any one panel and share a curve in Figure~\ref{fig:candidate}.
-The entropy with $\beta = \tau^*$ needs 40, 100 and 65 targets.
+Scores whose rankings depend mostly on the few strongest targets recover
+slowest, making recovery sensitive to whether those targets are sampled.
+The ratio, published entropy and $P_{\max}$ fall in this group. The published
+entropy needs 300 of 363 targets on Davis, 200 of 217 on Klaeger and 150 of
+172 on Metz to exceed mean Spearman $0.90$. Although it gives weak binding
+positive weight, this does not ensure fast recovery. Supporting Information
+(Section~S5) gives the remaining benchmarks, variability across subpanels,
+alternative agreement thresholds and the analysis without D1.
+These benchmarks describe mean agreement across subpanels; individual
+panels can fall below them.
 
-On Metz, where untested pairs are set to the floor, the S-score at $\tau^*$,
-active count and entropy with $\beta = \tau^*$ recover fastest. They need 50
-targets, compared with 65 for the share-following scores. Using benchmarks
-of $0.80$, $0.85$ or $0.95$ instead of $0.90$ preserves these comparisons:
-the fastest scores reach the benchmark no later than any score outside
-their group.
-
-The published entropy and $P_{\max}$, with floor-coded pairs given zero
-weight, need 300 of 363 targets on Davis and 200 of 217 on Klaeger. On Metz,
-the published entropy needs 150 of 172 targets; $P_{\max}$ does not reach the
-benchmark at the largest subpanel tested (150). The ratio needs 200 of 217
-targets on Klaeger. It does not reach the benchmark at the largest subpanel
-tested on Davis (300 of 363), Anastassiadis (250 of 291) or Metz (150 of 172).
-The published entropy gives weak binding a small positive weight. Including
-weak binding therefore does not by itself ensure fast recovery.
-
-The gated entropy follows the share of entries above the operational floor less
-closely (Spearman $0.964$--$0.996$ with the S-score at $\tau = x_0$).
-Its mean Spearman curve lies below that of the S-score with $\tau = x_0$ on
-every dataset, by up to $0.069$. It reaches $p^*$ at 50, 65, 30 and 80
-targets on Davis, Klaeger, Anastassiadis and Metz.
-
-The size $p^*$ is defined by mean agreement across subpanels. At $p^*$,
-$62$--$90\%$ of individual subpanels exceed $0.90$ for the share-following
-scores (Supporting Information, Section~S5).
-
-Compounds whose score changes most when one target is left out tend to have
-larger rank errors at 50 targets on Davis, Anastassiadis and Metz. For the
-entropy with $\beta = x_0$, Gini and gated entropy, the Spearman correlations
-are $r = 0.18$--$0.70$. On Klaeger, this association is weak ($r \leq 0.13$).
-
-Without D1, the Gini recovers as fast as the entropy when compounds with
-undefined Gini values are excluded (Supporting Information, Section~S5).
-These compounds are otherwise ranked as least selective.
+The gated entropy has no recovery advantage over the simpler scores.
+At the default scale $T = \tau^* - x_0$, it reaches $p^*$ at 50, 65, 30 and
+80 targets on Davis, Klaeger, Anastassiadis and Metz, against 20, 50, 30 and
+65 for the share-following scores. Doubling $T$ gives the same $p^*$ as
+those scores and nearly identical rankings to the S-score at $x_0$
+(Spearman $0.9968$--$0.9996$). Both scales satisfy D1 to D4. A larger scale
+reduces weight differences and changes the full-panel ranking being
+recovered. Faster recovery therefore does not establish a better measure
+of selectivity. Unless stated otherwise, we use the smallest allowed scale,
+$T = \tau^* - x_0$; Section~S5 also compares four times this scale.
 
 \begin{figure}[htbp]
   \centering
@@ -505,21 +486,3 @@ These compounds are otherwise ranked as least selective.
            Dashed line: $0.90$.}
   \label{fig:candidate}
 \end{figure}
-
-\subsection{Scale of the Gated Entropy and Recovery}
-\label{sec:results:scale}
-
-The gated entropy satisfies D1 to D4 for any scale $T \geq \tau^* - x_0$.
-At $T = 2(\tau^* - x_0)$, it reaches $p^*$ at 20, 50, 30 and 65 targets on
-Davis, Klaeger, Anastassiadis and Metz. These are the same sizes needed by the
-share-following scores, compared with 50, 65, 30 and 80 at
-$T = \tau^* - x_0$. A larger scale reduces weight differences between
-targets. The rankings then approach those of the S-score with $\tau = x_0$
-(Spearman $0.9968$--$0.9996$).
-
-Increasing the scale changes the full-panel ranking as well as its recovery 
-from smaller panels. Faster recovery shows that the new ranking is easier to 
-reproduce, but it does not establish that it better represents selectivity.
-The other analyses use $T = \tau^* - x_0$, the smallest allowed scale and
-the one most sensitive to affinity differences. Supporting Information,
-Section~S5, gives the same comparison for $T = 4(\tau^* - x_0)$.

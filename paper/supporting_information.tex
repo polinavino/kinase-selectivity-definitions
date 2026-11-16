@@ -691,6 +691,45 @@ the entropy's at $0.983$ or higher. (\texttt{claim\_checks.py} section 23)
 \clearpage
 \section*{S5: Recovery from subpanels}
 
+\paragraph{Sampling protocol.} The main-text analysis uses 50 random
+subpanels of $m = 10$, $20$, $30$, $40$, $50$, $65$, $80$, $100$, $125$,
+$150$, $200$, $250$ and $300$ targets, using only sizes below each dataset's
+full panel. Every score, including the comparators in main-text Table~2,
+is computed on the same subpanels at each size. The analysis without D1
+uses the different size grid described below.
+
+\paragraph{Conditional agreement with D1.} In the main-text recovery analysis,
+all scores are computed on the same random subpanels and only compounds with
+an active target are scored. In dataset order Davis, Klaeger, Anastassiadis
+and Metz, the S-score at $x_0$, entropy at $\beta = x_0$ and Gini reach mean
+Spearman above $0.90$ at 20, 50, 30 and 65 targets. Their full-panel rankings
+correlate with those of the S-score at $x_0$ at Spearman above $0.97$, and
+their mean agreement curves differ from its curve by at most $0.012$.
+The S-score at $\tau^*$ and active count have identical rankings and reach
+$p^*$ at 30, 80, 50 and 50 targets; entropy at $\beta = \tau^*$ needs 40, 100,
+65 and 50. The gated entropy at $T = \tau^* - x_0$ needs 50, 65, 30 and 80.
+Its full-panel rankings correlate with those of the S-score at $x_0$ at
+$0.964$--$0.996$, and its mean agreement curve lies below that score's curve
+on every dataset, by up to $0.069$.
+
+With floor-coded pairs given zero weight, the published entropy and
+$P_{\max}$ need 300 targets on Davis and 200 on Klaeger. On Metz, the
+published entropy needs 150; $P_{\max}$ does not reach the benchmark at the
+largest subpanel tested (150). The ratio needs 200 targets on Klaeger and
+does not reach the benchmark at the largest subpanels tested on Davis
+(300), Anastassiadis (250) or Metz (150).
+(\texttt{panel\_recovery.py})
+
+\paragraph{Influence of individual targets.} For each compound, we compare
+the largest change in its full-panel score when one target is left out with
+its mean absolute rank change on 50-target subpanels where it remains
+scorable. Ranks are computed among compounds scored on both panels and
+divided by their number. We report the Spearman correlation between these
+two quantities among scored compounds. For entropy at $\beta = x_0$, Gini and gated entropy,
+the Spearman correlations are $r = 0.18$--$0.70$ on Davis, Anastassiadis and
+Metz, but weak on Klaeger ($r \leq 0.13$).
+(\texttt{panel\_recovery.py})
+
 \paragraph{Without D1.} Karaman et al.\cite{Karaman2008} scored each compound's S-score
 on random subpanels and found that it varies more as panels shrink. Repeating
 that design for the four definitions, scoring every compound on every subpanel,
@@ -937,7 +976,7 @@ Results, Criteria; Table~S5 & Correlation with the number of active kinases, D3 
 Results, Criteria & Agreement with the entropy & \texttt{candidate\_\allowbreak{}measure.py} \\
 Results, Criteria; S4 & Dependence on $\tau^*$; noise & \texttt{claim\_\allowbreak{}checks.py} (22, 23) \\
 Results, Criteria; Results, Recovery; Figure~3; S5 & Coverage, recoverability, conditional agreement, variability, influence, agreement with the S-score at $x_0$; other bars; probability of staying scored & \texttt{panel\_\allowbreak{}recovery.py} \\
-Results, Scale; S5 & Gated entropy with $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$: recovery, agreement with the S-score at $x_0$ & \texttt{panel\_\allowbreak{}recovery.py} \\
+Results, Recovery; S5 & Gated entropy with $T = 2(\tau^* - x_0)$ and $4(\tau^* - x_0)$: recovery, agreement with the S-score at $x_0$ & \texttt{panel\_\allowbreak{}recovery.py} \\
 Results, Criteria; S4; Table~S6 & Variants of the gated entropy & \texttt{family\_\allowbreak{}construction.py}, \texttt{family\_\allowbreak{}panelsize.py} \\
 S5; Figure~S4; Table~S7 & Recovery without D1 & \texttt{panel\_\allowbreak{}size\_\allowbreak{}analysis.py}, \texttt{pstar\_\allowbreak{}bar\_\allowbreak{}sensitivity.py}, \texttt{claim\_\allowbreak{}checks.py} (14) \\
 Discussion; S6; Table~S8 & Bosc et al.'s scores and the CATDS proxy & \texttt{bosc\_\allowbreak{}catds\_\allowbreak{}comparison.py} \\
