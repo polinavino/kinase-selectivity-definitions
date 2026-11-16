@@ -21,7 +21,7 @@ MAIN DOCUMENT (Word, with tracked changes)
     "[Table N here]" callout. Leaving them embedded is the safer default.
 
 CLEAN MAIN DOCUMENT (Word, no tracked changes) — if the system asks for one
-  molecular_informatics_submission_revised_2026-11-13.docx
+  molecular_informatics_submission_revised_2026-11-13_2.docx
 
 AUTHOR RESPONSE LETTER
   response_to_reviewers_round2.txt  (paste into the response box, or upload as-is)
@@ -80,7 +80,7 @@ Notes
   follow the manuscript-specific editorial instructions.
 
 RENDER AND FRESHNESS CHECKS
-  molecular_informatics_submission_revised_2026-11-13_rendered.pdf is the visual proof
+  molecular_informatics_submission_revised_2026-11-13_2_rendered.pdf is the visual proof
   of the exact current DOCX (hashes in render_checks.json). It is for review.
   Run python3 check_submission.py after rebuilding and rendering.
   Audit evidence, generated checks and render proofs are local files ignored by Git.
